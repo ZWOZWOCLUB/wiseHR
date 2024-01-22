@@ -14,7 +14,7 @@ public class SettingMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int memberCode;
+    private int memCode;
     @Column(name = "mem_name")
     private String memName;
     @Column(name = "mem_phone")
@@ -35,5 +35,11 @@ public class SettingMember {
     private String memStatus;
     @Column(name = "mem_roll")
     private String memRoll;
+    @OneToOne
+    @JoinColumn(name = "dep_code")
+    private SettingDepartment depCode;
+    @OneToOne
+    @JoinColumn(name = "pos_code")
+    private SettingPosition posCode;
 
 }

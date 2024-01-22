@@ -54,7 +54,7 @@ public class SettingMemberService {
         int count = cri.getAmount();
         List<String> memStatusList = Arrays.asList("Y", "N");
 
-        Pageable paging = PageRequest.of(index, count, Sort.by("memberCode").descending());
+        Pageable paging = PageRequest.of(index, count, Sort.by("memCode").descending());
 
         Page<SettingMember> result = settingMemberRepository.findByMemStatusIn(memStatusList, paging);
 
