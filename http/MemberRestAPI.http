@@ -1,0 +1,9 @@
+### 사원 등록
+POST http://localhost:8001/member/member
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+### 사원 조회
+GET http://localhost:8001/member/allMemberSearch?offset=1
+Content-Type: application/json
+Accept: */*
