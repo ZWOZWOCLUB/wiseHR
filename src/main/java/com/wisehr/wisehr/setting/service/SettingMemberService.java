@@ -52,11 +52,10 @@ public class SettingMemberService {
         int index = cri.getPageNum() -1;
 
         int count = cri.getAmount();
-        List<String> memStatusList = Arrays.asList("Y", "N");
 
-        Pageable paging = PageRequest.of(index, count, Sort.by("memCode").descending());
+        Pageable paging = PageRequest.of(index, count, Sort.by("memCode"));
 
-        Page<SettingMember> result = settingMemberRepository.findByMemStatusIn(memStatusList, paging);
+        Page<SettingMember> result = settingMemberRepository.findAll(paging);
 
         Page<SettingMemberDTO> memberList = result.map(member -> modelMapper.map(member, SettingMemberDTO.class));
 

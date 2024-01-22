@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface SettingMemberRepository extends JpaRepository<SettingMember, Integer> {
 
-    Page<SettingMember> findByMemStatusIn(List<String> memStatusList, Pageable paging);
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @Slf4j
 @RestController
 @RequestMapping("member")
@@ -22,11 +23,17 @@ public class SettingMemberController {
         this.settingMemberService = settingMemberService;
     }
 
+    /**
+     * 사원 등록
+     */
     @PostMapping("/member")
     public ResponseEntity<ResponseDTO> insertMember(@ModelAttribute SettingMemberDTO settingMemberDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원등록 성공", settingMemberService.insertMember(settingMemberDTO)));
     }
 
+    /**
+     * 사원 전체 조회, 페이징처리
+     */
     @GetMapping("/allMemberSearch")
     public ResponseEntity<ResponseDTO> allMemberSearchWithPaging(
             @RequestParam(name = "offset", defaultValue = "1") String offset){
@@ -45,6 +52,9 @@ public class SettingMemberController {
 
         log.info("allMemberSearchWithPaging 끗~~~~~~~~~~~~");
         log.info(pagingResponseDTO.getData().toString());
+//        조회가 성공했을 때, HTTP 상태코드 200이랑 "조회 성공" 메시지 반환
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", pagingResponseDTO));
     }
+
+
 }

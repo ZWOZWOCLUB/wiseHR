@@ -1,7 +1,18 @@
 ### 사원 등록
 POST http://localhost:8001/member/member
-Content-Type: multipart/form-data; boundary=WebAppBoundary
+Content-Type: application/json
+//Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+
+//{
+//  "memName": "노연지",
+//  "memPhone": "",
+//  memEmail
+//  memAddress
+//  memBirth
+//  memPassword
+//  memEndDate
+//}
 
 ### 사원 조회
 GET http://localhost:8001/member/allMemberSearch?offset=1
