@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +32,8 @@ public class SettingMemberService {
     @Transactional
     public String insertMember(SettingMemberDTO settingMemberDTO) {
         log.info("insertMember Start~~~~~~~~~~~~");
+        log.info(settingMemberDTO.toString());
+
         int result = 0;
 
         try{

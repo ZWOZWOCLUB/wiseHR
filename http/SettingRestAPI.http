@@ -1,0 +1,21 @@
+### 사원 등록
+POST http://localhost:8001/member/member
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+
+### 사원 조회
+GET http://localhost:8001/member/allMemberSearch?offset=1
+Content-Type: application/json
+Accept: */*
+
+//직원 전체 조회 - 사번/ 이름으로 조회
+//직원 상세 조회 - 프로필 사진, 직원 정보, 인사정보, 서류함
+//
+//
+//직원등록 -부서 조회
+//직급 조회
+//중간관리자 체크 유무에 따라 roll 설정
+//프로필 사진 등록
+//인사정보 등록
+//서류함 파일 등록
