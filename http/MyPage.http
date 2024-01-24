@@ -1,0 +1,4 @@
+### 회원 상세 조회
+GET http://localhost:8001/myPage/4
+Content-Type: application/json
+Accept: */*
