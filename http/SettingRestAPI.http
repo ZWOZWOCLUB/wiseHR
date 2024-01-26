@@ -1,21 +1,55 @@
-### 사원 등록
+### 직원 정보 등록
 POST http://localhost:8001/member/member
-Content-Type: multipart/form-data; boundary=WebAppBoundary
+Content-Type: application/json
 Accept: */*
 
+{
+ "memName": "노연지",
+  "memPhone": "010-8760-8336",
+  "memEmail": "oooooo@naver.com",
+  "memAddress": "경기도 고양시",
+  "memBirth": "1991-01-20",
+  "memPassword": "pass01",
+  "memHireDate": "2023-01-01",
+  "memStatus" : "N",
+  "memRoll": "중간관리자",
+  "depCode": 1,
+  "posCode": 1
+}
 
-### 사원 조회
+
+### 직원 조회
 GET http://localhost:8001/member/allMemberSearch?offset=1
 Content-Type: application/json
 Accept: */*
 
-//직원 전체 조회 - 사번/ 이름으로 조회
-//직원 상세 조회 - 프로필 사진, 직원 정보, 인사정보, 서류함
-//
-//
-//직원등록 -부서 조회
-//직급 조회
-//중간관리자 체크 유무에 따라 roll 설정
-//프로필 사진 등록
-//인사정보 등록
-//서류함 파일 등록
+###직원 검색어로 조회
+GET http://localhost:8001/member/search?s=이
+Content-Type: application/json
+Accept: */*
+
+###직원등록 -부서 조회
+GET http://localhost:8001/member/depSearch
+Content-Type: application/json
+Accept: */*
+
+
+###직원등록 -직급 조회
+GET http://localhost:8001/member/position
+Content-Type: application/json
+Accept: */*
+
+###직원인사정보등록 - 학위, 경력, 자격
+
+
+###직원인사정보조회 - 학위, 경력, 자격
+GET http://localhost:8001/member/searchResourcesInformation?mem=1
+Content-Type: application/json
+Accept: */*
+
+//직원등록 -직원 중간관리자로 체크 유무에 따라 roll 설정
+//직원등록 - 프로필 사진 등록
+//직원수정(상세조회 -> 업데이트)
+//직원인사정보수정
+//직원서류함등록
+//직원서류함수정

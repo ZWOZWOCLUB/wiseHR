@@ -1,6 +1,5 @@
 package com.wisehr.wisehr.pay.dto;
 
-import com.wisehr.wisehr.setting.dto.SettingDepartmentDTO;
 import lombok.*;
 
 @NoArgsConstructor
@@ -8,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class PayMemberDTO {
+public class PayMemPosSalDTO {
     private String memCode;
     private PayPositionDTO posCode;
     private PaySalaryDTO salCode;

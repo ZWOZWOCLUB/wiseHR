@@ -1,6 +1,5 @@
 package com.wisehr.wisehr.pay.entity;
 
-import com.wisehr.wisehr.setting.dto.SettingDepartmentDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class PayMember {
+public class PayMemPosSal {
     @Id
     @Column(name = "mem_code", nullable = false)
     private String memCode;
