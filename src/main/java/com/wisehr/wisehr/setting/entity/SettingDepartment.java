@@ -19,8 +19,6 @@ public class SettingDepartment {
     private int depCode;
     @Column(name = "dep_name")
     private String depName;
-    @Column(name = "ref_dep_code")
-    private int refDepCode;
     @Column(name = "dep_birth_date")
     private String depBirthDate;
     @Column(name = "dep_delete_status")

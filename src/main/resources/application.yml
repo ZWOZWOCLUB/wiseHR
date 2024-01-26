@@ -35,10 +35,10 @@ logging:
 
 ## ??? ??? ??? ??? ? ??? ?? ??
 image:
-  ## WebConfig? ??
-#  add-resource-locations: classpath:/static/productimgs/
-#  add-resource-handler: /productimgs/**
-#
-#  image-dir: src/main/resources/static/productimgs
-#  image-url: http://localhost:8001/productimgs/
+  # WebConfig? ??
+  add-resource-locations: classpath:/static/imgs/
+  add-resource-handler: /imgs/**
+
+  image-dir: src/main/resources/static/imgs
+  image-url: http://localhost:8001/imgs/
 
