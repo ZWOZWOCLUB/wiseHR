@@ -7,7 +7,8 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class SettingMemberDTO {
+public class MyPageDTO {
+    private int memCode;
     private String memName;
     private String memPhone;
     private String memEmail;

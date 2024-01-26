@@ -1,0 +1,31 @@
+### 개인 알람 조회
+GET http://localhost:8001/alarm/perAlarm/1
+Content-Type: application/json
+Accept: */*
+
+### 전체 알람 조회
+GET http://localhost:8001/alarm/allAlarm/1
+Content-Type: application/json
+Accept: */*
+
+### 보낸 메신저 조회
+GET http://localhost:8001/alarm/sendMessenger/1
+Content-Type: application/json
+Accept: */*
+
+### 받은 메신저 조회
+GET http://localhost:8001/alarm/recMessenger/1
+Content-Type: application/json
+Accept: */*
+
+### 메신저 등록
+POST http://localhost:8001/alarm/messenger
+Content-Type: application/json
+
+{
+  "msgCode": "null",
+  "msgDate": "2024-01-10",
+  "msgContents": "등록 실험",
+  "memCode": "1",
+  "msgDeleteStatus": "N"
+}

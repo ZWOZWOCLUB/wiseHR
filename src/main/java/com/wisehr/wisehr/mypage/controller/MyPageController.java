@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+
 @Slf4j
 @RestController
 @RequestMapping("myPage")
@@ -18,9 +21,31 @@ public class MyPageController {
     }
 
 
-    @GetMapping("/{memCode}")
+    @GetMapping("/searchMem/{memCode}")
     public ResponseEntity<ResponseDTO> selectMemDetail(@PathVariable int memCode){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 상세조회 성공" , myPageService.selectMem(memCode)));
+    }
+
+    @GetMapping("/searchDegree/{memCode}")
+    public ResponseEntity<ResponseDTO> selectDegreeDetail(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 상세조회 성공" , myPageService.selectDegree(memCode)));
+    }
+
+    @GetMapping("/searchCer/{memCode}")
+    public ResponseEntity<ResponseDTO> selectCerDetail(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 상세조회 성공" , myPageService.selectCer(memCode)));
+    }
+
+    @GetMapping("/searchCareer/{memCode}")
+    public ResponseEntity<ResponseDTO> selectCareerDetail(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 상세조회 성공" , myPageService.selectCareer(memCode)));
+    }
+
+
+//    출퇴근 정보 조회
+    @GetMapping("/attendance/{attWorkDate}")
+    public ResponseEntity<ResponseDTO> selectAttendanceDetail(@PathVariable Date attWorkDate){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 상세조회 성공" , myPageService.selectAttendance(attWorkDate)));
     }
 
 }

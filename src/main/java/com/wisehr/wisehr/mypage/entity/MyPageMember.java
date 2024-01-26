@@ -10,11 +10,11 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class SettingMember {
+public class MyPageMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int memberCode;
+    private int memCode;
     @Column(name = "mem_name")
     private String memName;
     @Column(name = "mem_phone")
