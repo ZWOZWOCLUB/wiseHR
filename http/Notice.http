@@ -1,0 +1,3 @@
+### 공지 등록
+POST http://localhost:8001/notice/notice
+Content-Type: application/json
