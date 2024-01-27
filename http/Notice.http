@@ -4,5 +4,10 @@ Content-Type: application/json
 Accept: */*
 
 {
-
+  "notName": "공지등록테스트",
+  "notComment": "공지내용작성",
+  "notView": "1",
+  "notCreateDate": "2023-01-11",
+  "memCode": 1,
+  "notDeleteStatus": "N"
 }
