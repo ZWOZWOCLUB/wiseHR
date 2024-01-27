@@ -1,9 +1,6 @@
 package com.wisehr.wisehr.notice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,6 +13,7 @@ import lombok.*;
 public class Notice {
     @Id
     @Column(name = "not_code", nullable = false)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String notCode;
     @Column(name = "not_name", nullable = false)
     private String notName;

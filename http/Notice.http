@@ -4,6 +4,7 @@ Content-Type: application/json
 Accept: */*
 
 {
+  "notCode": "not5",
   "notName": "공지등록테스트",
   "notComment": "공지내용작성",
   "notView": "1",
@@ -11,3 +12,9 @@ Accept: */*
   "memCode": 1,
   "notDeleteStatus": "N"
 }
+
+
+
+
+###공지 조회
+GET http://localhost:8001/notice/allNoticeSearch

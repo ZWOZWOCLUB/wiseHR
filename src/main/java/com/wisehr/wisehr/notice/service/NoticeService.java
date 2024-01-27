@@ -1,11 +1,18 @@
 package com.wisehr.wisehr.notice.service;
+import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
 import com.wisehr.wisehr.notice.entity.Notice;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -35,9 +42,26 @@ public class NoticeService {
             result = 1;
         } catch (Exception e){
             log.info("---insertNotice 오류---");
+            throw new RuntimeException(e);
 
 
         }
         return (result > 0)? "공지등록 성공": "공지등록 실패";
     }
+
+    public List<NoticeDTO> searchTitleList(String search) {
+        log.info("titleSearchList시작");
+        log.info("titleSearchList search : {}", search);
+
+        return null;
+    }
+
+//    public Page<NoticeDTO> allNoticeSearchWithPaging(Criteria criteria) {
+//
+//        log.info("allNoticeSearchWithPaging 서비스 시작");
+//        int index = criteria.getPageNum() -1;
+//        int count = criteria.getAmount();
+//
+//        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCode"));
+//    }
 }
