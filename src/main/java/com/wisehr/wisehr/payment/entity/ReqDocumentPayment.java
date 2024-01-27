@@ -21,6 +21,6 @@ public class ReqDocumentPayment {
     @Column(name = "req_use")
     private String reqUse;
     @OneToOne
-    @Column(name = "pay_code")
+    @JoinColumn(name = "pay_code")
     private Payment payCode;
 }

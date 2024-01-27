@@ -28,6 +28,6 @@ public class PaymentAnnual {
     @Column(name = "vac_end_date")
     private Date vacEndDate;
     @OneToOne
-    @Column(name = "pay_code")
+    @JoinColumn(name = "pay_code")
     private Payment payCode;
 }

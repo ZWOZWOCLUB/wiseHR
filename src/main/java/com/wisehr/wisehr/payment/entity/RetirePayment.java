@@ -22,6 +22,6 @@ public class RetirePayment {
     @Column(name="tir_contents")
     private String tirContents;
     @OneToOne
-    @Column(name="pay_code")
+    @JoinColumn(name="pay_code")
     private Payment payCode;
 }

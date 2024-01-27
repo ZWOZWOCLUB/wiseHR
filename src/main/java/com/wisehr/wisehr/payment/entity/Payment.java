@@ -22,9 +22,9 @@ public class Payment {
     @Column(name = "pay_kind")
     private String payKind;
     @ManyToOne
-    @Column(name = "mem_code")
+    @JoinColumn(name = "mem_code")
     private PaymentMember memCode;
     @ManyToOne
-    @Column(name = "per_arm_code")
+    @JoinColumn(name = "per_arm_code")
     private PaymentPerAlarm perArmCode;
 }
