@@ -1,4 +1,4 @@
-package com.wisehr.wisehr.setting.dto;
+package com.wisehr.wisehr.mypage.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class SettingMemberDTO {
+public class MyPageDTO {
     private int memCode;
     private String memName;
     private String memPhone;
@@ -19,6 +19,6 @@ public class SettingMemberDTO {
     private String memEndDate;
     private String memStatus;
     private String memRoll;
-    private int posCode;
-    private int depCode;
+
+
 }

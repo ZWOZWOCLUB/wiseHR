@@ -8,10 +8,10 @@ import lombok.*;
 @Setter
 @ToString
 public class SettingProfileDTO {
-    private int prf_code;
-    private String prf_path;
-    private String prf_extends;
-    private String prf_convert_name;
-    private String prf_storage;
+    private int prfCode;
+    private String prfPath;
+    private String prfExtends;
+    private String prfConvertName;
+    private String prfStorage;
     private int memCode;
 }

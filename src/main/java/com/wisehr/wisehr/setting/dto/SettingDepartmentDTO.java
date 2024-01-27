@@ -10,7 +10,6 @@ import lombok.*;
 public class SettingDepartmentDTO {
     private int depCode;
     private String depName;
-    private int refDepCode;
     private String depBirthDate;
     private String depDeleteStatus;
 }
