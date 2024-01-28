@@ -19,6 +19,7 @@ public class PaymentPerAlarm {
     private Date perArmDateTime;
     @Column(name = "per_arm_check_status")
     private String perArmCheckStatus;
-    @Column(name = "mem_code")
-    private int memCode;
+    @ManyToOne
+    @JoinColumn(name = "mem_code")
+    private PaymentMember memCode;
 }

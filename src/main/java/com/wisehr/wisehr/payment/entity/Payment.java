@@ -24,7 +24,4 @@ public class Payment {
     @ManyToOne
     @JoinColumn(name = "mem_code")
     private PaymentMember memCode;
-    @ManyToOne
-    @JoinColumn(name = "per_arm_code")
-    private PaymentPerAlarm perArmCode;
 }
