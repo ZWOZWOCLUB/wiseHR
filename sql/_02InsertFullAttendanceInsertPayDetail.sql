@@ -9,12 +9,13 @@ CREATE EVENT IF NOT EXISTS InsertFullAttendanceInsertPayDetailEvent  #여기서�
     SELECT
         DATE_FORMAT(NOW(), '%Y-%m-25'), #pde_date 에 이번년도, 이번달 25일을 넣음
         B.pos_salary / 12, # position 테이블에 mem_code에 맞는 pos_salary 값을 나누기 12해서 넣음
-        DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH),'%Y-%m-01'), #지난달 일한 급여를 지급하는거니 지난달 값을 찾아서 이번년도 지난달 1일로 설정, 1일은 임의로 지정한거임
+        DATE_FORMAT(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 MONTH)), '%Y-%m-%d'),
+        DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH),'%Y-%m-01'), #지난달 일한 급여를 지급하는거니 지난달 마지막날을 입력
         A.mem_code
     FROM member A
              JOIN position B ON A.pos_code = B.pos_code
              JOIN attendance C on A.mem_code = C.mem_code
     WHERE A.mem_status = 'N' #직원이 퇴직한 상태가 아니어야함
-      AND C.att_work_date BETWEEN DATE_FORMAT(NOW(), '%Y-%m-01') AND LAST_DAY(NOW())
+      AND C.att_work_date BETWEEN DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m-01') AND LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 MONTH))
       AND C.att_status <> '결근'; # 지난달 1일부터 지난달 31일에 결근이 없어야함
 SELECT * FROM INFORMATION_SCHEMA.EVENTS WHERE EVENT_NAME = 'InsertFullAttendanceInsertPayDetailEvent'; #생성된 이벤트가 정상적으로 등록되었는지 확인하기 위해 .EVENT 테이블 조회하는 쿼리

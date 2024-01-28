@@ -30,4 +30,6 @@ public class PayController {
     public ResponseEntity<ResponseDTO> payPage(@PathVariable int memCode){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", payService.searchYear(memCode)));
     }
+
+
 }
