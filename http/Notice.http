@@ -18,3 +18,7 @@ Accept: */*
 
 ###공지 조회
 GET http://localhost:8001/notice/allNoticeSearch
+
+###공지제목 조회
+GET http://localhost:8001/notice/titleSearch?t=1
+

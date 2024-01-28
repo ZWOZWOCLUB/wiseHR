@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -49,11 +50,18 @@ public class NoticeService {
         return (result > 0)? "공지등록 성공": "공지등록 실패";
     }
 
+
     public List<NoticeDTO> searchTitleList(String search) {
         log.info("titleSearchList시작");
         log.info("titleSearchList search : {}", search);
 
-        return null;
+        List<Notice> noticeWithSearchValue = noticeRepository.findByNotNameContaining(search);
+        List<NoticeDTO> noticeDTOList = noticeWithSearchValue.stream()
+                .map(notice -> modelMapper.map(notice, NoticeDTO.class))
+                .collect(Collectors.toList());
+        log.info("titleSearchList 서비스 끝" + noticeWithSearchValue);
+        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
+        return noticeDTOList;
     }
 
 //    public Page<NoticeDTO> allNoticeSearchWithPaging(Criteria criteria) {

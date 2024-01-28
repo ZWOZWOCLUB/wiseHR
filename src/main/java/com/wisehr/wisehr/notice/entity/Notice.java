@@ -25,6 +25,8 @@ public class Notice {
     private String notCreateDate;
     @Column(name = "not_modify_date", nullable = true)
     private String notModifyDate;
+//    @OneToOne
+//    @JoinColumn(name = "mem_code")
     @Column(name = "mem_code", nullable = false)
     private int memCode;
     @Column(name = "not_delete_status", nullable = false)

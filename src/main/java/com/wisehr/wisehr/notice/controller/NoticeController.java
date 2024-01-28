@@ -50,7 +50,12 @@ public class NoticeController {
 //        Page<NoticeDTO> noticeList = noticeService.allNoticeSearchWithPaging(criteria);
 //    }
 
-    @GetMapping("titleSearch")
+    /***
+     * 공지제목으로 검색
+     * @param search 제목
+     * @return
+     */
+    @GetMapping("/titleSearch")
     public ResponseEntity<ResponseDTO> searchTitleList(
             @RequestParam(value = "t", defaultValue = "all")String search){
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK, "제목조회성공", noticeService.searchTitleList(search)));
