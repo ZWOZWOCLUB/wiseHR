@@ -64,6 +64,20 @@ public class NoticeService {
         return noticeDTOList;
     }
 
+    public Object searchCommentList(String search) {
+        log.info("commentSearchList시작");
+        log.info("commentSearchList search : {}", search);
+
+        List<Notice> noticeWithSearchValue = noticeRepository.findByNotCommentContaining(search);
+        List<NoticeDTO> noticeDTOList = noticeWithSearchValue.stream()
+                .map(notice -> modelMapper.map(notice, NoticeDTO.class))
+                .collect(Collectors.toList());
+        log.info("commentSearchList 서비스 끝" + noticeWithSearchValue);
+        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
+
+        return noticeDTOList;
+    }
+
 //    public Page<NoticeDTO> allNoticeSearchWithPaging(Criteria criteria) {
 //
 //        log.info("allNoticeSearchWithPaging 서비스 시작");

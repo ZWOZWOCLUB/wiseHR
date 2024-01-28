@@ -60,4 +60,11 @@ public class NoticeController {
             @RequestParam(value = "t", defaultValue = "all")String search){
         return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK, "제목조회성공", noticeService.searchTitleList(search)));
     }
+
+    @GetMapping("/commentSearch")
+    public ResponseEntity<ResponseDTO> searchCommentList(
+            @RequestParam(value = "c", defaultValue = "all")String search){
+        return ResponseEntity.ok(new ResponseDTO(HttpStatus.OK, "내용조회성공", noticeService.searchCommentList(search)));
+    }
+
 }

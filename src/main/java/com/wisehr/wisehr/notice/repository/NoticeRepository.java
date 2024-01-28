@@ -8,4 +8,6 @@ import java.util.List;
 public interface NoticeRepository extends JpaRepository<Notice, Integer> {
 
     List<Notice> findByNotNameContaining(String search);
+
+    List<Notice> findByNotCommentContaining(String search);
 }

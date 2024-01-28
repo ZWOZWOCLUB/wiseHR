@@ -20,5 +20,8 @@ Accept: */*
 GET http://localhost:8001/notice/allNoticeSearch
 
 ###공지제목 조회
-GET http://localhost:8001/notice/titleSearch?t=1
+GET http://localhost:8001/notice/titleSearch?t=주말
+
+###공지내용 조회
+GET http://localhost:8001/notice/commentSearch?c=지급
 
