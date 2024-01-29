@@ -2,6 +2,7 @@ package com.wisehr.wisehr.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -15,6 +16,10 @@ import java.sql.Time;
 @ToString
 public class EditCommute {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "edi"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "edi_code")
     private String ediCode;
     @Column(name = "edi_kind")

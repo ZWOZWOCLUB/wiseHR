@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @ToString
 public class PaymentMemberDTO {
-    private int memCode;
+    private Long memCode;
     private String memName;
     private String memPhone;
     private String memEmail;
@@ -20,6 +20,6 @@ public class PaymentMemberDTO {
     private String memEndDate;
     private String memStatus;
     private String memRoll;
-    private int posCode;
-    private int depCode;
+    private Long posCode;
+    private Long depCode;
 }
