@@ -35,11 +35,11 @@ public class ScheduleController {
 
 /**
  *
- *일정조회 (년-월로 조회 여기는 schedule테이블이 아닌 attendance 테이블로 가져옴)
+ *이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
  */
-@GetMapping("/searchDate/{date}")
-    public ResponseEntity<ResponseDTO> searchDate(@PathVariable Date date){
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchDate(date)));
+@GetMapping("/searchPrev/{date}")
+    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String date){
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchPrev(date)));
 }
 
 /**

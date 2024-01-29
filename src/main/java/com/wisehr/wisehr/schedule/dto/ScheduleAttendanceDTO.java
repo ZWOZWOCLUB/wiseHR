@@ -11,10 +11,10 @@ import java.util.Date;
 @ToString
 public class ScheduleAttendanceDTO {
     private int attCode;
-    private Date attStartTime;
-    private Date attEndTime;
+    private String attStartTime;
+    private String attEndTime;
     private String attStatus;
-    private java.sql.Date attWorkDate;
+    private String attWorkDate;
     private int memCode;
     private String schCode;
 }

@@ -25,9 +25,9 @@ public class ScheduleService {
     }
 
 
-    public List<ScheduleAttendanceDTO> searchDate(Date date) {
+    public List<ScheduleAttendanceDTO> searchPrev(String date) {
         log.info("searchDate 서비스 시작~~~~~~~~~~~~");
-        List<ScheduleAttendance> scheduleAttendances = scheduleAttendanceRepository.findByAttWorkDate(date);
+        List<ScheduleAttendance> scheduleAttendances = scheduleAttendanceRepository.findByAttWorkDateContaining(date);
         List<ScheduleAttendanceDTO> scheduleAttendanceDTO = scheduleAttendances.stream()
                         .map(list -> modelMapper.map(list, ScheduleAttendanceDTO.class))
                         .collect(Collectors.toList());

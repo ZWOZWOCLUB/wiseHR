@@ -1,7 +1,7 @@
 #- [ ] 일정 등록
 #- [ ] 일정 조회(첫페이지에 전체 일정이 다 뜨게 이번달꺼만)
-#일정조회 (년-월로 조회 여기는 schedule테이블이 아닌 attendance 테이블로 가져옴)
-GET http://localhost:8001/schedule/searchDate/2024-01
+###이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
+GET http://localhost:8001/schedule/searchPrev/2024-01
 Content-Type: application/json
 Accept: */*
 #- [ ] 선택한 다른 사람의 일정, 년 - 월 조회

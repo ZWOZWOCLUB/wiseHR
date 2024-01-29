@@ -21,13 +21,13 @@ public class ScheduleAttendance {
     @Column(name = "att_code")
     private int attCode;
     @Column(name = "att_start_time")
-    private Date attStartTime;
+    private String attStartTime;
     @Column(name = "att_end_time")
-    private Date attEndTime;
+    private String attEndTime;
     @Column(name = "att_status")
     private String attStatus;
     @Column(name = "att_work_date")
-    private java.sql.Date attWorkDate;
+    private String attWorkDate;
     @Column(name = "mem_code")
     private int memCode;
     @Column(name = "sch_code")
