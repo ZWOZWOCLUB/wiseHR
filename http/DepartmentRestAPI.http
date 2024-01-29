@@ -1,0 +1,6 @@
+### 부서 조회
+
+GET http://localhost:8001/org/list
+Content-Type: application/json
+Accept: */*
+
