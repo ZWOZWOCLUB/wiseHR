@@ -10,11 +10,10 @@ import java.sql.Date;
 @Setter
 @Getter
 @ToString
-public class EditScheduleDTO {
-    private String eshCode;
-    private String eshName;
-    private Date eshStartDate;
-    private Date eshEndDate;
-    private String eshContents;
+public class PaymentAttachmentDTO {
+    private Long payAtcCode;
+    private String payAtcName;
+    private String payAtcDeleteStatus;
+    private String payAtcPath;
     private PaymentDTO payment;
 }

@@ -27,10 +27,6 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-      jakarta:  #이거 수정
-        persistence:
-          spi:
-            PersistenceProvider: org.hibernate.jpa.HibernatePersistenceProvider
 
 # Logging Level
 logging:
@@ -40,9 +36,8 @@ logging:
 ## ??? ??? ??? ??? ? ??? ?? ??
 image:
   # WebConfig? ??
-  add-resource-locations: classpath:/static/imgs/
-  add-resource-handler: /imgs/**
-
-  image-dir: src/main/resources/static/imgs
-  image-url: http://localhost:8001/imgs/
+  add-resource-locations: classpath:/static/memberFiles/
+  add-resource-handler: /memberFiles/**
+  image-dir: src/main/resources/static/memberFiles
+  image-url: http://localhost:8001/attachmentFiles/
 

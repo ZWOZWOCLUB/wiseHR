@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.payment.dto;
 
 
+import com.wisehr.wisehr.payment.entity.PaymentAttachment;
 import com.wisehr.wisehr.setting.dto.SettingMemberDTO;
 import lombok.*;
 
@@ -17,4 +18,5 @@ public class PaymentDTO {
     private String payKind;
     private PaymentMemberDTO paymentMember;
     private PaymentPerAlarmDTO perArmCode;
+    private PaymentAttachmentDTO payAttachment;
 }

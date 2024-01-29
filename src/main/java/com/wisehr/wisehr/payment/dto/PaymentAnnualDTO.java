@@ -17,5 +17,5 @@ public class PaymentAnnualDTO {
     private String vacContents;
     private Date vacStartDate;
     private Date vacEndDate;
-    private PaymentDTO payCode;
+    private PaymentDTO payment;
 }

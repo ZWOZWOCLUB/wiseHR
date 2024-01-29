@@ -3,12 +3,15 @@ package com.wisehr.wisehr.payment.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.payment.dto.ApprovalPaymentDTO;
+import com.wisehr.wisehr.payment.dto.PaymentAnnualDTO;
+import com.wisehr.wisehr.payment.dto.PaymentAttachmentDTO;
 import com.wisehr.wisehr.payment.dto.PaymentDTO;
 import com.wisehr.wisehr.payment.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 
@@ -43,5 +46,14 @@ public class PaymentController {
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "결재 상신 완료", paymentService.appPayment(payment)));
+    }
+
+    @PostMapping("/annual")
+    public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute PaymentAttachmentDTO attachment, MultipartFile paymentFile){
+        log.info("=== paymentFile : " + paymentFile );
+        log.info("-==== paymentAnnual : " + attachment);
+
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "연차 등록 성공", paymentService.submitAnnual(attachment, paymentFile)));
     }
 }
