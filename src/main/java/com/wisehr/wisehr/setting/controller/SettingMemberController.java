@@ -32,11 +32,12 @@ public class SettingMemberController {
      * 직원 정보 등록
      */
     @PostMapping("/member")
-    public ResponseEntity<ResponseDTO> insertMember(@ModelAttribute SettingMemberDTO settingMemberDTO){
+    public ResponseEntity<ResponseDTO> insertMember(@ModelAttribute SettingMemberDTO settingMemberDTO, MultipartFile profile){
 
         System.out.println("settingMemberDTO = " + settingMemberDTO);
+        System.out.println("profile = " + profile);
 
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원등록 성공", settingMemberService.insertMember(settingMemberDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원등록 성공", settingMemberService.insertMember(settingMemberDTO, profile)));
     }
 
 
@@ -113,6 +114,7 @@ public class SettingMemberController {
     public ResponseEntity<ResponseDTO> searchPosition(){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", settingMemberService.searchPosition()));
     }
+
 
 
 }

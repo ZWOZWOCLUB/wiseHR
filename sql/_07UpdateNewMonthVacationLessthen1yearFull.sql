@@ -3,7 +3,7 @@ CREATE EVENT IF NOT EXISTS UpdateNewMonthVacationLessthen1year
         EVERY 1 MONTH  # 수행 반복할 시간 여기선 매월
             STARTS TIMESTAMP(DATE_FORMAT(NOW(), '%Y-%m-01 09:00:00'))
     enable
-    comment '근무일 1년 미만인 결근 없는 사람 연차 update'
+    comment '근무일 1년 미만인 결근 없는 사람 연차 update 결근이 있으면 연차 +1 안됨'
     DO
     UPDATE hold_vacation C
         JOIN member A ON C.mem_code = A.mem_code
