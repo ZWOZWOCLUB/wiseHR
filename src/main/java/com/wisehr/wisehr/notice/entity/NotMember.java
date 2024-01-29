@@ -14,7 +14,7 @@ public class NotMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int memCode;
+    private Long memCode;
     @Column(name = "mem_name", nullable = false)
     private String memName;
     @Column(name = "mem_phone", nullable = false)
@@ -36,7 +36,7 @@ public class NotMember {
     @Column(name = "mem_roll", nullable = false)
     private String memRoll;
     @Column(name = "dep_code", nullable = true)
-    private int depCode;
+    private Long depCode;
     @Column(name = "pos_code", nullable = true)
-    private int posCode;
+    private Long posCode;
 }
