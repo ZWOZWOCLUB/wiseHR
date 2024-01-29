@@ -1,0 +1,37 @@
+### 공지 등록
+POST http://localhost:8001/notice/notice
+Content-Type: application/json
+Accept: */*
+
+{
+  "notCode": "not5",
+  "notName": "설날공지",
+  "notComment": "공지내용작성",
+  "notView": "1",
+  "notCreateDate": "2023-01-11",
+  "memCode": 1,
+  "notDeleteStatus": "N"
+}
+
+
+
+
+###공지전체 조회 offset 페이지
+GET http://localhost:8001/notice/allNoticeSearch?offset=1
+Content-Type: application/json
+Accept: */*
+
+###공지제목 조회
+GET http://localhost:8001/notice/titleSearch?t=소독
+Content-Type: application/json
+Accept: */*
+
+###공지내용 조회
+GET http://localhost:8001/notice/commentSearch?c=지급
+Content-Type: application/json
+Accept: */*
+
+###공지작성자 조회
+GET http://localhost:8001/notice/memberNameSearch?m=조정석
+Content-Type: application/json
+Accept: */*

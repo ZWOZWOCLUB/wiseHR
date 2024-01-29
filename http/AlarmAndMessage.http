@@ -1,0 +1,41 @@
+### 개인 알람 조회
+GET http://localhost:8001/alarm/perAlarm/1
+Content-Type: application/json
+Accept: */*
+
+### 전체 알람 조회
+GET http://localhost:8001/alarm/allAlarm/1
+Content-Type: application/json
+Accept: */*
+
+### 보낸 메신저 조회
+GET http://localhost:8001/alarm/sendMessenger/1
+Content-Type: application/json
+Accept: */*
+
+### 받은 메신저 조회
+GET http://localhost:8001/alarm/recMessenger/1
+Content-Type: application/json
+Accept: */*
+
+### 메신저 등록
+POST http://localhost:8001/alarm/messenger
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="msgContents"
+
+피카츄
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="msgDate"
+
+2024-01-29
+--WebAppBoundary
+Content-Disposition: form-data; name="msgDeleteStatus"
+
+N

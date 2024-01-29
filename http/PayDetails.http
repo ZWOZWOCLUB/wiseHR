@@ -1,0 +1,12 @@
+
+###급여조회 - 연도별로 조회, 첫페이지엔 이번년도 조회, 공제사항 포함
+GET http://localhost:8001/pay/payList/2/2023
+Content-Type: application/json
+Accept: */*
+
+### 연도 select태그 입력값 가져오기(입사년도부터 올해까지)
+GET http://localhost:8001/pay/pay-List2/2
+Content-Type: application/json
+Accept: */*
+
+

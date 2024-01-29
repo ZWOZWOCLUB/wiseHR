@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 public class SettingMemberDTO {
-    private String memCode;
+    private int memCode;
     private String memName;
     private String memPhone;
     private String memEmail;
@@ -19,6 +19,6 @@ public class SettingMemberDTO {
     private String memEndDate;
     private String memStatus;
     private String memRoll;
-    private SettingPositionDTO posCode;
-    private SettingDepartmentDTO depCode;
+    private int posCode;
+    private int depCode;
 }

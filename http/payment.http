@@ -1,0 +1,22 @@
+### 받은 결재 (mem_code)
+
+GET http://localhost:8001/payment/reqpayment/2
+Content-Type: application/json
+Accept: */*
+
+### insert Test
+POST http://localhost:8001/payment/submit
+Content-Type: application/json
+Accept: */*
+Access-Control-Allow-Origin: *
+
+{
+  "appState": "반려",
+  "appDate": "2024-02-01",
+  "payment" : {
+    "payCode" :"pay12"
+  },
+  "paymentMember": {
+    "memCode" : 1
+  }
+}

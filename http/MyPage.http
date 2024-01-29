@@ -1,0 +1,29 @@
+### 회원 상세 조회
+GET http://localhost:8001/myPage/searchMem/4
+Content-Type: application/json
+Accept: */*
+
+### 학위 상세 조회
+GET http://localhost:8001/myPage/searchDegree/1
+Content-Type: application/json
+Accept: */*
+
+### 자격 상세 조회
+GET http://localhost:8001/myPage/searchCer/1
+Content-Type: application/json
+Accept: */*
+
+### 경력 상세 조회
+GET http://localhost:8001/myPage/searchCareer/1
+Content-Type: application/json
+Accept: */*
+
+### 출퇴근 상세 조회
+GET http://localhost:8001/myPage/attendance/2/2024-01-01
+Content-Type: application/json
+Accept: */*
+
+### 서류함 상세 조회
+GET http://localhost:8001/myPage/document/2
+Content-Type: application/json
+Accept: */*
