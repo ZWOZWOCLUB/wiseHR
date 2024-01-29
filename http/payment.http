@@ -20,3 +20,14 @@ Access-Control-Allow-Origin: *
     "memCode" : 1
   }
 }
+
+
+### 오류띄워버리기
+POST http://localhost:8001/payment/annual
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="payment[payCode]"
+
+pay15
