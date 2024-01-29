@@ -13,13 +13,14 @@ import java.sql.Date;
 @ToString
 public class PaymentPerAlarm {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "per_arm_code")
     private int perArmCode;
     @Column(name = "per_arm_date_time")
     private Date perArmDateTime;
     @Column(name = "per_arm_check_status")
     private String perArmCheckStatus;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "mem_code")
     private PaymentMember memCode;
 }

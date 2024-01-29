@@ -14,6 +14,6 @@ public class ApprovalPaymentDTO {
     private String appState;
     private Date appDate;
     private String appComment;
-    private PaymentDTO payCode;
-    private PaymentMemberDTO memCode;
+    private PaymentDTO payment;
+    private PaymentMemberDTO paymentMember;
 }

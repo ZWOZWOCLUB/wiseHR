@@ -15,7 +15,7 @@ public class PaymentMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int memCode;
+    private Long memCode;
     @Column(name = "mem_name")
     private String memName;
     @Column(name = "mem_phone")

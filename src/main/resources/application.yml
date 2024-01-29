@@ -27,6 +27,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+      jakarta:  #이거 수정
+        persistence:
+          spi:
+            PersistenceProvider: org.hibernate.jpa.HibernatePersistenceProvider
 
 # Logging Level
 logging:
