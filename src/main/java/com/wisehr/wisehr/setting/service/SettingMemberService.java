@@ -13,8 +13,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
+import com.wisehr.wisehr.util.FileUploadUtils;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +32,13 @@ public class SettingMemberService {
     private final SettingCertificateRepository settingCertificateRepository;
 
     private final ModelMapper modelMapper;
+
+    @Value("${image.image-dir}")
+    private String IMAGE_DIR;
+
+    @Value("http://localhost:8001/files/")
+    private String IMAGE_URL;
+
 
     public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingCareerRepository settingCareerRepository, SettingCertificateRepository settingCertificateRepository, ModelMapper modelMapper) {
         this.settingMemberRepository = settingMemberRepository;
@@ -47,13 +57,20 @@ public class SettingMemberService {
         log.info("insertMember Start~~~~~~~~~~~~");
         log.info(settingMemberDTO.toString());
 
+        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String replaceFileName = null;
         int result = 0;
 
         try{
-            SettingMember inserMember = modelMapper.map(settingMemberDTO, SettingMember.class);
+            SettingMember insertMember = modelMapper.map(settingMemberDTO, SettingMember.class);
 
-            SettingMember reuslt = settingMemberRepository.save(inserMember);
-            System.out.println("reuslt = " + reuslt);
+            SettingMember insertResult = settingMemberRepository.save(insertMember);
+            System.out.println("insertResult = " + insertResult);
+
+            replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, profile);
+
+
+
         result = 1;
 
 
