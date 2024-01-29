@@ -19,6 +19,11 @@ Content-Type: application/json
 Accept: */*
 
 ### 출퇴근 상세 조회
-GET http://localhost:8001/myPage/attendance/2024-01-01
+GET http://localhost:8001/myPage/attendance/2/2024-01-01
+Content-Type: application/json
+Accept: */*
+
+### 서류함 상세 조회
+GET http://localhost:8001/myPage/document/2
 Content-Type: application/json
 Accept: */*

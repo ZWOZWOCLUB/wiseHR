@@ -20,12 +20,22 @@ Accept: */*
 
 ### 메신저 등록
 POST http://localhost:8001/alarm/messenger
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
 
-{
-  "msgCode": "null",
-  "msgDate": "2024-01-10",
-  "msgContents": "등록 실험",
-  "memCode": "1",
-  "msgDeleteStatus": "N"
-}
+--WebAppBoundary
+Content-Disposition: form-data; name="msgContents"
+
+피카츄
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="msgDate"
+
+2024-01-29
+--WebAppBoundary
+Content-Disposition: form-data; name="msgDeleteStatus"
+
+N
