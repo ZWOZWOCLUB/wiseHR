@@ -14,7 +14,7 @@ public class NoticeDTO {
     private String notView;
     private String notCreateDate;
     private String notModifyDate;
-    private int memCode;
-    private String notDeleteState;
+    private NotMemberDTO memCode;
+    private String notDeleteStatus;
 
 }

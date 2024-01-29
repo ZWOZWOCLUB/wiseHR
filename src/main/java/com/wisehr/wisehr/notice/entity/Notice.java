@@ -25,10 +25,10 @@ public class Notice {
     private String notCreateDate;
     @Column(name = "not_modify_date", nullable = true)
     private String notModifyDate;
-//    @OneToOne
-//    @JoinColumn(name = "mem_code")
-    @Column(name = "mem_code", nullable = false)
-    private int memCode;
+    @OneToOne
+    @JoinColumn(name = "mem_code",nullable = false)
+//    @Column(name = "mem_code", nullable = true)
+    private NotMember memCode;
     @Column(name = "not_delete_status", nullable = false)
     private String notDeleteStatus;
 

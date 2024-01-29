@@ -30,6 +30,7 @@ public class NoticeService {
     }
 
     @Transactional
+    // 공지 등록
     public String insertNotice(NoticeDTO noticeDTO) {
         log.info("---insertNotice Start---");
         log.info(noticeDTO.toString());
@@ -50,7 +51,7 @@ public class NoticeService {
         return (result > 0)? "공지등록 성공": "공지등록 실패";
     }
 
-
+    //공지 제목으로 조회
     public List<NoticeDTO> searchTitleList(String search) {
         log.info("titleSearchList시작");
         log.info("titleSearchList search : {}", search);
@@ -64,7 +65,8 @@ public class NoticeService {
         return noticeDTOList;
     }
 
-    public Object searchCommentList(String search) {
+    //공지 내용으로 조회
+    public List<NoticeDTO> searchCommentList(String search) {
         log.info("commentSearchList시작");
         log.info("commentSearchList search : {}", search);
 
@@ -78,12 +80,36 @@ public class NoticeService {
         return noticeDTOList;
     }
 
-//    public Page<NoticeDTO> allNoticeSearchWithPaging(Criteria criteria) {
-//
-//        log.info("allNoticeSearchWithPaging 서비스 시작");
-//        int index = criteria.getPageNum() -1;
-//        int count = criteria.getAmount();
-//
-//        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCode"));
-//    }
+    //공지 작성자로 조회
+    public List<NoticeDTO> searchMemberNameList(String search) {
+        log.info("memberNameSearchList 시작");
+        log.info("memberNameSearchList search : {}", search);
+
+        List<Notice> noticeWithSearchValue = noticeRepository.findByMemCode_MemNameContaining(search);
+        List<NoticeDTO> noticeDTOList = noticeWithSearchValue.stream()
+                .map(notice -> modelMapper.map(notice, NoticeDTO.class))
+                .collect(Collectors.toList());
+        log.info("memberNameSearchList 서비스 끝" + noticeWithSearchValue);
+        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
+        return noticeDTOList;
+    }
+
+
+
+    public Page<NoticeDTO> allNoticeSearchWithPaging(Criteria criteria) {
+
+        log.info("allNoticeSearchWithPaging 서비스 시작");
+        int index = criteria.getPageNum() -1;
+        int count = criteria.getAmount();
+
+        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCode"));
+
+        Page<Notice> result = noticeRepository.findAll(paging);
+
+        Page<NoticeDTO> noticeList = result.map(notice -> modelMapper.map(notice, NoticeDTO.class));
+        System.out.println("result = " + result);
+        log.info("allNoticeSearchWithPaging 끝");
+
+        return noticeList;
+    }
 }
