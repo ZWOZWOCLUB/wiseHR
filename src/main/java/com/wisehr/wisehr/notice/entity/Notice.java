@@ -13,7 +13,7 @@ import lombok.*;
 public class Notice {
     @Id
     @Column(name = "not_code", nullable = false)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String notCode;
     @Column(name = "not_name", nullable = false)
     private String notName;
