@@ -22,11 +22,14 @@ public class NoticeController {
     public NoticeController(NoticeService noticeService) {
         this.noticeService = noticeService;
     }
+
+
+
     /*
     * 공지 등록
     * */
     @PostMapping("/notice")
-    public ResponseEntity<ResponseDTO> insertNotice(@ModelAttribute NoticeDTO noticeDTO){
+    public ResponseEntity<ResponseDTO> insertNotice(@RequestBody NoticeDTO noticeDTO){
 
         System.out.println("noticeDTO = " + noticeDTO);
 

@@ -44,6 +44,7 @@ public class NoticeService {
 
         try {
             Notice insertNotice = modelMapper.map(noticeDTO, Notice.class);
+            log.info("=============================== inot : " + insertNotice);
             noticeRepository.save(insertNotice);
 
 
@@ -91,7 +92,7 @@ public class NoticeService {
         log.info("memberNameSearchList 시작");
         log.info("memberNameSearchList search : {}", search);
 
-        List<Notice> noticeWithSearchValue = noticeRepository.findByMemCode_MemNameContaining(search);
+        List<Notice> noticeWithSearchValue = noticeRepository.findByNotMemberMemNameContaining(search);
         List<NoticeDTO> noticeDTOList = noticeWithSearchValue.stream()
                 .map(notice -> modelMapper.map(notice, NoticeDTO.class))
                 .collect(Collectors.toList());
