@@ -1,9 +1,6 @@
 package com.wisehr.wisehr.mypage.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
@@ -17,6 +14,7 @@ import java.sql.Date;
 @ToString
 public class Career {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "crr_code")
     private String crrCode;
     @Column(name = "crr_name")

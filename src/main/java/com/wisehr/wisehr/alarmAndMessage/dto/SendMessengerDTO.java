@@ -13,6 +13,6 @@ public class SendMessengerDTO {
     private String msgCode;
     private Date msgDate;
     private String msgContents;
-    private int memCode;
+    private Long memCode;
     private String msgDeleteStatus;
 }

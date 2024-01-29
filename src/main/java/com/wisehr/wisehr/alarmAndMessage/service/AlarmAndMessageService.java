@@ -15,9 +15,14 @@ import com.wisehr.wisehr.alarmAndMessage.repository.RecMessengerRepository;
 import com.wisehr.wisehr.alarmAndMessage.repository.SendMessengerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -85,7 +90,10 @@ public class AlarmAndMessageService {
     @Transactional
     public String insertMessenger(SendMessengerDTO sendMessengerDTO) {
 
+
+        System.out.println("sendMessengerDTO service = " + sendMessengerDTO);
         int result = 0; // 결과에 따른 값을 구분하기위한 용도의 변수
+
 
         try{
 
@@ -93,6 +101,7 @@ public class AlarmAndMessageService {
             // 저장을 위해서 일반 DTO객체를 Entity객체로 변경
             SendMessenger insertProduct = modelMapper.map(sendMessengerDTO, SendMessenger.class);
 
+            System.out.println("insertProduct = " + insertProduct);
             sendMessengerRepository.save(insertProduct);
 
             result = 1;

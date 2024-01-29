@@ -43,9 +43,17 @@ public class MyPageController {
 
 
 //    출퇴근 정보 조회
-    @GetMapping("/attendance/{attWorkDate}")
-    public ResponseEntity<ResponseDTO> selectAttendanceDetail(@PathVariable Date attWorkDate){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 상세조회 성공" , myPageService.selectAttendance(attWorkDate)));
+    @GetMapping("/attendance/{memCode}/{attWorkDate}")
+    public ResponseEntity<ResponseDTO> selectAttendanceDetail(
+            @PathVariable int memCode,
+            @PathVariable Date attWorkDate
+            ){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출퇴근 상세조회 성공" , myPageService.selectAttendance(attWorkDate,memCode)));
+    }
+
+    @GetMapping("/document/{memCode}")
+    public ResponseEntity<ResponseDTO> selectDocumentDetail(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출퇴근 상세조회 성공" , myPageService.selectDocument(memCode)));
     }
 
 }

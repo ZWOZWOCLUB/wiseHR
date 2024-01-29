@@ -2,6 +2,7 @@ package com.wisehr.wisehr.mypage.dto;
 
 import lombok.*;
 
+import java.sql.Time;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -11,8 +12,8 @@ import java.util.Date;
 @ToString
 public class AttendanceDTO {
     private int attCode;
-    private Date attStartTime;
-    private Date attEndTime;
+    private Time attStartTime;
+    private Time attEndTime;
     private String attStatus;
     private java.sql.Date attWorkDate;
     private int memCode;
