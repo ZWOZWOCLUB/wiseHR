@@ -33,5 +33,5 @@ public class EditSchedule {
     private String eshContents;
     @OneToOne
     @JoinColumn(name = "pay_code")
-    private Approval payCode;
+    private Approval approval;
 }

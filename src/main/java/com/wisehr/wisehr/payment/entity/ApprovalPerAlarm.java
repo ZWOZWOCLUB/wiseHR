@@ -21,6 +21,6 @@ public class ApprovalPerAlarm {
     @Column(name = "per_arm_check_status")
     private String perArmCheckStatus;
     @OneToOne
-    @JoinColumn(name = "mem_code")
-    private ApprovalMember memCode;
+    @JoinColumn(name="mem_code")
+    private ReceiveAramMember receiveAramMember;
 }
