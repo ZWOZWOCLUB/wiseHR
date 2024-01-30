@@ -12,5 +12,5 @@ public class ReqDocumentPaymentDTO {
     private String reqCode;
     private String reqKind;
     private String reqUse;
-    private PaymentDTO payment;
+    private ApprovalDTO payment;
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class PaymentMember {
+public class ApprovalMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

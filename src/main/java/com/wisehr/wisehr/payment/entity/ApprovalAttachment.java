@@ -1,12 +1,8 @@
 package com.wisehr.wisehr.payment.entity;
 
-import com.wisehr.wisehr.payment.dto.PaymentDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +11,7 @@ import java.sql.Date;
 @ToString
 @Entity
 @Table(name = "pay_attached_file")
-public class PaymentAttachment {
+public class ApprovalAttachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pay_atc_code")
@@ -29,5 +25,5 @@ public class PaymentAttachment {
     private String payAtcPath;
     @OneToOne
     @JoinColumn(name = "pay_code")
-    private Payment payment;
+    private Approval approval;
 }

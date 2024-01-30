@@ -1,10 +1,10 @@
 ### 받은 결재 (mem_code)
-GET http://localhost:8001/payment/reqpayment/2
+GET http://localhost:8001/approval/reqpayment/2
 Content-Type: application/json
 Accept: */*
 
 ### insert Test
-POST http://localhost:8001/payment/submit
+POST http://localhost:8001/approval/submit
 Content-Type: application/json
 Accept: */*
 Access-Control-Allow-Origin: *
@@ -12,7 +12,7 @@ Access-Control-Allow-Origin: *
 {
   "appState": "반려",
   "appDate": "2024-02-01",
-  "payment" : {
+  "approval" : {
     "payCode" :"pay12"
   },
   "paymentMember": {
@@ -22,7 +22,7 @@ Access-Control-Allow-Origin: *
 
 
 ###연차결재상신
-POST http://localhost:8001/payment/annual
+POST http://localhost:8001/approval/annual
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -47,19 +47,19 @@ Content-Disposition: form-data; name="vacEndDate"
 
 2024-11-18
 --WebAppBoundary
-Content-Disposition: form-data; name="payment.payCode"
+Content-Disposition: form-data; name="approval.payCode"
 
 pay3
 --WebAppBoundary
-Content-Disposition: form-data; name="payment.payDate"
+Content-Disposition: form-data; name="approval.payDate"
 
 2024-01-15
 --WebAppBoundary
-Content-Disposition: form-data; name="payment.payKind"
+Content-Disposition: form-data; name="approval.payKind"
 
 연차
 --WebAppBoundary
-Content-Disposition: form-data; name="payment.paymentMember.memCode"
+Content-Disposition: form-data; name="approval.paymentMember.memCode"
 
 3
 --WebAppBoundary

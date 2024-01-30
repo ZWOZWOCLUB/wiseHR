@@ -1,22 +1,20 @@
 package com.wisehr.wisehr.payment.entity;
 
 
-import com.wisehr.wisehr.payment.dto.PaymentAttachmentDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "approval")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
-public class Payment {
+public class Approval {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",
@@ -30,5 +28,5 @@ public class Payment {
     private String payKind;
     @OneToOne
     @JoinColumn(name = "mem_code")
-    private PaymentMember paymentMember;
+    private ApprovalMember approvalMember;
 }

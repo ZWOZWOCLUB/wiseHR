@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class PaymentMemberDTO {
+public class ApprovalMemberDTO {
     private Long memCode;
     private String memName;
     private String memPhone;

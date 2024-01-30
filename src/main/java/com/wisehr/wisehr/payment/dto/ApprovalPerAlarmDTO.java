@@ -9,7 +9,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class PaymentPerAlarmDTO {
+public class ApprovalPerAlarmDTO {
     private int perArmCode;
     private Date perArmDateTime;
     private String perArmCheckStatus;

@@ -9,12 +9,12 @@ import java.sql.Date;
 @Setter
 @Getter
 @ToString
-public class ApprovalPaymentDTO {
+public class ApprovalCompleteDTO {
     private String appCode;
     private String appState;
     private Date appDate;
     private String appComment;
-    private PaymentDTO payment;
-    private PaymentMemberDTO paymentMember;
-    private PaymentPerAlarmDTO perArmCode;
+    private ApprovalDTO payment;
+    private ApprovalMemberDTO paymentMember;
+    private ApprovalPerAlarmDTO perArm;
 }

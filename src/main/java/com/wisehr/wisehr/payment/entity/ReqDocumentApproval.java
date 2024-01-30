@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 @ToString
-public class ReqDocumentPayment {
+public class ReqDocumentApproval {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",
@@ -27,5 +27,5 @@ public class ReqDocumentPayment {
     private String reqUse;
     @OneToOne
     @JoinColumn(name = "pay_code")
-    private Payment payCode;
+    private Approval payCode;
 }

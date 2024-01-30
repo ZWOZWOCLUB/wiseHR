@@ -34,5 +34,5 @@ public class EditCommute {
     private Time ediTime;
     @OneToOne
     @JoinColumn(name = "pay_code")
-    private Payment payCode;
+    private Approval payCode;
 }

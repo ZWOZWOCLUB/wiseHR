@@ -11,7 +11,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class PaymentPerAlarm {
+public class ApprovalPerAlarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "per_arm_code")
@@ -22,5 +22,5 @@ public class PaymentPerAlarm {
     private String perArmCheckStatus;
     @OneToOne
     @JoinColumn(name = "mem_code")
-    private PaymentMember memCode;
+    private ApprovalMember memCode;
 }

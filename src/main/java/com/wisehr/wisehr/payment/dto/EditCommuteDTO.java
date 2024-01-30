@@ -17,5 +17,5 @@ public class EditCommuteDTO {
     private String ediContents;
     private Date ediDate;
     private Time ediTime;
-    private PaymentDTO payment;
+    private ApprovalDTO payment;
 }

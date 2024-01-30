@@ -8,6 +8,6 @@ import lombok.*;
 @Getter
 @ToString
 public class ReferencerDTO {
-    private PaymentMemberDTO memCode;
-    private ApprovalPaymentDTO appCode;
+    private ApprovalMemberDTO memCode;
+    private ApprovalCompleteDTO appCode;
 }

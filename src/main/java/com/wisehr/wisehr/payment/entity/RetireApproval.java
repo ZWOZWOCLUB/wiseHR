@@ -14,7 +14,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class RetirePayment {
+public class RetireApproval {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",
@@ -28,5 +28,5 @@ public class RetirePayment {
     private String tirContents;
     @OneToOne
     @JoinColumn(name="pay_code")
-    private Payment payCode;
+    private Approval payCode;
 }

@@ -3,22 +3,20 @@ package com.wisehr.wisehr.payment.dto;
 
 import lombok.*;
 
-import java.sql.Date;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class PaymentAttachmentDTO {
+public class ApprovalAttachmentDTO {
     private Long payAtcCode;
     private String payAtcName;
     private String payAtcDeleteStatus;
     private String payAtcPath;
-    private PaymentDTO payment;
+    private ApprovalDTO payment;
 
     @Override
     public String toString() {
-        return "PaymentAttachmentDTO{" +
+        return "ApprovalAttachmentDTO{" +
                 "payAtcCode=" + payAtcCode +
                 ", payAtcName='" + payAtcName + '\'' +
                 ", payAtcDeleteStatus='" + payAtcDeleteStatus + '\'' +
