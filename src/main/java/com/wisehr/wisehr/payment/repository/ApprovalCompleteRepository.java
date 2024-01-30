@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ApprovalCompleteRepository extends JpaRepository<ApprovalComplete, String> {
     List<ApprovalComplete> findByPaymentMemberMemCode(Long memCode);
+
+    
 }
