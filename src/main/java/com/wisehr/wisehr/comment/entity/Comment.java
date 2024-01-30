@@ -1,18 +1,13 @@
-package com.wisehr.wisehr.notice.entity;
+package com.wisehr.wisehr.comment.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "comment")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-public class NotComment {
+public class Comment {
     @Id
     @Column(name = "com_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

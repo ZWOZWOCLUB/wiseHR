@@ -1,16 +1,14 @@
-package com.wisehr.wisehr.notice.dto;
-
+package com.wisehr.wisehr.comment.dto;
 
 import lombok.*;
 
 import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class NotCommentDTO {
+public class CommentDTO {
     private Long comCode;   //댓글코드
     private String comContents;//내용
     private Date comDate;       //작성일시
