@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Table(name="department")
 @AllArgsConstructor
@@ -24,6 +26,7 @@ public class OrgDepartment {
     private String depBirthDate;
     @Column(name = "dep_delete_status", nullable = false)
     private String depDeleteStatus;
+
 
 
     public OrgDepartment() {

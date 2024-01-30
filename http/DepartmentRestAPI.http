@@ -35,5 +35,11 @@ Accept: */*
 
 }
 
+### 부서별 멤버 전체 조회(트리, 카드 조회)
+
+GET http://localhost:8001/org/AllMemOfDep
+Content-Type: application/json
+Accept: */*
+
 
 
