@@ -17,6 +17,4 @@ public class PaymentDTO {
     private Date payDate;
     private String payKind;
     private PaymentMemberDTO paymentMember;
-    private PaymentPerAlarmDTO perArmCode;
-    private PaymentAttachmentDTO payAttachment;
 }

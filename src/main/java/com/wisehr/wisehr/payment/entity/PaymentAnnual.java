@@ -1,6 +1,8 @@
 package com.wisehr.wisehr.payment.entity;
 
 
+import com.wisehr.wisehr.payment.dto.PaymentMemberDTO;
+import com.wisehr.wisehr.payment.dto.PaymentPerAlarmDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,5 +36,5 @@ public class PaymentAnnual {
     private Date vacEndDate;
     @OneToOne
     @JoinColumn(name = "pay_code")
-    private Payment payCode;
+    private Payment payment;
 }

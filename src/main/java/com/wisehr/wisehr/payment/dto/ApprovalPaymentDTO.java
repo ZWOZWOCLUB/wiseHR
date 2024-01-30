@@ -16,4 +16,5 @@ public class ApprovalPaymentDTO {
     private String appComment;
     private PaymentDTO payment;
     private PaymentMemberDTO paymentMember;
+    private PaymentPerAlarmDTO perArmCode;
 }
