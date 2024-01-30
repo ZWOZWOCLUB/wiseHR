@@ -1,11 +1,9 @@
 package com.wisehr.wisehr.mypage.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -18,12 +16,13 @@ import java.util.Date;
 public class Attendance {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "att_code")
     private int attCode;
     @Column(name = "att_start_time")
-    private java.util.Date attStartTime;
+    private Time attStartTime;
     @Column(name = "att_end_time")
-    private java.util.Date attEndTime;
+    private Time attEndTime;
     @Column(name = "att_status")
     private String attStatus;
     @Column(name = "att_work_date")

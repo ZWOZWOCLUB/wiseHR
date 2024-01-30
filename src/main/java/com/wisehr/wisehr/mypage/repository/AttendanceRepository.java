@@ -11,4 +11,6 @@ import java.util.List;
 public interface AttendanceRepository extends JpaRepository<Attendance, Integer> {
 
     Attendance findByAttWorkDate(Date attWorkDate);
+
+    Attendance findByAttWorkDateAndMemCode(Date attWorkDate, int memCode);
 }

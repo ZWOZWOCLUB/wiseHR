@@ -3,6 +3,7 @@ package com.wisehr.wisehr.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 
@@ -16,6 +17,10 @@ import java.sql.Date;
 public class EditSchedule {
 
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "esh"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name="esh_code")
     private String eshCode;
     @Column(name="esh_name")

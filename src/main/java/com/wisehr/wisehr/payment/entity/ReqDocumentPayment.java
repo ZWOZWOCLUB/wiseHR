@@ -3,6 +3,7 @@ package com.wisehr.wisehr.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -14,6 +15,10 @@ import lombok.*;
 @ToString
 public class ReqDocumentPayment {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "req"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "req_code")
     private String reqCode;
     @Column(name = "req_kind")

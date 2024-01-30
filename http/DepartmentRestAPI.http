@@ -1,0 +1,29 @@
+### 부서 조회
+
+GET http://localhost:8001/org/list
+Content-Type: application/json
+Accept: */*
+
+### 상위 부서 조회
+
+GET http://localhost:8001/org/repList
+Content-Type: application/json
+Accept: */*
+
+### 부서 생성
+
+POST http://localhost:8001/org/insertOrgDep
+Content-Type: application/json
+Accept: */*
+
+{
+  "depName": "산부인과",
+  "refDepCode": 4,
+  "depBirthDate": "2024-01-20",
+  "depDeleteStatus": "N"
+}
+
+
+
+
+

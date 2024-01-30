@@ -16,5 +16,5 @@ public class EditScheduleDTO {
     private Date eshStartDate;
     private Date eshEndDate;
     private String eshContents;
-    private PaymentDTO payCode;
+    private PaymentDTO payment;
 }

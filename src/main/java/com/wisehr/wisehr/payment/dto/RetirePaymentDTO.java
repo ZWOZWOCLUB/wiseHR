@@ -14,5 +14,5 @@ public class RetirePaymentDTO {
     private String tirCode;
     private Date tirDate;
     private String tirContents;
-    private PaymentDTO payCode;
+    private PaymentDTO payment;
 }

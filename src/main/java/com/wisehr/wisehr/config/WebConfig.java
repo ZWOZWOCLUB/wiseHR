@@ -1,10 +1,6 @@
 package com.wisehr.wisehr.config;
 
-
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -14,12 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-
-    // 정적 자원에 접근을 허용하게 하기 위함
-    @Value("${image.add-resource-locations}")
+    @Value("classpath:/static/memberFiles/")
     private String ADD_RESOURCE_LOCATION;
 
-    @Value("${image.add-resource-handler}")
+    @Value("/memberFiles/**")
     private String ADD_RESOURCE_HANDLER;
 
     @Override
@@ -27,22 +21,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler(ADD_RESOURCE_HANDLER)
                 .addResourceLocations(ADD_RESOURCE_LOCATION);
     }
-
-//    @Bean
-//    public FilterRegistrationBean<HeaderFilter> getFilterRegistrationBean(){
-//        FilterRegistrationBean<HeaderFilter> registrationBean = new FilterRegistrationBean<>(createHeaderFilter());
-//        registrationBean.setOrder(Integer.MIN_VALUE);
-//        registrationBean.addUrlPatterns("/*");
-//        return registrationBean;
-//    }
-//
-//    @Bean
-//    public HeaderFilter createHeaderFilter(){
-//        return new HeaderFilter();
-//    }
-//
-//    @Bean
-//    public JwtTokenInterceptor jwtTokenInterceptor(){
-//        return new JwtTokenInterceptor();
-//    }
 }

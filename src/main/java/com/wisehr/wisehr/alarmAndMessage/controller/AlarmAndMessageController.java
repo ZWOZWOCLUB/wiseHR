@@ -45,6 +45,7 @@ public class AlarmAndMessageController {
 //    메신저 등록
     @PostMapping("/messenger")
     public ResponseEntity<ResponseDTO> insertMessenger(@ModelAttribute SendMessengerDTO sendMessengerDTO){
+        System.out.println("sendMessengerDTO controller= " + sendMessengerDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "메신저 등록 성공" , alarmService.insertMessenger(sendMessengerDTO)));
     }
 

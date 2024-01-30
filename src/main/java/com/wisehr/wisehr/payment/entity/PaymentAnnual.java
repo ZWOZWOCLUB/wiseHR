@@ -3,6 +3,7 @@ package com.wisehr.wisehr.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 
@@ -15,6 +16,10 @@ import java.sql.Date;
 @ToString
 public class PaymentAnnual {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "vac"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "vac_code")
     private String vacCode;
     @Column(name = "vac_kind")
