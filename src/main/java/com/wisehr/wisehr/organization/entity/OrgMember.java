@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.organization.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,17 @@ public class OrgMember {
     private String memStatus;
     @Column(name = "mem_roll", nullable = false)
     private String memRoll;
+
+
+    @ManyToOne
+    @JoinColumn(name = "dep_code")
+    @JsonIgnore
+    private OrgDepartmentAndOrgMember orgDepAndOrgMem;
+
+    @ManyToOne
+    @JoinColumn(name = "pos_code")
+    private OrgPosition orgPosition;
+
 
     public OrgMember() {
     }

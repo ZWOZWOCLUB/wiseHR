@@ -19,6 +19,7 @@ public class OrgPosition {
     @Column(name = "pos_name", nullable = false)
     private String posName;
 
+
     public OrgPosition() {
     }
 }

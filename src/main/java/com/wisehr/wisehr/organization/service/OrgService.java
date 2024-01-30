@@ -1,7 +1,10 @@
 package com.wisehr.wisehr.organization.service;
 
+import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.entity.OrgDepartment;
+import com.wisehr.wisehr.organization.entity.OrgDepartmentAndOrgMember;
+import com.wisehr.wisehr.organization.repository.OrgDepAndMemRepository;
 import com.wisehr.wisehr.organization.repository.OrgRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -16,11 +19,13 @@ import java.util.stream.Collectors;
 public class OrgService {
 
     private final OrgRepository orgRepository;
+    private final OrgDepAndMemRepository orgDepAndMemRepository;
 
     private final ModelMapper modelMapper;
 
-    public OrgService(OrgRepository orgRepository, ModelMapper modelMapper) {
+    public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, ModelMapper modelMapper) {
         this.orgRepository = orgRepository;
+        this.orgDepAndMemRepository = orgDepAndMemRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -70,12 +75,34 @@ public class OrgService {
      * @return
      */
     @Transactional
-    public String  modifyOrgDep(OrgDepartmentDTO orgDepartmentDTO) {
+    public String modifyOrgDep(OrgDepartmentDTO orgDepartmentDTO) {
 
+        int result = 0;
+
+    try{
         OrgDepartment modifyOrgDep = orgRepository.findById(orgDepartmentDTO.getDepCode()).get();
+        modifyOrgDep = modifyOrgDep.depName(orgDepartmentDTO.getDepName()).build();
 
-        //작성중.
-
-        return "";
+        result = 1;
+    } catch (Exception e){
+        log.info("에러");
     }
+
+        return (result > 0) ? "부서 이름 수정 성공" : "부서 이름 수정 실패";
+    }
+
+    public List<OrgDepartmentAndOrgMemberDTO> AllMemOfDep() {
+
+        List<OrgDepartmentAndOrgMember> orgDepartmentAndOrgMembers = orgDepAndMemRepository.findAll();
+        List<OrgDepartmentAndOrgMemberDTO> orgDepartmentAndOrgMemberList = orgDepartmentAndOrgMembers.stream()
+                .map(odm -> modelMapper.map(odm, OrgDepartmentAndOrgMemberDTO.class))
+                .collect(Collectors.toList());
+
+
+
+        return orgDepartmentAndOrgMemberList;
+    }
+
+
+
 }
