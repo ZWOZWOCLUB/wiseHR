@@ -70,12 +70,19 @@ public class OrgService {
      * @return
      */
     @Transactional
-    public String  modifyOrgDep(OrgDepartmentDTO orgDepartmentDTO) {
+    public String modifyOrgDep(OrgDepartmentDTO orgDepartmentDTO) {
 
+        int result = 0;
+
+    try{
         OrgDepartment modifyOrgDep = orgRepository.findById(orgDepartmentDTO.getDepCode()).get();
+        modifyOrgDep = modifyOrgDep.depName(orgDepartmentDTO.getDepName()).build();
 
-        //작성중.
+        result = 1;
+    } catch (Exception e){
+        log.info("에러");
+    }
 
-        return "";
+        return (result > 0) ? "부서 이름 수정 성공" : "부서 이름 수정 실패";
     }
 }

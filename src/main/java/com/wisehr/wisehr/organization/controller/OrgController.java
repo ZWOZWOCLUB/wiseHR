@@ -48,18 +48,24 @@ public class OrgController {
 
     /**
      *  신규 부서 생성
+     *
+     * 파일이 아닌 폼 데이터만 전송할 때는 리퀘스트바디 사용해도 된다.
+     * 리퀘스트바디 어노테이션은 클라이언트로부터 받은 json 데이터를 자바 객체로 반환해줌
      * @param orgDepartmentDTO
      * @return
      */
     @PostMapping("/insertOrgDep")
     public ResponseEntity<ResponseDTO> insertOrgDep(@RequestBody OrgDepartmentDTO orgDepartmentDTO){
 
-        //파일이 아닌 폼 데이터만 전송할 때는 리퀘스트바디 사용해도 된다.
-        //리퀘스트바디 어노테이션은 클라이언트로부터 받은 json 데이터를 자바 객체로 반환해줌
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서 등록 성공", orgService.insertOrgDepartment(orgDepartmentDTO)));
     }
 
+    /**
+     * 부서명 수정
+     * @param orgDepartmentDTO
+     * @return
+     */
     @PutMapping("/modifyOrgDep")
     public ResponseEntity<ResponseDTO> modifyOrgDep(@RequestBody OrgDepartmentDTO orgDepartmentDTO){
 

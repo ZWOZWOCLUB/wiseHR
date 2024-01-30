@@ -29,8 +29,37 @@ public class OrgDepartment {
     public OrgDepartment() {
     }
 
+    //빌더패턴
+    public OrgDepartment depCode(int depCode) {
+        this.depCode = depCode;
+        return this;
+    }
 
+    public OrgDepartment depName(String depName) {
+        this.depName = depName;
+        return this;
+    }
+
+    public OrgDepartment refDepCode(Integer refDepCode) {
+        this.refDepCode = refDepCode;
+        return this;
+    }
+
+    public OrgDepartment depBirthDate(String depBirthDate) {
+        this.depBirthDate = depBirthDate;
+        return this;
+    }
+
+    public OrgDepartment depDeleteStatus(String depDeleteStatus) {
+        this.depDeleteStatus = depDeleteStatus;
+        return this;
+    }
+
+    public OrgDepartment build() {
+        return new OrgDepartment(depCode, depName, refDepCode, depBirthDate, depDeleteStatus);
+    }
 }
+
 
 
 

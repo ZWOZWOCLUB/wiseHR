@@ -23,7 +23,17 @@ Accept: */*
   "depDeleteStatus": "N"
 }
 
+### 부서명 수정
 
+PUT http://localhost:8001/org/modifyOrgDep
+Content-Type: application/json
+Accept: */*
+
+{
+  "depCode": 12,
+  "depName": "산부인과1팀"
+
+}
 
 
 
