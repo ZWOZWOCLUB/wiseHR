@@ -1,17 +1,19 @@
 package com.wisehr.wisehr.schedule.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
+import com.wisehr.wisehr.schedule.dto.ScheduleDTO;
+import com.wisehr.wisehr.schedule.dto.SchedulePatternDayDTO;
+import com.wisehr.wisehr.schedule.dto.ScheduleWeekDayDTO;
+import com.wisehr.wisehr.schedule.dto.ScheduleWorkPatternDTO;
 import com.wisehr.wisehr.schedule.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,6 +30,14 @@ public class ScheduleController {
 /**
  * 일정 등록
  */
+@PostMapping("/insertSchedule")
+public ResponseEntity<ResponseDTO> insertSchedule(@RequestBody ScheduleWorkPatternDTO workPatternDTO,
+                                                  @RequestBody ScheduleDTO scheduleDTO,
+                                                  @RequestBody SchedulePatternDayDTO patternDayList
+) {
+    System.out.println("workPatternDTO = " + workPatternDTO);
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 등록 성공", scheduleService.insertSchedule(workPatternDTO, scheduleDTO, patternDayList)));
+}
 
 /**
  * 일정 조회(첫페이지에 전체 일정이 다 뜨게 이번달꺼만)
@@ -37,9 +47,9 @@ public class ScheduleController {
  *
  *이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
  */
-@GetMapping("/searchPrev/{date}")
-    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String date){
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchPrev(date)));
+@GetMapping("/searchPrev/{yearMonth}")
+    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String yearMonth){
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchPrev(yearMonth)));
 }
 
 /**

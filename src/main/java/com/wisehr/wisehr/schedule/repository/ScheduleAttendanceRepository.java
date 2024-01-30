@@ -7,5 +7,5 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ScheduleAttendanceRepository extends JpaRepository<ScheduleAttendance, Integer> {
-    List<ScheduleAttendance> findByAttWorkDateContaining(String date);
+    List<ScheduleAttendance> findByAttWorkDateContaining(String yearMonth);
 }

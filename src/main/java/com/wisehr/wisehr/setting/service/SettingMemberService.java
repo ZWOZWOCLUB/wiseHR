@@ -33,10 +33,10 @@ public class SettingMemberService {
 
     private final ModelMapper modelMapper;
 
-    @Value("${image.image-dir}")
+    @Value("src/main/resources/static/memberFiles/")
     private String IMAGE_DIR;
 
-    @Value("http://localhost:8001/files/")
+    @Value("http://localhost:8001/attachmentFiles/")
     private String IMAGE_URL;
 
 
