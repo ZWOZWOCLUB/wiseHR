@@ -2,11 +2,17 @@ package com.wisehr.wisehr.payment.service;
 
 
 import com.wisehr.wisehr.payment.dto.ApprovalPaymentDTO;
+import com.wisehr.wisehr.payment.dto.PaymentAnnualDTO;
 import com.wisehr.wisehr.payment.dto.PaymentAttachmentDTO;
+import com.wisehr.wisehr.payment.dto.PaymentDTO;
 import com.wisehr.wisehr.payment.entity.ApprovalPayment;
+import com.wisehr.wisehr.payment.entity.Payment;
+import com.wisehr.wisehr.payment.entity.PaymentAnnual;
 import com.wisehr.wisehr.payment.entity.PaymentAttachment;
 import com.wisehr.wisehr.payment.repository.ApprovalPaymentRepository;
+import com.wisehr.wisehr.payment.repository.PaymentAnnualRepository;
 import com.wisehr.wisehr.payment.repository.PaymentAttachmentRepository;
+import com.wisehr.wisehr.payment.repository.PaymentRepository;
 import com.wisehr.wisehr.util.FileUploadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,7 +30,9 @@ import java.util.stream.Collectors;
 public class PaymentService {
 
     private final ApprovalPaymentRepository approvalPaymentRepository;
+    private final PaymentRepository paymentRepository;
     private final PaymentAttachmentRepository attachmentRepository;
+    private final PaymentAnnualRepository paymentAnnualRepository;
     private final ModelMapper modelMapper;
 
     // 이미지 저장 위치 및 응답 할 이미지 주소 (여기 뒤에 /{memCode} 넣으면 됩니다!!
@@ -35,9 +43,11 @@ public class PaymentService {
     @Value("http://localhost:8001/attachmentFiles/")
     private String IMAGE_URL;
 
-    public PaymentService(ApprovalPaymentRepository approvalPaymentRepository, PaymentAttachmentRepository attachmentRepository, ModelMapper modelMapper) {
+    public PaymentService(ApprovalPaymentRepository approvalPaymentRepository, PaymentRepository paymentRepository, PaymentAttachmentRepository attachmentRepository, PaymentAnnualRepository paymentAnnualRepository, ModelMapper modelMapper) {
         this.approvalPaymentRepository = approvalPaymentRepository;
+        this.paymentRepository = paymentRepository;
         this.attachmentRepository = attachmentRepository;
+        this.paymentAnnualRepository = paymentAnnualRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -81,12 +91,24 @@ public class PaymentService {
         return (result > 0 ) ? "굿" : "나가";
     }
 
-    public String submitAnnual(PaymentAttachmentDTO attachment, MultipartFile paymentFile) {
+    @Transactional
+    public String submitAnnual(PaymentAnnualDTO annual, MultipartFile paymentFile) {
 
         log.info("===== attchment start : " + paymentFile );
-        log.info("-===== paymentAnnual : " + attachment);
+        log.info("-===== paymentAnnual : " + annual);
 
-        String path = IMAGE_DIR +attachment.getPayment().getPaymentMember().getMemCode();
+        String path = IMAGE_DIR + annual.getPayment().getPaymentMember().getMemCode();
+        // path는 기존 IMAGE_DIR에 사번을 +해줌으로써 사번으로 폴더가 생성된다.
+
+        PaymentAttachmentDTO att = new PaymentAttachmentDTO();
+        // 엔티티로 바꿔서 DB에 넣어주기 위해 DTO에 값을 설정하는 과정
+
+        att.setPayAtcPath(path);
+        att.setPayAtcName(paymentFile.getName());
+        att.setPayment(annual.getPayment());
+
+        PaymentDTO pay = annual.getPayment();
+
 
         String story = null;
 
@@ -97,13 +119,29 @@ public class PaymentService {
         try {
             story = FileUploadUtils.saveFile(path, paymentFile.getName(), paymentFile);
 
-            PaymentAttachment atcment = modelMapper.map(attachment, PaymentAttachment.class);
 
-            atcment.setPayAtcPath(path);
-            atcment.setPayAtcName(paymentFile.getName());
-            atcment.getPayment().setPayCode(String.valueOf(attachment.getPayment().getPaymentMember().getMemCode()));
-            log.info("atcment : " + atcment);
-            attachmentRepository.save(atcment);
+
+            Payment payment = modelMapper.map(pay, Payment.class);
+
+            paymentRepository.save(payment);
+
+            log.info("payment : " + payment );
+
+            PaymentAnnual atcment = modelMapper.map(annual, PaymentAnnual.class);
+
+            log.info("atcment : " + atcment );
+
+            paymentAnnualRepository.save(atcment);
+
+            log.info("story : " + story);
+
+            PaymentAttachment atts = modelMapper.map(att, PaymentAttachment.class);
+            // 위에서 값을 설정해준 att에 Mapper를 통해 엔티티로 전환
+
+            log.info("atts : " + atts);
+
+            attachmentRepository.save(atts);
+            // Repository를 통해 DB에 저장!
 
             result =1;
         } catch (IOException e) {

@@ -49,11 +49,14 @@ public class PaymentController {
     }
 
     @PostMapping("/annual")
-    public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute PaymentAttachmentDTO attachment, MultipartFile paymentFile){
+    public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute PaymentAnnualDTO annual, MultipartFile paymentFile){
+        // paymentFile = > http에 업로드한 이미지 (값이 주소값 처럼 나온다.
+        // annual => http에 넣은 값이 온다
+
         log.info("=== paymentFile : " + paymentFile );
-        log.info("-==== paymentAnnual : " + attachment);
+        log.info("-==== paymentAnnual : " + annual);
 
         return ResponseEntity.ok()
-                .body(new ResponseDTO(HttpStatus.OK, "연차 등록 성공", paymentService.submitAnnual(attachment, paymentFile)));
+                .body(new ResponseDTO(HttpStatus.OK, "연차 등록 성공", paymentService.submitAnnual(annual, paymentFile)));
     }
 }

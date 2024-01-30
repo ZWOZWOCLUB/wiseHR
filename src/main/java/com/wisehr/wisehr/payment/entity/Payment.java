@@ -31,7 +31,4 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "mem_code")
     private PaymentMember paymentMember;
-    @OneToOne
-    @JoinColumn(name = "pay_code")
-    private PaymentAttachment payAttachment;
 }

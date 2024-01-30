@@ -1,5 +1,4 @@
 ### 받은 결재 (mem_code)
-
 GET http://localhost:8001/payment/reqpayment/2
 Content-Type: application/json
 Accept: */*
@@ -22,12 +21,49 @@ Access-Control-Allow-Origin: *
 }
 
 
-### 오류띄워버리기
+###연차결재상신
 POST http://localhost:8001/payment/annual
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
 --WebAppBoundary
-Content-Disposition: form-data; name="payment[payCode]"
+Content-Disposition: form-data; name="vacKind"
 
-pay15
+연차
+--WebAppBoundary
+Content-Disposition: form-data; name="vacName"
+
+연차 갈게요
+--WebAppBoundary
+Content-Disposition: form-data; name="vacContents"
+
+속상하네..
+--WebAppBoundary
+Content-Disposition: form-data; name="vacStartDate"
+
+2024-01-18
+--WebAppBoundary
+Content-Disposition: form-data; name="vacEndDate"
+
+2024-11-18
+--WebAppBoundary
+Content-Disposition: form-data; name="payment.payCode"
+
+pay3
+--WebAppBoundary
+Content-Disposition: form-data; name="payment.payDate"
+
+2024-01-15
+--WebAppBoundary
+Content-Disposition: form-data; name="payment.payKind"
+
+연차
+--WebAppBoundary
+Content-Disposition: form-data; name="payment.paymentMember.memCode"
+
+3
+--WebAppBoundary
+Content-Disposition: form-data; name="paymentFile"; filename="pikachu.png"
+
+< pikachu.png
+--WebAppBoundary

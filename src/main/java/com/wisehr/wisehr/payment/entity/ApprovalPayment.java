@@ -2,6 +2,7 @@ package com.wisehr.wisehr.payment.entity;
 
 import com.wisehr.wisehr.payment.dto.PaymentDTO;
 import com.wisehr.wisehr.payment.dto.PaymentMemberDTO;
+import com.wisehr.wisehr.payment.dto.PaymentPerAlarmDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -36,4 +37,7 @@ public class ApprovalPayment {
     @OneToOne
     @JoinColumn(name = "mem_code")
     private PaymentMember paymentMember;
+    @OneToOne
+    @JoinColumn(name = "per_arm_code")
+    private PaymentPerAlarm perArmCode;
 }
