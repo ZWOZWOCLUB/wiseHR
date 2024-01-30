@@ -5,10 +5,11 @@ Accept: */*
 
 {
   "workPatternDTO": {
-  "wokStartTime": "06:00:00",
-  "wokRestTime": "01:00:00",
-  "wokEndTime": "13:00:00",
-  "wokDeleteState": "N"},
+      "wokStartTime": "06:00:00",
+      "wokRestTime": "01:00:00",
+      "wokEndTime": "13:00:00",
+      "wokDeleteState": "N"
+  },
   "scheduleDTO": {
     "schType": "테스트",
     "schStartDate": "2024-01-01",
@@ -16,12 +17,15 @@ Accept: */*
     "schColor": "#ffffff",
     "schDeleteStatus": "N"
   },
-  "patternDayList": {
-    "dayCode": "1",
-    "worCode": "2"
-  }
-
-
+  "patternDayDTO": [{
+    "dayCode": 1,
+    "wokCode": 0
+  },
+    {
+      "dayCode": 2,
+      "wokCode": 0
+    }
+  ]
 }
 
 

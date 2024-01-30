@@ -11,6 +11,6 @@ import java.io.Serializable;
 @ToString
 public class SchedulePatternDayID implements Serializable {
 
-    private int weekDay;
-    private int workCode;
+    private int dayCode;
+    private int wokCode;
 }

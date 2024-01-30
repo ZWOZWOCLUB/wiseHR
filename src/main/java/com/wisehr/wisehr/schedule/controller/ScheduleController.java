@@ -1,10 +1,7 @@
 package com.wisehr.wisehr.schedule.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.schedule.dto.ScheduleDTO;
-import com.wisehr.wisehr.schedule.dto.SchedulePatternDayDTO;
-import com.wisehr.wisehr.schedule.dto.ScheduleWeekDayDTO;
-import com.wisehr.wisehr.schedule.dto.ScheduleWorkPatternDTO;
+import com.wisehr.wisehr.schedule.dto.*;
 import com.wisehr.wisehr.schedule.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,13 +28,14 @@ public class ScheduleController {
  * 일정 등록
  */
 @PostMapping("/insertSchedule")
-public ResponseEntity<ResponseDTO> insertSchedule(@RequestBody ScheduleWorkPatternDTO workPatternDTO,
-                                                  @RequestBody ScheduleDTO scheduleDTO,
-                                                  @RequestBody SchedulePatternDayDTO patternDayList
+public ResponseEntity<ResponseDTO> insertSchedule(@RequestBody SchedulePatternInsertDTO insertDTO
 ) {
-    System.out.println("workPatternDTO = " + workPatternDTO);
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 등록 성공", scheduleService.insertSchedule(workPatternDTO, scheduleDTO, patternDayList)));
+    System.out.println("insertDTO = " + insertDTO);
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 패턴 등록 성공", scheduleService.insertSchedule(insertDTO)));
 }
+
+
+
 
 /**
  * 일정 조회(첫페이지에 전체 일정이 다 뜨게 이번달꺼만)

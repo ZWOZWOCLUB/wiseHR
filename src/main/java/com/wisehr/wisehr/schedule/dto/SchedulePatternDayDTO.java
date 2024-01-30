@@ -11,5 +11,5 @@ import java.io.Serializable;
 @ToString
 public class SchedulePatternDayDTO {
     private int dayCode;
-    private int workCode;
+    private int wokCode;
 }

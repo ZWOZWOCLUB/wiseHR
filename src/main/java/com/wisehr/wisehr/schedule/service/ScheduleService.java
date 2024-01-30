@@ -45,18 +45,16 @@ public class ScheduleService {
         return scheduleAttendanceDTO;
     }
     @Transactional
-    public String insertSchedule(ScheduleWorkPatternDTO workPatternDTO,
-                                 ScheduleDTO scheduleDTO,
-                                 SchedulePatternDayDTO patternDayList
+    public String insertSchedule(SchedulePatternInsertDTO insertDTO
     ) {
         log.info("insertSchedule Start~~~~~~~~~~~~");
-        log.info((workPatternDTO.toString()));
-        log.info(scheduleDTO.toString());
-        log.info(patternDayList.toString());
+        log.info((insertDTO.toString()));
+        ScheduleDTO scheduleDTO = insertDTO.getScheduleDTO();
+        ScheduleWorkPatternDTO workPatternDTO = insertDTO.getWorkPatternDTO();
+        List<SchedulePatternDayDTO> patternDayDTO = insertDTO.getPatternDayDTO();
 
         int result = 0;
         try {
-
 
             ScheduleWorkPattern workPattern = modelMapper.map(workPatternDTO, ScheduleWorkPattern.class);
             ScheduleWorkPattern insertWorkPatternResult = workPatternRepository.save(workPattern);
@@ -70,20 +68,23 @@ public class ScheduleService {
             System.out.println("insertScheduleResult = " + insertScheduleResult);
             result++;
 
-            patternDayList.setWorkCode(insertWorkPatternResult.getWokCode());
-            SchedulePatternDay patternDay = modelMapper.map(patternDayList, SchedulePatternDay.class);
+
+            for (SchedulePatternDayDTO pattern: patternDayDTO) {
+                pattern.setWokCode(insertWorkPatternResult.getWokCode());
+                SchedulePatternDay patternDay = modelMapper.map(pattern, SchedulePatternDay.class);
                 SchedulePatternDay insertPatternDayResult = patternDayRepository.save(patternDay);
                 log.info("insertPatternDayResult = " + insertPatternDayResult);
+            }
 
             result++;
             result++;
         } catch (Exception e) {
-            log.info("일정 등록 오류");
+            log.info("일정 패턴 등록 오류");
             throw new RuntimeException(e);
         }
 
 
-        log.info("insertSchedule 끗~~~~~~~~~~~~");
-        return (result > 3)? "등록 성공": "등록 실패";
+        log.info("insertWorkPattern 끗~~~~~~~~~~~~");
+        return (result > 0)? "등록 성공": "등록 실패";
     }
 }
