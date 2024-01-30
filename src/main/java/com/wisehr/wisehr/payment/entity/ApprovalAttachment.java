@@ -18,7 +18,7 @@ public class ApprovalAttachment {
     private String payAtcCode;
     @Column(name = "pay_atc_name")
     private String payAtcName;
-    @Column(name = "pay_atc_delete_status", nullable = false)
+    @Column(name = "pay_atc_delete_status", columnDefinition = "VARCHAR(1) default 'N'")
     @ColumnDefault("N")
     private String payAtcDeleteStatus;
     @Column(name = "pay_atc_path")

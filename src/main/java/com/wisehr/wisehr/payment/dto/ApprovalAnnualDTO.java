@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.payment.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.sql.Date;
@@ -15,7 +16,9 @@ public class ApprovalAnnualDTO {
     private String vacKind;
     private String vacName;
     private String vacContents;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date vacStartDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date vacEndDate;
-    private ApprovalDTO payment;
+    private ApprovalDTO approval;
 }

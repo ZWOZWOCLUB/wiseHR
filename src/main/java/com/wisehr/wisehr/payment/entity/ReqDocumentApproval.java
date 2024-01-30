@@ -27,5 +27,5 @@ public class ReqDocumentApproval {
     private String reqUse;
     @OneToOne
     @JoinColumn(name = "pay_code")
-    private Approval payCode;
+    private Approval approval;
 }

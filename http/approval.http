@@ -1,5 +1,10 @@
-### 받은 결재 (mem_code)
-GET http://localhost:8001/approval/reqpayment/2
+###받은 결재 (mem_code) 완료
+GET http://localhost:8001/approval/receivedpayment/2
+Content-Type: application/json
+Accept: */*
+
+###보낸 결재 (mem_code) 완료
+GET http://localhost:8001/approval/sendpayment/1
 Content-Type: application/json
 Accept: */*
 
@@ -37,7 +42,7 @@ Content-Disposition: form-data; name="vacName"
 --WebAppBoundary
 Content-Disposition: form-data; name="vacContents"
 
-속상하네..
+화이팅 화이팅
 --WebAppBoundary
 Content-Disposition: form-data; name="vacStartDate"
 
@@ -57,11 +62,11 @@ Content-Disposition: form-data; name="approval.payDate"
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payKind"
 
-연차
+연차 신청
 --WebAppBoundary
-Content-Disposition: form-data; name="approval.paymentMember.memCode"
+Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-3
+240130003
 --WebAppBoundary
 Content-Disposition: form-data; name="paymentFile"; filename="pikachu.png"
 

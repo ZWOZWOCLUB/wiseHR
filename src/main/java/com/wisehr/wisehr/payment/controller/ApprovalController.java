@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Slf4j
-@RequestMapping("payment")
+@RequestMapping("approval")
 public class ApprovalController {
 
     private final ApprovalService approvalService;
@@ -23,32 +23,18 @@ public class ApprovalController {
     }
 
 
-    @GetMapping("/reqpayment/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
+    @GetMapping("/receivedpayment/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
     public ResponseEntity<ResponseDTO> reqPayment(@PathVariable Long memCode){
-        log.info("memCode : " + memCode);
+        log.info("memCodere : " + memCode);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectReqPayment(memCode)));
     }
 
-    @GetMapping("/recpayment/{memCode}")
+    @GetMapping("/sendpayment/{memCode}")
     public ResponseEntity<ResponseDTO> recPayment(@PathVariable Long memCode){
-        log.info("memCode: " + memCode);
+        log.info("memCodese : " + memCode);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", approvalService.selectRecPayment(memCode)));
-    }
-
-    @PostMapping("/submit")
-    public ResponseEntity<ResponseDTO> appPayment(@RequestBody ApprovalCompleteDTO payment){
-
-//        payment.getPaymentMemberDTO().setMemCode(1L);
-//        payment.setAppState("반려");
-//        payment.setAppDate(Date.valueOf("2024-02-01"));
-//        payment.getApproval().setPayCode("pay12");
-
-        log.info("payment : " + payment);
-
-        return ResponseEntity.ok()
-                .body(new ResponseDTO(HttpStatus.OK, "결재 상신 완료", approvalService.appPayment(payment)));
     }
 
     @PostMapping("/annual")
@@ -61,5 +47,14 @@ public class ApprovalController {
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "연차 등록 성공", approvalService.submitAnnual(annual, paymentFile)));
+    }
+
+    @PutMapping(value = "/complete")
+    public ResponseEntity<ResponseDTO> completeApproval(@ModelAttribute ApprovalCompleteDTO approval){
+
+        log.info("approval : " + approval);
+
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "결재 완료", approvalService.completeApproval(approval)));
     }
 }

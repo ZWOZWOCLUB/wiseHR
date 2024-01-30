@@ -52,52 +52,41 @@ public class ApprovalService {
     }
 
 
+    // 받은 결재 #결제 완료 및
     public List<ApprovalCompleteDTO> selectReqPayment(Long memCode) {
         log.info("select 받은결재 memCode : " + memCode);
         log.info("memCode : " + memCode.getClass());
 
 
 
-        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByPaymentMemberMemCode(memCode);
-        log.info("여기?");
+        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode);
+
+        log.info("paymentList : " + paymentList);
 
         List<ApprovalCompleteDTO> payment = paymentList.stream()
                 .map(paymt -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
                 .collect(Collectors.toList());
 
-        log.info("완료 payment : " + payment);
+        log.info("받은 결재 완료 payment : " + payment);
 
         return payment;
     }
 
-
+    //보낸결재
     public List<ApprovalCompleteDTO> selectRecPayment(Long memCode) {
         log.info("reqPayment Service Start : " + memCode);
 
-//        List<ApprovalComplete> payment = approvalCompleteRepository.findByPaymentMemberMem
+        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalApprovalMemberMemCode(memCode);
 
-        return null;
-    }
+        log.info("log paymentList : " + paymentList);
 
-    @Transactional
-    public String appPayment(ApprovalCompleteDTO payment) {
+        List<ApprovalCompleteDTO> payment = paymentList.stream()
+                .map(paymt -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
+                .collect(Collectors.toList());
 
-        int result = 0;
-        try {
-            log.info("서비스 payment : " + payment);
+        log.info("보낸 결재 완료 payment : " + payment);
 
-            ApprovalComplete submitPayment = modelMapper.map(payment, ApprovalComplete.class);
-
-            log.info("submitPayment : " + submitPayment);
-
-            approvalCompleteRepository.save(submitPayment);
-
-            result = 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return (result > 0 ) ? "굿" : "나가";
+        return payment;
     }
 
     @Transactional
@@ -106,7 +95,7 @@ public class ApprovalService {
         log.info("===== attchment start : " + paymentFile );
         log.info("-===== paymentAnnual : " + annual);
 
-        String path = IMAGE_DIR + annual.getPayment().getPaymentMember().getMemCode();
+        String path = IMAGE_DIR + annual.getApproval().getApprovalMember().getMemCode();
         // path는 기존 IMAGE_DIR에 사번을 +해줌으로써 사번으로 폴더가 생성된다.
 
         ApprovalAttachmentDTO att = new ApprovalAttachmentDTO();
@@ -114,9 +103,10 @@ public class ApprovalService {
 
         att.setPayAtcPath(path);
         att.setPayAtcName(paymentFile.getName());
-        att.setPayment(annual.getPayment());
+        att.setApproval(annual.getApproval());
+        att.setPayAtcDeleteStatus("N");
 
-        ApprovalDTO pay = annual.getPayment();
+        ApprovalDTO pay = annual.getApproval();
 
 
         String story = null;
@@ -132,15 +122,19 @@ public class ApprovalService {
 
             Approval approval = modelMapper.map(pay, Approval.class);
 
+            log.info("approval : " + approval);
+
             approvalRepository.save(approval);
 
-            log.info("approval : " + approval);
+            log.info("결재 성공");
 
             ApprovalAnnual atcment = modelMapper.map(annual, ApprovalAnnual.class);
 
             log.info("atcment : " + atcment );
 
             approvalAnnualRepository.save(atcment);
+
+            log.info("연차 성공");
 
             log.info("story : " + story);
 
@@ -150,6 +144,26 @@ public class ApprovalService {
             log.info("atts : " + atts);
 
             attachmentRepository.save(atts);
+
+            log.info("첨부파일 성공 ");
+
+            ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
+
+            ac.setApproval(annual.getApproval());
+            ac.setApprovalMember(annual.getApproval().getApprovalMember());
+            ac.setAppState("대기");
+
+            log.info("ac : " + ac);
+
+            ApprovalComplete acc = modelMapper.map(ac, ApprovalComplete.class);
+
+            log.info("acc : " + acc);
+
+            approvalCompleteRepository.save(acc);
+
+            log.info("결제완료 쪽 완성");
+
+
             // Repository를 통해 DB에 저장!
 
             result =1;
@@ -162,4 +176,26 @@ public class ApprovalService {
     }
 
 
+    public String completeApproval(ApprovalCompleteDTO approval) {
+
+        log.info("complete Service Start approval : " + approval);
+
+        int result = 0 ;
+
+//        try {
+//            ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).get();
+//
+//
+//            ac.setAppCode(approval.getAppCode());
+//            ac.setApproval(approval.getApproval());
+//
+//
+//        }catch (Exception){
+//
+//        }
+
+
+
+        return (result > 0 ) ? "성공!"  : "실패" ;
+    }
 }
