@@ -2,7 +2,6 @@ package com.wisehr.wisehr.notice.service;
 import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
 import com.wisehr.wisehr.notice.entity.Notice;
-import com.wisehr.wisehr.notice.repository.CommentRepository;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +23,14 @@ public class NoticeService {
 
 
     private final ModelMapper modelMapper;
-    private final CommentRepository commentRepository;
 
 
 
-    public NoticeService(NoticeRepository noticeRepository, ModelMapper modelMapper, CommentRepository commentRepository) {
+
+    public NoticeService(NoticeRepository noticeRepository, ModelMapper modelMapper) {
         this.noticeRepository = noticeRepository;
         this.modelMapper = modelMapper;
-        this.commentRepository = commentRepository;
+
     }
 
     @Transactional
@@ -102,6 +101,7 @@ public class NoticeService {
     }
 
 
+    //공지전체조회
 
     public Page<NoticeDTO> allNoticeSearchWithPaging(Criteria criteria) {
 
