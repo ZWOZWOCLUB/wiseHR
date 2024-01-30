@@ -20,8 +20,9 @@ public class Comment {
     private String  comContents;
     @Column(name = "com_date", nullable = false)
     private Date comDate;
-    @Column(name = "mem_code", nullable = false)
-    private Long memCode;
+    @OneToOne
+    @JoinColumn(name = "mem_code", nullable = false)
+    private ComMember comMember;
     @Column(name = "com_delete_state", nullable = false)
     private String comDeleteState;
     @Column(name = "not_code", nullable = false)

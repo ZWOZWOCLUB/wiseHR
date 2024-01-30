@@ -1,0 +1,25 @@
+###공지 댓글 작성
+POST http://localhost:8001/comment/comment
+Content-Type: application/json
+Accept: */*
+
+{
+  "comContents": "감사합니다.",
+  "comDate": "2024-01-29",
+  "comMember": {
+    "memCode": 2
+  },
+  "comDeleteState": "N",
+  "notCode": "not5"
+}
+
+
+###공지댓글전체조회
+GET http://localhost:8001/comment/allComment
+Content-Type: application/json
+Accept: */*
+
+###글코드로 댓글 조회
+GET http://localhost:8001/comment/notCodeSearch?nc=not4
+Content-Type: application/json
+Accept: */*
