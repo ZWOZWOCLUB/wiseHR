@@ -28,5 +28,5 @@ public class RetireApproval {
     private String tirContents;
     @OneToOne
     @JoinColumn(name="pay_code")
-    private Approval payCode;
+    private Approval approval;
 }

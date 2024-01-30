@@ -12,7 +12,7 @@ public class ApprovalAttachmentDTO {
     private String payAtcName;
     private String payAtcDeleteStatus;
     private String payAtcPath;
-    private ApprovalDTO payment;
+    private ApprovalDTO approval;
 
     @Override
     public String toString() {

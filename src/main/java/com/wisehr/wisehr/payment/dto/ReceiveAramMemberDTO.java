@@ -11,7 +11,7 @@ import java.sql.Date;
 @Setter
 @Getter
 @ToString
-public class ApprovalMemberDTO {
+public class ReceiveAramMemberDTO {
     private Long memCode;
     private String memName;
     private String memPhone;

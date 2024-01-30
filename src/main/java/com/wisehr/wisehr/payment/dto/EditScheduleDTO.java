@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.payment.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.sql.Date;
@@ -13,8 +14,10 @@ import java.sql.Date;
 public class EditScheduleDTO {
     private String eshCode;
     private String eshName;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date eshStartDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date eshEndDate;
     private String eshContents;
-    private ApprovalDTO payment;
+    private ApprovalDTO approval;
 }
