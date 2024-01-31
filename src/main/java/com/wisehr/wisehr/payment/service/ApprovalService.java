@@ -36,10 +36,10 @@ public class ApprovalService {
 
     // 이미지 저장 위치 및 응답 할 이미지 주소 (여기 뒤에 /{memCode} 넣으면 됩니다!!
     // 위아래 둘 다!! 동적으로)
-    @Value("src/main/resources/static/memberFiles/")
+    @Value("src/main/resources/static/")
     private String IMAGE_DIR;
 
-    @Value("http://localhost:8001/attachmentFiles/")
+    @Value("http://localhost:8001/")
     private String IMAGE_URL;
 
     public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAttachmentRepository attachmentRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, ModelMapper modelMapper) {
@@ -96,7 +96,7 @@ public class ApprovalService {
         log.info("===== attchment start : " + paymentFile );
         log.info("-===== paymentAnnual : " + annual);
 
-        String path = IMAGE_DIR + annual.getApproval().getApprovalMember().getMemCode();
+        String path = IMAGE_DIR + "memberFiles/" +annual.getApproval().getApprovalMember().getMemCode();
         // path는 기존 IMAGE_DIR에 사번을 +해줌으로써 사번으로 폴더가 생성된다.
 
         ApprovalAttachmentDTO att = new ApprovalAttachmentDTO();
@@ -217,7 +217,7 @@ public class ApprovalService {
             log.info("결재 승인 완료");
 
             if (acc.getApproval().getPayKind().contains("연차") && acc.getAppState().equals("승인")){
-                log.info("여기?");
+
                 ApprovalAnnual aa = approvalAnnualRepository.findByApprovalPayCode(ac.getApproval().getPayCode());
                 log.info("aa : " + aa);
 

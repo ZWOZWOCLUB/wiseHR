@@ -36,8 +36,8 @@ logging:
 ## 이미지 저장할 위치와 응답할 때 이미지 주소 세팅
 image:
   # WebConfig? ??
-  add-resource-locations: classpath:/static/memberFiles/
+  add-resource-locations: classpath:/static/
   add-resource-handler: /memberFiles/**
-  image-dir: src/main/resources/static/memberFiles
-  image-url: http://localhost:8001/attachmentFiles/
+  image-dir: src/main/resources/static/
+  image-url: http://localhost:8001/
 
