@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface DocumentFileRepository extends JpaRepository<DocumentFile, Integer> {
 
-    List<DocumentFile> findByMemCode(int memCode);
+
+    DocumentFile findByMemCodeAndDocAtcKind(long memCode, String kind);
 }
