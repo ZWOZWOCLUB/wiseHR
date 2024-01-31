@@ -50,7 +50,7 @@ public class ApprovalController {
     }
 
     @PutMapping(value = "/complete")
-    public ResponseEntity<ResponseDTO> completeApproval(@ModelAttribute ApprovalCompleteDTO approval){
+    public ResponseEntity<ResponseDTO> completeApproval(@RequestBody ApprovalCompleteDTO approval){
 
         log.info("approval : " + approval);
 
