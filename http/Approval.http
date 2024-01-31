@@ -25,6 +25,88 @@ Access-Control-Allow-Origin: *
   }
 }
 
+###스케줄정정 상신
+POST http://localhost:8001/approval/schedule
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshName"
+
+쉴래용
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshStartDate"
+
+2024-03-21
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshEndDate"
+
+2024-03-21
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshContents"
+
+쉴거라구요!!!!
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.approvalMember.memCode"
+
+1
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payDate"
+
+2024-02-29
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payKind"
+
+스케줄 정정
+--WebAppBoundary
+
+###출퇴근정정 상신
+POST http://localhost:8001/approval/commute
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="ediKind"
+
+결근
+
+--WebAppBoundary
+Content-Disposition: form-data; name="ediName"
+
+저 이때 출근 했어요..
+
+--WebAppBoundary
+Content-Disposition: form-data; name="ediContents"
+
+cctv 확인 가야겠어요
+
+--WebAppBoundary
+Content-Disposition: form-data; name="ediDate"
+
+2024-01-20
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.approvalMember.memCode"
+
+1
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payDate"
+
+2024-01-23
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payKind"
+
+출퇴근 정정
+--WebAppBoundary
+
 
 ###연차결재상신
 POST http://localhost:8001/approval/annual
@@ -46,19 +128,15 @@ Content-Disposition: form-data; name="vacContents"
 --WebAppBoundary
 Content-Disposition: form-data; name="vacStartDate"
 
-2024-01-18
+2024-07-18
 --WebAppBoundary
 Content-Disposition: form-data; name="vacEndDate"
 
-2024-11-18
---WebAppBoundary
-Content-Disposition: form-data; name="approval.payCode"
-
-pay3
+2024-07-18
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
 
-2024-01-15
+2024-03-21
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payKind"
 
@@ -66,11 +144,11 @@ Content-Disposition: form-data; name="approval.payKind"
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-240130003
+3
 --WebAppBoundary
-Content-Disposition: form-data; name="paymentFile"; filename="pikachu.png"
+Content-Disposition: form-data; name="approvalFile"; filename="plus.png"
 
-< pikachu.png
+< plus.png
 --WebAppBoundary
 
 

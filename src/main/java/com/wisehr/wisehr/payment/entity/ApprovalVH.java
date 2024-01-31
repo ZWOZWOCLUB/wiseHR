@@ -24,5 +24,5 @@ public class ApprovalVH {
     private ApprovalComplete appCode;
     @OneToOne
     @JoinColumn(name = "mem_code")
-    private ApprovalMember memCode;
+    private ApprovalMember approvalMember;
 }

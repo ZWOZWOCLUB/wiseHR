@@ -13,5 +13,5 @@ public class ApprovalVHDTO {
     private Long vhiCode;
     private Long vhiSpend;
     private ApprovalCompleteDTO appCode;
-    private ApprovalMemberDTO memCode;
+    private ApprovalMemberDTO approvalMember;
 }

@@ -14,7 +14,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class RetireApproval {
+public class ApprovalRetired {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",

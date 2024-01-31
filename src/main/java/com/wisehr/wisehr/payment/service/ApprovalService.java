@@ -1,21 +1,18 @@
 package com.wisehr.wisehr.payment.service;
 
 
-import com.wisehr.wisehr.payment.dto.ApprovalAttachmentDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalCompleteDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalAnnualDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalDTO;
+import com.wisehr.wisehr.payment.dto.*;
 import com.wisehr.wisehr.payment.entity.*;
 import com.wisehr.wisehr.payment.repository.*;
-import com.wisehr.wisehr.util.FileUploadUtils;
+import com.wisehr.wisehr.util.ApprovalFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -28,11 +25,14 @@ public class ApprovalService {
 
     private final ApprovalCompleteRepository approvalCompleteRepository;
     private final ApprovalRepository approvalRepository;
-    private final ApprovalAttachmentRepository attachmentRepository;
     private final ApprovalAnnualRepository approvalAnnualRepository;
     private final ApprovalPerArmRepository approvalPerArmRepository;
     private final ApprovalVHRepository approvalVHRepository;
+    private final EditCommuteRepository editCommuteRepository;
+    private final EditScheduleRepository editScheduleRepository;
+    private final ApprovalRetiredRepository approvalRetiredRepository;
     private final ModelMapper modelMapper;
+    private final ApprovalFileUtils fileUtils;
 
     // 이미지 저장 위치 및 응답 할 이미지 주소 (여기 뒤에 /{memCode} 넣으면 됩니다!!
     // 위아래 둘 다!! 동적으로)
@@ -42,22 +42,26 @@ public class ApprovalService {
     @Value("http://localhost:8001/")
     private String IMAGE_URL;
 
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAttachmentRepository attachmentRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, ModelMapper modelMapper) {
+    @Autowired
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ModelMapper modelMapper, ApprovalFileUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
-        this.attachmentRepository = attachmentRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
         this.approvalPerArmRepository = approvalPerArmRepository;
         this.approvalVHRepository = approvalVHRepository;
+        this.editCommuteRepository = editCommuteRepository;
+        this.editScheduleRepository = editScheduleRepository;
+        this.approvalRetiredRepository = approvalRetiredRepository;
         this.modelMapper = modelMapper;
+        this.fileUtils = fileUtils;
     }
+
 
 
     // 받은 결재 #결제 완료 및
     public List<ApprovalCompleteDTO> selectReqPayment(Long memCode) {
         log.info("select 받은결재 memCode : " + memCode);
         log.info("memCode : " + memCode.getClass());
-
 
 
         List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode);
@@ -91,67 +95,37 @@ public class ApprovalService {
     }
 
     @Transactional
-    public String submitAnnual(ApprovalAnnualDTO annual, MultipartFile paymentFile) {
+    public String submitCommute(EditCommuteDTO edit, MultipartFile approvalFile) {
 
-        log.info("===== attchment start : " + paymentFile );
-        log.info("-===== paymentAnnual : " + annual);
-
-        String path = IMAGE_DIR + "memberFiles/" +annual.getApproval().getApprovalMember().getMemCode();
-        // path는 기존 IMAGE_DIR에 사번을 +해줌으로써 사번으로 폴더가 생성된다.
-
-        ApprovalAttachmentDTO att = new ApprovalAttachmentDTO();
-        // 엔티티로 바꿔서 DB에 넣어주기 위해 DTO에 값을 설정하는 과정
-
-        att.setPayAtcPath(path);
-        att.setPayAtcName(paymentFile.getName());
-        att.setApproval(annual.getApproval());
-        att.setPayAtcDeleteStatus("N");
-
-        ApprovalDTO pay = annual.getApproval();
-
-
-        String story = null;
-
-        log.info("path : " + path);
-
-        int result = 0 ;
-
+        int result = 0;
         try {
-            story = FileUploadUtils.saveFile(path, paymentFile.getName(), paymentFile);
+            Approval app = modelMapper.map(edit.getApproval(), Approval.class);
 
+            log.info("app : " + app);
 
+            Approval aps = approvalRepository.save(app);
 
-            Approval approval = modelMapper.map(pay, Approval.class);
+            log.info("aps : " + aps);
 
-            log.info("approval : " + approval);
+            edit.getApproval().setPayCode(aps.getPayCode());
 
-            approvalRepository.save(approval);
+            log.info("결재 완료 + edit : " + edit);
 
-            log.info("결재 성공");
+            editCommuteRepository.save(modelMapper.map(edit, EditCommute.class));
 
-            ApprovalAnnual atcment = modelMapper.map(annual, ApprovalAnnual.class);
+            log.info("출퇴근 정정 완료 ");
 
-            log.info("atcment : " + atcment );
+            if (approvalFile != null){
 
-            approvalAnnualRepository.save(atcment);
+                fileUtils.fileClear(edit.getApproval(), approvalFile);
 
-            log.info("연차 성공");
-
-            log.info("story : " + story);
-
-            ApprovalAttachment atts = modelMapper.map(att, ApprovalAttachment.class);
-            // 위에서 값을 설정해준 att에 Mapper를 통해 엔티티로 전환
-
-            log.info("atts : " + atts);
-
-            attachmentRepository.save(atts);
-
-            log.info("첨부파일 성공 ");
+                log.info("출퇴근 첨부파일 성공");
+            }
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
-            ac.setApproval(annual.getApproval());
-            ac.setApprovalMember(annual.getApproval().getApprovalMember());
+            ac.setApproval(edit.getApproval());
+            ac.setApprovalMember(edit.getApproval().getApprovalMember());
             ac.setAppState("대기");
 
             log.info("ac : " + ac);
@@ -164,16 +138,83 @@ public class ApprovalService {
 
             log.info("결제완료 쪽 완성");
 
+            result = 1;
 
-            // Repository를 통해 DB에 저장!
-
-            result =1;
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             log.info("실패~");
         }
 
 
-        return (result > 0)? "성공" : "실패";
+        return (result > 0) ? "출퇴근 정정 성공" : "실패~";
+    }
+
+    // 연차결재상신
+    @Transactional
+    public String submitAnnual(ApprovalAnnualDTO annual, MultipartFile approvalFile) {
+
+        log.info("===== attchment start : " + approvalFile);
+        log.info("-===== paymentAnnual : " + annual);
+
+        int result = 0;
+
+
+            try {
+                Approval approval = modelMapper.map(annual.getApproval(), Approval.class);
+
+                log.info("approval : " + approval);
+
+                Approval app = approvalRepository.save(approval);
+
+                log.info("결재 성공");
+
+                annual.getApproval().setPayCode(app.getPayCode());
+
+
+                ApprovalAnnual atcment = modelMapper.map(annual, ApprovalAnnual.class);
+
+                log.info("atcment : " + atcment);
+
+                approvalAnnualRepository.save(atcment);
+
+                log.info("연차 성공");
+
+                if (approvalFile != null) {
+
+                    fileUtils.fileClear(annual.getApproval(), approvalFile);
+
+                    log.info("첫 메서드 만들기 성공!");
+                }
+
+
+                ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
+
+                ac.setApproval(annual.getApproval());
+                ac.setApprovalMember(annual.getApproval().getApprovalMember());
+                ac.setAppState("대기");
+
+                log.info("ac : " + ac);
+
+                ApprovalComplete acc = modelMapper.map(ac, ApprovalComplete.class);
+
+                log.info("acc : " + acc);
+
+                approvalCompleteRepository.save(acc);
+
+                log.info("결제완료 쪽 완성");
+
+
+                // Repository를 통해 DB에 저장!
+
+                result = 1;
+            } catch (Exception e) {
+                log.info("실패~");
+                e.printStackTrace();
+            }
+
+
+
+            return (result > 0) ? "성공" : "실패";
     }
 
     @Transactional
@@ -238,7 +279,7 @@ public class ApprovalService {
                 ApprovalVH av = new ApprovalVH();
                 av.setVhiSpend(days);
                 av.setAppCode(acc);
-                av.setMemCode(acc.getApproval().getApprovalMember());
+                av.setApprovalMember(acc.getApproval().getApprovalMember());
 
                 log.info("av : " + av);
 
@@ -255,5 +296,62 @@ public class ApprovalService {
 
 
         return (result > 0 ) ? "성공!"  : "실패" ;
+    }
+
+
+    public String submitSchedule(EditScheduleDTO schedule, MultipartFile approvalFile) {
+
+        int result = 0;
+
+        try {
+            Approval app = modelMapper.map(schedule.getApproval(), Approval.class);
+
+            log.info("app : " + app);
+
+            Approval aps = approvalRepository.save(app);
+
+            log.info("aps : " + aps);
+
+            schedule.getApproval().setPayCode(aps.getPayCode());
+
+            log.info("결재 완료 + edit : " + schedule);
+
+            editScheduleRepository.save(modelMapper.map(schedule, EditSchedule.class));
+
+            log.info("스케줄 정정 완료 ");
+
+            if (approvalFile != null){
+
+                fileUtils.fileClear(schedule.getApproval(), approvalFile);
+
+                log.info("스케줄 첨부파일 성공");
+            }
+
+            ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
+
+            ac.setApproval(schedule.getApproval());
+            ac.setApprovalMember(schedule.getApproval().getApprovalMember());
+            ac.setAppState("대기");
+
+            log.info("ac : " + ac);
+
+            ApprovalComplete acc = modelMapper.map(ac, ApprovalComplete.class);
+
+            log.info("acc : " + acc);
+
+            approvalCompleteRepository.save(acc);
+
+            log.info("결제완료 쪽 완성");
+
+            result = 1;
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("실패");
+        }
+
+
+        return (result > 0) ? "스케줄 정정 최종 성공 " : "최종 실패";
     }
 }
