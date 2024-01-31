@@ -5,14 +5,8 @@ import com.wisehr.wisehr.payment.dto.ApprovalAttachmentDTO;
 import com.wisehr.wisehr.payment.dto.ApprovalCompleteDTO;
 import com.wisehr.wisehr.payment.dto.ApprovalAnnualDTO;
 import com.wisehr.wisehr.payment.dto.ApprovalDTO;
-import com.wisehr.wisehr.payment.entity.ApprovalComplete;
-import com.wisehr.wisehr.payment.entity.Approval;
-import com.wisehr.wisehr.payment.entity.ApprovalAnnual;
-import com.wisehr.wisehr.payment.entity.ApprovalAttachment;
-import com.wisehr.wisehr.payment.repository.ApprovalCompleteRepository;
-import com.wisehr.wisehr.payment.repository.ApprovalAnnualRepository;
-import com.wisehr.wisehr.payment.repository.ApprovalAttachmentRepository;
-import com.wisehr.wisehr.payment.repository.ApprovalRepository;
+import com.wisehr.wisehr.payment.entity.*;
+import com.wisehr.wisehr.payment.repository.*;
 import com.wisehr.wisehr.util.FileUploadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +30,8 @@ public class ApprovalService {
     private final ApprovalRepository approvalRepository;
     private final ApprovalAttachmentRepository attachmentRepository;
     private final ApprovalAnnualRepository approvalAnnualRepository;
+    private final ApprovalPerArmRepository approvalPerArmRepository;
+    private final ApprovalVHRepository approvalVHRepository;
     private final ModelMapper modelMapper;
 
     // 이미지 저장 위치 및 응답 할 이미지 주소 (여기 뒤에 /{memCode} 넣으면 됩니다!!
@@ -43,11 +42,13 @@ public class ApprovalService {
     @Value("http://localhost:8001/attachmentFiles/")
     private String IMAGE_URL;
 
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAttachmentRepository attachmentRepository, ApprovalAnnualRepository approvalAnnualRepository, ModelMapper modelMapper) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAttachmentRepository attachmentRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, ModelMapper modelMapper) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.attachmentRepository = attachmentRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
+        this.approvalPerArmRepository = approvalPerArmRepository;
+        this.approvalVHRepository = approvalVHRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -175,25 +176,82 @@ public class ApprovalService {
         return (result > 0)? "성공" : "실패";
     }
 
-
+    @Transactional
     public String completeApproval(ApprovalCompleteDTO approval) {
 
         log.info("complete Service Start approval : " + approval);
 
         int result = 0 ;
 
-//        try {
-//            ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).get();
-//
-//
-//            ac.setAppCode(approval.getAppCode());
-//            ac.setApproval(approval.getApproval());
-//
-//
-//        }catch (Exception){
-//
-//        }
+        ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).get();
 
+        log.info("acE : " + ac);
+
+        try {
+            // 결재 승인과 동시에 결재 기안자에게 보낼 알람 생성
+
+            LocalDateTime now = LocalDateTime.now();
+
+            ApprovalPerAlarm apa = new ApprovalPerAlarm();
+            apa.setPerArmCheckStatus("N");
+            apa.setPerArmDateTime(now);
+            apa.setReceiveAramMember(modelMapper.map(ac.getApproval().getApprovalMember(),ReceiveAramMember.class));
+
+            log.info("apa : " + apa);
+
+            approvalPerArmRepository.save(apa);
+
+            ApprovalComplete acc = modelMapper.map(approval, ApprovalComplete.class);
+
+            log.info("acc : " + acc);
+
+            acc.setApproval(ac.getApproval());
+            acc.setApprovalMember(ac.getApprovalMember());
+            acc.setPerArm(apa);
+
+            log.info("acc C : " + acc);
+
+            approvalCompleteRepository.save(acc);
+
+
+            log.info("결재 승인 완료");
+
+            if (acc.getApproval().getPayKind().contains("연차") && acc.getAppState().equals("승인")){
+                log.info("여기?");
+                ApprovalAnnual aa = approvalAnnualRepository.findByApprovalPayCode(ac.getApproval().getPayCode());
+                log.info("aa : " + aa);
+
+                LocalDate startDate = aa.getVacStartDate().toLocalDate();
+                LocalDate endDate = aa.getVacEndDate().toLocalDate();
+
+                log.info("startDate : " + startDate);
+                log.info("endDate : " + endDate);
+
+                long spendDay = ChronoUnit.DAYS.between(startDate, endDate);
+
+                log.info("spend : " + spendDay);
+
+                int days = (int) Math.abs(spendDay) + 1 ;     // 둘이 같은 날이면 1일로 하도록 +1
+
+                log.info("days : " + days);
+
+                ApprovalVH av = new ApprovalVH();
+                av.setVhiSpend(days);
+                av.setAppCode(acc);
+                av.setMemCode(acc.getApproval().getApprovalMember());
+
+                log.info("av : " + av);
+
+                approvalVHRepository.save(av);
+
+                log.info("연차이력까지 성공");
+
+            }
+
+            result = 1;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 
         return (result > 0 ) ? "성공!"  : "실패" ;

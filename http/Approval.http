@@ -72,3 +72,16 @@ Content-Disposition: form-data; name="paymentFile"; filename="pikachu.png"
 
 < pikachu.png
 --WebAppBoundary
+
+
+###결재 승인 로직
+PUT http://localhost:8001/approval/complete
+Content-Type: application/json
+Accept: */*
+
+{
+  "appCode": "app5",
+  "appDate": "2024-01-31",
+  "appState": "승인",
+  "appComment": "재밌게 놀다와~!"
+}

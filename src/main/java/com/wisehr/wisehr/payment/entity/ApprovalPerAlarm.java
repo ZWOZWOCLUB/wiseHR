@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "per_alarm")
 @AllArgsConstructor
@@ -15,9 +17,9 @@ public class ApprovalPerAlarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "per_arm_code")
-    private int perArmCode;
+    private Long perArmCode;
     @Column(name = "per_arm_date_time")
-    private Date perArmDateTime;
+    private LocalDateTime perArmDateTime;
     @Column(name = "per_arm_check_status")
     private String perArmCheckStatus;
     @OneToOne
