@@ -1,22 +1,44 @@
 ### 공지 등록
 POST http://localhost:8001/notice/notice
-Content-Type: multipart/form-data
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 Access-Control-Allow-Origin: *
 
-//{
-//  "notName": "설날공지",
-//  "notComment": "설날 보너스입니다.",
-//  "notView": 1,
-//  "notCreateDate": "2024-01-29",
-//  "notMember": {
-//    "memCode": 1
-//  },
-//  "notDeleteStatus": "N"
-//}
+--WebAppBoundary
+Content-Disposition: form-data; name="notName"
 
+크리스마스공지
 
+--WebAppBoundary
+Content-Disposition: form-data; name="notComment"
 
+크리스마스 보너스입니다.
+
+--WebAppBoundary
+Content-Disposition: form-data; name="notView"
+
+0
+
+--WebAppBoundary
+Content-Disposition: form-data; name="notCreateDate"
+
+2024-01-31
+--WebAppBoundary
+Content-Disposition: form-data; name="notice.notMember.memCode"
+
+1
+
+--WebAppBoundary
+Content-Disposition: form-data; name="notDeleteStatus"
+
+N
+
+--WebAppBoundary
+Content-Disposition: form-data; name="noticeFile"; filename="pikachu.png"
+
+< pikachu.png
+
+--WebAppBoundary
 
 ###공지전체 조회 offset 페이지
 GET http://localhost:8001/notice/allNoticeSearch?offset=1
