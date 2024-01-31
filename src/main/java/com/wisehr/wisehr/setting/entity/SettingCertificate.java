@@ -1,10 +1,9 @@
 package com.wisehr.wisehr.setting.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "certificate")
 @NoArgsConstructor
@@ -13,6 +12,10 @@ import lombok.*;
 @Setter
 public class SettingCertificate {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "cer"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "cer_code")
     private String cerCode;
     @Column(name = "cer_name")

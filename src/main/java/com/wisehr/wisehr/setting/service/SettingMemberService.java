@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Value;
 import com.wisehr.wisehr.util.FileUploadUtils;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,10 +35,10 @@ public class SettingMemberService {
 
     private final ModelMapper modelMapper;
 
-    @Value("src/main/resources/static/memberFiles/")
+    @Value("src/main/resources/static/")
     private String IMAGE_DIR;
 
-    @Value("http://localhost:8001/attachmentFiles/")
+    @Value("http://localhost:8001/")
     private String IMAGE_URL;
 
 
@@ -60,14 +62,19 @@ public class SettingMemberService {
         String imageName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
         int result = 0;
+        System.out.println(profile.getContentType());
+        System.out.println(profile.getOriginalFilename());
+        System.out.println(profile.getName());
+        String[] extend = profile.getOriginalFilename().split("\\.");
 
+        System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
+        String realExtend = extend[1];
+        System.out.println(LocalDate.now().toString());
         try{
             SettingMember insertMember = modelMapper.map(settingMemberDTO, SettingMember.class);
 
             SettingMember insertResult = settingMemberRepository.save(insertMember);
             System.out.println("insertResult = " + insertResult);
-
-            replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, profile);
 
 
 
@@ -173,13 +180,73 @@ public class SettingMemberService {
         return resourcesDTO;
     }
 
+
     @Transactional
-    public SettingResourcesDTO insertResourcesInformation(SettingResourcesDTO settingResourcesDTO) {
-        log.info("insertResourcesInformation 서비스 시작~~~~~~~~~~");
-        log.info(settingResourcesDTO.toString());
+    public String insertDegree(SettingDegreeDTO degreeDTO) {
+        log.info("insertDegree Start~~~~~~~~~~~~");
+        log.info(degreeDTO.toString());
 
-        log.info("insertResourcesInformation 서비스 끗~~~~~~~~~~");
+        int result = 0;
 
-        return null;
+        try{
+            SettingDegree insertDegree = modelMapper.map(degreeDTO, SettingDegree.class);
+
+            SettingDegree insertResult = settingDegreeRepository.save(insertDegree);
+            System.out.println("insertResult = " + insertResult);
+
+            result = 1;
+
+        }catch(Exception e) {
+            log.info("오류~~~~~~~");
+            throw new RuntimeException(e);
+        }
+
+        return (result > 0)? "등록 성공": "등록 실패";
+    }
+
+    @Transactional
+    public String insertCertificate(SettingCertificateDTO certificateDTO) {
+        log.info("insertCertificate Start~~~~~~~~~~~~");
+        log.info(certificateDTO.toString());
+
+        int result = 0;
+
+        try{
+            SettingCertificate insertCertificate = modelMapper.map(certificateDTO, SettingCertificate.class);
+
+            SettingCertificate insertResult = settingCertificateRepository.save(insertCertificate);
+            System.out.println("insertResult = " + insertResult);
+
+            result = 1;
+
+        }catch(Exception e) {
+            log.info("오류~~~~~~~");
+            throw new RuntimeException(e);
+        }
+
+        return (result > 0)? "등록 성공": "등록 실패";
+    }
+
+    @Transactional
+    public String insertCareer(SettingCareerDTO careerDTO) {
+        log.info("insertCareer Start~~~~~~~~~~~~");
+        log.info(careerDTO.toString());
+
+        int result = 0;
+
+        try{
+            SettingCareer insertCareer = modelMapper.map(careerDTO, SettingCareer.class);
+
+            SettingCareer insertResult = settingCareerRepository.save(insertCareer);
+            System.out.println("insertResult = " + insertResult);
+
+            result = 1;
+
+        }catch(Exception e) {
+            log.info("오류~~~~~~~");
+            throw new RuntimeException(e);
+        }
+
+        return (result > 0)? "등록 성공": "등록 실패";
     }
 }

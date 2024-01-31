@@ -1,10 +1,9 @@
 package com.wisehr.wisehr.setting.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "career")
 @NoArgsConstructor
@@ -13,6 +12,10 @@ import lombok.*;
 @Setter
 public class SettingCareer {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "crr"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "crr_code")
     private String crrCode;
     @Column(name = "crr_name")

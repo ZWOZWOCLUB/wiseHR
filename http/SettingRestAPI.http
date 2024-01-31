@@ -1,4 +1,4 @@
-### 직원 정보 등록
+### 직원 정보 등록 - 인사정보 + 사진
 POST http://localhost:8001/member/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
@@ -80,7 +80,50 @@ GET http://localhost:8001/member/position
 Content-Type: application/json
 Accept: */*
 
-###직원인사정보등록 - 학위, 경력, 자격
+###학위정보등록
+POST http://localhost:8001/member/insertDegree
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240129002,
+  "degKind": "학사",
+  "degMajor": "공학",
+  "degName": "서울대학교",
+  "degGraduation": "2024-01-31",
+  "degState":"졸업",
+  "degAdmissions": "2020-01-01"
+}
+
+###자격정보등록
+POST http://localhost:8001/member/insertCertificate
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240129002,
+  "cerName": "컴퓨터활용능력",
+  "cerKind": "2급",
+  "cerDay": "2024-01-31",
+  "cerEndDate": null,
+  "cerDescription": "비고",
+  "cerInstitution": "대한상공회의소"
+}
+
+###경력정보등록
+POST http://localhost:8001/member/insertCareer
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240129002,
+  "crrName": "회사명",
+  "crrPosition": "대리",
+  "crrStartDate": "2017-01-01",
+  "crrEndDate": "2020-01-01",
+  "crrState": "Y",
+  "crrDescription" : "비고"
+}
 
 
 ###직원인사정보조회 - 학위, 경력, 자격
@@ -88,8 +131,6 @@ GET http://localhost:8001/member/searchResourcesInformation?mem=1
 Content-Type: application/json
 Accept: */*
 
-//직원등록 -직원 중간관리자로 체크 유무에 따라 roll 설정
-//직원등록 - 프로필 사진 등록
 //직원수정(상세조회 -> 업데이트)
 //직원인사정보수정
 //직원서류함등록

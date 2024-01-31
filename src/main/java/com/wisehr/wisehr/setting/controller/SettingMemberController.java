@@ -5,9 +5,7 @@ import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.setting.dto.SettingMemDepPosDTO;
-import com.wisehr.wisehr.setting.dto.SettingMemberDTO;
-import com.wisehr.wisehr.setting.dto.SettingResourcesDTO;
+import com.wisehr.wisehr.setting.dto.*;
 import com.wisehr.wisehr.setting.entity.SettingResources;
 import com.wisehr.wisehr.setting.service.SettingMemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,11 +40,28 @@ public class SettingMemberController {
 
 
     /**
-     * 직원 인사 등록 (학위, 자격, 경력)
+     * 직원 학위 정보 등록
      */
-    @PostMapping("/insertResourcesInformation")
-    public ResponseEntity<ResponseDTO> insertResourcesInformation(@ModelAttribute SettingResourcesDTO settingResourcesDTO){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "인사등록 성공", settingMemberService.insertResourcesInformation(settingResourcesDTO)));
+    @PostMapping("/insertDegree")
+    public ResponseEntity<ResponseDTO> insertDegree(@RequestBody SettingDegreeDTO degreeDTO){
+        System.out.println("degreeDTO = " + degreeDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 등록 성공", settingMemberService.insertDegree(degreeDTO)));
+    }
+
+    /**
+     * 직원 자격 정보 등록
+     */
+    @PostMapping("/insertCertificate")
+    public ResponseEntity<ResponseDTO> insertCertificate(@RequestBody SettingCertificateDTO certificateDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 정보 등록 성공", settingMemberService.insertCertificate(certificateDTO)));
+    }
+
+    /**
+     * 직원 경력 정보 등록
+     */
+    @PostMapping("/insertCareer")
+    public ResponseEntity<ResponseDTO> insertCareer(@RequestBody SettingCareerDTO careerDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 등록 성공", settingMemberService.insertCareer(careerDTO)));
     }
 
     /**
