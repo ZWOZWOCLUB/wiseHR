@@ -4,6 +4,7 @@ import com.wisehr.wisehr.notice.dto.NoticeDTO;
 import com.wisehr.wisehr.notice.entity.Notice;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
 import jakarta.transaction.Transactional;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,10 @@ public class NoticeService {
     private final ModelMapper modelMapper;
 
 
+//    @Value("src/main/resources/static/noticeFiles/")
+//    private String IMAGE_DIR;
+
+//    @Value("http://localhost:8001/")
 
 
     public NoticeService(NoticeRepository noticeRepository, ModelMapper modelMapper) {
@@ -35,9 +41,12 @@ public class NoticeService {
 
     @Transactional
     // 공지 등록
-    public String insertNotice(NoticeDTO noticeDTO) {
+    public String insertNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
         log.info("---insertNotice Start---");
         log.info(noticeDTO.toString());
+        log.info("==========noticeFile : " + noticeFile);
+
+//        String path = IMAGE_DIR + noticeDTO.getNotCode();
 
         int result = 0;
 
