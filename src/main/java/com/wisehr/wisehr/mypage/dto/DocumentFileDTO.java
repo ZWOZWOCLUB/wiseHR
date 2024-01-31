@@ -19,4 +19,5 @@ public class DocumentFileDTO {
     private String docAtcPath;
     private long memCode;
     private String docAtcOriginName;
+    private String docAtcKind;
 }

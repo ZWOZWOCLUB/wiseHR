@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -29,11 +30,12 @@ public class NoticeController {
     * 공지 등록
     * */
     @PostMapping("/notice")
-    public ResponseEntity<ResponseDTO> insertNotice(@RequestBody NoticeDTO noticeDTO){
+    public ResponseEntity<ResponseDTO> insertNotice(
+            @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
 
         System.out.println("noticeDTO = " + noticeDTO);
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO)));
+        System.out.println("noticeFile = " + noticeFile);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
     }
 
     /*
