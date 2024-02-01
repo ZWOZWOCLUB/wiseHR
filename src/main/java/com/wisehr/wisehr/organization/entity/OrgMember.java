@@ -25,8 +25,8 @@ public class OrgMember {
     private String memEmail;
     @Column(name = "mem_status")
     private String memStatus;
-    @Column(name = "mem_roll", nullable = false)
-    private String memRoll;
+    @Column(name = "mem_role", nullable = false)
+    private String memRole;
 
 
     @ManyToOne
@@ -40,5 +40,56 @@ public class OrgMember {
 
 
     public OrgMember() {
+    }
+
+//
+//
+//    public OrgMember memCode(int memCode) {
+//        this.memCode = memCode;
+//        return this;
+//    }
+//
+//    public OrgMember memName(String memName) {
+//        this.memName = memName;
+//        return this;
+//    }
+//
+//    public OrgMember memPhone(String memPhone) {
+//        this.memPhone = memPhone;
+//        return this;
+//    }
+//
+//    public OrgMember memEmail(String memEmail) {
+//        this.memEmail = memEmail;
+//        return this;
+//    }
+//
+//    public OrgMember memStatus(String memStatus) {
+//        this.memStatus = memStatus;
+//        return this;
+//    }
+//
+//    public OrgMember memRole(String memRole) {
+//        this.memRole = memRole;
+//        return this;
+//    }
+//
+//    public OrgMember orgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {
+//        this.orgDepAndOrgMem = orgDepAndOrgMem;
+//        return this;
+//    }
+//
+//    public OrgMember orgPosition(OrgPosition orgPosition) {
+//        this.orgPosition = orgPosition;
+//        return this;
+//    }
+//
+//    public OrgMember build() {
+//        return new com.wisehr.wisehr.organization.entity.OrgMember(memCode, memName, memPhone, memEmail, memStatus, memRole, orgDepAndOrgMem, orgPosition);
+//    }
+
+
+    public void setOrgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {
+        this.orgDepAndOrgMem = orgDepAndOrgMem;
     }
 }

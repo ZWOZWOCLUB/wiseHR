@@ -4,6 +4,7 @@ import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.entity.OrgDepartment;
 import com.wisehr.wisehr.organization.entity.OrgDepartmentAndOrgMember;
+import com.wisehr.wisehr.organization.entity.OrgMember;
 import com.wisehr.wisehr.organization.repository.OrgDepAndMemRepository;
 import com.wisehr.wisehr.organization.repository.OrgRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +24,17 @@ public class OrgService {
 
     private final ModelMapper modelMapper;
 
-    public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, ModelMapper modelMapper) {
+        public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, ModelMapper modelMapper) {
+
         this.orgRepository = orgRepository;
         this.orgDepAndMemRepository = orgDepAndMemRepository;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * 전체부서 검색 메소드
+     * @return
+     */
     public List<OrgDepartmentDTO> selectAllOrgList(){
 
         List<OrgDepartment> orgDepartment = orgRepository.findAll();
@@ -40,6 +46,10 @@ public class OrgService {
         return orgDepartmentList;
     }
 
+    /**
+     * 상위부서 검색 메소드
+     * @return
+     */
     public List<OrgDepartmentDTO> selectRefOrgList() {
 
         List<OrgDepartment> orgDepartment = orgRepository.findRefDepCode();
@@ -50,6 +60,12 @@ public class OrgService {
         return orgRefList;
     }
 
+
+    /**
+     * 부서명 등록 메소드
+     * @param orgDepartmentDTO
+     * @return
+     */
     @Transactional
     public String insertOrgDepartment(OrgDepartmentDTO orgDepartmentDTO) {
 
@@ -91,6 +107,10 @@ public class OrgService {
         return (result > 0) ? "부서 이름 수정 성공" : "부서 이름 수정 실패";
     }
 
+    /**
+     * 부서별 멤버 리스트 조회 메소드
+     * @return
+     */
     public List<OrgDepartmentAndOrgMemberDTO> AllMemOfDep() {
 
         List<OrgDepartmentAndOrgMember> orgDepartmentAndOrgMembers = orgDepAndMemRepository.findAll();
@@ -104,5 +124,38 @@ public class OrgService {
     }
 
 
+    /**
+     * 부서 삭제 메소드(상태 Y로 업데이트 및 멤버 null)
+     * @param orgDepartmentAndOrgMemberDTO
+     * @return
+     */
+    @Transactional
+    public String deleteOrgDep(OrgDepartmentAndOrgMemberDTO orgDepartmentAndOrgMemberDTO) {
 
+        int result = 0;
+
+        try {
+
+            //부서 상태를 Y로 변경
+            OrgDepartmentAndOrgMember deleteOrgDep = orgDepAndMemRepository.findById(orgDepartmentAndOrgMemberDTO.getDepCode()).get();
+            deleteOrgDep = deleteOrgDep.depDeleteStatus("Y")
+                    .build();
+
+            //부서에 속한 멤버들의 dep_code를 null로 변경
+
+            List<OrgMember> memberList = deleteOrgDep.getMemberList();
+                for(OrgMember member: memberList){
+                    member.setOrgDepAndOrgMem(null);
+                }
+
+            result = 1;
+
+
+
+        }catch(Exception e){
+            log.info("에러");
+        }
+
+        return (result > 0) ? "부서 삭제 성공" : "부서 삭제 실패";
+    }
 }

@@ -34,4 +34,45 @@ public class OrgDepartmentAndOrgMember {
 
     public OrgDepartmentAndOrgMember() {
     }
+
+
+
+    public OrgDepartmentAndOrgMember depCode(int depCode) {
+        this.depCode = depCode;
+        return this;
+    }
+
+    public OrgDepartmentAndOrgMember depName(String depName) {
+        this.depName = depName;
+        return this;
+    }
+
+    public OrgDepartmentAndOrgMember refDepCode(Integer refDepCode) {
+        this.refDepCode = refDepCode;
+        return this;
+    }
+
+    public OrgDepartmentAndOrgMember depBirthDate(String depBirthDate) {
+        this.depBirthDate = depBirthDate;
+        return this;
+    }
+
+    public OrgDepartmentAndOrgMember depDeleteStatus(String depDeleteStatus) {
+        this.depDeleteStatus = depDeleteStatus;
+        return this;
+    }
+
+    public OrgDepartmentAndOrgMember memberList(List<OrgMember> memberList) {
+        this.memberList = memberList;
+        return this;
+    }
+
+    public OrgDepartmentAndOrgMember build() {
+        return new OrgDepartmentAndOrgMember(depCode, depName, refDepCode, depBirthDate, depDeleteStatus, memberList);
+    }
 }
+
+
+
+
+

@@ -42,4 +42,16 @@ Content-Type: application/json
 Accept: */*
 
 
+### 부서 삭제(delete 아닌 status Y 및 각 회원정보 null로 변경)
+
+PUT http://localhost:8001/org/deleteOrgDep
+Content-Type: application/json
+Accept: */*
+
+{
+  "depCode": 13
+
+}
+
+
 

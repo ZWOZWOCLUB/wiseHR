@@ -5,6 +5,7 @@ import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +82,15 @@ public class OrgController {
     public ResponseEntity<ResponseDTO> AllMemOfDep(){
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서별 멤버 조회 성공",orgService.AllMemOfDep()));
+
+    }
+
+    @PutMapping("/deleteOrgDep")
+    public ResponseEntity<ResponseDTO> deleteOrgDep(@RequestBody OrgDepartmentAndOrgMemberDTO orgDepartmentAndOrgMemberDTO){
+
+
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서 삭제 성공", orgService.deleteOrgDep(orgDepartmentAndOrgMemberDTO)));
 
     }
 

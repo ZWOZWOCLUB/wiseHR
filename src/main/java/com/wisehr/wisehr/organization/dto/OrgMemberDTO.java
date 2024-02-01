@@ -18,7 +18,7 @@ public class OrgMemberDTO {
     private String memPhone;
     private String memEmail;
     private String memStatus;
-    private String memRoll;
+    private String memRole;
 
     private OrgDepartmentAndOrgMemberDTO orgDepAndOrgMem;
     private OrgPosition orgPosition;
