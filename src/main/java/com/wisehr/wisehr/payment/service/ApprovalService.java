@@ -31,6 +31,7 @@ public class ApprovalService {
     private final EditCommuteRepository editCommuteRepository;
     private final EditScheduleRepository editScheduleRepository;
     private final ApprovalRetiredRepository approvalRetiredRepository;
+    private final ApprovalReqDocumentRepository approvalReqDocumentRepository;
     private final ModelMapper modelMapper;
     private final ApprovalFileUtils fileUtils;
 
@@ -43,7 +44,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ModelMapper modelMapper, ApprovalFileUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ModelMapper modelMapper, ApprovalFileUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -52,6 +53,7 @@ public class ApprovalService {
         this.editCommuteRepository = editCommuteRepository;
         this.editScheduleRepository = editScheduleRepository;
         this.approvalRetiredRepository = approvalRetiredRepository;
+        this.approvalReqDocumentRepository = approvalReqDocumentRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -149,6 +151,64 @@ public class ApprovalService {
         return (result > 0) ? "출퇴근 정정 성공" : "실패~";
     }
 
+    // 퇴직 요청 상신
+    public String submitRetired(ApprovalRetiredDTO retired, MultipartFile approvalFile) {
+
+        int result = 0;
+
+        try {
+            Approval app = modelMapper.map(retired.getApproval(), Approval.class);
+
+            log.info("app : " + app);
+
+            Approval aps = approvalRepository.save(app);
+
+            log.info("aps : " + aps);
+
+            retired.getApproval().setPayCode(aps.getPayCode());
+
+            log.info("결재 완료 + retired : " + retired);
+
+            approvalRetiredRepository.save(modelMapper.map(retired, ApprovalRetired.class));
+
+            log.info("퇴직 요청 완료 ");
+
+            if (approvalFile != null){
+
+                fileUtils.fileClear(retired.getApproval(), approvalFile);
+
+                log.info("퇴직 첨부파일 성공");
+            }
+
+            ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
+
+            ac.setApproval(retired.getApproval());
+            ac.setApprovalMember(retired.getApproval().getApprovalMember());
+            ac.setAppState("대기");
+
+            log.info("ac : " + ac);
+
+            ApprovalComplete acc = modelMapper.map(ac, ApprovalComplete.class);
+
+            log.info("acc : " + acc);
+
+            approvalCompleteRepository.save(acc);
+
+            log.info("결제완료 쪽 완성");
+
+            result = 1;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            log.info("실패~");
+        }
+
+
+        return (result > 0) ? "퇴직 요청 성공" : "실패~";
+    }
+
     // 연차결재상신
     @Transactional
     public String submitAnnual(ApprovalAnnualDTO annual, MultipartFile approvalFile) {
@@ -204,7 +264,6 @@ public class ApprovalService {
                 log.info("결제완료 쪽 완성");
 
 
-                // Repository를 통해 DB에 저장!
 
                 result = 1;
             } catch (Exception e) {
@@ -353,5 +412,61 @@ public class ApprovalService {
 
 
         return (result > 0) ? "스케줄 정정 최종 성공 " : "최종 실패";
+    }
+
+    public String submitReqDocumnet(ApprovalReqDocumentDTO reqDocument, MultipartFile approvalFile) {
+
+        int result = 0;
+
+        try {
+            Approval app = modelMapper.map(reqDocument.getApproval(), Approval.class);
+
+            log.info("app : " + app);
+
+            Approval aps = approvalRepository.save(app);
+
+            log.info("aps : " + aps);
+
+            reqDocument.getApproval().setPayCode(aps.getPayCode());
+
+            log.info("결재 완료 + edit : " + reqDocument);
+
+            approvalReqDocumentRepository.save(modelMapper.map(reqDocument, ApprovalReqDocument.class));
+
+            log.info("서류 요청 완료 ");
+
+            if (approvalFile != null){
+
+                fileUtils.fileClear(reqDocument.getApproval(), approvalFile);
+
+                log.info("서류 요청 첨부파일 성공");
+            }
+
+            ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
+
+            ac.setApproval(reqDocument.getApproval());
+            ac.setApprovalMember(reqDocument.getApproval().getApprovalMember());
+            ac.setAppState("대기");
+
+            log.info("ac : " + ac);
+
+            ApprovalComplete acc = modelMapper.map(ac, ApprovalComplete.class);
+
+            log.info("acc : " + acc);
+
+            approvalCompleteRepository.save(acc);
+
+            log.info("결제완료 쪽 완성");
+
+            result = 1;
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("실패");
+        }
+
+
+        return (result > 0) ? "서류 요청 최종 성공 " : "최종 실패";
     }
 }

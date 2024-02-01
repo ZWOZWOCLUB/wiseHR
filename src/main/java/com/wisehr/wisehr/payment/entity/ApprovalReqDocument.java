@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 @ToString
-public class ReqDocumentApproval {
+public class ApprovalReqDocument {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",

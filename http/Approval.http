@@ -25,6 +25,69 @@ Access-Control-Allow-Origin: *
   }
 }
 
+###서류 요청 상신
+POST http://localhost:8001/approval/requestdocument
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="reqKind"
+
+재직 증명서
+
+--WebAppBoundary
+Content-Disposition: form-data; name="reqUse"
+
+대출 신청에 사용
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.approvalMember.memCode"
+
+3
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payDate"
+
+2024-02-27
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payKind"
+
+서류 요청
+--WebAppBoundary
+
+
+###퇴직 요청 상신
+POST http://localhost:8001/approval/retired
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="tirDate"
+
+2024-03-21
+
+--WebAppBoundary
+Content-Disposition: form-data; name="tirContents"
+
+고생 많으셨습니다.
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.approvalMember.memCode"
+
+3
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payDate"
+
+2024-02-27
+
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payKind"
+
+퇴직 신청
+--WebAppBoundary
+
 ###스케줄정정 상신
 POST http://localhost:8001/approval/schedule
 Content-Type: multipart/form-data; boundary=WebAppBoundary

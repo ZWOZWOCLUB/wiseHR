@@ -2,10 +2,8 @@ package com.wisehr.wisehr.payment.controller;
 
 
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalCompleteDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalAnnualDTO;
-import com.wisehr.wisehr.payment.dto.EditCommuteDTO;
-import com.wisehr.wisehr.payment.dto.EditScheduleDTO;
+import com.wisehr.wisehr.payment.dto.*;
+import com.wisehr.wisehr.payment.entity.ApprovalReqDocument;
 import com.wisehr.wisehr.payment.service.ApprovalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -70,6 +68,28 @@ public class ApprovalController {
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "스케줄 정정 성공", approvalService.submitSchedule(schedule, approvalFile)));
+
+    }
+
+    @PostMapping("/requestdocument")
+    public ResponseEntity<ResponseDTO> submitReqDoucument(@ModelAttribute ApprovalReqDocumentDTO reqDocument, MultipartFile approvalFile){
+
+        log.info("reqDocument : " + reqDocument);
+        log.info("file : " + approvalFile);
+
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "퇴직 신청 성공", approvalService.submitReqDocumnet(reqDocument, approvalFile)));
+
+    }
+
+    @PostMapping("/retired")
+    public ResponseEntity<ResponseDTO> submitRetired(@ModelAttribute ApprovalRetiredDTO retired, MultipartFile approvalFile){
+
+        log.info("retired : " + retired);
+        log.info("file : " + approvalFile);
+
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "퇴직 신청 성공", approvalService.submitRetired(retired, approvalFile)));
 
     }
 
