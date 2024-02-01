@@ -1,4 +1,4 @@
-### 직원 정보 등록
+### 직원 정보 등록 - 인사정보 + 사진
 POST http://localhost:8001/member/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
@@ -44,9 +44,9 @@ Content-Disposition: form-data; name="memStatus"
 N
 
 --WebAppBoundary
-Content-Disposition: form-data; name="memRoll"
+Content-Disposition: form-data; name="memRole"
 
-일반사원
+중간관리자
 
 --WebAppBoundary
 Content-Disposition: form-data; name="posCode"
@@ -57,6 +57,79 @@ Content-Disposition: form-data; name="posCode"
 Content-Disposition: form-data; name="depCode"
 
 5
+--WebAppBoundary
+Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
+
+< ./pikachu2.png
+
+###직원 정보 수정
+PUT http://localhost:8001/member/member
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+240130007
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memName"
+
+노연지
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memPhone"
+
+010-8760-8336
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memEmail"
+
+djddd@gmail.com
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memAddress"
+
+경기도 고양시
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memBirth"
+
+1991-01-20
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memPassword"
+
+0000
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memHireDate"
+
+2024-01-29
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memStatus"
+
+N
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memRole"
+
+중간관리자
+
+--WebAppBoundary
+Content-Disposition: form-data; name="posCode"
+
+3
+
+--WebAppBoundary
+Content-Disposition: form-data; name="depCode"
+
+5
+--WebAppBoundary
+Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
+
+< ./pikachu2.png
 
 
 ### 직원 조회
@@ -80,19 +153,242 @@ GET http://localhost:8001/member/position
 Content-Type: application/json
 Accept: */*
 
-###직원인사정보등록 - 학위, 경력, 자격
-
-
-###직원인사정보조회 - 학위, 경력, 자격
-GET http://localhost:8001/member/searchResourcesInformation?mem=1
+###학위정보등록
+POST http://localhost:8001/member/degree
 Content-Type: application/json
 Accept: */*
 
-//직원등록 -직원 중간관리자로 체크 유무에 따라 roll 설정
-//직원등록 - 프로필 사진 등록
-//직원수정(상세조회 -> 업데이트)
-//직원인사정보수정
-//직원서류함등록
-//직원서류함수정
-//연차 조회
-//연차 업데이트
+{
+  "memCode": 240129002,
+  "degKind": "학사",
+  "degMajor": "공학",
+  "degName": "서울대학교",
+  "degGraduation": "2024-01-31",
+  "degState":"졸업",
+  "degAdmissions": "2020-01-01"
+}
+
+###학위정보수정
+PUT http://localhost:8001/member/degree
+Content-Type: application/json
+Accept: */*
+
+{
+  "degCode": "deg3",
+  "degKind": "학사",
+  "degMajor": "공학",
+  "degName": "서울대학교교",
+  "degGraduation": "2024-01-31",
+  "degState":"졸업",
+  "degAdmissions": "2020-01-01"
+}
+
+###학위파일등록
+POST http://localhost:8001/member/degreeFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="degCode";
+
+deg3
+--WebAppBoundary
+Content-Disposition: form-data; name="degreeFile"; filename="pikachu.png"
+
+< ./pikachu.png
+
+###자격정보등록
+POST http://localhost:8001/member/certificate
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240129002,
+  "cerName": "컴퓨터활용능력",
+  "cerKind": "2급",
+  "cerDay": "2024-01-31",
+  "cerEndDate": null,
+  "cerDescription": "비고",
+  "cerInstitution": "대한상공회의소"
+}
+
+###자격정보수정
+PUT http://localhost:8001/member/certificate
+Content-Type: application/json
+Accept: */*
+
+{
+  "cerCode": "cer5",
+  "memCode": 240129002,
+  "cerName": "컴퓨터활용능력~",
+  "cerKind": "2급",
+  "cerDay": "2024-01-31",
+  "cerEndDate": null,
+  "cerDescription": "비고",
+  "cerInstitution": "대한상공회의소"
+}
+
+###자격파일등록
+POST http://localhost:8001/member/certificateFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="cerCode";
+
+cer5
+--WebAppBoundary
+Content-Disposition: form-data; name="certificateFile"; filename="pikachu.png"
+
+< ./pikachu.png
+
+###경력정보등록
+POST http://localhost:8001/member/career
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240129002,
+  "crrName": "회사명",
+  "crrPosition": "대리",
+  "crrStartDate": "2017-01-01",
+  "crrEndDate": "2020-01-01",
+  "crrState": "Y",
+  "crrDescription" : "비고"
+}
+
+###경력정보수정
+POST http://localhost:8001/member/career
+Content-Type: application/json
+Accept: */*
+
+{
+  "crrCode": "crr6",
+  "memCode": 240129002,
+  "crrName": "회사명~",
+  "crrPosition": "대리",
+  "crrStartDate": "2017-01-01",
+  "crrEndDate": "2020-01-01",
+  "crrState": "Y",
+  "crrDescription" : "비고"
+}
+
+###경력파일등록
+POST http://localhost:8001/member/careerFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="crrCode";
+
+crr5
+--WebAppBoundary
+Content-Disposition: form-data; name="careerFile"; filename="pikachu.png"
+
+< ./pikachu.png
+
+###직원인사정보조회 - 학위, 경력, 자격, 통장
+GET http://localhost:8001/member/searchResourcesInformation?mem=240129002
+Content-Type: application/json
+Accept: */*
+
+###급여통장 등록
+POST http://localhost:8001/member/salaryFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="salCode";
+
+sal1
+--WebAppBoundary
+Content-Disposition: form-data; name="salaryFile"; filename="pikachu.png"
+
+< ./pikachu.png
+
+###그외 파일 등록
+POST http://localhost:8001/member/documentFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode";
+
+240130007
+--WebAppBoundary
+Content-Disposition: form-data; name="etcFile"; filename="pikachu.png"
+
+< ./pikachu.png
+--WebAppBoundary
+Content-Disposition: form-data; name="docAtcKind";
+
+그외 파일
+
+
+
+###급여 통장 정보 등록
+POST http://localhost:8001/member/salary
+Content-Type: application/json;
+Accept: */*
+
+{
+  "salNumber": "000000",
+  "salBankName": "~은행~",
+  "memCode": "240130007"
+}
+
+###급여 통장 정보 수정
+PUT http://localhost:8001/member/salary
+Content-Type: application/json;
+Accept: */*
+
+{
+  "salCode": "sal3",
+  "salNumber": "000000",
+  "salBankName": "은행",
+  "memCode": "240130007"
+}
+
+###서류함 그외 파일 수정
+PUT http://localhost:8001/member/documentFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode";
+
+240130007
+--WebAppBoundary
+Content-Disposition: form-data; name="etcFile"; filename="pikachu2.png"
+
+< ./pikachu2.png
+--WebAppBoundary
+Content-Disposition: form-data; name="docAtcCode";
+
+15
+--WebAppBoundary
+Content-Disposition: form-data; name="docAtcKind";
+
+수정
+
+
+
+
+
+###학위 파일 수정
+
+###경력 파일 수정
+
+###자격 파일 수정
+
+###연차 조회
+
+###연차 업데이트
+PUT http://localhost:8001/member/updateVacation
+Content-Type: application/json;
+Accept: */*
+
+{
+  "memCode": 4,
+  "vctCount": 3
+}

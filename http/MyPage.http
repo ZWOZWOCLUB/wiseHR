@@ -88,6 +88,6 @@ Content-Disposition: form-data; name="memCode"
 
 1
 --WebAppBoundary
-Content-Disposition: form-data; name="productImage"; filename="pikachu.png"
+Content-Disposition: form-data; name="productImage"; filename="pikachu2.png"
 
-< ./pikachu.png
+< ./pikachu2.png

@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class HoldVacationDTO {
 
-    private long memCode;
+    private int memCode;
     private int vctCount;
     private int vctDeadline;
 }

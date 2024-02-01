@@ -13,5 +13,6 @@ public class SettingProfileDTO {
     private String prfExtends;
     private String prfConvertName;
     private String prfStorage;
+    private String prfOriginName;
     private int memCode;
 }

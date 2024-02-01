@@ -18,7 +18,7 @@ public class SettingMemberDTO {
     private String memHireDate;
     private String memEndDate;
     private String memStatus;
-    private String memRoll;
+    private String memRole;
     private int posCode;
     private int depCode;
 }
