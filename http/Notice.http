@@ -5,29 +5,30 @@ Accept: */*
 Access-Control-Allow-Origin: *
 
 --WebAppBoundary
+Content-Disposition: form-data; name="notCode"
+
+not6
+
+--WebAppBoundary
 Content-Disposition: form-data; name="notName"
 
 크리스마스공지
-
 --WebAppBoundary
 Content-Disposition: form-data; name="notComment"
 
 크리스마스 보너스입니다.
-
 --WebAppBoundary
 Content-Disposition: form-data; name="notView"
 
 0
-
 --WebAppBoundary
 Content-Disposition: form-data; name="notCreateDate"
 
 2024-01-31
 --WebAppBoundary
-Content-Disposition: form-data; name="notice.notMember.memCode"
+Content-Disposition: form-data; name="memCode"
 
 1
-
 --WebAppBoundary
 Content-Disposition: form-data; name="notDeleteStatus"
 
@@ -37,7 +38,6 @@ N
 Content-Disposition: form-data; name="noticeFile"; filename="pikachu.png"
 
 < pikachu.png
-
 --WebAppBoundary
 
 ###공지전체 조회 offset 페이지

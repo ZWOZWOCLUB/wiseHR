@@ -18,7 +18,7 @@ public class NotMemberDTO {
     private String memHireDate; //입사일
     private String memEndDate;  //퇴직일
     private String memStatus;   //퇴사상태
-    private String memRoll;     //권한
+    private String memRole;     //권한
     private Long posCode;       //직위코드
     private Long depCode;       //부서코드
 }

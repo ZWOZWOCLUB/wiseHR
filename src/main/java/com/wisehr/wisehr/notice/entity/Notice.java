@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name ="notice")

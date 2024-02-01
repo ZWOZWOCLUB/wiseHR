@@ -3,6 +3,7 @@ import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.notice.dto.NotAttachedFileDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
 import com.wisehr.wisehr.notice.entity.NotAttachedFile;
+import com.wisehr.wisehr.notice.entity.NotMember;
 import com.wisehr.wisehr.notice.entity.Notice;
 import com.wisehr.wisehr.notice.repository.NotAttachedFileRepository;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
@@ -59,10 +60,10 @@ public class NoticeService {
 
         NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
-        noticeFileDTO.setNotAtcPath(path);
         noticeFileDTO.setNotAtcName(noticeFile.getName());
         noticeFileDTO.setNotice(noticeDTO);
         noticeFileDTO.setNotAtcDeleteStatus("N");
+        noticeFileDTO.setNotAtcPath(path);
 
 
 

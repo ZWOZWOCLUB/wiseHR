@@ -34,7 +34,9 @@ public class NoticeController {
             @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
 
         System.out.println("noticeDTO = " + noticeDTO);
+        log.info("noticeDTO============"+noticeDTO);
         System.out.println("noticeFile = " + noticeFile);
+        log.info("noticeFile ==========" + noticeFile);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
     }
 
