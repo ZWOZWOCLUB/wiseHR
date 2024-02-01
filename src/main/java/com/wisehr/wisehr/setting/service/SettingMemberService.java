@@ -80,7 +80,7 @@ public class SettingMemberService {
 
         SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
 
-        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
         String path = IMAGE_DIR + "profile/" ;
@@ -100,7 +100,7 @@ public class SettingMemberService {
             SettingMember insertResult = settingMemberRepository.save(insertMember);
             System.out.println("insertResult = " + insertResult);
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, profile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
 
             fileDTO.setMemCode(settingMemberDTO.getMemCode());
             fileDTO.setDocAtcExtends(realExtend);
@@ -163,13 +163,13 @@ public class SettingMemberService {
             if (profile != null) {
 
 
-                String imageName = UUID.randomUUID().toString().replace("-", "");
+                String fileName = UUID.randomUUID().toString().replace("-", "");
 
                 String[] extend = profile.getOriginalFilename().split("\\.");
 
                 String realExtend = extend[1];
 
-                replaceFileName = FileUploadUtils.saveFile(path, imageName, profile);
+                replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
 
                 file = file.memCode(member.getMemCode())
                         .docAtcCode(file.getDocAtcCode())
@@ -380,7 +380,7 @@ public class SettingMemberService {
 
         SettingDegreeFileDTO fileDTO = new SettingDegreeFileDTO();
 
-        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
         String path = IMAGE_DIR + "degree/" ;
@@ -396,7 +396,7 @@ public class SettingMemberService {
         System.out.println(LocalDate.now().toString());
         try{
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, degreeFile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, degreeFile);
 
             fileDTO.setDegCode(degreeDTO.getDegCode());
             fileDTO.setDegAtcName(degreeFile.getOriginalFilename());
@@ -428,7 +428,7 @@ public class SettingMemberService {
 
         SettingCertificateFileDTO fileDTO = new SettingCertificateFileDTO();
 
-        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
         String path = IMAGE_DIR + "certificate/" ;
@@ -444,7 +444,7 @@ public class SettingMemberService {
         System.out.println(LocalDate.now().toString());
         try{
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, certificateFile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, certificateFile);
 
             fileDTO.setCerCode(certificateDTO.getCerCode());
             fileDTO.setCerAtcName(certificateFile.getOriginalFilename());
@@ -476,7 +476,7 @@ public class SettingMemberService {
 
         SettingCareerFileDTO fileDTO = new SettingCareerFileDTO();
 
-        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
         String path = IMAGE_DIR + "career/" ;
@@ -492,7 +492,7 @@ public class SettingMemberService {
         System.out.println(LocalDate.now().toString());
         try{
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, careerFile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, careerFile);
 
             fileDTO.setCrrCode(careerDTO.getCrrCode());
             fileDTO.setCrrAtcName(careerFile.getOriginalFilename());
@@ -524,7 +524,7 @@ public class SettingMemberService {
 
         SettingSalaryFileDTO fileDTO = new SettingSalaryFileDTO();
 
-        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
         String path = IMAGE_DIR + "salary/" ;
@@ -540,7 +540,7 @@ public class SettingMemberService {
         System.out.println(LocalDate.now().toString());
         try{
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, salaryFile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, salaryFile);
 
             fileDTO.setSalCode(salaryDTO.getSalCode());
             fileDTO.setSalAtcName(salaryFile.getOriginalFilename());
@@ -570,7 +570,7 @@ public class SettingMemberService {
         log.info(etcfileDTO.toString());
 
 
-        String imageName = UUID.randomUUID().toString().replace("-", "");
+        String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
         String path = IMAGE_DIR + "etcDocumentFile/" ;
@@ -586,7 +586,7 @@ public class SettingMemberService {
         System.out.println(LocalDate.now().toString());
         try{
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, etcFile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, etcFile);
 
             etcfileDTO.setDocAtcExtends(realExtend);
             etcfileDTO.setDocAtcConvertName(replaceFileName);
@@ -761,9 +761,9 @@ public class SettingMemberService {
 
             String[] extend = etcFile.getOriginalFilename().split("\\.");
             String realExtend = extend[1];
-            String imageName = UUID.randomUUID().toString().replace("-", "");
+            String fileName = UUID.randomUUID().toString().replace("-", "");
 
-            replaceFileName = FileUploadUtils.saveFile(path, imageName, etcFile);
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, etcFile);
 
             file = file.docAtcExtends(realExtend)
                     .docAtcConvertName(replaceFileName)
@@ -815,5 +815,168 @@ public class SettingMemberService {
 
         return (result > 0)? "수정 성공": "수정 실패";
     }
+
+    @Transactional
+    public String updateSalaryFile(SettingSalaryFileDTO salaryFileDTO, MultipartFile salaryFile) {
+        log.info("updateSalaryFile Start~~~~~~~~~~~~");
+        log.info("salaryFileDTO : " + salaryFileDTO);
+
+        String path = IMAGE_DIR + "salary/";
+
+        String replaceFileName = null;
+
+
+        int result = 0;
+
+        try {
+
+            SettingSalaryFile file = settingSalaryFileRepository.findById(salaryFileDTO.getSalAtcCode()).get();
+
+            String fileName = UUID.randomUUID().toString().replace("-", "");
+
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, salaryFile);
+
+            file = file.salAtcName(salaryFile.getOriginalFilename())
+                    .salAtcRegistDate(LocalDate.now().toString())
+                    .salAtcPath(path)
+                    .salAtcConvertName(replaceFileName)
+                    .build();
+
+
+            boolean isDelete = FileUploadUtils.deleteFile(path, file.getSalAtcConvertName());
+
+
+            result = 1;
+
+        } catch (Exception e) {
+            FileUploadUtils.deleteFile(path, replaceFileName);
+            throw new RuntimeException(e);
+        }
+        return (result > 0) ? "통장 파일 업데이트 성공" : "통장 파일 업데이트 실패";
+    }
+
+    @Transactional
+    public String updateCertificateFile(SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile) {
+        log.info("updateCertificateFile Start~~~~~~~~~~~~");
+        log.info("certificateFileDTO : " + certificateFileDTO);
+
+        String path = IMAGE_DIR + "certificate/";
+
+        String replaceFileName = null;
+
+        int result = 0;
+
+        try {
+
+            SettingCertificateFile file = settingCertificateFileRepository.findById(certificateFileDTO.getCerAtcCode()).get();
+
+            String[] extend = certificateFile.getOriginalFilename().split("\\.");
+            String realExtend = extend[1];
+            String fileName = UUID.randomUUID().toString().replace("-", "");
+
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, certificateFile);
+
+            file = file.cerAtcExtends(realExtend)
+                    .cerAtcConvertName(replaceFileName)
+                    .cerAtcRegistDate(LocalDate.now().toString())
+                    .cerAtcName(certificateFile.getOriginalFilename())
+                    .cerAtcPath(path).build();
+
+
+            boolean isDelete = FileUploadUtils.deleteFile(path, file.getCerAtcConvertName());
+
+
+            result = 1;
+
+        } catch (Exception e) {
+            FileUploadUtils.deleteFile(path, replaceFileName);
+            throw new RuntimeException(e);
+        }
+        return (result > 0) ? "자격 파일 업데이트 성공" : "자격 파일 업데이트 실패";
+    }
+
+    @Transactional
+    public String updateDegreeFile(SettingDegreeFileDTO degreeFileDTO, MultipartFile degreeFile) {
+        log.info("updateDocumentFile Start~~~~~~~~~~~~");
+        log.info("degreeFileDTO : " + degreeFileDTO);
+
+        String path = IMAGE_DIR + "degree/";
+
+        String replaceFileName = null;
+
+        int result = 0;
+
+        try {
+
+            SettingDegreeFile file = settingDegreeFileRepository.findById(degreeFileDTO.getDegAtcCode()).get();
+
+            String[] extend = degreeFile.getOriginalFilename().split("\\.");
+            String realExtend = extend[1];
+            String fileName = UUID.randomUUID().toString().replace("-", "");
+
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, degreeFile);
+
+            file = file.degAtcExtends(realExtend)
+                    .degAtcConvertName(replaceFileName)
+                    .degAtcRegistDate(LocalDate.now().toString())
+                    .degAtcName(degreeFile.getOriginalFilename())
+                    .degAtcPath(path).build();
+
+
+            boolean isDelete = FileUploadUtils.deleteFile(path, file.getDegAtcConvertName());
+
+
+            result = 1;
+
+        } catch (Exception e) {
+            FileUploadUtils.deleteFile(path, replaceFileName);
+            throw new RuntimeException(e);
+        }
+        return (result > 0) ? "학위 파일 업데이트 성공" : "학위 파일 업데이트 실패";
+    }
+
+    @Transactional
+    public String updateCareerFile(SettingCareerFileDTO careerFileDTO, MultipartFile careerFile) {
+        log.info("updateDocumentFile Start~~~~~~~~~~~~");
+        log.info("careerFileDTO : " + careerFileDTO);
+
+        String path = IMAGE_DIR + "career/";
+
+        String replaceFileName = null;
+
+
+        int result = 0;
+
+
+
+        try {
+
+            SettingCareerFile file = settingCareerFileRepository.findById(careerFileDTO.getCrrAtcCode()).get();
+
+            String[] extend = careerFile.getOriginalFilename().split("\\.");
+            String realExtend = extend[1];
+            String fileName = UUID.randomUUID().toString().replace("-", "");
+
+            replaceFileName = FileUploadUtils.saveFile(path, fileName, careerFile);
+
+            file = file.crrAtcExtends(realExtend)
+                    .crrAtcConvertName(replaceFileName)
+                    .crrAtcRegistDate(LocalDate.now().toString())
+                    .crrAtcName(careerFile.getOriginalFilename())
+                    .crrAtcPath(path).build();
+
+
+            boolean isDelete = FileUploadUtils.deleteFile(path, file.getCrrAtcConvertName());
+
+
+            result = 1;
+
+        } catch (Exception e) {
+            FileUploadUtils.deleteFile(path, replaceFileName);
+            throw new RuntimeException(e);
+        }
+        return (result > 0) ? "경력 파일 업데이트 성공" : "경력 파일 업데이트 실패";
+    }
+
 
 }
