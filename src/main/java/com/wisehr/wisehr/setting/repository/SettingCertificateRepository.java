@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SettingCertificateRepository extends JpaRepository<SettingCertificate, Integer> {
+public interface SettingCertificateRepository extends JpaRepository<SettingCertificate, String > {
     List<SettingCertificate> findByMemCode(int memCode);
 }

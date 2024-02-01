@@ -5,15 +5,19 @@ import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
+import com.wisehr.wisehr.mypage.dto.HoldVacationDTO;
 import com.wisehr.wisehr.setting.dto.*;
 import com.wisehr.wisehr.setting.entity.SettingResources;
 import com.wisehr.wisehr.setting.service.SettingMemberService;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -38,12 +42,23 @@ public class SettingMemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원등록 성공", settingMemberService.insertMember(settingMemberDTO, profile)));
     }
 
+    /**
+     * 직원 정보 수정
+     */
+    @PutMapping(value = "/member")
+    public ResponseEntity<ResponseDTO> UpdateMember(@ModelAttribute SettingMemberDTO settingMemberDTO, MultipartFile profile){
+
+        System.out.println("settingMemberDTO = " + settingMemberDTO);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원정보 수정 성공", settingMemberService.updateMember(settingMemberDTO, profile)));
+    }
+
 
     /**
      * 직원 학위 정보 등록
      */
-    @PostMapping("/insertDegree")
-    public ResponseEntity<ResponseDTO> insertDegree(@RequestBody SettingDegreeDTO degreeDTO){
+    @PostMapping("/degree")
+    public ResponseEntity<ResponseDTO> insertDegree(@RequestBody List<SettingDegreeDTO> degreeDTO){
         System.out.println("degreeDTO = " + degreeDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 등록 성공", settingMemberService.insertDegree(degreeDTO)));
     }
@@ -51,21 +66,77 @@ public class SettingMemberController {
     /**
      * 직원 자격 정보 등록
      */
-    @PostMapping("/insertCertificate")
-    public ResponseEntity<ResponseDTO> insertCertificate(@RequestBody SettingCertificateDTO certificateDTO){
+    @PostMapping("/certificate")
+    public ResponseEntity<ResponseDTO> insertCertificate(@RequestBody List<SettingCertificateDTO> certificateDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 정보 등록 성공", settingMemberService.insertCertificate(certificateDTO)));
     }
 
     /**
      * 직원 경력 정보 등록
      */
-    @PostMapping("/insertCareer")
-    public ResponseEntity<ResponseDTO> insertCareer(@RequestBody SettingCareerDTO careerDTO){
+    @PostMapping("/career")
+    public ResponseEntity<ResponseDTO> insertCareer(@RequestBody List<SettingCareerDTO> careerDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 등록 성공", settingMemberService.insertCareer(careerDTO)));
     }
 
     /**
-     * 직원 인사 조회 (학위, 자격, 경력)
+     * 직원 학위 정보 수정
+     */
+    @PutMapping(value = "/degree")
+    public ResponseEntity<ResponseDTO> updateDegree(@RequestBody SettingDegreeDTO degreeDTO){
+        System.out.println("degreeDTO = " + degreeDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 수정 성공", settingMemberService.updateDegree(degreeDTO)));
+    }
+
+    /**
+     * 직원 자격 정보 수정
+     */
+    @PutMapping(value = "/certificate")
+    public ResponseEntity<ResponseDTO> updateCertificate(@RequestBody SettingCertificateDTO certificateDTO){
+        System.out.println("degreeDTO = " + certificateDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 정보 수정 성공", settingMemberService.updateCertificate(certificateDTO)));
+    }
+
+    /**
+     * 직원 경력 정보 수정
+     */
+    @PutMapping(value = "/career")
+    public ResponseEntity<ResponseDTO> updateCareer(@RequestBody SettingCareerDTO careerDTO){
+        System.out.println("degreeDTO = " + careerDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 수정 성공", settingMemberService.updateCareer(careerDTO)));
+    }
+
+    /**
+     * 직원 학위 정보 파일 등록
+     */
+    @PostMapping("/degreeFile")
+    public ResponseEntity<ResponseDTO> insertDegreeFile(@ModelAttribute SettingDegreeDTO degreeDTO, MultipartFile degreeFile){
+        System.out.println("degreeDTO = " + degreeDTO);
+        System.out.println("degreeFile = " + degreeFile);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 등록 파일 성공", settingMemberService.insertDegreeFile(degreeDTO, degreeFile)));
+    }
+
+
+    /**
+     * 직원 자격 정보 파일 등록
+     */
+    @PostMapping("/certificateFile")
+    public ResponseEntity<ResponseDTO> insertCertificateFile(@ModelAttribute SettingCertificateDTO certificateDTO, MultipartFile certificateFile){
+        System.out.println("degreeDTO = " + certificateDTO);
+        System.out.println("degreeFile = " + certificateFile);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 등록 파일 성공", settingMemberService.insertCertificateFile(certificateDTO, certificateFile)));
+    }
+
+    /**
+     * 직원 경력 정보 파일 등록
+     */
+    @PostMapping("/careerFile")
+    public ResponseEntity<ResponseDTO> insertCareerFile(@ModelAttribute SettingCareerDTO careerDTO, MultipartFile careerFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 등록 파일 성공", settingMemberService.insertCareerFile(careerDTO, careerFile)));
+    }
+
+    /**
+     * 직원 인사 조회 (학위, 자격, 경력, 통장)
      */
     @GetMapping("/searchResourcesInformation")
     public ResponseEntity<ResponseDTO> searchResourcesInformation(
@@ -130,6 +201,55 @@ public class SettingMemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", settingMemberService.searchPosition()));
     }
 
+    /**
+     *급여 통장 정보 등록
+     */
+    @PostMapping("/salary")
+    public ResponseEntity<ResponseDTO> insertSalary(@RequestBody SettingSalaryDTO salaryDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "급여 통장 정보 수정 성공", settingMemberService.insertSalary(salaryDTO)));
+    }
+
+    /**
+     * 직원 경력 정보 수정
+     */
+    @PutMapping(value = "/salary")
+    public ResponseEntity<ResponseDTO> updateSalary(@RequestBody SettingSalaryDTO salaryDTO){
+        System.out.println("salaryDTO = " + salaryDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 수정 성공", settingMemberService.updateSalary(salaryDTO)));
+    }
+
+    /**
+     * 급여 통장 파일 등록
+     */
+    @PostMapping("/salaryFile")
+    public ResponseEntity<ResponseDTO> insertSalaryFile(@ModelAttribute SettingSalaryDTO salaryDTO, MultipartFile salaryFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 등록 성공", settingMemberService.insertSalaryFile(salaryDTO, salaryFile)));
+    }
+
+    /**
+     * 그외 파일 등록
+     */
+    @PostMapping("/documentFile")
+    public ResponseEntity<ResponseDTO> insertDocumentFile(@ModelAttribute SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.insertDocumentFile(etcfileDTO, etcFile)));
+    }
+
+    /**
+     * 그외 파일 수정
+     */
+    @PutMapping(value = "/documentFile")
+    public ResponseEntity<ResponseDTO> updateDocumentFile(@ModelAttribute SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.updateDocumentFile(etcfileDTO, etcFile)));
+    }
+
+
+    /**
+     * 연차 수정
+     */
+    @PutMapping("/updateVacation")
+    public ResponseEntity<ResponseDTO> updateVacation(@RequestBody HoldVacationDTO holdVacationDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "연차 수정 성공", settingMemberService.updateVacation(holdVacationDTO)));
+    }
 
 
 }

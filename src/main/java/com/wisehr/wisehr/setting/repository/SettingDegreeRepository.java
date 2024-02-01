@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SettingDegreeRepository extends JpaRepository<SettingDegree, Integer> {
+public interface SettingDegreeRepository extends JpaRepository<SettingDegree, String > {
     List<SettingDegree> findByMemCode(int memCode);
 }
