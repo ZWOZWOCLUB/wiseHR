@@ -17,10 +17,8 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "depName": "산부인과",
-  "refDepCode": 4,
-  "depBirthDate": "2024-01-20",
-  "depDeleteStatus": "N"
+  "depName": "산부인과4팀",
+  "refDepCode": 4
 }
 
 ### 부서명 수정

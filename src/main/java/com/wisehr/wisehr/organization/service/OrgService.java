@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,6 +73,15 @@ public class OrgService {
 
         int result = 0;
 
+
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+        String orgCreateDate = sdf.format(now); //생성일을 orgCreateDate에 저장
+
+
+        orgDepartmentDTO.setDepBirthDate(orgCreateDate); //DTO에 생성일 저장
+        orgDepartmentDTO.setDepDeleteStatus("N"); //삭제여부 기본값 N으로 저장
+
         OrgDepartment insertOrgDep = modelMapper.map(orgDepartmentDTO, OrgDepartment.class);
 
         try {
@@ -113,7 +123,9 @@ public class OrgService {
      */
     public List<OrgDepartmentAndOrgMemberDTO> AllMemOfDep() {
 
-        List<OrgDepartmentAndOrgMember> orgDepartmentAndOrgMembers = orgDepAndMemRepository.findAll();
+
+        List<OrgDepartmentAndOrgMember> orgDepartmentAndOrgMembers = orgDepAndMemRepository.findAllMemOfDep();
+
         List<OrgDepartmentAndOrgMemberDTO> orgDepartmentAndOrgMemberList = orgDepartmentAndOrgMembers.stream()
                 .map(odm -> modelMapper.map(odm, OrgDepartmentAndOrgMemberDTO.class))
                 .collect(Collectors.toList());

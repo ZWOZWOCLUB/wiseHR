@@ -29,10 +29,6 @@ public class OrgController {
     @GetMapping("/list")
     public ResponseEntity<ResponseDTO> selectAllOrgList(){
 
-//        OrgDepartmentDTO orgDepartmentList = new OrgDepartmentDTO();
-//
-//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", orgDepartmentList));
-
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", orgService.selectAllOrgList()));
     }
 
@@ -85,6 +81,11 @@ public class OrgController {
 
     }
 
+    /**
+     * 부서 삭제(delete 아닌 상태값 Y 업데이트 및 멤버 dep_code를 null로 업데이트)
+     * @param orgDepartmentAndOrgMemberDTO
+     * @return
+     */
     @PutMapping("/deleteOrgDep")
     public ResponseEntity<ResponseDTO> deleteOrgDep(@RequestBody OrgDepartmentAndOrgMemberDTO orgDepartmentAndOrgMemberDTO){
 
