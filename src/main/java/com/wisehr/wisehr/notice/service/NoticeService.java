@@ -1,12 +1,17 @@
 package com.wisehr.wisehr.notice.service;
 import com.wisehr.wisehr.common.Criteria;
+import com.wisehr.wisehr.notice.dto.NotAttachedFileDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
+import com.wisehr.wisehr.notice.entity.NotAttachedFile;
+import com.wisehr.wisehr.notice.entity.NotMember;
 import com.wisehr.wisehr.notice.entity.Notice;
+import com.wisehr.wisehr.notice.repository.NotAttachedFileRepository;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
+import com.wisehr.wisehr.util.FileUploadUtils;
 import jakarta.transaction.Transactional;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,18 +28,22 @@ public class NoticeService {
 
     private final NoticeRepository noticeRepository;
 
+    private final NotAttachedFileRepository notAttachedFileRepository;
+
 
     private final ModelMapper modelMapper;
 
 
-//    @Value("src/main/resources/static/noticeFiles/")
-//    private String IMAGE_DIR;
 
-//    @Value("http://localhost:8001/")
+    @Value("src/main/resources/static/")
+    private String IMAGE_DIR;
 
+    @Value("http://localhost:8001/")
+    private String IMAGE_URL;
 
-    public NoticeService(NoticeRepository noticeRepository, ModelMapper modelMapper) {
+    public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper) {
         this.noticeRepository = noticeRepository;
+        this.notAttachedFileRepository = notAttachedFileRepository;
         this.modelMapper = modelMapper;
 
     }
@@ -46,14 +55,39 @@ public class NoticeService {
         log.info(noticeDTO.toString());
         log.info("==========noticeFile : " + noticeFile);
 
-//        String path = IMAGE_DIR + noticeDTO.getNotCode();
 
+        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode();
+
+        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
+
+        noticeFileDTO.setNotAtcPath(path);
+        noticeFileDTO.setNotAtcName(noticeFile.getName());
+        noticeFileDTO.setNotice(noticeDTO);
+        noticeFileDTO.setNotAtcDeleteStatus("N");
+
+
+
+        String stroy = null;
+
+        log.info("path========= : " + path);
+        log.info("noticeDTO==========" + noticeDTO);
         int result = 0;
 
         try {
+            stroy = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
+
+
             Notice insertNotice = modelMapper.map(noticeDTO, Notice.class);
             log.info("=============================== inot : " + insertNotice);
             noticeRepository.save(insertNotice);
+
+            NotAttachedFile notFile = modelMapper.map(noticeFileDTO, NotAttachedFile.class);
+
+            log.info("notFile : " + notFile);
+
+            notAttachedFileRepository.save(notFile);
+
+            log.info("공지첨부파일 성공");
 
 
             result = 1;
