@@ -9,18 +9,21 @@ import lombok.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "rec_messenger")
+@Table(name = "per_alarm")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class RecMessenger {
+public class AAMPerAlarm {
 
     @Id
-    @Column(name = "msg_code")
-    private String msgCode;
+    @Column(name = "per_arm_code")
+    private int perArmCode;
+    @Column(name = "per_arm_date_time")
+    private Date perArmDateTime;
+    @Column(name = "per_arm_check_status")
+    private String perArmCheckStatus;
     @Column(name = "mem_code")
     private int memCode;
-
 }

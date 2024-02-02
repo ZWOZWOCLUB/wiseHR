@@ -1,13 +1,11 @@
 package com.wisehr.wisehr.alarmAndMessage.repository;
 
-import com.wisehr.wisehr.alarmAndMessage.entity.AllAlarm;
-import com.wisehr.wisehr.alarmAndMessage.entity.PerAlarm;
-import com.wisehr.wisehr.mypage.entity.Career;
+import com.wisehr.wisehr.alarmAndMessage.entity.AAMAllAlarm;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface AllAlarmRepository extends JpaRepository<AllAlarm, Integer> {
+public interface AllAlarmRepository extends JpaRepository<AAMAllAlarm, Integer> {
 
-    List<AllAlarm> findByMemCode(int memCode);
+    List<AAMAllAlarm> findByMemCode(int memCode);
 }

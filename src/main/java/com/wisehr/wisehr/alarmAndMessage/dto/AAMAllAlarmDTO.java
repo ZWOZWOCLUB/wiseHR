@@ -4,16 +4,15 @@ import lombok.*;
 
 import java.sql.Date;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class PerAlarmDTO {
-
-    private int perArmCode;
-    private Date perArmDateTime;
-    private String perArmCheckStatus;
+public class AAMAllAlarmDTO {
+    private int allArmCode;
+    private Date allArmDate;
+    private String allArmCheck;
+    private String notCode;
     private int memCode;
 }

@@ -9,7 +9,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class SendMessengerDTO {
+public class AAMSendMessengerDTO {
     private String msgCode;
     private Date msgDate;
     private String msgContents;
