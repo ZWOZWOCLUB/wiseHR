@@ -33,7 +33,7 @@ public class MyPageMember {
     private String memEndDate;
     @Column(name = "mem_status")
     private String memStatus;
-    @Column(name = "mem_roll")
-    private String memRoll;
+    @Column(name = "mem_role")
+    private String memRole;
 
 }

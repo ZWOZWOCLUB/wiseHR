@@ -25,7 +25,7 @@ public class ApprovalMemberDTO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date memEndDate;
     private String memStatus;
-    private String memRoll;
+    private String memRole;
     private Long posCode;
     private Long depCode;
 }

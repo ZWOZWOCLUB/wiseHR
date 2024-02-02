@@ -18,7 +18,7 @@ public class MyPageDTO {
     private String memHireDate;
     private String memEndDate;
     private String memStatus;
-    private String memRoll;
+    private String memRole;
 
 
 }

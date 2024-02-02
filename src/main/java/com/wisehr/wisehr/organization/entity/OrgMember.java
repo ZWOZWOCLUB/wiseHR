@@ -25,8 +25,8 @@ public class OrgMember {
     private String memEmail;
     @Column(name = "mem_status")
     private String memStatus;
-    @Column(name = "mem_roll", nullable = false)
-    private String memRoll;
+    @Column(name = "mem_role", nullable = false)
+    private String memRole;
 
 
     @ManyToOne

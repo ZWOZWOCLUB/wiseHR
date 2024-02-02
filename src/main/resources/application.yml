@@ -41,3 +41,7 @@ image:
   image-dir: src/main/resources/static/memberFiles
   image-url: http://localhost:8001/attachmentFiles/
 
+# Generate jws key // 토큰 유효 시간(밀리세컨)
+jwt:
+  key: a67wzId2jEVOEGH5Gy8wyrQtds3U5xULPLrbzw17UL0=
+  time: 864000000

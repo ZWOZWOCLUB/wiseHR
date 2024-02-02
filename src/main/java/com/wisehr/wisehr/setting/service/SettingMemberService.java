@@ -56,7 +56,7 @@ public class SettingMemberService {
     public String insertMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("insertMember Start~~~~~~~~~~~~");
         log.info(settingMemberDTO.toString());
-
+        System.out.println("settingMemberDTO =============== " + settingMemberDTO);
         String imageName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
         int result = 0;
