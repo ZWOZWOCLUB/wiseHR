@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.comment.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -30,10 +31,11 @@ public class ComNotice {
     private Date notCreateDate;
     @Column(name = "not_modify_date", nullable = true)
     private Date notModifyDate;
-
-    @Column(name = "mem_code",nullable = false)
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "mem_code",nullable = false)
 //    @Column(name = "mem_code", nullable = true)
-    private Long memCode;
+    private ComMember memCode;
     @Column(name = "not_delete_status", nullable = false)
     private String notDeleteStatus;
 }

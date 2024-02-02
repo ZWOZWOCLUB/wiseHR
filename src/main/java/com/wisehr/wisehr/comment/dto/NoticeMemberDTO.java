@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class ComMemberDTO {
+public class NoticeMemberDTO {
     private Long memCode;
     private String memName;
     private String memPhone;

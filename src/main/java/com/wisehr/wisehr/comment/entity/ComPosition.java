@@ -16,9 +16,9 @@ import lombok.*;
 public class ComPosition {
     @Id
     @Column(name = "pos_code", nullable = false)
-    private int posCode;
+    private Long posCode;
     @Column(name = "pos_name")
     private String posName;
     @Column(name = "pos_salary")
-    private int posSalary;
+    private Long posSalary;
 }

@@ -7,16 +7,16 @@ Access-Control-Allow-Origin: *
 --WebAppBoundary
 Content-Disposition: form-data; name="notCode"
 
-not6
+not7
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notName"
 
-크리스마스공지
+근무표가 변경되었습니다..
 --WebAppBoundary
 Content-Disposition: form-data; name="notComment"
 
-크리스마스 보너스입니다.
+확인 부탁 드리드립니다.
 --WebAppBoundary
 Content-Disposition: form-data; name="notView"
 
@@ -24,7 +24,7 @@ Content-Disposition: form-data; name="notView"
 --WebAppBoundary
 Content-Disposition: form-data; name="notCreateDate"
 
-2024-01-31
+2024-02-01
 --WebAppBoundary
 Content-Disposition: form-data; name="notMember.memCode"
 
@@ -45,8 +45,14 @@ GET http://localhost:8001/notice/allNoticeSearch?offset=1
 Content-Type: application/json
 Accept: */*
 
+###공지상세 조회
+GET http://localhost:8001/notice/detaill?nc=not7
+Content-Type: application/json
+Accept: */*
+
+
 ###공지제목 조회
-GET http://localhost:8001/notice/titleSearch?t=소독
+GET http://localhost:8001/notice/titleSearch?t=표
 Content-Type: application/json
 Accept: */*
 

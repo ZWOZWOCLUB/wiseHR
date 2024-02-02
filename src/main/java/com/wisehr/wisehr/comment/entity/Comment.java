@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.comment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,11 +21,13 @@ public class Comment {
     private String  comContents;
     @Column(name = "com_date", nullable = false)
     private Date comDate;
-    @OneToOne
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "mem_code", nullable = false)
     private ComMember comMember;
     @Column(name = "com_delete_state", nullable = false)
     private String comDeleteState;
-    @Column(name = "not_code", nullable = false)
-    private String  notCode;
+    @ManyToOne
+    @JoinColumn(name = "not_code", nullable = false)
+    private ComNotice notCode;
 }

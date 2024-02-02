@@ -16,6 +16,6 @@ public class ComNoticeDTO {
     private Long notView;       //조회수
     private Date notCreateDate; //작성일
     private Date notModifyDate; //수정일
-    private Long memCode; //작성자
+    private NoticeMemberDTO memCode; //작성자
     private String notDeleteStatus; //삭제여부
 }
