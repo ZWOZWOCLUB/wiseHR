@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
-
 @Entity
 @Table(name ="notice")
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class Notice {
+public class NoticeIns {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",
@@ -30,10 +29,9 @@ public class Notice {
     private Date notCreateDate;
     @Column(name = "not_modify_date", nullable = true)
     private Date notModifyDate;
-    @OneToOne
-    @JoinColumn(name = "mem_code",nullable = false)
-//    @Column(name = "mem_code", nullable = true)
-    private NotMember notMember;
+
+    @Column(name = "mem_code",nullable = false)
+    private Long memCode;
     @Column(name = "not_delete_status", nullable = false)
     private String notDeleteStatus;
 

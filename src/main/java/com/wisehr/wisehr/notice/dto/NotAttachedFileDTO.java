@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+
 public class NotAttachedFileDTO {
 
     private Long notAtcCode;          //첨부파일코드
@@ -14,5 +14,17 @@ public class NotAttachedFileDTO {
     private String notAtcName;        //파일이름
     private String notAtcDeleteStatus;//삭제여부
     private String notAtcPath;        //파일경로
-    private String notCode;           //글코드
+    private NoticeDTO notice;           //글코드
+
+    @Override
+    public String toString() {
+        return "NotAttachedFileDTO{" +
+                "notAtcCode=" + notAtcCode +
+                ", notAtcExtens='" + notAtcExtens + '\'' +
+                ", notAtcName='" + notAtcName + '\'' +
+                ", notAtcDeleteStatus='" + notAtcDeleteStatus + '\'' +
+                ", notAtcPath='" + notAtcPath + '\'' +
+                ", notice=" + notice +
+                '}';
+    }
 }

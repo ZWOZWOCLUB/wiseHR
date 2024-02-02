@@ -5,6 +5,7 @@ import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
+import com.wisehr.wisehr.notice.dto.NoticeInsDTO;
 import com.wisehr.wisehr.notice.service.NoticeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,9 @@ public class NoticeController {
             @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
 
         System.out.println("noticeDTO = " + noticeDTO);
+        log.info("noticeDTO============"+noticeDTO);
         System.out.println("noticeFile = " + noticeFile);
+        log.info("noticeFile ==========" + noticeFile);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
     }
 
