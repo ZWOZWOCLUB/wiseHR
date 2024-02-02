@@ -1,9 +1,6 @@
 package com.wisehr.wisehr.schedule.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 @Entity
 @Table(name = "etc_pattern")
@@ -13,6 +10,7 @@ import lombok.*;
 public class ScheduleEtcPattern {
     @Id
     @Column(name = "etc_code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int etcCode;
     @Column(name = "mem_code")
     public int memCode;

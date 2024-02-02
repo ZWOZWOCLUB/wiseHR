@@ -109,6 +109,8 @@ public class ApprovalUtils {
                     depRole = roleMem.get(i);
                     log.info("중간관리자의 결재 상신");
                 }
+            } else {
+                depRole = memDep;
             }
         }
 

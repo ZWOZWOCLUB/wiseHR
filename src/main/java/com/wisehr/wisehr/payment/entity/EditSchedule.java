@@ -31,7 +31,13 @@ public class EditSchedule {
     private Date eshEndDate;
     @Column(name="esh_contents")
     private String eshContents;
+    @Column(name ="esh_date_type")
+    private String eshDateType;
     @OneToOne
     @JoinColumn(name = "pay_code")
     private Approval approval;
+    @Column(name = "esh_off_start_date")
+    private Date eshOffStartDate;
+    @Column(name = "esh_off_end_date")
+    private Date eshOffEndDate;
 }

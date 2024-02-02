@@ -2,6 +2,7 @@ package com.wisehr.wisehr.payment.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.sql.Date;
@@ -20,4 +21,7 @@ public class EditScheduleDTO {
     private Date eshEndDate;
     private String eshContents;
     private ApprovalDTO approval;
+    private String eshDateType;
+    private Date eshOffStartDate;
+    private Date eshOffEndDate;
 }

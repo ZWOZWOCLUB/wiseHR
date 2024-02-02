@@ -76,7 +76,6 @@ Content-Disposition: form-data; name="tirContents"
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
 3
-
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
 
@@ -96,32 +95,46 @@ Accept: */*
 --WebAppBoundary
 Content-Disposition: form-data; name="eshName"
 
-쉴래용
+여자친구 보러가요
 
 --WebAppBoundary
 Content-Disposition: form-data; name="eshStartDate"
 
-2024-03-21
+2024-04-01
 
 --WebAppBoundary
 Content-Disposition: form-data; name="eshEndDate"
 
-2024-03-21
+2024-04-03
 
+--WebAppBoundary
+Content-Disposition: form-data; name="eshOffEndDate"
+
+2024-04-21
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshOffStartDate"
+
+2024-04-23
 --WebAppBoundary
 Content-Disposition: form-data; name="eshContents"
 
-쉴거라구요!!!!
+이때는 못해요..
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshDateType"
+
+Day
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-1
+3
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
 
-2024-02-29
+2024-02-01
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payKind"
@@ -225,10 +238,10 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "appCode": "app15",
-  "appDate": "2024-01-31",
-  "appState": "반려",
-  "appComment": "놉"
+  "appCode": "app24",
+  "appDate": "2024-04-01",
+  "appState": "승인",
+  "appComment": "ㅋㅋㅋㅋ 그게 있네 ㅋㅋㅋ"
 }
 
 ### 전결자 지정 로직

@@ -4,6 +4,9 @@ package com.wisehr.wisehr.payment.service;
 import com.wisehr.wisehr.payment.dto.*;
 import com.wisehr.wisehr.payment.entity.*;
 import com.wisehr.wisehr.payment.repository.*;
+import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
+import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
+import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
 import com.wisehr.wisehr.util.ApprovalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -18,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +38,8 @@ public class ApprovalService {
     private final ApprovalReqDocumentRepository approvalReqDocumentRepository;
     private final ApprovalMemberRepository approvalMemberRepository;
     private final ApproverProxyRepository approverProxyRepository;
+    private final ScheduleEtcPatternRepository scheduleEtcPatternRepository;
+    private final ScheduleWorkPatternRepository scheduleWorkPatternRepository;
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
 
@@ -48,7 +52,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -60,6 +64,8 @@ public class ApprovalService {
         this.approvalReqDocumentRepository = approvalReqDocumentRepository;
         this.approvalMemberRepository = approvalMemberRepository;
         this.approverProxyRepository = approverProxyRepository;
+        this.scheduleEtcPatternRepository = scheduleEtcPatternRepository;
+        this.scheduleWorkPatternRepository = scheduleWorkPatternRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -102,6 +108,7 @@ public class ApprovalService {
         return payment;
     }
 
+    // 출퇴근 정정 상신
     @Transactional
     public String submitCommute(EditCommuteDTO edit, MultipartFile approvalFile) {
 
@@ -160,6 +167,7 @@ public class ApprovalService {
     }
 
     // 퇴직 요청 상신
+    @Transactional
     public String submitRetired(ApprovalRetiredDTO retired, MultipartFile approvalFile) {
 
         int result = 0;
@@ -328,6 +336,7 @@ public class ApprovalService {
 
             log.info("결재 승인 완료");
 
+
             if (acc.getApproval().getPayKind().contains("연차") && acc.getAppState().equals("승인")){
 
                 ApprovalAnnual aa = approvalAnnualRepository.findByApprovalPayCode(ac.getApproval().getPayCode());
@@ -362,21 +371,87 @@ public class ApprovalService {
 
                 EditSchedule es = editScheduleRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
 
-                LocalDate startDate = es.getEshStartDate().toLocalDate();
-                LocalDate endDate = es.getEshEndDate().toLocalDate();
+                log.info("es : " + es);
 
-                log.info("startDate : " + startDate);
-                log.info("endDate : " + endDate);
+                LocalDate startDate = es.getEshOffStartDate().toLocalDate();
+                LocalDate endDate = es.getEshOffEndDate().toLocalDate();
+                LocalDate startDate2 = es.getEshStartDate().toLocalDate();
+                LocalDate endDate2 = es.getEshEndDate().toLocalDate();
 
-                long spendDay = ChronoUnit.DAYS.between(startDate, endDate);
+                log.info("startDate : " + startDate2);
+                log.info("endDate : " + endDate2);
+
+                long spendDay = ChronoUnit.DAYS.between(startDate2, endDate2);
 
                 log.info("spend : " + spendDay);
 
                 int days = (int) Math.abs(spendDay) + 1 ;
 
+                // 신청한 기한의 날짜 수를 확인해서 배정
+
                 if (days == 1 ){
 
+                    int type = 0;
+                    ScheduleEtcPattern sep = new ScheduleEtcPattern();
+                    sep.etcDate(String.valueOf(startDate));
+                    sep.etcKind(String.valueOf(0));
+                    sep.memCode(es.getApproval().getApprovalMember().getMemCode().intValue());
+                    log.info("sep : " + sep);
 
+                    scheduleEtcPatternRepository.save(sep);
+
+                    log.info("휴일로 설정되면 etc_kind는 0으로 설정됩니다. ");
+
+                    ScheduleEtcPattern sep2 = new ScheduleEtcPattern();
+                    sep2.etcDate(String.valueOf(startDate2));
+//                    sep.etcKind(es.getEshDateType()); 타입을 박는게 아니라 타입에 맞는 시간 패턴으로 넣어야지
+                    switch (es.getEshDateType()){
+                        case "Day": type = 1;
+                        case "Evening" : type = 2;
+                        case "Night" : type = 3;
+
+                    }
+                    sep2.etcKind(String.valueOf(type));
+                    sep2.memCode((es.getApproval().getApprovalMember().getMemCode()).intValue());
+                    log.info("sep2 : " + sep2);
+
+                    scheduleEtcPatternRepository.save(sep2);
+
+                    log.info("스케줄 정정 완료! 1일");
+
+                } else if (days > 1) {
+
+                    log.info("스케줄 정정 2일 이상 시작 ");
+
+                    for (int i = 0; i < days ; i++) {
+
+                        int type = 0;
+
+                        ScheduleEtcPattern sep = new ScheduleEtcPattern();
+                        sep.etcDate(String.valueOf(startDate.plusDays(i)));
+                        sep.etcKind(String.valueOf(0));
+                        sep.memCode(es.getApproval().getApprovalMember().getMemCode().intValue());
+                        log.info("sep : " + sep);
+
+                        scheduleEtcPatternRepository.save(sep);
+
+                        ScheduleEtcPattern sep2 = new ScheduleEtcPattern();
+                        sep2.etcDate(String.valueOf(startDate2.plusDays(i)));
+//                    sep.etcKind(es.getEshDateType()); 타입을 박는게 아니라 타입에 맞는 시간 패턴으로 넣어야지
+                        switch (es.getEshDateType()){
+                            case "Day": type = 1;
+                            case "Evening" : type = 2;
+                            case "Night" : type = 3;
+
+                        }
+                        sep2.etcKind(String.valueOf(type));
+                        sep2.memCode((es.getApproval().getApprovalMember().getMemCode()).intValue());
+                        log.info("sep2 : " + sep2);
+
+                        scheduleEtcPatternRepository.save(sep2);
+
+                    }
+                    log.info("이게되나..?");
 
                 }
 
@@ -393,6 +468,8 @@ public class ApprovalService {
     }
 
 
+    // 스케줄 정정 결재 상신
+    @Transactional
     public String submitSchedule(EditScheduleDTO schedule, MultipartFile approvalFile) {
 
         int result = 0;
@@ -423,6 +500,8 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
+            log.info("schedule  : " + schedule);
+
             ApprovalMember depRole = fileUtils.roleMember(schedule.getApproval().getApprovalMember().getMemCode());
 
             ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
@@ -451,6 +530,8 @@ public class ApprovalService {
         return (result > 0) ? "스케줄 정정 최종 성공 " : "최종 실패";
     }
 
+    // 서류 요청 상신
+    @Transactional
     public String submitReqDocumnet(ApprovalReqDocumentDTO reqDocument, MultipartFile approvalFile) {
 
         int result = 0;
@@ -509,6 +590,8 @@ public class ApprovalService {
         return (result > 0) ? "서류 요청 최종 성공 " : "최종 실패";
     }
 
+    //전결자 지정
+    @Transactional
     public String updateRole(ApproverProxyDTO proxy) {
 
         log.info("전결자 서비스 시작 ");
@@ -552,6 +635,7 @@ public class ApprovalService {
     }
 
     // 전결자 해제 및 기존 권한으로 복귀
+    @Transactional
     public String recoveryRole(Map<String , Long> requestBody) {
 
         log.info("전결자 복구 서비스 시작 ");
