@@ -251,5 +251,40 @@ public class SettingMemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "연차 수정 성공", settingMemberService.updateVacation(holdVacationDTO)));
     }
 
+    /**
+     * 통장 파일 수정
+     */
+    @PutMapping(value = "/salaryFile")
+    public ResponseEntity<ResponseDTO> updateSalaryFile(@ModelAttribute SettingSalaryFileDTO salaryFileDTO, MultipartFile salaryFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 수정 성공", settingMemberService.updateSalaryFile(salaryFileDTO, salaryFile)));
+    }
+
+
+
+    /**
+     * 자격 파일 수정
+     */
+    @PutMapping(value = "/certificateFile")
+    public ResponseEntity<ResponseDTO> updateCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 수정 성공", settingMemberService.updateCertificateFile(certificateFileDTO, certificateFile)));
+    }
+
+    /**
+     * 학위 파일 수정
+     */
+    @PutMapping(value = "/degreeFile")
+    public ResponseEntity<ResponseDTO> updateDegreeFile(@ModelAttribute SettingDegreeFileDTO degreeFileDTO, MultipartFile degreeFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 파일 수정 성공", settingMemberService.updateDegreeFile(degreeFileDTO, degreeFile)));
+    }
+
+    /**
+     * 경력 파일 수정
+     */
+    @PutMapping(value = "/careerFile")
+    public ResponseEntity<ResponseDTO> updateCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO, MultipartFile careerFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 수정 성공", settingMemberService.updateCareerFile(careerFileDTO, careerFile)));
+    }
+
+
 
 }

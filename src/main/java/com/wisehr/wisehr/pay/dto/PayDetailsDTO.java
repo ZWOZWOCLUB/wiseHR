@@ -21,4 +21,7 @@ public class PayDetailsDTO {
     private int incomeTax;
     private int localIncomeTax;
     private int medicalInsurance;
+    private int deductedAmount;
+    private int totalDeduction;
+    private PaySalaryDTO salCode;
 }

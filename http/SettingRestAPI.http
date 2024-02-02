@@ -372,16 +372,63 @@ Content-Disposition: form-data; name="docAtcKind";
 수정
 
 
-
-
-
 ###학위 파일 수정
+PUT http://localhost:8001/member/degreeFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="degAtcCode";
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="degreeFile"; filename="pikachu2.png"
+
+< ./pikachu2.png
 
 ###경력 파일 수정
+PUT http://localhost:8001/member/careerFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="crrAtcCode";
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="careerFile"; filename="pikachu2.png"
+
+< ./pikachu2.png
 
 ###자격 파일 수정
+PUT http://localhost:8001/member/certificateFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
 
-###연차 조회
+--WebAppBoundary
+Content-Disposition: form-data; name="cerAtcCode";
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="certificateFile"; filename="pikachu2.png"
+
+< ./pikachu2.png
+
+
+###급여 통장 파일 수정
+PUT http://localhost:8001/member/salaryFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="salAtcCode";
+
+6
+--WebAppBoundary
+Content-Disposition: form-data; name="salaryFile"; filename="pikachu2.png"
+
+< ./pikachu2.png
+
 
 ###연차 업데이트
 PUT http://localhost:8001/member/updateVacation
