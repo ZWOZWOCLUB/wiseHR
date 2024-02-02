@@ -358,6 +358,29 @@ public class ApprovalService {
 
                 log.info("연차이력까지 성공");
 
+            } else if (acc.getApproval().getPayKind().contains("스케줄") && acc.getAppState().equals("승인")) {
+
+                EditSchedule es = editScheduleRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
+
+                LocalDate startDate = es.getEshStartDate().toLocalDate();
+                LocalDate endDate = es.getEshEndDate().toLocalDate();
+
+                log.info("startDate : " + startDate);
+                log.info("endDate : " + endDate);
+
+                long spendDay = ChronoUnit.DAYS.between(startDate, endDate);
+
+                log.info("spend : " + spendDay);
+
+                int days = (int) Math.abs(spendDay) + 1 ;
+
+                if (days == 1 ){
+
+
+
+                }
+
+
             }
 
             result = 1;
