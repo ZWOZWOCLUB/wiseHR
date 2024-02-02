@@ -1,56 +1,120 @@
-### 일정 등록 - 근무패턴 테이블 insert -> 근무패턴요일 테이블 insert ->일정테이블 insert
-POST http://localhost:8001/schedule/insertSchedule
+### 일정 등록 - 일정 테이블 insert -> 근무 패턴 요일 테이블 insert
+POST http://localhost:8001/schedule/schedule
 Content-Type: application/json
 Accept: */*
 
 {
-  "workPatternDTO": {
-      "wokStartTime": "06:00:00",
-      "wokRestTime": "01:00:00",
-      "wokEndTime": "13:00:00",
-      "wokDeleteState": "N"
-  },
   "scheduleDTO": {
     "schType": "테스트",
     "schStartDate": "2024-01-01",
     "schEndDate": "2024-01-30",
     "schColor": "#ffffff",
-    "schDeleteStatus": "N"
+    "schDeleteStatus": "N",
+    "wokCode": 15
   },
   "patternDayDTO": [{
     "dayCode": 1,
-    "wokCode": 0
+    "wokCode": 15
   },
     {
       "dayCode": 2,
-      "wokCode": 0
+      "wokCode": 15
     }
   ]
 }
 
-
-### 이번달 일정 조회 일정이랑 패턴외 일정, 근태 테이블이랑 join한 값
-
-
-###이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
-GET http://localhost:8001/schedule/searchPrev/2024-01
+###일정 수정
+PUT http://localhost:8001/schedule/schedule
 Content-Type: application/json
 Accept: */*
 
-###다음날 스케줄 조회 - 일정, 근무패턴, 근무패턴요일, 요일, 근무외 일정 조인
-#- [ ] 선택한 다른 사람의 일정, 년 - 월 조회
-### 일정 패턴 등록 - 근무패턴 테이블 insert -> 근무패턴요일 테이블 insert ->일정테이블 insert
-#- [ ] 일정 패턴 수정 - 근무패턴 테이블 update-> 근무패턴요일 테이블 update->일정테이블 update
-#- [ ] 일정 패턴 삭제(삭제여부 테이블에 값 Y로 업데이트)
-#- [ ] 일정 패턴에 직원 넣기 - 일정기록 테이블 (schedule_allowance), 개인 알림 테이블(per_alarm)에 insert
-#- [ ] 근무 일정 - 패턴 출력 - 일정, 근무패턴, 근무패턴요일, 요일, 근무외 일정 조인
-#- [ ] 근무 일정 -근무외 일정에 insert
+{
+  "scheduleDTO": {
+    "schCode": "sch9",
+    "schType": "테스트",
+    "schStartDate": "2024-01-01",
+    "schEndDate": "2024-02-15",
+    "schColor": "#ffffff",
+    "schDeleteStatus": "N",
+    "wokCode": 15
+  },
+  "patternDayDTO": [{
+    "dayCode": 1,
+    "changeDayCode": 5,
+    "wokCode": 15
+  },
+    {
+      "dayCode": 2,
+      "changeDayCode": 7,
+      "wokCode": 15
+    }
+  ]
+}
+###근무패턴 등록
+POST http://localhost:8001/schedule/workPattern
+Content-Type: application/json
+Accept: */*
 
-#첫페이지 - 부서조회, 전체 일정조회, 선택한 다른 사람의 일정조회
-#이전달 - attendance 테이블에서 조회
-#다음달 - schedule로 조회
-#특정날짜 스케줄 조회(처음엔 패턴 + 편성된 사람, 부서로 조회)
-#근무패턴 등록(새 근무편성) 근무 패턴 테이블에 insert, update 삭제하기하면 status update
-#새 근무 그룹 - 스케줄 테이블에 insert, update 삭제하면 status update
-#근무 그룹에 사람 넣기
-#근무 일정 -근무외 일정에 insert
+{
+"wokStartTime": "06:00:00",
+"wokRestTime": "01:00:00",
+"wokEndTime": "13:00:00",
+"wokDeleteState": "N"
+}
+
+###근무 패턴 수정
+PUT http://localhost:8001/schedule/workPattern
+Content-Type: application/json
+Accept: */*
+
+{
+  "wokCode": 15,
+  "wokStartTime": "07:01:00",
+  "wokRestTime": "01:00:00",
+  "wokEndTime": "13:00:00",
+  "wokDeleteState": "N"
+}
+
+###근무외 일정 등록
+POST http://localhost:8001/schedule/etcPattern
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240130007,
+  "etcDate": "2023-02-02",
+  "etcKind": "근무외 일정"
+}
+
+###근무외 일정
+PUT http://localhost:8001/schedule/etcPattern
+Content-Type: application/json
+Accept: */*
+
+{
+  "etcCode": 1,
+  "etcDate": "2023-02-13",
+  "etcKind": "delete"
+}
+
+###근무 그룹에 사람 등록
+POST http://localhost:8001/schedule/allowance
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240130007,
+  "schCode": "sch7"
+}
+
+###근무 그룹에 사람 수정
+PUT http://localhost:8001/schedule/allowance
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240130007,
+  "schCode": "sch6",
+  "changeSchCode": "sch8"
+}
+

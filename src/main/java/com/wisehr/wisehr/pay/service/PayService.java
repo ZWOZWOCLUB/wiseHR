@@ -399,6 +399,9 @@ public class PayService {
 
             int localIncomeTax = (int) (incomeTax * 0.1);
             int medicalInsurance = (int) (pdeSalary * 0.004591);
+            int deductedAmount = nationalPension + healthInsurance + employmentInsurance + incomeTax + localIncomeTax + medicalInsurance;
+            int totalDeduction = basicSalary - deductedAmount;
+
 
             payDetailsDTOList.get(i).setBasicSalary(basicSalary);
             payDetailsDTOList.get(i).setFoodExpenses(200000);
@@ -408,6 +411,8 @@ public class PayService {
             payDetailsDTOList.get(i).setIncomeTax(incomeTax);
             payDetailsDTOList.get(i).setLocalIncomeTax(localIncomeTax);
             payDetailsDTOList.get(i).setMedicalInsurance(medicalInsurance);
+            payDetailsDTOList.get(i).setDeductedAmount(deductedAmount);
+            payDetailsDTOList.get(i).setTotalDeduction(totalDeduction);
         }
         log.info("selectPayList 서비스 끗~~~~~~~~~~~~");
         System.out.println("payList = " + payList);

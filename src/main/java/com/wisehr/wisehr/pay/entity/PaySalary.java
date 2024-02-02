@@ -12,12 +12,13 @@ import lombok.*;
 @ToString
 public class PaySalary {
     @Id
-    @Column(name = "sal_code", nullable = false)
+    @Column(name = "mem_code")
+    private int memCode;
+    @Column(name = "sal_code")
     private String salCode;
     @Column(name = "sal_number")
     private String salNumber;
     @Column(name = "sal_bank_name")
     private String salBankName;
-    @Column(name = "mem_code")
-    private int memCode;
+
 }

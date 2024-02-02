@@ -1,9 +1,7 @@
 package com.wisehr.wisehr.pay.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.wisehr.wisehr.pay.dto.PaySalaryDTO;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -23,6 +21,10 @@ public class PayDetails {
     private int pdeSalary;
     @Column(name = "pde_yymm")
     private String pdeYymm;
-    @Column(name = "mem_code")
+    @Column(name = "mem_code", insertable = false, updatable = false) //
     private int memCode;
+    @OneToOne
+    @JoinColumn(name = "mem_code")
+    private PaySalary salCode;
+
 }

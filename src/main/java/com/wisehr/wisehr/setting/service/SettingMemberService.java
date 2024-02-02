@@ -95,26 +95,35 @@ public class SettingMemberService {
         String realExtend = extend[1];
         System.out.println(LocalDate.now().toString());
         try{
-            SettingMember insertMember = modelMapper.map(settingMemberDTO, SettingMember.class);
+            if (profile != null) {
 
-            SettingMember insertResult = settingMemberRepository.save(insertMember);
-            System.out.println("insertResult = " + insertResult);
+                SettingMember insertMember = modelMapper.map(settingMemberDTO, SettingMember.class);
 
-            replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
+                SettingMember insertResult = settingMemberRepository.save(insertMember);
+                System.out.println("insertResult = " + insertResult);
 
-            fileDTO.setMemCode(settingMemberDTO.getMemCode());
-            fileDTO.setDocAtcExtends(realExtend);
-            fileDTO.setDocAtcConvertName(replaceFileName);
-            fileDTO.setDocAtcRegistDate(LocalDate.now().toString());
-            fileDTO.setDocAtcStorage(path);
-            fileDTO.setDocAtcDeleteStatus("N");
-            fileDTO.setDocAtcPath(path);
-            fileDTO.setDocAtcOriginName(profile.getOriginalFilename());
-            fileDTO.setDocAtcKind("프로필");
-            fileDTO.setMemCode(insertResult.getMemCode());
 
-            SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
-            settingDocumentFileRepository.save(insertFile);
+                replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
+
+                fileDTO.setMemCode(settingMemberDTO.getMemCode());
+                fileDTO.setDocAtcExtends(realExtend);
+                fileDTO.setDocAtcConvertName(replaceFileName);
+                fileDTO.setDocAtcRegistDate(LocalDate.now().toString());
+                fileDTO.setDocAtcStorage(path);
+                fileDTO.setDocAtcDeleteStatus("N");
+                fileDTO.setDocAtcPath(path);
+                fileDTO.setDocAtcOriginName(profile.getOriginalFilename());
+                fileDTO.setDocAtcKind("프로필");
+                fileDTO.setMemCode(insertResult.getMemCode());
+
+                SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
+                settingDocumentFileRepository.save(insertFile);
+            }else {
+                SettingMember insertMember = modelMapper.map(settingMemberDTO, SettingMember.class);
+
+                SettingMember insertResult = settingMemberRepository.save(insertMember);
+                System.out.println("insertResult = " + insertResult);
+            }
 
 
         result = 1;
@@ -566,7 +575,7 @@ public class SettingMemberService {
 
     @Transactional
     public String insertDocumentFile(SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile) {
-        log.info("insertSalaryFile Start~~~~~~~~~~~~");
+        log.info("insertDocumentFile Start~~~~~~~~~~~~");
         log.info(etcfileDTO.toString());
 
 

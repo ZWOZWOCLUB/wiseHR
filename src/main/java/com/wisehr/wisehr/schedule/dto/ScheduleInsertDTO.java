@@ -9,8 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class SchedulePatternInsertDTO {
+public class ScheduleInsertDTO {
     private List<SchedulePatternDayDTO> patternDayDTO;
     private ScheduleDTO scheduleDTO;
-    private ScheduleWorkPatternDTO workPatternDTO;
 }
