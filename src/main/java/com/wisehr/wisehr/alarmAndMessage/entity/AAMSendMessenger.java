@@ -12,7 +12,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class SendMessenger {
+public class AAMSendMessenger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

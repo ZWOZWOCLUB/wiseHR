@@ -16,7 +16,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class AllAlarm {
+public class AAMAllAlarm {
     @Id
     @Column(name = "all_arm_code")
     private int allArmCode;
