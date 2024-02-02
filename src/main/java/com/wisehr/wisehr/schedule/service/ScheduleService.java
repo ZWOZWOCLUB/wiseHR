@@ -5,9 +5,14 @@ import com.wisehr.wisehr.schedule.entity.*;
 import com.wisehr.wisehr.schedule.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +27,11 @@ public class ScheduleService {
     private final SchedulePatternDayRepository patternDayRepository;
     private final ScheduleEtcPatternRepository etcPatternRepository;
     private final ScheduleAllowanceRepository allowanceRepository;
+    private final ScheduleAllSelectRepository allSelectRepository;
 
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository) {
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -33,18 +39,25 @@ public class ScheduleService {
         this.patternDayRepository = patternDayRepository;
         this.etcPatternRepository = etcPatternRepository;
         this.allowanceRepository = allowanceRepository;
+        this.allSelectRepository = allSelectRepository;
     }
 
 
-    public List<ScheduleAttendanceDTO> searchPrev(String yearMonth) {
+    public List<ScheduleAllSelectDTO> searchPrev(String yearMonth) {
         log.info("searchDate 서비스 시작~~~~~~~~~~~~");
-        List<ScheduleAttendance> scheduleAttendances = attendanceRepository.findByAttWorkDateContaining(yearMonth);
-        List<ScheduleAttendanceDTO> scheduleAttendanceDTO = scheduleAttendances.stream()
-                        .map(list -> modelMapper.map(list, ScheduleAttendanceDTO.class))
+
+
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonth(yearMonth);
+        log.info("allselect : " + allSelect);
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                        .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
                         .collect(Collectors.toList());
+        System.out.println("selectDTOList = " + selectDTOList);
+
         log.info("searchDate 서비스 끗~~~~~~~~~~~~");
 
-        return scheduleAttendanceDTO;
+        return selectDTOList;
     }
     @Transactional
     public String insertSchedule(ScheduleInsertDTO insertDTO) {

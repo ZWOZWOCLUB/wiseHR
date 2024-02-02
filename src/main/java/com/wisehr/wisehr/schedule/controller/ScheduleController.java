@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +36,6 @@ public class ScheduleController {
 /**
  * 1. 부서 조회(조직도 형태)
  */
-//@PostMapping()
 
 /**
  * 1. 선택한 다른 사람 또는 부서의 일정, 년 - 월 조회
@@ -46,7 +46,7 @@ public class ScheduleController {
  * 1. 이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
  */
 @GetMapping("/searchPrev/{yearMonth}")
-    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String yearMonth){
+    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String yearMonth) {
     return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchPrev(yearMonth)));
 }
 

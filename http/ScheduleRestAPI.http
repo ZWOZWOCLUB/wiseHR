@@ -39,13 +39,13 @@ Accept: */*
     "wokCode": 15
   },
   "patternDayDTO": [{
-    "dayCode": 1,
-    "changeDayCode": 5,
+    "dayCode": 3,
+    "changeDayCode": 6,
     "wokCode": 15
   },
     {
-      "dayCode": 2,
-      "changeDayCode": 7,
+      "dayCode": 7,
+      "changeDayCode": 8,
       "wokCode": 15
     }
   ]
@@ -86,14 +86,14 @@ Accept: */*
   "etcKind": "근무외 일정"
 }
 
-###근무외 일정
+###근무외 일정 수정
 PUT http://localhost:8001/schedule/etcPattern
 Content-Type: application/json
 Accept: */*
 
 {
-  "etcCode": 1,
-  "etcDate": "2023-02-13",
+  "etcCode": 3,
+  "etcDate": "2023-02-15",
   "etcKind": "delete"
 }
 
@@ -114,7 +114,13 @@ Accept: */*
 
 {
   "memCode": 240130007,
-  "schCode": "sch6",
+  "schCode": "sch9",
   "changeSchCode": "sch8"
 }
+
+###첫페이지 전체 조회
+GET http://localhost:8001/schedule/searchPrev/2024-01
+Content-Type: application/json
+Accept: */*
+
 
