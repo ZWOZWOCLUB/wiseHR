@@ -16,15 +16,9 @@ public class SchedulePatternDay {
     @Id
     @Column(name = "wok_code")
     private int wokCode;
-    @ManyToOne
-    @JoinColumn(name = "day_code")
-    private ScheduleAllSelect scheduleAllSelect;
 
 
     public SchedulePatternDay() {
-    }
-
-    public SchedulePatternDay(int dayCode, int wokCode) {
     }
 
 

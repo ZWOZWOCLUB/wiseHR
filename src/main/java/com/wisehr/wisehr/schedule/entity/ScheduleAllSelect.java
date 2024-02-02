@@ -29,20 +29,21 @@ public class ScheduleAllSelect {
     private String schColor;
     @Column(name = "sch_delete_status")
     private String schDeleteStatus;
-    @Column(name = "wok_code")
-    private int wokCode;
-    @OneToMany(fetch = FetchType.EAGER)
+    @Column(name = "wok_code", insertable=false, updatable=false)
+    private Integer wokCode;
+    @OneToOne
     @JoinColumn(name = "wok_code")
-    private List<ScheduleWorkPattern> patternList;
-    @OneToMany(mappedBy = "scheduleAllSelect")
+    private ScheduleWorkPattern patternList;
+    @OneToMany
+    @JoinColumn(name = "wok_code")
     private List<SchedulePatternDay> patternDayList;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "mem_code")
     private List<SettingMember> memberList;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "sch_code")
     private List<ScheduleAllowance> allowanceList;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "mem_code")
     private List<ScheduleEtcPattern> etcPatternList;
 

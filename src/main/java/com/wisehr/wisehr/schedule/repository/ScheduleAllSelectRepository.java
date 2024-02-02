@@ -10,12 +10,11 @@ import java.util.List;
 public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSelect, String > {
 
     @Query("SELECT A FROM ScheduleAllSelect A " +
-            "JOIN ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
-            "JOIN SchedulePatternDay C ON B.wokCode = C.wokCode " +
-            "JOIN Schedule D ON B.wokCode = D.wokCode " +
-            "JOIN ScheduleAllowance E ON A.schCode = E.schCode " +
-            "JOIN SettingMember F ON E.memCode = F.memCode " +
-            "Left join ScheduleEtcPattern G on F.memCode = G.memCode " +
+            "LEFT JOIN ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
+            "LEFT JOIN SchedulePatternDay C ON A.wokCode = C.wokCode " +
+            "LEFT JOIN ScheduleAllowance E ON A.schCode = E.schCode " +
+            "LEFT JOIN SettingMember F ON E.memCode = F.memCode " +
+            "LEFT join ScheduleEtcPattern G on F.memCode = G.memCode " +
             "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m')")
     List<ScheduleAllSelect> findByYearMonth(String yearMonth);
 }
