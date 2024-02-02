@@ -60,17 +60,17 @@ public class NoticeService {
 
         NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
+        noticeFileDTO.setNotAtcPath(path);
         noticeFileDTO.setNotAtcName(noticeFile.getName());
         noticeFileDTO.setNotice(noticeDTO);
         noticeFileDTO.setNotAtcDeleteStatus("N");
-        noticeFileDTO.setNotAtcPath(path);
 
 
 
         String stroy = null;
 
-        log.info("path : " + path);
-        log.info("noticeDTO" + noticeDTO);
+        log.info("path========= : " + path);
+        log.info("noticeDTO==========" + noticeDTO);
         int result = 0;
 
         try {
