@@ -1,22 +1,22 @@
 package com.wisehr.wisehr.setting.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "salary")
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class SettingSalary {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "sal"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "sal_code")
     private String salCode;
     @Column(name = "sal_number")
@@ -34,4 +34,35 @@ public class SettingSalary {
                 ", salBankName='" + salBankName + '\'' +
                 '}';
     }
+
+    public SettingSalary() {
+    }
+
+
+
+
+        public SettingSalary salCode(String salCode) {
+            this.salCode = salCode;
+            return this;
+        }
+
+        public SettingSalary salNumber(String salNumber) {
+            this.salNumber = salNumber;
+            return this;
+        }
+
+        public SettingSalary salBankName(String salBankName) {
+            this.salBankName = salBankName;
+            return this;
+        }
+
+        public SettingSalary memCode(int memCode) {
+            this.memCode = memCode;
+            return this;
+        }
+
+        public SettingSalary build() {
+            return new SettingSalary(salCode, salNumber, salBankName, memCode);
+        }
+
 }

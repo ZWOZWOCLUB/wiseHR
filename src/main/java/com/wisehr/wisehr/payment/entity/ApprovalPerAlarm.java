@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.payment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,6 @@ public class ApprovalPerAlarm {
     private String perArmCheckStatus;
     @OneToOne
     @JoinColumn(name="mem_code")
+    @JsonIgnore
     private ReceiveAramMember receiveAramMember;
 }

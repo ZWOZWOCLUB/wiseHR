@@ -17,10 +17,8 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "depName": "산부인과",
-  "refDepCode": 4,
-  "depBirthDate": "2024-01-20",
-  "depDeleteStatus": "N"
+  "depName": "산부인과4팀",
+  "refDepCode": 4
 }
 
 ### 부서명 수정
@@ -31,7 +29,7 @@ Accept: */*
 
 {
   "depCode": 12,
-  "depName": "산부인과1팀"
+  "depName": "산부인과3팀"
 
 }
 
@@ -40,6 +38,37 @@ Accept: */*
 GET http://localhost:8001/org/AllMemOfDep
 Content-Type: application/json
 Accept: */*
+
+
+### 부서 삭제(delete 아닌 status Y 및 각 회원정보 null로 변경)
+
+PUT http://localhost:8001/org/deleteOrgDep
+Content-Type: application/json
+Accept: */*
+
+{
+  "depCode": 13
+
+}
+
+### 부서 개별 조회
+
+GET http://localhost:8001/org/list/5
+Content-Type: application/json
+Accept: */*
+
+
+
+### 전체 멤버 조회(페이징)
+
+GET http://localhost:8001/org/memberList?offset=2
+Content-Type: application/json
+Accept: */*
+
+### 부서에 멤버 추가
+
+//추가할 부서상세 조회 > 멤버 전체 조회(페이징) > 부서에 멤버 등록
+
 
 
 

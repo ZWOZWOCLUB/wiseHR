@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SettingCareerRepository extends JpaRepository<SettingCareer, Integer> {
+public interface SettingCareerRepository extends JpaRepository<SettingCareer, String > {
     List<SettingCareer> findByMemCode(int memCode);
 }

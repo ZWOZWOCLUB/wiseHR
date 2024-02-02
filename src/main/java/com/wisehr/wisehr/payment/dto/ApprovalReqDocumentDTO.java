@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class ReqDocumentPaymentDTO {
+public class ApprovalReqDocumentDTO {
     private String reqCode;
     private String reqKind;
     private String reqUse;

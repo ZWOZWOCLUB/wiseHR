@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.setting.dto;
 
+import com.wisehr.wisehr.setting.entity.SettingSalary;
 import lombok.*;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public class SettingResourcesDTO {
     private List<SettingCareerDTO> careerDTO;
     private List<SettingCertificateDTO> certificateDTO;
     private List<SettingDegreeDTO> degreeDTO;
+    private SettingSalary salary;
 
 }

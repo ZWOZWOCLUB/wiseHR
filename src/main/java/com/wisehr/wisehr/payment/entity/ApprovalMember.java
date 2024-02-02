@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.payment.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "approvalMembers")
 public class ApprovalMember {
     @Id
     @Column(name = "mem_code", nullable = false)
@@ -36,4 +37,12 @@ public class ApprovalMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
+<<<<<<< HEAD
+=======
+    @ManyToOne
+    @JoinColumn(name = "dep_code")
+    @JsonIgnore
+    private ApprovalDepAndMem department;
+
+>>>>>>> c4a469d2f71b11ca1d5ca667e7100e80cbf12c06
 }

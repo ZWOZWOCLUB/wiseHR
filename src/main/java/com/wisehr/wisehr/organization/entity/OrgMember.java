@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -11,6 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
+@Setter
 public class OrgMember {
 
     @Id
@@ -34,11 +36,62 @@ public class OrgMember {
     @JsonIgnore
     private OrgDepartmentAndOrgMember orgDepAndOrgMem;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "pos_code")
     private OrgPosition orgPosition;
 
 
     public OrgMember() {
+    }
+
+//
+//
+//    public OrgMember memCode(int memCode) {
+//        this.memCode = memCode;
+//        return this;
+//    }
+//
+//    public OrgMember memName(String memName) {
+//        this.memName = memName;
+//        return this;
+//    }
+//
+//    public OrgMember memPhone(String memPhone) {
+//        this.memPhone = memPhone;
+//        return this;
+//    }
+//
+//    public OrgMember memEmail(String memEmail) {
+//        this.memEmail = memEmail;
+//        return this;
+//    }
+//
+//    public OrgMember memStatus(String memStatus) {
+//        this.memStatus = memStatus;
+//        return this;
+//    }
+//
+//    public OrgMember memRole(String memRole) {
+//        this.memRole = memRole;
+//        return this;
+//    }
+//
+//    public OrgMember orgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {
+//        this.orgDepAndOrgMem = orgDepAndOrgMem;
+//        return this;
+//    }
+//
+//    public OrgMember orgPosition(OrgPosition orgPosition) {
+//        this.orgPosition = orgPosition;
+//        return this;
+//    }
+//
+//    public OrgMember build() {
+//        return new com.wisehr.wisehr.organization.entity.OrgMember(memCode, memName, memPhone, memEmail, memStatus, memRole, orgDepAndOrgMem, orgPosition);
+//    }
+
+
+    public void setOrgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {
+        this.orgDepAndOrgMem = orgDepAndOrgMem;
     }
 }

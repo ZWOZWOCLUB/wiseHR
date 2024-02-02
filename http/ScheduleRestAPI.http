@@ -45,3 +45,12 @@ Accept: */*
 #- [ ] 일정 패턴에 직원 넣기 - 일정기록 테이블 (schedule_allowance), 개인 알림 테이블(per_alarm)에 insert
 #- [ ] 근무 일정 - 패턴 출력 - 일정, 근무패턴, 근무패턴요일, 요일, 근무외 일정 조인
 #- [ ] 근무 일정 -근무외 일정에 insert
+
+#첫페이지 - 부서조회, 전체 일정조회, 선택한 다른 사람의 일정조회
+#이전달 - attendance 테이블에서 조회
+#다음달 - schedule로 조회
+#특정날짜 스케줄 조회(처음엔 패턴 + 편성된 사람, 부서로 조회)
+#근무패턴 등록(새 근무편성) 근무 패턴 테이블에 insert, update 삭제하기하면 status update
+#새 근무 그룹 - 스케줄 테이블에 insert, update 삭제하면 status update
+#근무 그룹에 사람 넣기
+#근무 일정 -근무외 일정에 insert

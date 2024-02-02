@@ -11,7 +11,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class RetirePaymentDTO {
+public class ApprovalRetiredDTO {
     private String tirCode;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date tirDate;

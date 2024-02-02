@@ -27,3 +27,67 @@ Accept: */*
 GET http://localhost:8001/myPage/document/2
 Content-Type: application/json
 Accept: */*
+
+### 소유/소멸예정 연차 조회
+GET http://localhost:8001/myPage/ownAnnual/2
+Content-Type: application/json
+Accept: */*
+
+### 연차 사용 이력 조회
+GET http://localhost:8001/myPage/annualHistory/3
+Content-Type: application/json
+Accept: */*
+
+### 회원 정보 수정
+PUT http://localhost:8001/myPage/updateMem
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="memPhone"
+
+010-9999-9999
+--WebAppBoundary
+Content-Disposition: form-data; name="memEmail"
+
+sujung@gmail.com
+--WebAppBoundary
+Content-Disposition: form-data; name="memAddress"
+
+수정된 주소
+--WebAppBoundary
+Content-Disposition: form-data; name="memBirth"
+
+1999-09-09
+
+### 서명 등록
+POST http://localhost:8001/myPage/insertSign
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="productImage"; filename="pikachu.png"
+
+< ./pikachu.png
+
+### 서명 수정
+PUT http://localhost:8001/myPage/updateSign
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="productImage"; filename="pikachu2.png"
+
+< ./pikachu2.png

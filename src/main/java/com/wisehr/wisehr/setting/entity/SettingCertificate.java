@@ -1,18 +1,19 @@
 package com.wisehr.wisehr.setting.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "certificate")
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class SettingCertificate {
     @Id
+    @GeneratedValue(generator = "eegenerator")
+    @GenericGenerator(name = "eegenerator",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "cer"),
+            strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name = "cer_code")
     private String cerCode;
     @Column(name = "cer_name")
@@ -42,4 +43,54 @@ public class SettingCertificate {
                 ", cerInstitution='" + cerInstitution + '\'' +
                 '}';
     }
+
+    public SettingCertificate() {
+    }
+
+
+
+        public SettingCertificate cerCode(String cerCode) {
+            this.cerCode = cerCode;
+            return this;
+        }
+
+        public SettingCertificate cerName(String cerName) {
+            this.cerName = cerName;
+            return this;
+        }
+
+        public SettingCertificate cerKind(String cerKind) {
+            this.cerKind = cerKind;
+            return this;
+        }
+
+        public SettingCertificate cerDay(String cerDay) {
+            this.cerDay = cerDay;
+            return this;
+        }
+
+        public SettingCertificate cerEndDate(String cerEndDate) {
+            this.cerEndDate = cerEndDate;
+            return this;
+        }
+
+        public SettingCertificate cerDescription(String cerDescription) {
+            this.cerDescription = cerDescription;
+            return this;
+        }
+
+        public SettingCertificate cerInstitution(String cerInstitution) {
+            this.cerInstitution = cerInstitution;
+            return this;
+        }
+
+        public SettingCertificate memCode(int memCode) {
+            this.memCode = memCode;
+            return this;
+        }
+
+        public SettingCertificate build() {
+            return new SettingCertificate(cerCode, cerName, cerKind, cerDay, cerEndDate, cerDescription, cerInstitution, memCode);
+        }
+
 }

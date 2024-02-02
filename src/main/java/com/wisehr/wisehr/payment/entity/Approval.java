@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.payment.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,5 +29,6 @@ public class Approval {
     private String payKind;
     @OneToOne
     @JoinColumn(name = "mem_code")
+    @JsonIgnore
     private ApprovalMember approvalMember;
 }

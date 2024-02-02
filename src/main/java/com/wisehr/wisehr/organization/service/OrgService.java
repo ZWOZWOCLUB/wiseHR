@@ -1,16 +1,27 @@
 package com.wisehr.wisehr.organization.service;
 
+import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
+import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
+import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
 import com.wisehr.wisehr.organization.entity.OrgDepartment;
 import com.wisehr.wisehr.organization.entity.OrgDepartmentAndOrgMember;
+import com.wisehr.wisehr.organization.entity.OrgMemAndOrgDep;
+import com.wisehr.wisehr.organization.entity.OrgMember;
 import com.wisehr.wisehr.organization.repository.OrgDepAndMemRepository;
+import com.wisehr.wisehr.organization.repository.OrgMemAndDepRepository;
+import com.wisehr.wisehr.organization.repository.OrgMemberRepository;
 import com.wisehr.wisehr.organization.repository.OrgRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,15 +31,25 @@ public class OrgService {
 
     private final OrgRepository orgRepository;
     private final OrgDepAndMemRepository orgDepAndMemRepository;
-
+    private final OrgMemberRepository orgMemberRepository;
+    private final OrgMemAndDepRepository orgMemAndDepRepository;
     private final ModelMapper modelMapper;
 
-    public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, ModelMapper modelMapper) {
+        public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, OrgMemberRepository orgMemberRepository, OrgMemAndDepRepository orgMemAndDepRepository, ModelMapper modelMapper) {
+
         this.orgRepository = orgRepository;
         this.orgDepAndMemRepository = orgDepAndMemRepository;
-        this.modelMapper = modelMapper;
+            this.orgMemberRepository = orgMemberRepository;
+            this.orgMemAndDepRepository = orgMemAndDepRepository;
+            this.modelMapper = modelMapper;
     }
 
+
+
+    /**
+     * 전체부서 검색 메소드
+     * @return
+     */
     public List<OrgDepartmentDTO> selectAllOrgList(){
 
         List<OrgDepartment> orgDepartment = orgRepository.findAll();
@@ -40,6 +61,10 @@ public class OrgService {
         return orgDepartmentList;
     }
 
+    /**
+     * 상위부서 검색 메소드
+     * @return
+     */
     public List<OrgDepartmentDTO> selectRefOrgList() {
 
         List<OrgDepartment> orgDepartment = orgRepository.findRefDepCode();
@@ -50,11 +75,26 @@ public class OrgService {
         return orgRefList;
     }
 
+
+    /**
+     * 부서명 등록 메소드
+     * @param orgDepartmentDTO
+     * @return
+     */
     @Transactional
     public String insertOrgDepartment(OrgDepartmentDTO orgDepartmentDTO) {
 
 
         int result = 0;
+
+
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+        String depCreateDate = sdf.format(now); //생성일을 depCreateDate에 저장
+
+
+        orgDepartmentDTO.setDepBirthDate(depCreateDate); //DTO에 생성일 저장
+        orgDepartmentDTO.setDepDeleteStatus("N"); //삭제여부 기본값 N으로 저장
 
         OrgDepartment insertOrgDep = modelMapper.map(orgDepartmentDTO, OrgDepartment.class);
 
@@ -91,9 +131,15 @@ public class OrgService {
         return (result > 0) ? "부서 이름 수정 성공" : "부서 이름 수정 실패";
     }
 
+    /**
+     * 부서별 멤버 리스트 조회 메소드
+     * @return
+     */
     public List<OrgDepartmentAndOrgMemberDTO> AllMemOfDep() {
 
-        List<OrgDepartmentAndOrgMember> orgDepartmentAndOrgMembers = orgDepAndMemRepository.findAll();
+
+        List<OrgDepartmentAndOrgMember> orgDepartmentAndOrgMembers = orgDepAndMemRepository.findAllMemOfDep();
+
         List<OrgDepartmentAndOrgMemberDTO> orgDepartmentAndOrgMemberList = orgDepartmentAndOrgMembers.stream()
                 .map(odm -> modelMapper.map(odm, OrgDepartmentAndOrgMemberDTO.class))
                 .collect(Collectors.toList());
@@ -104,5 +150,90 @@ public class OrgService {
     }
 
 
+    /**
+     * 부서 삭제 메소드(상태 Y로 업데이트 및 멤버 null)
+     * @param orgDepartmentAndOrgMemberDTO
+     * @return
+     */
+    @Transactional
+    public String deleteOrgDep(OrgDepartmentAndOrgMemberDTO orgDepartmentAndOrgMemberDTO) {
 
+        int result = 0;
+
+        try {
+
+            //부서 상태를 Y로 변경
+            OrgDepartmentAndOrgMember deleteOrgDep = orgDepAndMemRepository.findById(orgDepartmentAndOrgMemberDTO.getDepCode()).get();
+            deleteOrgDep = deleteOrgDep.depDeleteStatus("Y")
+                    .build();
+
+            //부서에 속한 멤버들의 dep_code를 null로 변경
+
+            List<OrgMember> memberList = deleteOrgDep.getMemberList();
+                for(OrgMember member: memberList){
+                    member.setOrgDepAndOrgMem(null);
+                }
+
+            result = 1;
+
+
+
+        }catch(Exception e){
+            log.info("에러");
+        }
+
+        return (result > 0) ? "부서 삭제 성공" : "부서 삭제 실패";
+    }
+
+
+    /**
+     * 부서 개별 상세 조회 메소드
+     * @param depCode
+     * @return
+     */
+    public OrgDepartmentAndOrgMemberDTO selectDepDetail(int depCode) {
+
+        OrgDepartmentAndOrgMember odam = orgDepAndMemRepository.findById(depCode).get();
+        //get() 메소드로 옵셔널 타입의 객체 꺼내기
+        OrgDepartmentAndOrgMemberDTO odamDTO = modelMapper.map(odam, OrgDepartmentAndOrgMemberDTO.class);
+        //map() 메소드를 통해 odam의 각 필드를 OrgDepartmentAndOrgMemberDTO의 필드로 매핑한 결과를 odamDTO에 담아준다.
+
+        return odamDTO;
+    }
+
+
+//    @Transactional
+//    public Object insertMember(int depCode) {
+//
+//        int result = 0;
+//
+//        //현재 부서 상세 조회
+//        OrgDepartmentAndOrgMember odam = orgDepAndMemRepository.findById(depCode).get();
+//        OrgDepartmentAndOrgMemberDTO odamDTO = modelMapper.map(odam, OrgDepartmentAndOrgMemberDTO.class);
+//
+//        //멤버 전체 조회
+//        List<OrgMember> memberList = orgMemberRepository.findAll();
+//        log.info("insertMember 메소드 조회", memberList);
+//
+//
+//        return null;
+//    }
+
+
+
+    public Page<OrgMemAndOrgDepDTO> selectAllOrgMemberListWithPaging(Criteria cri) {
+
+        int index = cri.getPageNum() - 1;
+        int count = cri.getAmount();
+
+        Pageable paging = PageRequest.of(index, count);
+
+        Page<OrgMemAndOrgDep> result = orgMemAndDepRepository.findAll(paging);
+
+        //엔티티->DTO로 변환
+        Page<OrgMemAndOrgDepDTO> memberList = result.map(a->modelMapper.map(a, OrgMemAndOrgDepDTO.class));
+
+
+        return memberList;
+    }
 }

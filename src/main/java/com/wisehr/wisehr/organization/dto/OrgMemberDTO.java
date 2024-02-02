@@ -21,5 +21,5 @@ public class OrgMemberDTO {
     private String memRole;
 
     private OrgDepartmentAndOrgMemberDTO orgDepAndOrgMem;
-    private OrgPosition orgPosition;
+    private OrgPositionDTO orgPosition;
 }

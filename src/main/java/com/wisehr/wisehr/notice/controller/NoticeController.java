@@ -5,12 +5,14 @@ import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
+import com.wisehr.wisehr.notice.dto.NoticeInsDTO;
 import com.wisehr.wisehr.notice.service.NoticeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -29,11 +31,14 @@ public class NoticeController {
     * 공지 등록
     * */
     @PostMapping("/notice")
-    public ResponseEntity<ResponseDTO> insertNotice(@RequestBody NoticeDTO noticeDTO){
+    public ResponseEntity<ResponseDTO> insertNotice(
+            @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
 
         System.out.println("noticeDTO = " + noticeDTO);
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO)));
+        log.info("noticeDTO============"+noticeDTO);
+        System.out.println("noticeFile = " + noticeFile);
+        log.info("noticeFile ==========" + noticeFile);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
     }
 
     /*
