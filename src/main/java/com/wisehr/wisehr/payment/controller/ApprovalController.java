@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RestController
 @Slf4j
 @RequestMapping("approval")
@@ -111,11 +113,25 @@ public class ApprovalController {
     }
 
 
-    // 전결자 지정 로직
-//    @PostMapping(value = "/roleupdate")
-//    public ResponseEntity<ResponseDTO> updateRole(){
-//
-//        return ResponseEntity.ok()
-//                .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.completeApproval(approval)));
-//    }
+    //전결자 지정 로직
+    @PutMapping(value = "/roleupdate")
+    public ResponseEntity<ResponseDTO> updateRole(@RequestBody ApproverProxyDTO proxy){
+
+        log.info("proxy : " + proxy);
+
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.updateRole(proxy)));
+    }
+
+    // 전결자 복구
+
+    @PutMapping(value = "/rolerecovery")
+    public ResponseEntity<ResponseDTO> recoveryRole(@RequestBody Map<String , Long> requestBody){
+
+        log.info("requestBody : " + requestBody);
+
+        log.info("long : " + requestBody.get("memCode"));
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(requestBody)));
+    }
 }

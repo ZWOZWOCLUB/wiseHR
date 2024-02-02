@@ -230,3 +230,28 @@ Accept: */*
   "appState": "반려",
   "appComment": "놉"
 }
+
+### 전결자 지정 로직
+PUT http://localhost:8001/approval/roleupdate
+Content-Type: application/json
+Accept: */*
+
+{
+  "roleMember": {
+    "memCode":240130003
+  },
+  "proMember": {
+    "memCode": 3
+  },
+  "proStartDate": "2024-02-02",
+  "proEndDate": "2024-02-12"
+}
+
+### 전결자 복구 로직
+PUT http://localhost:8001/approval/rolerecovery
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240130003
+}

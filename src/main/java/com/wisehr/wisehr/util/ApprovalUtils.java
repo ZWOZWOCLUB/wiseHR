@@ -87,6 +87,7 @@ public class ApprovalUtils {
     public ApprovalMember roleMember(Long memberCode){
         //결재자를 찾기 위해서 결재 기안자와 같은 부서의 관리자급을 찾기.
 
+
         ApprovalMember memDep = approvalMemberRepository.findByMemCode(memberCode);
 
         log.info("memDep : " + memDep);
