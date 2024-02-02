@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +35,7 @@ public class ApprovalService {
     private final ApprovalRetiredRepository approvalRetiredRepository;
     private final ApprovalReqDocumentRepository approvalReqDocumentRepository;
     private final ApprovalMemberRepository approvalMemberRepository;
+    private final ApproverProxyRepository approverProxyRepository;
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
 
@@ -45,7 +48,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -56,6 +59,7 @@ public class ApprovalService {
         this.approvalRetiredRepository = approvalRetiredRepository;
         this.approvalReqDocumentRepository = approvalReqDocumentRepository;
         this.approvalMemberRepository = approvalMemberRepository;
+        this.approverProxyRepository = approverProxyRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -480,5 +484,78 @@ public class ApprovalService {
 
 
         return (result > 0) ? "서류 요청 최종 성공 " : "최종 실패";
+    }
+
+    public String updateRole(ApproverProxyDTO proxy) {
+
+        log.info("전결자 서비스 시작 ");
+
+        int result = 0;
+
+        try {
+
+            // 권한을 업데이트 해줄 전결자의 정보를 가져온다
+            ApprovalMember memRole = approvalMemberRepository.findByMemCode(proxy.getProMember().getMemCode());
+
+            log.info("memRole : " + memRole);
+
+            proxy.setProMemRole(memRole.getMemRole());
+
+            approverProxyRepository.save(modelMapper.map(proxy, ApproverProxy.class));
+
+            log.info("전결자 지정 데이터 등록 성공");
+
+            // 기존 권한자의 권한값을 가져오기 위해서 권한자 정보를 가져오는 단계
+            ApprovalMember roleMemCode = approvalMemberRepository.findByMemCode(proxy.getRoleMember().getMemCode());
+
+            log.info("roleMemCode : " + roleMemCode);
+
+            memRole.setMemRole(roleMemCode.getMemRole());
+
+            log.info("memRole : " + memRole);
+
+            approvalMemberRepository.save(memRole);
+
+            log.info("전결자 지정 완료");
+
+            result = 1;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("실패~");
+        }
+
+        return (result > 0 ) ? "성공" : "실패";
+    }
+
+    // 전결자 해제 및 기존 권한으로 복귀
+    public String recoveryRole(Map<String , Long> requestBody) {
+
+        log.info("전결자 복구 서비스 시작 ");
+
+        int result = 0;
+
+        try {
+
+            ApproverProxy aproxy = approverProxyRepository.findFirstByRoleMemberMemCodeOrderByProEndDateDesc(requestBody.get("memCode"));
+
+            log.info("aproxy : " + aproxy);
+
+            ApprovalMember apm = approvalMemberRepository.findByMemCode(aproxy.getProMember().getMemCode());
+
+            apm.setMemRole(aproxy.getProMemRole());
+
+            log.info("apm : " + apm);
+
+            approvalMemberRepository.save(apm);
+
+            result = 1;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("실패~");
+        }
+
+        return (result > 0 ) ? "성공" : "실패";
     }
 }

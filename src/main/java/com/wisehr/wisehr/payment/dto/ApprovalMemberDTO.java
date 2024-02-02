@@ -2,6 +2,7 @@ package com.wisehr.wisehr.payment.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wisehr.wisehr.payment.entity.ApprovalDepAndMem;
 import lombok.*;
 
 import java.sql.Date;
@@ -10,7 +11,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "approvalMembers")
 public class ApprovalMemberDTO {
     private Long memCode;
     private String memName;
@@ -27,5 +28,5 @@ public class ApprovalMemberDTO {
     private String memStatus;
     private String memRole;
     private Long posCode;
-    private Long depCode;
+    private ApprovalDepAndMemDTO depCode;
 }
