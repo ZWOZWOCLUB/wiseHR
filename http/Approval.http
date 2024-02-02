@@ -1,10 +1,10 @@
 ###받은 결재 (mem_code) 완료
-GET http://localhost:8001/approval/receivedpayment/2
+GET http://localhost:8001/approval/receivedpayment/240130003
 Content-Type: application/json
 Accept: */*
 
 ###보낸 결재 (mem_code) 완료
-GET http://localhost:8001/approval/sendpayment/1
+GET http://localhost:8001/approval/sendpayment/240130003
 Content-Type: application/json
 Accept: */*
 
@@ -142,22 +142,22 @@ Content-Disposition: form-data; name="ediKind"
 --WebAppBoundary
 Content-Disposition: form-data; name="ediName"
 
-저 이때 출근 했어요..
+출근 까먹고 못찍었습니다 죄송합니다
 
 --WebAppBoundary
 Content-Disposition: form-data; name="ediContents"
 
-cctv 확인 가야겠어요
+증명서류 제출합니다.
 
 --WebAppBoundary
 Content-Disposition: form-data; name="ediDate"
 
-2024-01-20
+2024-02-02
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-1
+240130003
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
@@ -169,6 +169,10 @@ Content-Disposition: form-data; name="approval.payKind"
 
 출퇴근 정정
 --WebAppBoundary
+Content-Disposition: form-data; name="approvalFile"; filename="plus.png"
+
+< plus.png
+--WebAppBoundary
 
 
 ###연차결재상신
@@ -179,15 +183,15 @@ Accept: */*
 --WebAppBoundary
 Content-Disposition: form-data; name="vacKind"
 
-연차
+연차 신청
 --WebAppBoundary
 Content-Disposition: form-data; name="vacName"
 
-연차 갈게요
+연차 갈게요#
 --WebAppBoundary
 Content-Disposition: form-data; name="vacContents"
 
-화이팅 화이팅
+화이팅 화이팅@#
 --WebAppBoundary
 Content-Disposition: form-data; name="vacStartDate"
 
@@ -221,8 +225,8 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "appCode": "app5",
+  "appCode": "app15",
   "appDate": "2024-01-31",
-  "appState": "승인",
-  "appComment": "재밌게 놀다와~!"
+  "appState": "반려",
+  "appComment": "놉"
 }

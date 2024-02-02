@@ -4,7 +4,7 @@ package com.wisehr.wisehr.payment.service;
 import com.wisehr.wisehr.payment.dto.*;
 import com.wisehr.wisehr.payment.entity.*;
 import com.wisehr.wisehr.payment.repository.*;
-import com.wisehr.wisehr.util.ApprovalFileUtils;
+import com.wisehr.wisehr.util.ApprovalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,9 @@ public class ApprovalService {
     private final EditScheduleRepository editScheduleRepository;
     private final ApprovalRetiredRepository approvalRetiredRepository;
     private final ApprovalReqDocumentRepository approvalReqDocumentRepository;
+    private final ApprovalMemberRepository approvalMemberRepository;
     private final ModelMapper modelMapper;
-    private final ApprovalFileUtils fileUtils;
+    private final ApprovalUtils fileUtils;
 
     // 이미지 저장 위치 및 응답 할 이미지 주소 (여기 뒤에 /{memCode} 넣으면 됩니다!!
     // 위아래 둘 다!! 동적으로)
@@ -44,7 +45,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ModelMapper modelMapper, ApprovalFileUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -54,6 +55,7 @@ public class ApprovalService {
         this.editScheduleRepository = editScheduleRepository;
         this.approvalRetiredRepository = approvalRetiredRepository;
         this.approvalReqDocumentRepository = approvalReqDocumentRepository;
+        this.approvalMemberRepository = approvalMemberRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -126,8 +128,10 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
+            ApprovalMember depRole = fileUtils.roleMember(edit.getApproval().getApprovalMember().getMemCode());
+
+            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
             ac.setApproval(edit.getApproval());
-            ac.setApprovalMember(edit.getApproval().getApprovalMember());
             ac.setAppState("대기");
 
             log.info("ac : " + ac);
@@ -180,10 +184,14 @@ public class ApprovalService {
                 log.info("퇴직 첨부파일 성공");
             }
 
+
+
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
+            ApprovalMember depRole = fileUtils.roleMember(retired.getApproval().getApprovalMember().getMemCode());
+
+            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
             ac.setApproval(retired.getApproval());
-            ac.setApprovalMember(retired.getApproval().getApprovalMember());
             ac.setAppState("대기");
 
             log.info("ac : " + ac);
@@ -246,11 +254,12 @@ public class ApprovalService {
                     log.info("첫 메서드 만들기 성공!");
                 }
 
+                ApprovalMember depRole = fileUtils.roleMember(annual.getApproval().getApprovalMember().getMemCode());
 
                 ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
+                ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
                 ac.setApproval(annual.getApproval());
-                ac.setApprovalMember(annual.getApproval().getApprovalMember());
                 ac.setAppState("대기");
 
                 log.info("ac : " + ac);
@@ -263,9 +272,8 @@ public class ApprovalService {
 
                 log.info("결제완료 쪽 완성");
 
-
-
                 result = 1;
+
             } catch (Exception e) {
                 log.info("실패~");
                 e.printStackTrace();
@@ -388,8 +396,10 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
+            ApprovalMember depRole = fileUtils.roleMember(schedule.getApproval().getApprovalMember().getMemCode());
+
+            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
             ac.setApproval(schedule.getApproval());
-            ac.setApprovalMember(schedule.getApproval().getApprovalMember());
             ac.setAppState("대기");
 
             log.info("ac : " + ac);
@@ -444,8 +454,10 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
+            ApprovalMember depRole = fileUtils.roleMember(reqDocument.getApproval().getApprovalMember().getMemCode());
+
+            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
             ac.setApproval(reqDocument.getApproval());
-            ac.setApprovalMember(reqDocument.getApproval().getApprovalMember());
             ac.setAppState("대기");
 
             log.info("ac : " + ac);

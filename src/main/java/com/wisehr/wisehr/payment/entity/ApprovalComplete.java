@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.payment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -33,8 +34,10 @@ public class ApprovalComplete {
     private Approval approval;
     @OneToOne
     @JoinColumn(name = "mem_code")
+    @JsonIgnore
     private ApprovalMember approvalMember;
     @OneToOne
     @JoinColumn(name = "per_arm_code")
+    @JsonIgnore
     private ApprovalPerAlarm perArm;
 }

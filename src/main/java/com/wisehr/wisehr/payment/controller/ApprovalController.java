@@ -23,6 +23,7 @@ public class ApprovalController {
     }
 
 
+    // 받은 결재 조회
     @GetMapping("/receivedpayment/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
     public ResponseEntity<ResponseDTO> reqPayment(@PathVariable Long memCode){
         log.info("memCodere : " + memCode);
@@ -30,13 +31,15 @@ public class ApprovalController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectReqPayment(memCode)));
     }
 
+    // 보낸 결재 조회
     @GetMapping("/sendpayment/{memCode}")
     public ResponseEntity<ResponseDTO> recPayment(@PathVariable Long memCode){
-        log.info("memCodese : " + memCode);
+        log.info("memCode : " + memCode);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", approvalService.selectRecPayment(memCode)));
     }
 
+    // 연차 신청 상신
     @PostMapping("/annual")
     public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute ApprovalAnnualDTO annual, MultipartFile approvalFile){
         // paymentFile = > http에 업로드한 이미지 (값이 주소값 처럼 나온다.
@@ -49,6 +52,7 @@ public class ApprovalController {
                 .body(new ResponseDTO(HttpStatus.OK, "연차 등록 성공", approvalService.submitAnnual(annual, approvalFile)));
     }
 
+    // 출퇴근 정정 신청 상신
     @PostMapping("/commute")
     public ResponseEntity<ResponseDTO> submitCommute(@ModelAttribute EditCommuteDTO edit, MultipartFile approvalFile){
 
@@ -60,6 +64,7 @@ public class ApprovalController {
 
     }
 
+    //스케줄 정정 신청 상신
     @PostMapping("/schedule")
     public ResponseEntity<ResponseDTO> submitSchedule(@ModelAttribute EditScheduleDTO schedule, MultipartFile approvalFile){
 
@@ -71,6 +76,7 @@ public class ApprovalController {
 
     }
 
+    // 서류 요청 상신
     @PostMapping("/requestdocument")
     public ResponseEntity<ResponseDTO> submitReqDoucument(@ModelAttribute ApprovalReqDocumentDTO reqDocument, MultipartFile approvalFile){
 
@@ -82,6 +88,7 @@ public class ApprovalController {
 
     }
 
+    //퇴직 신청 상신
     @PostMapping("/retired")
     public ResponseEntity<ResponseDTO> submitRetired(@ModelAttribute ApprovalRetiredDTO retired, MultipartFile approvalFile){
 
@@ -93,6 +100,7 @@ public class ApprovalController {
 
     }
 
+    // 결재 승인 로직
     @PutMapping(value = "/complete")
     public ResponseEntity<ResponseDTO> completeApproval(@RequestBody ApprovalCompleteDTO approval){
 
@@ -101,4 +109,13 @@ public class ApprovalController {
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "결재 완료", approvalService.completeApproval(approval)));
     }
+
+
+    // 전결자 지정 로직
+//    @PostMapping(value = "/roleupdate")
+//    public ResponseEntity<ResponseDTO> updateRole(){
+//
+//        return ResponseEntity.ok()
+//                .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.completeApproval(approval)));
+//    }
 }
