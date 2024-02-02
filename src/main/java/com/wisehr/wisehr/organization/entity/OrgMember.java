@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -11,6 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
+@Setter
 public class OrgMember {
 
     @Id
@@ -34,7 +36,7 @@ public class OrgMember {
     @JsonIgnore
     private OrgDepartmentAndOrgMember orgDepAndOrgMem;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "pos_code")
     private OrgPosition orgPosition;
 
