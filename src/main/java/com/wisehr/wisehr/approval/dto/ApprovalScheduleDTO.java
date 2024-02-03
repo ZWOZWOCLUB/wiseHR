@@ -11,11 +11,11 @@ import java.time.LocalDate;
 @Getter
 @ToString
 public class ApprovalScheduleDTO {
-    String schCode;
-    String schType;
-    LocalDate schStartDate;
-    LocalDate schEndDate;
-    String schColor;
-    String schDeleteStatus;
-    ApprovalWorkPatternDTO workPattern;
+    private String schCode;
+    private String schType;
+    private LocalDate schStartDate;
+    private LocalDate schEndDate;
+    private String schColor;
+    private String schDeleteStatus;
+    private ApprovalWorkPatternDTO workPattern;
 }

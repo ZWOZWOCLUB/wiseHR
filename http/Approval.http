@@ -150,7 +150,7 @@ Accept: */*
 --WebAppBoundary
 Content-Disposition: form-data; name="ediKind"
 
-결근
+출근시간
 
 --WebAppBoundary
 Content-Disposition: form-data; name="ediName"
@@ -170,7 +170,7 @@ Content-Disposition: form-data; name="ediDate"
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-240130003
+3
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
@@ -238,10 +238,10 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "appCode": "app25",
+  "appCode": "app26",
   "appDate": "2024-04-01",
   "appState": "승인",
-  "appComment": "좋은 곳으로 가세요 "
+  "appComment": "굿 "
 }
 
 ### 전결자 지정 로직

@@ -11,6 +11,8 @@ import java.sql.Time;
 @Setter
 @Getter
 @ToString
+@Entity
+@Table(name = "attendance")
 public class Attendance {
     @Id
     @Column(name = "att_code")
