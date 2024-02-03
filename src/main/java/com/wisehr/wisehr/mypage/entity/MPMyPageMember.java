@@ -3,14 +3,12 @@ package com.wisehr.wisehr.mypage.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
-
 @Entity
 @Table(name ="member")
 @AllArgsConstructor
 @Getter
 @ToString
-public class MyPageMember {
+public class MPMyPageMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,61 +31,61 @@ public class MyPageMember {
     private String memEndDate;
     @Column(name = "mem_status")
     private String memStatus;
-    @Column(name = "mem_roll")
-    private String memRoll;
+    @Column(name = "mem_role")
+    private String memRole;
 
-    public MyPageMember() {
+    public MPMyPageMember() {
     }
 
-    public MyPageMember memCode(int memCode) {
+    public MPMyPageMember memCode(int memCode) {
         this.memCode = memCode;
         return this;
     }
-    public MyPageMember memName(String memName) {
+    public MPMyPageMember memName(String memName) {
         this.memName = memName;
         return this;
     }
-    public MyPageMember memPhone(String memPhone) {
+    public MPMyPageMember memPhone(String memPhone) {
         this.memPhone = memPhone;
         return this;
     }
-    public MyPageMember memEmail(String memEmail) {
+    public MPMyPageMember memEmail(String memEmail) {
         this.memEmail = memEmail;
         return this;
     }
-    public MyPageMember memAddress(String memAddress) {
+    public MPMyPageMember memAddress(String memAddress) {
         this.memAddress = memAddress;
         return this;
     }
-    public MyPageMember memBirth(String memBirth) {
+    public MPMyPageMember memBirth(String memBirth) {
         this.memBirth = memBirth;
         return this;
     }
-    public MyPageMember memPassword(String memPassword) {
+    public MPMyPageMember memPassword(String memPassword) {
         this.memPassword = memPassword;
         return this;
     }
-    public MyPageMember memHireDate(String memHireDate) {
+    public MPMyPageMember memHireDate(String memHireDate) {
         this.memHireDate = memHireDate;
         return this;
     }
-    public MyPageMember memEndDate(String memEndDate) {
+    public MPMyPageMember memEndDate(String memEndDate) {
         this.memEndDate = memEndDate;
         return this;
     }
-    public MyPageMember memStatus(String memStatus) {
+    public MPMyPageMember memStatus(String memStatus) {
         this.memStatus = memStatus;
         return this;
     }
-    public MyPageMember memRoll(String memRoll) {
-        this.memRoll = memRoll;
+    public MPMyPageMember memRole(String memRole) {
+        this.memRole = memRole;
         return this;
     }
-    public MyPageMember build(){
-        return new MyPageMember(memCode, memName, memPhone,
+    public MPMyPageMember build(){
+        return new MPMyPageMember(memCode, memName, memPhone,
                 memEmail, memAddress, memBirth,
                 memPassword, memHireDate,
                 memEndDate, memStatus,
-                memRoll);
+                memRole);
     }
 }

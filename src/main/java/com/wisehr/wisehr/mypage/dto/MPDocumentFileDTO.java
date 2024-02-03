@@ -2,14 +2,12 @@ package com.wisehr.wisehr.mypage.dto;
 
 import lombok.*;
 
-import java.sql.Date;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class DocumentFileDTO {
+public class MPDocumentFileDTO {
     private int docAtcCode;
     private String docAtcExtends;
     private String docAtcConvertName;

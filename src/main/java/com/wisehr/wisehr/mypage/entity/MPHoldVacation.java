@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class HoldVacation {
+public class MPHoldVacation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mem_code")
@@ -20,26 +20,26 @@ public class HoldVacation {
     private int vctDeadline;
 
 
-    public HoldVacation() {
+    public MPHoldVacation() {
     }
 
-    public HoldVacation memCode(int memCode) {
+    public MPHoldVacation memCode(int memCode) {
             this.memCode = memCode;
             return this;
         }
 
-        public HoldVacation vctCount(int vctCount) {
+        public MPHoldVacation vctCount(int vctCount) {
             this.vctCount = vctCount;
             return this;
         }
 
-        public HoldVacation vctDeadline(int vctDeadline) {
+        public MPHoldVacation vctDeadline(int vctDeadline) {
             this.vctDeadline = vctDeadline;
             return this;
         }
 
-        public HoldVacation build() {
-            return new HoldVacation(memCode, vctCount, vctDeadline);
+        public MPHoldVacation build() {
+            return new MPHoldVacation(memCode, vctCount, vctDeadline);
         }
 
 }

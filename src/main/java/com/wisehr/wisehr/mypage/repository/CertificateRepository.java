@@ -1,12 +1,11 @@
 package com.wisehr.wisehr.mypage.repository;
 
-import com.wisehr.wisehr.mypage.entity.Certificate;
-import com.wisehr.wisehr.mypage.entity.Degree;
+import com.wisehr.wisehr.mypage.entity.MPCertificate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CertificateRepository extends JpaRepository<Certificate, Integer> {
+public interface CertificateRepository extends JpaRepository<MPCertificate, Integer> {
 
-    List<Certificate> findByMemCode(int memCode);
+    List<MPCertificate> findByMemCode(int memCode);
 }

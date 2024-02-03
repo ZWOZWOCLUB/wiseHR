@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.mypage.dto;
 
+
 import lombok.*;
 
 @NoArgsConstructor
@@ -7,10 +8,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class VacationHistoryAndApprovalPaymentDTO {
+public class MPHoldVacationDTO {
 
-    private int vhiCode;
-    private int vhiSpend;
-    private ApprovalPaymentDTO appCode;
     private int memCode;
+    private int vctCount;
+    private int vctDeadline;
 }

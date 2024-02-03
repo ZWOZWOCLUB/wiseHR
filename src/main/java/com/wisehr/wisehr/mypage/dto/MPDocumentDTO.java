@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class DocumentDTO {
+public class MPDocumentDTO {
     private int memCode;
-    private List<DocumentFileDTO> documentFileDTOList;
-    private SalaryDTO salaryDTO;
+    private List<MPDocumentFileDTO> documentFileDTOList;
+    private MPSalaryDTO salaryDTO;
 
 }
