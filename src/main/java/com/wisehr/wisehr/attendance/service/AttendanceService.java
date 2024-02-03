@@ -40,7 +40,7 @@ public class AttendanceService {
 
     public String startWork(AttendanceDTO att) {
 
-        List<ScheduleAllowance> getSchCode = attendanceScheduleAllowanceRepository.findByMemCode((att.getAttendanceMember().getMemCode()).intValue());  // 가지고 있는 스케줄 코드를 가져옴 2개 이상일 수 있어서 List
+        List<ScheduleAllowance> getSchCode = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode((att.getAttendanceMember().getMemCode()).intValue());  // 가지고 있는 스케줄 코드를 가져옴 2개 이상일 수 있어서 List
 
         log.info("getSchCode : " + getSchCode);
 
@@ -48,7 +48,7 @@ public class AttendanceService {
         List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
 
         for (int i = 0; i < getSchCode.size(); i++) {
-            getWokCode.add(attendanceScheduleRepository.findBySchCode(getSchCode.get(i).getSchCode()));   // 찾아온 schCode를 통해서 wokCode를 찾기
+            getWokCode.add(attendanceScheduleRepository.findBySchCode(getSchCode.get(i).getAllowanceID().getSchCode()));   // 찾아온 schCode를 통해서 wokCode를 찾기
             getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));   // wokCode를 통해서 일하는 요일을 가져오기
         }
 
