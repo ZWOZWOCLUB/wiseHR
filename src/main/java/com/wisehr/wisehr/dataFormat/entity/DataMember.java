@@ -1,4 +1,4 @@
-package com.wisehr.wisehr.comment.entity;
+package com.wisehr.wisehr.dataFormat.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class ComMember {
+public class DataMember {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,6 @@ public class ComMember {
     private String memRole;
     @Column(name = "dep_code", nullable = true)
     private Long depCode;
-    @OneToOne
-    @JoinColumn(name = "pos_code", nullable = true)
-    private ComPosition posCode;
+    @Column(name = "pos_code", nullable = true)
+    private Long posCode;
 }

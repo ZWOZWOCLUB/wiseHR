@@ -14,5 +14,5 @@ public class CommentDTO {
     private Date comDate;       //작성일시
     private ComMemberDTO comMember;       //댓글작성자
     private String comDeleteState;  //삭제여부
-    private String notCode;     //글코드
+    private ComNoticeDTO notCode;     //글코드
 }
