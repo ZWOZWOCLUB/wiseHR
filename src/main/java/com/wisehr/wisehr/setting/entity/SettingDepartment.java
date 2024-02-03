@@ -15,7 +15,7 @@ import lombok.*;
 @ToString
 public class SettingDepartment {
     @Id
-    @Column(name = "dep_code", nullable = false)
+    @Column(name = "dep_code")
     private int depCode;
     @Column(name = "dep_name")
     private String depName;

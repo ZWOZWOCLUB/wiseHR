@@ -2,7 +2,10 @@ package com.wisehr.wisehr.schedule.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -11,10 +14,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Embeddable
-public class ScheduleAllowanceID implements Serializable {
-    @Column(name = "mem_code")
+public class ScheduleInsertAllowanceID implements Serializable {
     private int memCode;
-    @Column(name = "sch_code")
     private String schCode;
 
 

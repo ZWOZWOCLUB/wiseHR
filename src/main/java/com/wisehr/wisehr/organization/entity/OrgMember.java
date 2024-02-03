@@ -11,7 +11,6 @@ import lombok.ToString;
 @Table(name = "member")
 @AllArgsConstructor
 @Getter
-@ToString
 @Setter
 public class OrgMember {
 
@@ -44,51 +43,19 @@ public class OrgMember {
     public OrgMember() {
     }
 
-//
-//
-//    public OrgMember memCode(int memCode) {
-//        this.memCode = memCode;
-//        return this;
-//    }
-//
-//    public OrgMember memName(String memName) {
-//        this.memName = memName;
-//        return this;
-//    }
-//
-//    public OrgMember memPhone(String memPhone) {
-//        this.memPhone = memPhone;
-//        return this;
-//    }
-//
-//    public OrgMember memEmail(String memEmail) {
-//        this.memEmail = memEmail;
-//        return this;
-//    }
-//
-//    public OrgMember memStatus(String memStatus) {
-//        this.memStatus = memStatus;
-//        return this;
-//    }
-//
-//    public OrgMember memRole(String memRole) {
-//        this.memRole = memRole;
-//        return this;
-//    }
-//
-//    public OrgMember orgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {
-//        this.orgDepAndOrgMem = orgDepAndOrgMem;
-//        return this;
-//    }
-//
-//    public OrgMember orgPosition(OrgPosition orgPosition) {
-//        this.orgPosition = orgPosition;
-//        return this;
-//    }
-//
-//    public OrgMember build() {
-//        return new com.wisehr.wisehr.organization.entity.OrgMember(memCode, memName, memPhone, memEmail, memStatus, memRole, orgDepAndOrgMem, orgPosition);
-//    }
+    @Override
+    public String toString() {
+        return "OrgMember{" +
+                "memCode=" + memCode +
+                ", memName='" + memName + '\'' +
+                ", memPhone='" + memPhone + '\'' +
+                ", memEmail='" + memEmail + '\'' +
+                ", memStatus='" + memStatus + '\'' +
+                ", memRole='" + memRole + '\'' +
+//                ", orgDepAndOrgMem=" + orgDepAndOrgMem +
+                ", orgPosition=" + orgPosition +
+                '}';
+    }
 
 
     public void setOrgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {

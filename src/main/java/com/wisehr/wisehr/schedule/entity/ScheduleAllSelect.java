@@ -14,17 +14,29 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
+@Table(name = "schedule")
 public class ScheduleAllSelect {
     @Id
-    private String Date;
-//    private List<SettingMember> memberList;
-//    private List<ScheduleAllowance> allowanceList;
-//    private List<Schedule> scheduleList;
-//    private List<ScheduleWorkPattern> patternList;
-//    @OneToMany
-//    @JoinColumn(name = "day_code")
-//    private List<ScheduleWeekDay> weekDayList;
-//    @OneToMany
-//    @JoinColumn(name = "mem_code")
-//    private List<ScheduleEtcPattern> etcPatternList;
+    @Column(name = "sch_code")
+    private String schCode;
+    @Column(name = "sch_type")
+    private String schType;
+    @Column(name = "sch_start_date")
+    private String schStartDate;
+    @Column(name = "sch_end_date")
+    private String schEndDate;
+    @Column(name = "sch_color")
+    private String schColor;
+    @Column(name = "sch_delete_status")
+    private String schDeleteStatus;
+    @Column(name = "wok_code", insertable=false, updatable=false)
+    private Integer wokCode;
+    @OneToOne
+    @JoinColumn(name = "wok_code")
+    private ScheduleWorkPattern patternList;
+    @OneToMany
+    @JoinColumn(name = "sch_code")
+    private List<ScheduleAllowance> allowanceList;
+
+
 }
