@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CareerRepository extends JpaRepository<MPCareer, Integer> {
+public interface MPCareerRepository extends JpaRepository<MPCareer, Integer> {
 
     List<MPCareer> findByMemCode(int memCode);
 }

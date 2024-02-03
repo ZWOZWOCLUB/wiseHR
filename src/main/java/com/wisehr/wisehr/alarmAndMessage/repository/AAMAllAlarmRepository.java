@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface AllAlarmRepository extends JpaRepository<AAMAllAlarm, Integer> {
+public interface AAMAllAlarmRepository extends JpaRepository<AAMAllAlarm, Integer> {
 
     List<AAMAllAlarm> findByMemCode(int memCode);
 }
