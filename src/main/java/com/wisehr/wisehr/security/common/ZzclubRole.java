@@ -1,14 +1,15 @@
 package com.wisehr.wisehr.security.common;
 
 public enum ZzclubRole {
-    USER("USER"),
-    ADMIN("ADMIN"),
-    SUPER("SUPER_ADMIN"),
-    ALL("USER, ADMIN, SUPER_ADMIN");
+    일반사원("USER"),
+    중간관리자("ADMIN"),
+    최고관리자("SUPER"),
+    전체("USER, ADMIN, SUPER");
 
-    private String memRole;
 
-    ZzclubRole(String mem_role){
+    private final String memRole;
+
+    ZzclubRole(String memRole){
         this.memRole = memRole;
     }
 

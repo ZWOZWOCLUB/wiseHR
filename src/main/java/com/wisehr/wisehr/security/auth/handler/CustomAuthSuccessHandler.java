@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import com.wisehr.wisehr.security.auth.model.dto.TokenDTO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,6 +33,16 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
             responseMap.put("message","휴먼상태인 계정입니다.");
         }else{
             String token = TokenUtils.generateJwtToken(user);
+
+            // tokenDTO response
+            TokenDTO tokenDTO = TokenDTO.builder()
+                    .memCode(String.valueOf(user.getMemCode()))
+                    .accessToken(token)
+                    .grantType(AuthConstants.TOKEN_TYPE)
+                    .build();
+
+            jsonValue = (JSONObject) ConvertUtil.convertObjectToJsonObject(tokenDTO);
+
             responseMap.put("userInfo", jsonValue);
             responseMap.put("message", "로그인 성공");
 

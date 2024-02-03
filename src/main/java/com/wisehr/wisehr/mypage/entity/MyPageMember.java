@@ -79,8 +79,8 @@ public class MyPageMember {
         this.memStatus = memStatus;
         return this;
     }
-    public MyPageMember memRoll(String memRoll) {
-        this.memRoll = memRoll;
+    public MyPageMember memRole(String memRole) {
+        this.memRole = memRole;
         return this;
     }
     public MyPageMember build(){
@@ -88,6 +88,6 @@ public class MyPageMember {
                 memEmail, memAddress, memBirth,
                 memPassword, memHireDate,
                 memEndDate, memStatus,
-                memRoll);
+                memRole);
     }
 }

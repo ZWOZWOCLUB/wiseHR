@@ -21,6 +21,7 @@ public class DetailsUser implements UserDetails {
     }
 
     public DetailsUser(User user) {
+        this.user = user;
     }
 
     public User getUser() {

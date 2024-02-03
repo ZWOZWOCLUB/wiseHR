@@ -10,7 +10,11 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
 //    public Optional<User> findUser(Integer code) {
 //        Optional<User> user = userRepository.findByMem_code(code);

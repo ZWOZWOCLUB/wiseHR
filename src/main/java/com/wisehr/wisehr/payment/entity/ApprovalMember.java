@@ -37,12 +37,11 @@ public class ApprovalMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
-<<<<<<< HEAD
-=======
+
     @ManyToOne
     @JoinColumn(name = "dep_code")
     @JsonIgnore
     private ApprovalDepAndMem department;
 
->>>>>>> c4a469d2f71b11ca1d5ca667e7100e80cbf12c06
+
 }
