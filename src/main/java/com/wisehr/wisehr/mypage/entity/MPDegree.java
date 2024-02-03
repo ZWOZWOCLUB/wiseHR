@@ -12,7 +12,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class Degree {
+public class MPDegree {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

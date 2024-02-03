@@ -1,13 +1,12 @@
 package com.wisehr.wisehr.mypage.repository;
 
-import com.wisehr.wisehr.mypage.entity.VacationHistory;
-import com.wisehr.wisehr.mypage.entity.VacationHistoryAndApprovalPayment;
+import com.wisehr.wisehr.mypage.entity.MPVacationHistoryAndApprovalPayment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface VacationHistoryAndApprovalPaymentRepository extends JpaRepository<VacationHistoryAndApprovalPayment, Integer> {
+public interface VacationHistoryAndApprovalPaymentRepository extends JpaRepository<MPVacationHistoryAndApprovalPayment, Integer> {
 
 
-    List<VacationHistoryAndApprovalPayment> findByMemCode(int memCode);
+    List<MPVacationHistoryAndApprovalPayment> findByMemCode(int memCode);
 }

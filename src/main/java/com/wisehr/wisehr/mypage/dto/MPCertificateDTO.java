@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class CertificateDTO {
+public class MPCertificateDTO {
 
     private String cerCode;
     private String cerName;

@@ -3,14 +3,13 @@ package com.wisehr.wisehr.mypage.dto;
 import lombok.*;
 
 import java.sql.Time;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class AttendanceDTO {
+public class MPAttendanceDTO {
     private int attCode;
     private Time attStartTime;
     private Time attEndTime;

@@ -1,15 +1,12 @@
 package com.wisehr.wisehr.setting.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.mypage.dto.HoldVacationDTO;
+import com.wisehr.wisehr.mypage.dto.MPHoldVacationDTO;
 import com.wisehr.wisehr.setting.dto.*;
-import com.wisehr.wisehr.setting.entity.SettingResources;
 import com.wisehr.wisehr.setting.service.SettingMemberService;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -247,7 +244,7 @@ public class SettingMemberController {
      * 연차 수정
      */
     @PutMapping("/updateVacation")
-    public ResponseEntity<ResponseDTO> updateVacation(@RequestBody HoldVacationDTO holdVacationDTO){
+    public ResponseEntity<ResponseDTO> updateVacation(@RequestBody MPHoldVacationDTO holdVacationDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "연차 수정 성공", settingMemberService.updateVacation(holdVacationDTO)));
     }
 

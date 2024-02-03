@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class AnnualDTO {
+public class MPAnnualDTO {
 
     private String vacCode;
     private String vacKind;

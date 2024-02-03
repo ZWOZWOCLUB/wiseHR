@@ -1,6 +1,5 @@
 package com.wisehr.wisehr.mypage.entity;
 
-import com.wisehr.wisehr.mypage.dto.ApprovalPaymentDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VacationHistoryAndApprovalPayment {
+public class MPVacationHistoryAndApprovalPayment {
     @Id
     @Column(name = "vhi_code")
     private int vhiCode;
@@ -20,5 +19,5 @@ public class VacationHistoryAndApprovalPayment {
     private int vhiSpend;
     @JoinColumn(name = "app_code")
     @OneToOne
-    private MyPageApprovalPayment appCode;
+    private MPMyPageApprovalPayment appCode;
 }

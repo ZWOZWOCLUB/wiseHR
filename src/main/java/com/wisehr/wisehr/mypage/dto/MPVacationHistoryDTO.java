@@ -8,9 +8,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class HoldVacationDTO {
+public class MPVacationHistoryDTO {
 
+    private int vhiCode;
+    private int vhiSpend;
+    private String appCode;
     private int memCode;
-    private int vctCount;
-    private int vctDeadline;
 }

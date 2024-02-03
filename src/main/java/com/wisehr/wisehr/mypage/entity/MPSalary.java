@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Salary {
+public class MPSalary {
     @Id
     @Column(name = "sal_code")
     private String salCode;

@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Annual {
+public class MPAnnual {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

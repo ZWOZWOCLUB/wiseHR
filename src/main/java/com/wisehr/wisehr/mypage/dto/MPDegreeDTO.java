@@ -10,7 +10,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class DegreeDTO {
+public class MPDegreeDTO {
 
     private String degCode;
     private String degKind;

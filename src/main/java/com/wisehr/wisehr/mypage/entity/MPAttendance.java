@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
-import java.util.Date;
 
 @Entity
 @Table(name = "attendance")
@@ -13,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class Attendance {
+public class MPAttendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,5 @@
 package com.wisehr.wisehr.setting.entity;
 
-import com.wisehr.wisehr.mypage.entity.MyPageMember;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

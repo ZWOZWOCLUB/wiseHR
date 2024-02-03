@@ -9,7 +9,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class CareerDTO {
+public class MPCareerDTO {
 
     private String crrCode;
     private String crrName;

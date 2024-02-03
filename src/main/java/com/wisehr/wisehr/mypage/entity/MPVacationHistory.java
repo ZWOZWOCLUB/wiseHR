@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VacationHistory {
+public class MPVacationHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
