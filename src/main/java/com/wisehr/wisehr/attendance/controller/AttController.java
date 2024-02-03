@@ -14,15 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AttController {
 
-    private final AttService attService;
-
-    public AttController(AttService attService) {
-        this.attService = attService;
-    }
-
-    @PostMapping("/insertAtt")
-    public ResponseEntity<ResponseDTO> insertAtt(){
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출근 기록", attService.insertAtt()));
-    }
 }

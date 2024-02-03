@@ -1,11 +1,11 @@
 package com.wisehr.wisehr.util;
 
-import com.wisehr.wisehr.payment.dto.ApprovalAttachmentDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalDTO;
-import com.wisehr.wisehr.payment.entity.ApprovalAttachment;
-import com.wisehr.wisehr.payment.entity.ApprovalMember;
-import com.wisehr.wisehr.payment.repository.ApprovalAttachmentRepository;
-import com.wisehr.wisehr.payment.repository.ApprovalMemberRepository;
+import com.wisehr.wisehr.approval.dto.ApprovalAttachmentDTO;
+import com.wisehr.wisehr.approval.dto.ApprovalDTO;
+import com.wisehr.wisehr.approval.entity.ApprovalAttachment;
+import com.wisehr.wisehr.approval.entity.ApprovalMember;
+import com.wisehr.wisehr.approval.repository.ApprovalAttachmentRepository;
+import com.wisehr.wisehr.approval.repository.ApprovalMemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.modelmapper.ModelMapper;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -117,5 +119,37 @@ public class ApprovalUtils {
         log.info("depRole : " + depRole);
 
         return depRole;
+    }
+
+
+    // 날짜 구하는 메서드
+    public List<LocalDate> findDays(LocalDate startDate, LocalDate endDate, int[] needDays){
+
+        List<LocalDate> days = new ArrayList<>();
+
+        LocalDate date = startDate;
+
+        while (!date.isAfter(endDate)){
+
+            int week = date.getDayOfWeek().getValue();
+
+            if (bools(needDays, week)){
+
+                days.add(date);
+            }
+            date = date.plusDays(1);
+        }
+
+        return days;
+    }
+
+    private boolean bools(int[] need, int day){
+
+        for (int date : need){
+            if (date == day){
+                return true;
+            }
+        }
+        return false;
     }
 }

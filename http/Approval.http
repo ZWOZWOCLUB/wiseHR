@@ -238,10 +238,10 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "appCode": "app24",
+  "appCode": "app25",
   "appDate": "2024-04-01",
   "appState": "승인",
-  "appComment": "ㅋㅋㅋㅋ 그게 있네 ㅋㅋㅋ"
+  "appComment": "좋은 곳으로 가세요 "
 }
 
 ### 전결자 지정 로직
