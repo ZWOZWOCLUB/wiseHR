@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name="department")
 @AllArgsConstructor
 @Getter
-@ToString
 @Setter
 public class OrgDepartmentAndOrgMember {
 
@@ -71,6 +70,18 @@ public class OrgDepartmentAndOrgMember {
 
     public OrgDepartmentAndOrgMember build() {
         return new OrgDepartmentAndOrgMember(depCode, depName, refDepCode, depBirthDate, depDeleteStatus, memberList);
+    }
+
+    @Override
+    public String toString() {
+        return "OrgDepartmentAndOrgMember{" +
+                "depCode=" + depCode +
+                ", depName='" + depName + '\'' +
+                ", refDepCode=" + refDepCode +
+                ", depBirthDate='" + depBirthDate + '\'' +
+                ", depDeleteStatus='" + depDeleteStatus + '\'' +
+                ", memberList=" + memberList +
+                '}';
     }
 }
 

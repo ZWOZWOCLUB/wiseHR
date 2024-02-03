@@ -6,6 +6,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,4 +24,6 @@ public class OrgMemberDTO {
 
     private OrgDepartmentAndOrgMemberDTO orgDepAndOrgMem;
     private OrgPositionDTO orgPosition;
+
+    private List<Integer> memberCodes; //부서에 멤버 추가하기 메소드 용도(멤버코드들 묶음)
 }
