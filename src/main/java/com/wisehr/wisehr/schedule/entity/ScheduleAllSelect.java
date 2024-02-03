@@ -35,16 +35,8 @@ public class ScheduleAllSelect {
     @JoinColumn(name = "wok_code")
     private ScheduleWorkPattern patternList;
     @OneToMany
-    @JoinColumn(name = "wok_code")
-    private List<SchedulePatternDay> patternDayList;
-    @OneToMany
-    @JoinColumn(name = "mem_code")
-    private List<SettingMember> memberList;
-    @OneToMany
     @JoinColumn(name = "sch_code")
     private List<ScheduleAllowance> allowanceList;
-    @OneToMany
-    @JoinColumn(name = "mem_code")
-    private List<ScheduleEtcPattern> etcPatternList;
+
 
 }

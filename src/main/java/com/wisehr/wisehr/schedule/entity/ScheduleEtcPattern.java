@@ -27,28 +27,28 @@ public class ScheduleEtcPattern {
 
 
 
-        public ScheduleEtcPattern etcCode(int etcCode) {
-            this.etcCode = etcCode;
-            return this;
-        }
+    public ScheduleEtcPattern etcCode(int etcCode) {
+        this.etcCode = etcCode;
+        return this;
+    }
 
-        public ScheduleEtcPattern memCode(int memCode) {
-            this.memCode = memCode;
-            return this;
-        }
+    public ScheduleEtcPattern memCode(int memCode) {
+        this.memCode = memCode;
+        return this;
+    }
 
-        public ScheduleEtcPattern etcDate(String etcDate) {
-            this.etcDate = etcDate;
-            return this;
-        }
+    public ScheduleEtcPattern etcDate(String etcDate) {
+        this.etcDate = etcDate;
+        return this;
+    }
 
-        public ScheduleEtcPattern etcKind(String etcKind) {
-            this.etcKind = etcKind;
-            return this;
-        }
+    public ScheduleEtcPattern etcKind(String etcKind) {
+        this.etcKind = etcKind;
+        return this;
+    }
 
-        public ScheduleEtcPattern build() {
-            return new ScheduleEtcPattern(etcCode, memCode, etcDate, etcKind);
-        }
+    public ScheduleEtcPattern build() {
+        return new ScheduleEtcPattern(etcCode, memCode, etcDate, etcKind);
+    }
 
 }

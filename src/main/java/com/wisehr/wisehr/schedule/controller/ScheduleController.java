@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,27 +34,34 @@ public class ScheduleController {
  * 1. 첫페이지
  *  일정 조회(첫페이지에 전체 일정이 다 뜨게 이번달꺼만)
  */
+@PostMapping("/searchMonth")
+public ResponseEntity<ResponseDTO> searchMonth(@RequestBody String yearMonth) {
+    if(yearMonth != null){
+    Date date = new Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+    System.out.println("simpleDateFormat = " + simpleDateFormat);
+    String now = simpleDateFormat.format(date);
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(now)));
 
-/**
- * 1. 부서 조회(조직도 형태)
- */
-
-/**
- * 1. 선택한 다른 사람 또는 부서의 일정, 년 - 월 조회
- * /
-
-/**
- *
- * 1. 이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
- */
-@GetMapping("/searchPrev/{yearMonth}")
-    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String yearMonth) {
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchPrev(yearMonth)));
+    }   else {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(yearMonth)));
+    }
 }
 
     /**
-     * 1. 다음달 일정 조회(날짜에 맞는 패턴이 있으면 가져오고 없으면 미출력)
+     *
+     *  1. 선택한 다른 사람 또는 부서의 일정, 년 - 월 조회
      */
+    @PostMapping("/searchValue")
+    public ResponseEntity<ResponseDTO> searchValue(@RequestBody ScheduleSearchValueDTO valueDTO) {
+
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchValue(valueDTO)));
+
+    }
+
+
+
+
 
     /**
      * 2. 해당 날짜 누르면 뜨는 창
