@@ -75,6 +75,6 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
             "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
             "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
             "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth NOT BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-d%') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d') ")
+            "WHERE :notContain NOT BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-d%') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d') ")
     List<ScheduleAllSelect> findByYearMonthAndMemCodeNotContain(String notContain);
 }
