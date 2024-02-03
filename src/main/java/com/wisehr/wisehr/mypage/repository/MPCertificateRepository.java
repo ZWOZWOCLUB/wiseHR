@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CertificateRepository extends JpaRepository<MPCertificate, Integer> {
+public interface MPCertificateRepository extends JpaRepository<MPCertificate, Integer> {
 
     List<MPCertificate> findByMemCode(int memCode);
 }

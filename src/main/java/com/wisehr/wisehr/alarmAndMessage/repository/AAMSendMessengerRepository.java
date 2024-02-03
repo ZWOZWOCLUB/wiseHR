@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SendMessengerRepository extends JpaRepository<AAMSendMessenger, Integer> {
+public interface AAMSendMessengerRepository extends JpaRepository<AAMSendMessenger, Integer> {
 
     List<AAMSendMessenger> findByMemCode(int memCode);
 }

@@ -26,17 +26,17 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class MyPageService {
-    private final MyPageRepository myPageRepository;
-    private final DegreeRepository degreeRepository;
-    private final CertificateRepository certificateRepository;
-    private final CareerRepository careerRepository;
-    private final AttendanceRepository attendanceRepository;
-    private final DocumentRepository documentRepository;
-    private final VacationHistoryRepository vacationHistoryRepository;
-    private final HoldVacationRepository holdVacationRepository;
-    private final MyPageAnnualRepository myPageAnnualRepository;
-    private final DocumentFileRepository documentFileRepository;
-    private final VacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository;
+    private final MPMyPageRepository myPageRepository;
+    private final MPDegreeRepository degreeRepository;
+    private final MPCertificateRepository certificateRepository;
+    private final MPCareerRepository careerRepository;
+    private final MPAttendanceRepository attendanceRepository;
+    private final MPDocumentRepository documentRepository;
+    private final MPVacationHistoryRepository vacationHistoryRepository;
+    private final MPHoldVacationRepository holdVacationRepository;
+    private final MPMyPageAnnualRepository myPageAnnualRepository;
+    private final MPDocumentFileRepository documentFileRepository;
+    private final MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository;
     private final ModelMapper modelMapper;
 
     /* 이미지 저장 할 위치 및 응답 할 이미지 주소 */
@@ -46,10 +46,10 @@ public class MyPageService {
     @Value("${image.image-url}")
     private String IMAGE_URL;
 
-    public MyPageService(MyPageRepository myPageRepository, DegreeRepository degreeRepository, CertificateRepository certificateRepository, CareerRepository careerRepository, AttendanceRepository attendanceRepository,
-                         DocumentFileRepository documentFileRepository, DocumentRepository documentRepository,
-                         VacationHistoryRepository vacationHistoryRepository, HoldVacationRepository holdVacationRepository,
-                         MyPageAnnualRepository myPageAnnualRepository, DocumentFileRepository documentFileRepository1, VacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository,
+    public MyPageService(MPMyPageRepository myPageRepository, MPDegreeRepository degreeRepository, MPCertificateRepository certificateRepository, MPCareerRepository careerRepository, MPAttendanceRepository attendanceRepository,
+                         MPDocumentFileRepository documentFileRepository, MPDocumentRepository documentRepository,
+                         MPVacationHistoryRepository vacationHistoryRepository, MPHoldVacationRepository holdVacationRepository,
+                         MPMyPageAnnualRepository myPageAnnualRepository, MPDocumentFileRepository documentFileRepository1, MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository,
                          ModelMapper modelMapper) {
         this.myPageRepository = myPageRepository;
         this.degreeRepository = degreeRepository;

@@ -3,7 +3,7 @@ package com.wisehr.wisehr.setting.service;
 import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.mypage.dto.MPHoldVacationDTO;
 import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
-import com.wisehr.wisehr.mypage.repository.HoldVacationRepository;
+import com.wisehr.wisehr.mypage.repository.MPHoldVacationRepository;
 import com.wisehr.wisehr.setting.dto.*;
 import com.wisehr.wisehr.setting.entity.*;
 import com.wisehr.wisehr.setting.repository.*;
@@ -42,7 +42,7 @@ public class SettingMemberService {
     private final SettingSalaryFileRepository settingSalaryFileRepository;
 
     private final SettingSalaryRepository settingSalaryRepository;
-    private final HoldVacationRepository vacationRepository;
+    private final MPHoldVacationRepository vacationRepository;
 
 
     private final ModelMapper modelMapper;
@@ -54,7 +54,7 @@ public class SettingMemberService {
     private String IMAGE_URL;
 
 
-    public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingDegreeFileRepository settingDegreeFileRepository, SettingCareerRepository settingCareerRepository, SettingCareerFileRepository settingCareerFileRepository, SettingCertificateRepository settingCertificateRepository, SettingCertificateFileRepository settingCertificateFileRepository, SettingDocumentFileRepository settingDocumentFileRepository, SettingSalaryFileRepository settingSalaryFileRepository, SettingSalaryRepository settingSalaryRepository, HoldVacationRepository vacationRepository, ModelMapper modelMapper) {
+    public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingDegreeFileRepository settingDegreeFileRepository, SettingCareerRepository settingCareerRepository, SettingCareerFileRepository settingCareerFileRepository, SettingCertificateRepository settingCertificateRepository, SettingCertificateFileRepository settingCertificateFileRepository, SettingDocumentFileRepository settingDocumentFileRepository, SettingSalaryFileRepository settingSalaryFileRepository, SettingSalaryRepository settingSalaryRepository, MPHoldVacationRepository vacationRepository, ModelMapper modelMapper) {
         this.settingMemberRepository = settingMemberRepository;
         this.settingMemDepPosRepository = settingMemDepPosRepository;
         this.settingDepartmentRepository = settingDepartmentRepository;

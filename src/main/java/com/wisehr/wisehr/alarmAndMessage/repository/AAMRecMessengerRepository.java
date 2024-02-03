@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RecMessengerRepository extends JpaRepository<AAMRecMessenger, Integer> {
+public interface AAMRecMessengerRepository extends JpaRepository<AAMRecMessenger, Integer> {
 
     List<AAMRecMessenger> findByMemCode(int memCode);
 }

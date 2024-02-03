@@ -8,11 +8,11 @@ import com.wisehr.wisehr.alarmAndMessage.entity.AAMAllAlarm;
 import com.wisehr.wisehr.alarmAndMessage.entity.AAMPerAlarm;
 import com.wisehr.wisehr.alarmAndMessage.entity.AAMRecMessenger;
 import com.wisehr.wisehr.alarmAndMessage.entity.AAMSendMessenger;
-import com.wisehr.wisehr.alarmAndMessage.repository.AllAlarmRepository;
-import com.wisehr.wisehr.alarmAndMessage.repository.PerAlarmRepository;
+import com.wisehr.wisehr.alarmAndMessage.repository.AAMAllAlarmRepository;
+import com.wisehr.wisehr.alarmAndMessage.repository.AAMPerAlarmRepository;
 
-import com.wisehr.wisehr.alarmAndMessage.repository.RecMessengerRepository;
-import com.wisehr.wisehr.alarmAndMessage.repository.SendMessengerRepository;
+import com.wisehr.wisehr.alarmAndMessage.repository.AAMRecMessengerRepository;
+import com.wisehr.wisehr.alarmAndMessage.repository.AAMSendMessengerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,12 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class AlarmAndMessageService {
-    private final AllAlarmRepository allAlarmRepository;
-    private final PerAlarmRepository perAlarmRepository;
-    private final SendMessengerRepository sendMessengerRepository;
-    private final RecMessengerRepository recMessengerRepository;
+    private final AAMAllAlarmRepository allAlarmRepository;
+    private final AAMPerAlarmRepository perAlarmRepository;
+    private final AAMSendMessengerRepository sendMessengerRepository;
+    private final AAMRecMessengerRepository recMessengerRepository;
     private final ModelMapper modelMapper;
-    public AlarmAndMessageService(AllAlarmRepository allAlarmRepository, PerAlarmRepository perAlarmRepository, SendMessengerRepository sendMessengerRepository, RecMessengerRepository recMessengerRepository, ModelMapper modelMapper) {
+    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, ModelMapper modelMapper) {
         this.allAlarmRepository = allAlarmRepository;
         this.perAlarmRepository = perAlarmRepository;
         this.sendMessengerRepository = sendMessengerRepository;

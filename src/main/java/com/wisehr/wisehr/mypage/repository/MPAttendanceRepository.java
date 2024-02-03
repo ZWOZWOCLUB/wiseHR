@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Date;
 
-public interface AttendanceRepository extends JpaRepository<MPAttendance, Integer> {
+public interface MPAttendanceRepository extends JpaRepository<MPAttendance, Integer> {
 
     MPAttendance findByAttWorkDate(Date attWorkDate);
 
