@@ -1,0 +1,12 @@
+### 결재 상태 조회
+
+GET http://localhost:8001/main/approvalCount/2
+Content-Type: application/json
+Accept: */*
+
+
+### 오늘의 일정 조회
+
+
+
+### 선택한 날짜의 일정 조회

@@ -7,13 +7,14 @@ import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
-import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
 import com.wisehr.wisehr.organization.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("org")
@@ -110,11 +111,13 @@ public class OrgController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서 개별 조회 성공", orgService.selectDepDetail(depCode)));
     }
 
-//    @PutMapping("/insertMember/{depCode}")
-//    public ResponseEntity<ResponseDTO> insertMember(@PathVariable int depCode){
-//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "멤버 추가 성공", orgService.insertMember(depCode)));
-//    }
 
+
+    /**
+     * 멤버 전체 조회(페이징)
+     * @param offset
+     * @return
+     */
     @GetMapping("/memberList")
     public ResponseEntity<ResponseDTO> selectAllOrgMemberListWithPaging(
             @RequestParam(name = "offset", defaultValue = "1") String offset){
@@ -133,5 +136,16 @@ public class OrgController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", pagingResponseDTO));
 
+    }
+
+    /**
+     * 부서에 멤버 추가(member 테이블의 dep_code를 업데이트 해주기 때문에 put)
+     * @param depCode 선택한 부서
+     * @param selectedMemberCodes 사용자가 추가하기로 선택한 멤버의 코드들
+     * @return
+     */
+    @PutMapping("/insertMember/{depCode}")
+    public ResponseEntity<ResponseDTO> insertMember(@PathVariable int depCode, @RequestBody List<Integer> selectedMemberCodes){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "멤버 추가 성공", orgService.insertMember(depCode, selectedMemberCodes)));
     }
 }

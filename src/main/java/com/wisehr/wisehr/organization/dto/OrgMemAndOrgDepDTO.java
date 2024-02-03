@@ -5,6 +5,8 @@ import com.wisehr.wisehr.organization.entity.OrgDepartment;
 import com.wisehr.wisehr.organization.entity.OrgPosition;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,13 +18,12 @@ public class OrgMemAndOrgDepDTO {
 
     private int memCode;
     private String memName;
-//    private String memPhone;
-//    private String memEmail;
     private String memStatus;
-//    private String memRole;
 
     private OrgPosition orgPosition;
     private OrgDepartment orgDepartment;
+
+
 
 
 
