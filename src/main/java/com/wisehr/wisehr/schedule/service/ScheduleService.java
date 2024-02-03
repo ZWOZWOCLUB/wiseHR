@@ -22,10 +22,13 @@ public class ScheduleService {
     private final SchedulePatternDayRepository patternDayRepository;
     private final ScheduleEtcPatternRepository etcPatternRepository;
     private final ScheduleAllowanceRepository allowanceRepository;
+    private final ScheduleAllSelectRepository allSelectRepository;
+    private final ScheduleInsertPatternDayRepository insertPatternDayRepository;
+    private final ScheduleInsertAllowanceRepository insertAllowanceRepository;
 
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository) {
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -33,19 +36,29 @@ public class ScheduleService {
         this.patternDayRepository = patternDayRepository;
         this.etcPatternRepository = etcPatternRepository;
         this.allowanceRepository = allowanceRepository;
+        this.allSelectRepository = allSelectRepository;
+        this.insertPatternDayRepository = insertPatternDayRepository;
+        this.insertAllowanceRepository = insertAllowanceRepository;
     }
 
 
-    public List<ScheduleAttendanceDTO> searchPrev(String yearMonth) {
+    public List<ScheduleAllSelectDTO> searchMonth(String yearMonth) {
         log.info("searchDate 서비스 시작~~~~~~~~~~~~");
-        List<ScheduleAttendance> scheduleAttendances = attendanceRepository.findByAttWorkDateContaining(yearMonth);
-        List<ScheduleAttendanceDTO> scheduleAttendanceDTO = scheduleAttendances.stream()
-                        .map(list -> modelMapper.map(list, ScheduleAttendanceDTO.class))
+
+
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonth(yearMonth);
+        log.info("allselect : " + allSelect);
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                        .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
                         .collect(Collectors.toList());
+        System.out.println("selectDTOList = " + selectDTOList);
+
         log.info("searchDate 서비스 끗~~~~~~~~~~~~");
 
-        return scheduleAttendanceDTO;
+        return selectDTOList;
     }
+
     @Transactional
     public String insertSchedule(ScheduleInsertDTO insertDTO) {
         log.info("insertSchedule Start~~~~~~~~~~~~");
@@ -64,15 +77,19 @@ public class ScheduleService {
             result++;
 
 
+            System.out.println("patternDayDTO = " + patternDayDTO);
             for (SchedulePatternDayDTO pattern: patternDayDTO) {
                 pattern.setWokCode(insertDTO.getScheduleDTO().getWokCode());
+                System.out.println("pattern = " + pattern);
 
             }
-            List<SchedulePatternDay> patternDay = patternDayDTO.stream()
-                    .map(pattern -> modelMapper.map(pattern, SchedulePatternDay.class))
+            List<ScheduleInsertPatternDay> patternDay = patternDayDTO.stream()
+                    .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
                     .collect(Collectors.toList());
 
-            List<SchedulePatternDay> insertPatternDayResult = patternDayRepository.saveAll(patternDay);
+
+
+            List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
             log.info("insertPatternDayResult = " + insertPatternDayResult);
 
             result++;
@@ -158,18 +175,18 @@ public class ScheduleService {
                 int dayCode = patternDayDTO.get(i).getDayCode();
                 int wokCode = patternDayDTO.get(i).getWokCode();
 
-                SchedulePatternDay pattern = patternDayRepository.findByDayCodeAndWokCode(dayCode, wokCode);
+                ScheduleInsertPatternDay pattern = insertPatternDayRepository.findByDayCodeAndWokCode(dayCode, wokCode);
 
-                patternDayRepository.delete(pattern);
+                insertPatternDayRepository.delete(pattern);
 
                 patternDayDTO.get(i).setDayCode(patternDayDTO.get(i).getChangeDayCode());
             }
 
-            List<SchedulePatternDay> patternDay = patternDayDTO.stream()
-                    .map(pattern -> modelMapper.map(pattern, SchedulePatternDay.class))
+            List<ScheduleInsertPatternDay> patternDay = patternDayDTO.stream()
+                    .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
                     .collect(Collectors.toList());
 
-            List<SchedulePatternDay> insertPatternDayResult = patternDayRepository.saveAll(patternDay);
+            List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
             log.info("insertPatternDayResult = " + insertPatternDayResult);
 
 
@@ -216,7 +233,7 @@ public class ScheduleService {
         int result = 0;
 
         try{
-            if (!"delete".equals(etcPatternDTO.getEtcKind())) {
+            if (!"10".equals(etcPatternDTO.getEtcKind())) {
                 ScheduleEtcPattern pattern = etcPatternRepository.findById(etcPatternDTO.getEtcCode()).get();
 
                 pattern = pattern.etcDate(etcPatternDTO.getEtcDate())
@@ -246,9 +263,9 @@ public class ScheduleService {
         int result = 0;
 
         try{
-            ScheduleAllowance insertAllowance = modelMapper.map(allowanceDTO, ScheduleAllowance.class);
+            ScheduleInsertAllowance insertAllowance = modelMapper.map(allowanceDTO, ScheduleInsertAllowance.class);
 
-            ScheduleAllowance insertResult = allowanceRepository.save(insertAllowance);
+            ScheduleInsertAllowance insertResult = insertAllowanceRepository.save(insertAllowance);
             System.out.println("insertResult = " + insertResult);
 
             result = 1;
@@ -269,15 +286,15 @@ public class ScheduleService {
         int result = 0;
 
         try{
-            ScheduleAllowance allowance = allowanceRepository.findByMemCodeAndSchCode(allowanceDTO.getMemCode(), allowanceDTO.getSchCode());
+            ScheduleInsertAllowance allowance = insertAllowanceRepository.findByMemCodeAndSchCode(allowanceDTO.getMemCode(), allowanceDTO.getSchCode());
 
-            allowanceRepository.delete(allowance);
+            insertAllowanceRepository.delete(allowance);
 
             allowanceDTO.setSchCode(allowanceDTO.getChangeSchCode());
 
-            ScheduleAllowance insertAllowance = modelMapper.map(allowanceDTO, ScheduleAllowance.class);
+            ScheduleInsertAllowance insertAllowance = modelMapper.map(allowanceDTO, ScheduleInsertAllowance.class);
 
-            ScheduleAllowance insertResult = allowanceRepository.save(insertAllowance);
+            ScheduleInsertAllowance insertResult = insertAllowanceRepository.save(insertAllowance);
             System.out.println("insertResult = " + insertResult);
 
 
@@ -289,5 +306,60 @@ public class ScheduleService {
         }
 
         return (result > 0)? "수정 성공": "수정 실패";
+    }
+
+    public List<ScheduleAllSelectDTO> searchValue(ScheduleSearchValueDTO valueDTO) {
+        log.info("searchValue 시작~~~~~~~~~~");
+        if(valueDTO.getMemCode() != 0){
+            log.info("멤버 코드로 조회~~~~~~~~~");
+            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemCode(valueDTO.getYearMonth(), valueDTO.getMemCode());
+
+            List<ScheduleAllSelectDTO> list = allSelects.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                    .collect(Collectors.toList());
+            log.info("멤버 코드로 끝~~~~~~~~~");
+
+            return list;
+        }else if (valueDTO.getMemName() != null){
+            log.info("멤버 이름으로 조회~~~~~~~~~");
+            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemName(valueDTO.getYearMonth(), valueDTO.getMemName());
+
+            List<ScheduleAllSelectDTO> list = allSelects.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                    .collect(Collectors.toList());
+            log.info("멤버 이름으로 끝~~~~~~~~~");
+
+            return list;
+        }else if (valueDTO.getDepCode() != 0){
+            log.info("부서 코드로 조회~~~~~~~~~");
+            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndDepCode(valueDTO.getYearMonth(), valueDTO.getDepCode());
+
+            List<ScheduleAllSelectDTO> list = allSelects.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                    .collect(Collectors.toList());
+
+            return list;
+        }else if (valueDTO.getDepName() != null){
+            log.info("부서 이름 조회~~~~~~~~~");
+            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndDepName(valueDTO.getYearMonth(), valueDTO.getDepName());
+
+            List<ScheduleAllSelectDTO> list = allSelects.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                    .collect(Collectors.toList());
+            log.info("부서 이름 끝~~~~~~~~~");
+
+            return list;
+        }else {
+            log.info("날짜로 조회~~~~~~~~~");
+
+            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthDate(valueDTO.getChooseDate());
+
+            List<ScheduleAllSelectDTO> list = allSelects.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                    .collect(Collectors.toList());
+
+            return list;
+        }
+
     }
 }
