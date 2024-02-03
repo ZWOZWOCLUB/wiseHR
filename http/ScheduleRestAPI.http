@@ -137,4 +137,7 @@ Accept: */*
 }
 
 
-
+###스케줄에 없는 사람 조회
+POST http://localhost:8001/schedule/notContain
+Content-Type: application/json
+Accept: */*

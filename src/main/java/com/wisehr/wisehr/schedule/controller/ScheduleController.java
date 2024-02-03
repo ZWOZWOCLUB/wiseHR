@@ -50,7 +50,7 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody String yearMonth) {
 
     /**
      *
-     *  1. 선택한 다른 사람 또는 부서의 일정, 년 - 월 조회
+     *  조건에 따른 조회(부서명, 부서코드, 직원이름, 직원코드, 특정일자, 특정일에 포함되지 않은 사람)
      */
     @PostMapping("/searchValue")
     public ResponseEntity<ResponseDTO> searchValue(@RequestBody ScheduleSearchValueDTO valueDTO) {
@@ -60,19 +60,25 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody String yearMonth) {
     }
 
 
-
-
-
     /**
      * 2. 해당 날짜 누르면 뜨는 창
-     * 그날의 근무그룹 별로 지정된 사람, 미등록된 사람 뜸
+     * 그날의 근무그룹 별로 지정된 사람(searchValue 사용), 미등록된 사람 뜸(아래 메소드)
      */
+    @PostMapping("/notContain")
+    public ResponseEntity<ResponseDTO> notContain(@RequestBody ScheduleSearchValueDTO valueDTO) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
+
+    }
 
     /**
      * 2. 해당 날짜 누르면 뜨는 참
      * 부서별로 사람 검색(각 부서에 몇명이 있는지도 count)
      */
+    @PostMapping("/SearchCountDepCode")
+    public ResponseEntity<ResponseDTO> SearchCountDepCode() {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.seachCountDepCode()));
 
+    }
 
     /**
      * 3. 새 근무 편성 관련

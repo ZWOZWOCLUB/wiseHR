@@ -66,6 +66,15 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
             "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
             "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
             "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-%') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d') ")
+            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-d%') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d') ")
     List<ScheduleAllSelect> findByYearMonthDate(String yearMonth);
+    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
+    @Query("SELECT A FROM ScheduleAllSelect A " +
+            "LEFT JOIN fetch ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
+            "LEFT JOIN fetch SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
+            "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
+            "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
+            "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
+            "WHERE :yearMonth NOT BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-d%') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d') ")
+    List<ScheduleAllSelect> findByYearMonthAndMemCodeNotContain(String notContain);
 }

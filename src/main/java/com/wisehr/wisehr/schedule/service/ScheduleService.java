@@ -26,9 +26,11 @@ public class ScheduleService {
     private final ScheduleInsertPatternDayRepository insertPatternDayRepository;
     private final ScheduleInsertAllowanceRepository insertAllowanceRepository;
 
+    private final ScheduleCountDepCodeRepository countDepCodeRepository;
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository) {
+
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -39,6 +41,7 @@ public class ScheduleService {
         this.allSelectRepository = allSelectRepository;
         this.insertPatternDayRepository = insertPatternDayRepository;
         this.insertAllowanceRepository = insertAllowanceRepository;
+        this.countDepCodeRepository = countDepCodeRepository;
     }
 
 
@@ -310,7 +313,7 @@ public class ScheduleService {
 
     public List<ScheduleAllSelectDTO> searchValue(ScheduleSearchValueDTO valueDTO) {
         log.info("searchValue 시작~~~~~~~~~~");
-        if(valueDTO.getMemCode() != 0){
+        if (valueDTO.getMemCode() != 0) {
             log.info("멤버 코드로 조회~~~~~~~~~");
             List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemCode(valueDTO.getYearMonth(), valueDTO.getMemCode());
 
@@ -320,7 +323,7 @@ public class ScheduleService {
             log.info("멤버 코드로 끝~~~~~~~~~");
 
             return list;
-        }else if (valueDTO.getMemName() != null){
+        } else if (valueDTO.getMemName() != null) {
             log.info("멤버 이름으로 조회~~~~~~~~~");
             List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemName(valueDTO.getYearMonth(), valueDTO.getMemName());
 
@@ -330,7 +333,7 @@ public class ScheduleService {
             log.info("멤버 이름으로 끝~~~~~~~~~");
 
             return list;
-        }else if (valueDTO.getDepCode() != 0){
+        } else if (valueDTO.getDepCode() != 0) {
             log.info("부서 코드로 조회~~~~~~~~~");
             List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndDepCode(valueDTO.getYearMonth(), valueDTO.getDepCode());
 
@@ -339,7 +342,7 @@ public class ScheduleService {
                     .collect(Collectors.toList());
 
             return list;
-        }else if (valueDTO.getDepName() != null){
+        } else if (valueDTO.getDepName() != null) {
             log.info("부서 이름 조회~~~~~~~~~");
             List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndDepName(valueDTO.getYearMonth(), valueDTO.getDepName());
 
@@ -349,7 +352,7 @@ public class ScheduleService {
             log.info("부서 이름 끝~~~~~~~~~");
 
             return list;
-        }else {
+        } else {
             log.info("날짜로 조회~~~~~~~~~");
 
             List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthDate(valueDTO.getChooseDate());
@@ -360,6 +363,30 @@ public class ScheduleService {
 
             return list;
         }
+    }
 
+        public List<ScheduleAllSelectDTO> notContain(ScheduleSearchValueDTO valueDTO) {
+            log.info("searchValue 시작~~~~~~~~~~");
+                List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemCodeNotContain(valueDTO.getNotContain());
+
+                List<ScheduleAllSelectDTO> list = allSelects.stream()
+                        .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                        .collect(Collectors.toList());
+
+                return list;
+
+
+    }
+
+    public List<SearchCountDepCodeDTO> seachCountDepCode() {
+        log.info("SearchCountDepCode 시작~~~~~~~~~~");
+
+        List<SearchCountDepCode> result = countDepCodeRepository.findByCount();
+
+        List<SearchCountDepCodeDTO> list = result.stream()
+                .map(resultList -> modelMapper.map(resultList, SearchCountDepCodeDTO.class))
+                .collect(Collectors.toList());
+
+        return list;
     }
 }
