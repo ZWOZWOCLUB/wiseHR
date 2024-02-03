@@ -1,0 +1,17 @@
+POST http://localhost:8001/attendance/on
+Content-Type: application/json
+Accept: */*
+
+{
+  "attCode": 1,
+  "attStartTime": "17:00:00",
+  "attEndTime": "01:00:00",
+  "attStatus": "출근",
+  "attWorkDate": "2024-02-11",
+  "attendanceMember": {
+    "memCode": 3
+  },
+  "attendanceSchedule": {
+    "schCode": "sch12"
+  }
+}

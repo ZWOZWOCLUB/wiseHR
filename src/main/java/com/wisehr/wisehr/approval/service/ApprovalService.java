@@ -379,7 +379,11 @@ public class ApprovalService {
 
             } else if (acc.getApproval().getPayKind().contains("스케줄") && acc.getAppState().equals("승인")) {
 
+                // 상신한 결재의 종류가 스케줄이면서 승인이면 들어옴
+
                 EditSchedule es = editScheduleRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
+
+                // 상신한 결재의 결재번호를 통해서 결재 값 가져옴
 
                 log.info("es : " + es);
 
@@ -388,14 +392,16 @@ public class ApprovalService {
                 LocalDate startDate2 = es.getEshStartDate().toLocalDate();
                 LocalDate endDate2 = es.getEshEndDate().toLocalDate();
 
+                // 스케줄 정정의 시작날짜와 종료날짜를 구해서  (쉬는날, 일하는날)
+
                 log.info("startDate : " + startDate2);
                 log.info("endDate : " + endDate2);
 
-                long spendDay = ChronoUnit.DAYS.between(startDate2, endDate2);
+                long spendDay = ChronoUnit.DAYS.between(startDate2, endDate2); // 두 날짜의 간격을 통해서 며칠인지 찾고
 
                 log.info("spend : " + spendDay);
 
-                int days = (int) Math.abs(spendDay) + 1;
+                int days = (int) Math.abs(spendDay) + 1;        // 며칠이 몇일인지 같은날 시작 같은날 종료면 1일이 되도록 구해서
 
                 // 신청한 기한의 날짜 수를 확인해서 배정
 
@@ -556,15 +562,11 @@ public class ApprovalService {
                             ad.setAttStartTime(sch.getWorkPattern().getWokStartTime());
                             ad.setAttEndTime(sch.getWorkPattern().getWokEndTime());
                             ad.setAttStatus("출근");
-
                         }
-
                     }
-
                     log.info("update ad : " + ad );
 
                     attendanceRepository.save(ad);
-
             }
 
 

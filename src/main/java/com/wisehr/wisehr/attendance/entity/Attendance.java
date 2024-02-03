@@ -16,6 +16,7 @@ import java.sql.Time;
 public class Attendance {
     @Id
     @Column(name = "att_code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attCode;
     @Column(name = "att_start_time")
     private Time attStartTime;
