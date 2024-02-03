@@ -1,12 +1,11 @@
 package com.wisehr.wisehr.mypage.repository;
 
-import com.wisehr.wisehr.mypage.entity.Annual;
-import com.wisehr.wisehr.mypage.entity.Attendance;
+import com.wisehr.wisehr.mypage.entity.MPAnnual;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MyPageAnnualRepository extends JpaRepository<Annual, String> {
+public interface MyPageAnnualRepository extends JpaRepository<MPAnnual, String> {
 
 
 
-    Annual findByPayCode(String exam);
+    MPAnnual findByPayCode(String exam);
 }

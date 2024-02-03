@@ -12,7 +12,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class Career {
+public class MPCareer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "crr_code")

@@ -1,9 +1,8 @@
 package com.wisehr.wisehr.mypage.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.mypage.dto.DocumentDTO;
-import com.wisehr.wisehr.mypage.dto.DocumentFileDTO;
-import com.wisehr.wisehr.mypage.dto.MyPageDTO;
+import com.wisehr.wisehr.mypage.dto.MPDocumentFileDTO;
+import com.wisehr.wisehr.mypage.dto.MPMyPageDTO;
 import com.wisehr.wisehr.mypage.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -76,14 +75,14 @@ public class MyPageController {
 
 //    개인 정보 수정
     @PutMapping(value = "/updateMem")
-    public ResponseEntity<ResponseDTO> updateProduct(@ModelAttribute MyPageDTO productDTO) {
+    public ResponseEntity<ResponseDTO> updateProduct(@ModelAttribute MPMyPageDTO productDTO) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공",  myPageService.updateMem(productDTO)));
     }
 
 
     @PostMapping("/insertSign")
-    public ResponseEntity<ResponseDTO> insertSign(@ModelAttribute DocumentFileDTO myPageDTO, MultipartFile productImage){
+    public ResponseEntity<ResponseDTO> insertSign(@ModelAttribute MPDocumentFileDTO myPageDTO, MultipartFile productImage){
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "서명 입력 성공"
@@ -91,7 +90,7 @@ public class MyPageController {
     }
 
     @PutMapping("/updateSign")
-    public ResponseEntity<ResponseDTO> updateSign(@ModelAttribute DocumentFileDTO myPageDTO, MultipartFile productImage){
+    public ResponseEntity<ResponseDTO> updateSign(@ModelAttribute MPDocumentFileDTO myPageDTO, MultipartFile productImage){
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "서명 수정 성공"

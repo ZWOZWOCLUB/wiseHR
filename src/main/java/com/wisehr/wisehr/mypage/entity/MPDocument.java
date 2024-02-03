@@ -14,16 +14,16 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Document {
+public class MPDocument {
     @Id
     @Column(name = "mem_code")
     private int memCode;
     @JoinColumn(name = "mem_code")
     @OneToMany
-    private List<DocumentFile> documentFileDTOList;
+    private List<MPDocumentFile> documentFileDTOList;
     @JoinColumn(name = "mem_code")
     @OneToOne
-    private Salary salaryFileDTO;
+    private MPSalary salaryFileDTO;
 
 
     @Override

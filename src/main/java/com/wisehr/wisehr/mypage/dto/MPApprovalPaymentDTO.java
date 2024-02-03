@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class ApprovalPaymentDTO {
+public class MPApprovalPaymentDTO {
 
     private String appCode;
     private int memCode;

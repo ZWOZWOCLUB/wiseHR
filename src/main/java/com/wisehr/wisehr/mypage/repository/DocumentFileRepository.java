@@ -1,13 +1,10 @@
 package com.wisehr.wisehr.mypage.repository;
 
-import com.wisehr.wisehr.mypage.entity.DocumentFile;
-import com.wisehr.wisehr.mypage.entity.MyPageMember;
+import com.wisehr.wisehr.mypage.entity.MPDocumentFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface DocumentFileRepository extends JpaRepository<DocumentFile, Integer> {
+public interface DocumentFileRepository extends JpaRepository<MPDocumentFile, Integer> {
 
 
-    DocumentFile findByMemCodeAndDocAtcKind(long memCode, String kind);
+    MPDocumentFile findByMemCodeAndDocAtcKind(long memCode, String kind);
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Certificate {
+public class MPCertificate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

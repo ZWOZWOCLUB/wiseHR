@@ -3,14 +3,12 @@ package com.wisehr.wisehr.mypage.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Time;
-
 @Entity
 @Table(name = "document_file")
 @AllArgsConstructor
 @Getter
 @Setter
-public class DocumentFile {
+public class MPDocumentFile {
 
     @Id
     @Column(name = "doc_atc_code")
@@ -49,53 +47,53 @@ public class DocumentFile {
                 '}';
     }
 
-    public DocumentFile() {
+    public MPDocumentFile() {
     }
-    public DocumentFile docAtcCode(int docAtcCode) {
+    public MPDocumentFile docAtcCode(int docAtcCode) {
         this.docAtcCode = docAtcCode;
         return this;
     }
-    public DocumentFile docAtcExtends(String docAtcExtends) {
+    public MPDocumentFile docAtcExtends(String docAtcExtends) {
         this.docAtcExtends = docAtcExtends;
         return this;
     }
-    public DocumentFile docAtcConvertName(String docAtcConvertName) {
+    public MPDocumentFile docAtcConvertName(String docAtcConvertName) {
         this.docAtcConvertName = docAtcConvertName;
         return this;
     }
-    public DocumentFile docAtcRegistDate(String docAtcRegistDate) {
+    public MPDocumentFile docAtcRegistDate(String docAtcRegistDate) {
         this.docAtcRegistDate = docAtcRegistDate;
         return this;
     }
-    public DocumentFile docAtcStorage(String docAtcStorage) {
+    public MPDocumentFile docAtcStorage(String docAtcStorage) {
         this.docAtcStorage = docAtcStorage;
         return this;
     }
 
-    public DocumentFile docAtcDeleteStatus(String docAtcDeleteStatus) {
+    public MPDocumentFile docAtcDeleteStatus(String docAtcDeleteStatus) {
         this.docAtcDeleteStatus = docAtcDeleteStatus;
         return this;
     }
-    public DocumentFile docAtcPath(String docAtcPath) {
+    public MPDocumentFile docAtcPath(String docAtcPath) {
         this.docAtcPath = docAtcPath;
         return this;
     }
-    public DocumentFile memCode(int memCode) {
+    public MPDocumentFile memCode(int memCode) {
         this.memCode = memCode;
         return this;
     }
-    public DocumentFile docAtcOriginName(String docAtcOriginName) {
+    public MPDocumentFile docAtcOriginName(String docAtcOriginName) {
         this.docAtcOriginName = docAtcOriginName;
         return this;
     }
-    public DocumentFile docAtcKind(String docAtcKind) {
+    public MPDocumentFile docAtcKind(String docAtcKind) {
         this.docAtcKind = docAtcKind;
         return this;
     }
 
 
-    public DocumentFile build(){
-        return new DocumentFile(docAtcCode,
+    public MPDocumentFile build(){
+        return new MPDocumentFile(docAtcCode,
                 docAtcExtends, docAtcConvertName, docAtcRegistDate,docAtcStorage,
                 docAtcDeleteStatus, docAtcPath, memCode, docAtcOriginName, docAtcKind);
     }

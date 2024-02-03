@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class MyPageDTO {
+public class MPMyPageDTO {
     private int memCode;
     private String memName;
     private String memPhone;
@@ -18,7 +18,7 @@ public class MyPageDTO {
     private String memHireDate;
     private String memEndDate;
     private String memStatus;
-    private String memRoll;
+    private String memRole;
 
 
 }

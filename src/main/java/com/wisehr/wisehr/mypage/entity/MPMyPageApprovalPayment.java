@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class MyPageApprovalPayment {
+public class MPMyPageApprovalPayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

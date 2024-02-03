@@ -1,8 +1,8 @@
 package com.wisehr.wisehr.setting.service;
 
 import com.wisehr.wisehr.common.Criteria;
-import com.wisehr.wisehr.mypage.dto.HoldVacationDTO;
-import com.wisehr.wisehr.mypage.entity.HoldVacation;
+import com.wisehr.wisehr.mypage.dto.MPHoldVacationDTO;
+import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
 import com.wisehr.wisehr.mypage.repository.HoldVacationRepository;
 import com.wisehr.wisehr.setting.dto.*;
 import com.wisehr.wisehr.setting.entity.*;
@@ -797,14 +797,14 @@ public class SettingMemberService {
 
 
     @Transactional
-    public String updateVacation(HoldVacationDTO holdVacationDTO) {
+    public String updateVacation(MPHoldVacationDTO holdVacationDTO) {
         log.info("updateVacation Start~~~~~~~~~~~~");
         log.info("holdVacationDTO : " + holdVacationDTO);
 
         int result = 0;
 
         try{
-            HoldVacation vacation = vacationRepository.findByMemCode(holdVacationDTO.getMemCode());
+            MPHoldVacation vacation = vacationRepository.findByMemCode(holdVacationDTO.getMemCode());
             System.out.println("vacation = " + vacation);
             int vct = vacation.getVctCount();
             log.info("vct"+ vct);

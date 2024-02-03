@@ -7,13 +7,11 @@ import com.wisehr.wisehr.util.FileUploadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -68,49 +66,49 @@ public class MyPageService {
     }
 
 
-    public MyPageDTO selectMem(int memCode) {
+    public MPMyPageDTO selectMem(int memCode) {
 
-        MyPageMember myPageMember = myPageRepository.findById(memCode).get();
-        MyPageDTO settingMemberDTO = modelMapper.map(myPageMember, MyPageDTO.class);
+        MPMyPageMember myPageMember = myPageRepository.findById(memCode).get();
+        MPMyPageDTO settingMemberDTO = modelMapper.map(myPageMember, MPMyPageDTO.class);
 
         return settingMemberDTO;
 
     }
 
 
-    public List<DegreeDTO> selectDegree(int memCode) {
+    public List<MPDegreeDTO> selectDegree(int memCode) {
 
-        List<Degree> degree = degreeRepository.findByMemCode(memCode);
-        List<DegreeDTO> degreeDTO = degree.stream()
-                .map(exam -> modelMapper.map(exam, DegreeDTO.class))
+        List<MPDegree> degree = degreeRepository.findByMemCode(memCode);
+        List<MPDegreeDTO> degreeDTO = degree.stream()
+                .map(exam -> modelMapper.map(exam, MPDegreeDTO.class))
                 .collect(Collectors.toList());
 
         return degreeDTO;
     }
 
-    public List<CertificateDTO> selectCer(int memCode) {
-        List<Certificate> certificates = certificateRepository.findByMemCode(memCode);
-        List<CertificateDTO> degreeDTO = certificates.stream()
-                .map(exam -> modelMapper.map(exam, CertificateDTO.class))
+    public List<MPCertificateDTO> selectCer(int memCode) {
+        List<MPCertificate> certificates = certificateRepository.findByMemCode(memCode);
+        List<MPCertificateDTO> degreeDTO = certificates.stream()
+                .map(exam -> modelMapper.map(exam, MPCertificateDTO.class))
                 .collect(Collectors.toList());
 
         return degreeDTO;
     }
 
-    public List<CareerDTO> selectCareer(int memCode) {
-        List<Career> certificates = careerRepository.findByMemCode(memCode);
-        List<CareerDTO> degreeDTO = certificates.stream()
-                .map(exam -> modelMapper.map(exam, CareerDTO.class))
+    public List<MPCareerDTO> selectCareer(int memCode) {
+        List<MPCareer> certificates = careerRepository.findByMemCode(memCode);
+        List<MPCareerDTO> degreeDTO = certificates.stream()
+                .map(exam -> modelMapper.map(exam, MPCareerDTO.class))
                 .collect(Collectors.toList());
 
         return degreeDTO;
     }
 
-    public AttendanceDTO selectAttendance(Date attWorkDate, int memCode) {
+    public MPAttendanceDTO selectAttendance(Date attWorkDate, int memCode) {
 
 
-        Attendance attendance = attendanceRepository.findByAttWorkDateAndMemCode(attWorkDate,memCode);
-        AttendanceDTO settingMemberDTO = modelMapper.map(attendance, AttendanceDTO.class);
+        MPAttendance attendance = attendanceRepository.findByAttWorkDateAndMemCode(attWorkDate,memCode);
+        MPAttendanceDTO settingMemberDTO = modelMapper.map(attendance, MPAttendanceDTO.class);
 
         Time start = settingMemberDTO.getAttStartTime();
         Time end = settingMemberDTO.getAttEndTime();
@@ -137,45 +135,45 @@ public class MyPageService {
 //
 //        return degreeDTO;
 //    }
-    public DocumentDTO selectDocument(int memCode) {
+    public MPDocumentDTO selectDocument(int memCode) {
 
-        Document myPageMember = documentRepository.findByMemCode(memCode);
-        DocumentDTO settingMemberDTO = modelMapper.map(myPageMember, DocumentDTO.class);
+        MPDocument myPageMember = documentRepository.findByMemCode(memCode);
+        MPDocumentDTO settingMemberDTO = modelMapper.map(myPageMember, MPDocumentDTO.class);
 
         return settingMemberDTO;
 
     }
 
-    public HoldVacationDTO selectVacationHistory(int memCode) {
+    public MPHoldVacationDTO selectVacationHistory(int memCode) {
 
-        HoldVacation myPageMember = holdVacationRepository.findByMemCode(memCode);
-        HoldVacationDTO settingMemberDTO = modelMapper.map(myPageMember, HoldVacationDTO.class);
+        MPHoldVacation myPageMember = holdVacationRepository.findByMemCode(memCode);
+        MPHoldVacationDTO settingMemberDTO = modelMapper.map(myPageMember, MPHoldVacationDTO.class);
 
         return settingMemberDTO;
     }
 
 
-    public List<AnnualDTO> selectAnnualHistory(int memCode) {
+    public List<MPAnnualDTO> selectAnnualHistory(int memCode) {
 
-        List<VacationHistoryAndApprovalPayment> degree = vacationHistoryAndApprovalPaymentRepository.findByMemCode(memCode);
-        List<VacationHistoryAndApprovalPaymentDTO> degreeDTO = degree.stream()
-                .map(exam -> modelMapper.map(exam, VacationHistoryAndApprovalPaymentDTO.class))
+        List<MPVacationHistoryAndApprovalPayment> degree = vacationHistoryAndApprovalPaymentRepository.findByMemCode(memCode);
+        List<MPVacationHistoryAndApprovalPaymentDTO> degreeDTO = degree.stream()
+                .map(exam -> modelMapper.map(exam, MPVacationHistoryAndApprovalPaymentDTO.class))
                 .collect(Collectors.toList());
 
         System.out.println("왜 안나옴?????/");
 //       고유 결재 코드만 가져오기
         List<String> code = new ArrayList<>();
-        for (VacationHistoryAndApprovalPaymentDTO exam : degreeDTO){
+        for (MPVacationHistoryAndApprovalPaymentDTO exam : degreeDTO){
             code.add(exam.getAppCode().getPayCode());
         }
         System.out.println("code = " + code);
 
 //        고유 결재 코드를 사용해서 연차 테이블의 이력을 가져오기
-        List<AnnualDTO> annualDTOS = new ArrayList<>();
+        List<MPAnnualDTO> annualDTOS = new ArrayList<>();
         for (String exam : code){
             System.out.println("exam = " + exam);
-            Annual myPageMember = myPageAnnualRepository.findByPayCode(exam);
-            AnnualDTO settingMemberDTO = modelMapper.map(myPageMember, AnnualDTO.class);
+            MPAnnual myPageMember = myPageAnnualRepository.findByPayCode(exam);
+            MPAnnualDTO settingMemberDTO = modelMapper.map(myPageMember, MPAnnualDTO.class);
             annualDTOS.add(settingMemberDTO);
         }
 
@@ -185,7 +183,7 @@ public class MyPageService {
     }
 
     @Transactional
-    public String updateMem(MyPageDTO productDTO) {
+    public String updateMem(MPMyPageDTO productDTO) {
 
         log.info("[ProductService] updateProduct Start ===================================");
         log.info("[ProductService] productDTO : " + productDTO);
@@ -194,7 +192,7 @@ public class MyPageService {
         int result = 0;
 
         /* update 할 엔티티 조회 */
-        MyPageMember product = myPageRepository.findById(productDTO.getMemCode()).get();
+        MPMyPageMember product = myPageRepository.findById(productDTO.getMemCode()).get();
 
         System.out.println("product = " + product);
 
@@ -215,7 +213,7 @@ public class MyPageService {
     }
 
     @Transactional
-    public String insertSign(DocumentFileDTO productDTO, MultipartFile productImage) {
+    public String insertSign(MPDocumentFileDTO productDTO, MultipartFile productImage) {
         log.info("[ProductService] insertProduct Start ===================");
         log.info("[ProductService] productDTO : " + productDTO);
 
@@ -253,7 +251,7 @@ public class MyPageService {
             log.info("[ProductService] insert Image Name : ", replaceFileName);
 
             // 저장을 위해서 일반 DTO객체를 Entity객체로 변경
-            DocumentFile insertProduct = modelMapper.map(productDTO, DocumentFile.class);
+            MPDocumentFile insertProduct = modelMapper.map(productDTO, MPDocumentFile.class);
 
             documentFileRepository.save(insertProduct);
 
@@ -270,7 +268,7 @@ public class MyPageService {
     }
 
     @Transactional
-    public String updateSign(DocumentFileDTO productDTO, MultipartFile productImage) {
+    public String updateSign(MPDocumentFileDTO productDTO, MultipartFile productImage) {
 
         log.info("[ProductService] updateProduct Start ===================================");
         log.info("[ProductService] productDTO : " + productDTO);
@@ -282,7 +280,7 @@ public class MyPageService {
 
             /* update 할 엔티티 조회 */
             String kind = "서명";
-            DocumentFile product = documentFileRepository.findByMemCodeAndDocAtcKind(productDTO.getMemCode(),kind);
+            MPDocumentFile product = documentFileRepository.findByMemCodeAndDocAtcKind(productDTO.getMemCode(),kind);
             String oriImage = product.getDocAtcConvertName();
             log.info("[updateProduct] oriImage : " + oriImage);
 
