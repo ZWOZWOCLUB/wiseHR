@@ -16,7 +16,7 @@ Accept: */*
 }
 
 
-###공지댓글전체조회
+###공지댓글전체조회 필요없는기능
 GET http://localhost:8001/comment/allComment
 Content-Type: application/json
 Accept: */*
