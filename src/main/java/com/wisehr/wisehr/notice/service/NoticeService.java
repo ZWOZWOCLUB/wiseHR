@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,6 +106,40 @@ public class NoticeService {
         return (result > 0)? "공지등록 성공": "공지등록 실패";
     }
 
+    /***
+     * 공지업데이트
+     * @param noticeDTO
+     * @param noticeFile
+     * @return
+     */
+    @Transactional
+    public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
+        log.info(" ==============updateService Start ===========");
+        log.info("noticeDTO ========== "+noticeDTO);
+
+
+        int result = 0;
+
+
+        /*update 할 notice 조회*/
+        Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
+
+        log.info("notice ==== " + notice);
+
+        notice.setNotName(noticeDTO.getNotName());
+        notice.setNotComment(noticeDTO.getNotComment());
+//        notice.setNotModifyDate(noticeDTO.getNotModifyDate());
+
+        log.info("notice == " + notice);
+
+        result = 1;
+
+
+        log.info("updateNotice 끝");
+        return (result > 0)? "공지업뎃 성공" : "공지업뎃 실패";
+
+    }
+
 
     //공지 상세 조회
     public List<NotAttachedFileDTO> noticeDetail(String search) {
@@ -183,4 +218,7 @@ public class NoticeService {
 
         return noticeList;
     }
+
+
+
 }
