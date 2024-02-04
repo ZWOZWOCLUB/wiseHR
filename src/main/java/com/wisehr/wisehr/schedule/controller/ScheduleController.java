@@ -32,27 +32,29 @@ public class ScheduleController {
 
 /**
  * 1. 첫페이지
- *  일정 조회(첫페이지에 전체 일정이 다 뜨게 이번달꺼만)
+ *  월로 조회
+ *  조건에 따른 조회 포함
  */
 @PostMapping("/searchMonth")
-public ResponseEntity<ResponseDTO> searchMonth(@RequestBody String yearMonth) {
-    if(yearMonth != null){
+public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueDTO value) {
+    if(value.getYearMonth() == null){
     Date date = new Date();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
     System.out.println("simpleDateFormat = " + simpleDateFormat);
     String now = simpleDateFormat.format(date);
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(now)));
+    value.setYearMonth(now);
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(value)));
 
     }   else {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(yearMonth)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(value)));
     }
 }
 
     /**
      *
-     *  조건에 따른 조회(부서명, 부서코드, 직원이름, 직원코드, 특정일자, 특정일에 포함되지 않은 사람)
+     *  날짜로 조회
      */
-    @PostMapping("/searchValue")
+    @PostMapping("/searchDay")
     public ResponseEntity<ResponseDTO> searchValue(@RequestBody ScheduleSearchValueDTO valueDTO) {
 
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchValue(valueDTO)));
@@ -64,11 +66,11 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody String yearMonth) {
      * 2. 해당 날짜 누르면 뜨는 창
      * 그날의 근무그룹 별로 지정된 사람(searchValue 사용), 미등록된 사람 뜸(아래 메소드)
      */
-    @PostMapping("/notContain")
-    public ResponseEntity<ResponseDTO> notContain(@RequestBody ScheduleSearchValueDTO valueDTO) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
-
-    }
+//    @PostMapping("/notContain")
+//    public ResponseEntity<ResponseDTO> notContain(@RequestBody ScheduleSearchValueDTO valueDTO) {
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
+//
+//    }
 
     /**
      * 2. 해당 날짜 누르면 뜨는 참

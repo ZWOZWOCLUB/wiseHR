@@ -21,7 +21,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("member")
+@RequestMapping("setting")
 public class SettingMemberController {
 
     private final SettingMemberService settingMemberService;
@@ -283,6 +283,14 @@ public class SettingMemberController {
     @PutMapping(value = "/careerFile")
     public ResponseEntity<ResponseDTO> updateCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO, MultipartFile careerFile){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 수정 성공", settingMemberService.updateCareerFile(careerFileDTO, careerFile)));
+    }
+
+    /**
+     * 전직원 근태 조회
+     */
+    @PostMapping("/attendance")
+    public ResponseEntity<ResponseDTO> AllMemberAttendance(@RequestBody SettingSearchValueDTO valueDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.AllMemberAttendance(valueDTO)));
     }
 
 

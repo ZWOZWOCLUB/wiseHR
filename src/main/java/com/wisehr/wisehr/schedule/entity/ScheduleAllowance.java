@@ -17,11 +17,9 @@ public class ScheduleAllowance {
     @JoinColumn(name = "mem_code", insertable = false, updatable = false)
     private ScheduleMember member;
 
-
-
-
     public ScheduleAllowance() {
     }
+
 
 
 }

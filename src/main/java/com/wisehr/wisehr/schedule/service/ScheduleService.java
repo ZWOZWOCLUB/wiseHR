@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,11 +46,16 @@ public class ScheduleService {
     }
 
 
-    public List<ScheduleAllSelectDTO> searchMonth(String yearMonth) {
+    public List<ScheduleAllSelectDTO> searchMonth(ScheduleSearchValueDTO value) {
         log.info("searchDate 서비스 시작~~~~~~~~~~~~");
+        int memCode = value.getMemCode();
+        String memName = value.getMemName();
+        int depCode = value.getDepCode();
+        String depName = value.getDepName();
+        String yearMonth = value.getYearMonth();
 
 
-        List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonth(yearMonth);
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonth(memCode, memName, depCode, depName, yearMonth);
         log.info("allselect : " + allSelect);
 
         List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
@@ -291,8 +297,9 @@ public class ScheduleService {
         try{
             ScheduleInsertAllowance allowance = insertAllowanceRepository.findByMemCodeAndSchCode(allowanceDTO.getMemCode(), allowanceDTO.getSchCode());
 
-            insertAllowanceRepository.delete(allowance);
 
+            insertAllowanceRepository.delete(allowance);
+            String schCode = allowanceDTO.getChangeSchCode();
             allowanceDTO.setSchCode(allowanceDTO.getChangeSchCode());
 
             ScheduleInsertAllowance insertAllowance = modelMapper.map(allowanceDTO, ScheduleInsertAllowance.class);
@@ -313,70 +320,33 @@ public class ScheduleService {
 
     public List<ScheduleAllSelectDTO> searchValue(ScheduleSearchValueDTO valueDTO) {
         log.info("searchValue 시작~~~~~~~~~~");
-        if (valueDTO.getMemCode() != 0) {
-            log.info("멤버 코드로 조회~~~~~~~~~");
-            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemCode(valueDTO.getYearMonth(), valueDTO.getMemCode());
 
-            List<ScheduleAllSelectDTO> list = allSelects.stream()
-                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
-                    .collect(Collectors.toList());
-            log.info("멤버 코드로 끝~~~~~~~~~");
-
-            return list;
-        } else if (valueDTO.getMemName() != null) {
-            log.info("멤버 이름으로 조회~~~~~~~~~");
-            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemName(valueDTO.getYearMonth(), valueDTO.getMemName());
-
-            List<ScheduleAllSelectDTO> list = allSelects.stream()
-                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
-                    .collect(Collectors.toList());
-            log.info("멤버 이름으로 끝~~~~~~~~~");
-
-            return list;
-        } else if (valueDTO.getDepCode() != 0) {
-            log.info("부서 코드로 조회~~~~~~~~~");
-            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndDepCode(valueDTO.getYearMonth(), valueDTO.getDepCode());
-
-            List<ScheduleAllSelectDTO> list = allSelects.stream()
-                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
-                    .collect(Collectors.toList());
-
-            return list;
-        } else if (valueDTO.getDepName() != null) {
-            log.info("부서 이름 조회~~~~~~~~~");
-            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndDepName(valueDTO.getYearMonth(), valueDTO.getDepName());
-
-            List<ScheduleAllSelectDTO> list = allSelects.stream()
-                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
-                    .collect(Collectors.toList());
-            log.info("부서 이름 끝~~~~~~~~~");
-
-            return list;
-        } else {
             log.info("날짜로 조회~~~~~~~~~");
+            String yearMonth = valueDTO.getYearMonth();
+            String notContain = valueDTO.getNotContain();
 
-            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthDate(valueDTO.getChooseDate());
+            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthDate(yearMonth, notContain);
 
             List<ScheduleAllSelectDTO> list = allSelects.stream()
                     .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
                     .collect(Collectors.toList());
 
             return list;
-        }
-    }
-
-        public List<ScheduleAllSelectDTO> notContain(ScheduleSearchValueDTO valueDTO) {
-            log.info("searchValue 시작~~~~~~~~~~");
-                List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemCodeNotContain(valueDTO.getNotContain());
-
-                List<ScheduleAllSelectDTO> list = allSelects.stream()
-                        .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
-                        .collect(Collectors.toList());
-
-                return list;
-
 
     }
+
+//        public List<ScheduleAllSelectDTO> notContain(ScheduleSearchValueDTO valueDTO) {
+//            log.info("searchValue 시작~~~~~~~~~~");
+//                List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthAndMemCodeNotContain(valueDTO.getNotContain());
+//
+//                List<ScheduleAllSelectDTO> list = allSelects.stream()
+//                        .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+//                        .collect(Collectors.toList());
+//
+//                return list;
+//
+//
+//    }
 
     public List<SearchCountDepCodeDTO> seachCountDepCode() {
         log.info("SearchCountDepCode 시작~~~~~~~~~~");

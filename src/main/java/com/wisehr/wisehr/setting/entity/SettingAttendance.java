@@ -1,10 +1,7 @@
-package com.wisehr.wisehr.schedule.entity;
+package com.wisehr.wisehr.setting.entity;
 
-import com.wisehr.wisehr.setting.entity.SettingAllowance;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "attendance")
@@ -13,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class ScheduleAttendance {
+public class SettingAttendance {
 
     @Id
     @Column(name = "att_code")
@@ -32,8 +29,8 @@ public class ScheduleAttendance {
     private String schCode;
     @OneToOne
     @JoinColumns({
-            @JoinColumn(name = "sch_code", insertable=false, updatable=false),
-            @JoinColumn(name = "mem_code", insertable=false, updatable=false)
+            @JoinColumn(name = "sch_code", insertable = false, updatable = false),
+            @JoinColumn(name = "mem_code", insertable = false, updatable = false)
     })
     private SettingAllowance allowance;
 

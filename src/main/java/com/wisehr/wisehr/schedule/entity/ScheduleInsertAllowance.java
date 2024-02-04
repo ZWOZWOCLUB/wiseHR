@@ -1,10 +1,7 @@
 package com.wisehr.wisehr.schedule.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table(name = "schedule_allowance")
@@ -13,6 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
 public class ScheduleInsertAllowance {
     @Id
     @Column(name = "mem_code")
@@ -25,6 +23,8 @@ public class ScheduleInsertAllowance {
 
     public ScheduleInsertAllowance() {
     }
+
+
 
 
 }
