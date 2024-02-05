@@ -43,6 +43,8 @@ public class SettingMemberService {
     private final SettingSalaryFileRepository settingSalaryFileRepository;
     private final SettingSalaryRepository settingSalaryRepository;
     private final MPHoldVacationRepository vacationRepository;
+    private final SettingMemDepAttSchRepository settingMemDepAttSchRepository;
+
 
 
     private final ModelMapper modelMapper;
@@ -54,7 +56,7 @@ public class SettingMemberService {
     private String IMAGE_URL;
 
 
-    public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingDegreeFileRepository settingDegreeFileRepository, SettingCareerRepository settingCareerRepository, SettingCareerFileRepository settingCareerFileRepository, SettingCertificateRepository settingCertificateRepository, SettingCertificateFileRepository settingCertificateFileRepository, SettingDocumentFileRepository settingDocumentFileRepository, SettingSalaryFileRepository settingSalaryFileRepository, SettingSalaryRepository settingSalaryRepository, MPHoldVacationRepository vacationRepository, ModelMapper modelMapper) {
+    public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingDegreeFileRepository settingDegreeFileRepository, SettingCareerRepository settingCareerRepository, SettingCareerFileRepository settingCareerFileRepository, SettingCertificateRepository settingCertificateRepository, SettingCertificateFileRepository settingCertificateFileRepository, SettingDocumentFileRepository settingDocumentFileRepository, SettingSalaryFileRepository settingSalaryFileRepository, SettingSalaryRepository settingSalaryRepository, MPHoldVacationRepository vacationRepository, SettingMemDepAttSchRepository settingMemDepAttSchRepository, ModelMapper modelMapper) {
         this.settingMemberRepository = settingMemberRepository;
         this.settingMemDepPosRepository = settingMemDepPosRepository;
         this.settingDepartmentRepository = settingDepartmentRepository;
@@ -69,6 +71,7 @@ public class SettingMemberService {
         this.settingSalaryFileRepository = settingSalaryFileRepository;
         this.settingSalaryRepository = settingSalaryRepository;
         this.vacationRepository = vacationRepository;
+        this.settingMemDepAttSchRepository = settingMemDepAttSchRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -797,7 +800,7 @@ public class SettingMemberService {
 
 
     @Transactional
-    public String updateVacation(HoldVacationDTO holdVacationDTO) {
+    public String updateVacation(MPHoldVacationDTO holdVacationDTO) {
         log.info("updateVacation Start~~~~~~~~~~~~");
         log.info("holdVacationDTO : " + holdVacationDTO);
 
@@ -987,5 +990,38 @@ public class SettingMemberService {
         return (result > 0) ? "경력 파일 업데이트 성공" : "경력 파일 업데이트 실패";
     }
 
+    public List<SettingMemDepAttSchDTO> AllMemberAttendance(SettingSearchValueDTO valueDTO) {
+        log.info("AllMemberAttendance 서비스 시작~~~~~~~~~~~~");
+        System.out.println("valueDTO = " + valueDTO);
+
+        List<Object[]> list = settingMemDepAttSchRepository.findByYearMonth(valueDTO.getYearMonth());
+        List<SettingMemDepAttSchDTO> resultDTOList = list.stream()
+                .map(this::mappingDTO)
+                .collect(Collectors.toList());
+        log.info("resultDTO : " + resultDTOList);
+
+        log.info("AllMemberAttendance 서비스 끗~~~~~~~~~~~~");
+        return resultDTOList;
+    }
+
+    private SettingMemDepAttSchDTO mappingDTO(Object[] array) {
+        SettingMemDepAttSchDTO resultDTO = new SettingMemDepAttSchDTO();
+
+        resultDTO.setMemCode((Integer) array[0]);
+        resultDTO.setMemName((String) array[1]);
+        resultDTO.setDepCode(array[2] != null ? (Integer) array[2] : 0);
+        resultDTO.getAttendances().setAttCode((Integer) array[3]);
+        resultDTO.getAttendances().setAttStartTime((String) array[4]);
+        resultDTO.getAttendances().setAttEndTime((String) array[5]);
+        resultDTO.getAttendances().setAttStatus((String) array[6]);
+        resultDTO.getAttendances().setAttWorkDate((String) array[7]);
+        resultDTO.getAttendances().setSchCode((String) array[8]);
+        resultDTO.getScheduleDTO().setSchType((String) array[9]);
+        resultDTO.getScheduleDTO().setSchColor((String) array[10]);
+        resultDTO.getDepartment().setDepName((String) array[11]);
+
+
+        return resultDTO;
+    }
 
 }
