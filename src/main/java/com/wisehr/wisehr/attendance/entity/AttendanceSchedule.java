@@ -1,10 +1,7 @@
 package com.wisehr.wisehr.attendance.entity;
 
 import com.wisehr.wisehr.attendance.dto.AttendanceWorkPatternDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,6 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Setter
 @Getter
 @ToString
+@Entity
+@Table(name = "schedule")
 public class AttendanceSchedule {
     @Id
     @GeneratedValue(generator = "eegenerator")
@@ -32,6 +31,6 @@ public class AttendanceSchedule {
     @Column(name = "sch_delete_status")
     private String schDeleteStatus;
     @ManyToOne
-    @Column(name = "wok_code")
+    @JoinColumn(name = "wok_code")
     private AttendanceWorkPattern workPattern;
 }

@@ -10,7 +10,6 @@ import lombok.*;
 public class NotAttachedFileDTO {
 
     private Long notAtcCode;          //첨부파일코드
-    private String notAtcExtens;      //확장자
     private String notAtcName;        //파일이름
     private String notAtcDeleteStatus;//삭제여부
     private String notAtcPath;        //파일경로
@@ -20,11 +19,10 @@ public class NotAttachedFileDTO {
     public String toString() {
         return "NotAttachedFileDTO{" +
                 "notAtcCode=" + notAtcCode +
-                ", notAtcExtens='" + notAtcExtens + '\'' +
                 ", notAtcName='" + notAtcName + '\'' +
                 ", notAtcDeleteStatus='" + notAtcDeleteStatus + '\'' +
                 ", notAtcPath='" + notAtcPath + '\'' +
-                ", notice=" + notice +
+                ", notice='" + notice + '\'' +
                 '}';
     }
 }

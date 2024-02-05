@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -129,6 +130,9 @@ public class ApprovalUtils {
 
         LocalDate date = startDate;
 
+        log.info("date : " + date);
+        log.info("needDays : " + Arrays.toString(needDays));
+
         while (!date.isAfter(endDate)){
 
             int week = date.getDayOfWeek().getValue();
@@ -136,9 +140,13 @@ public class ApprovalUtils {
             if (bools(needDays, week)){
 
                 days.add(date);
+
+                log.info("days : " + days );
             }
             date = date.plusDays(1);
         }
+
+        log.info("days : " + days);
 
         return days;
     }

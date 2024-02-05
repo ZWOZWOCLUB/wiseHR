@@ -14,6 +14,8 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString(exclude = "approvalMembers")
+@Entity
+@Table(name = "member")
 public class AttendanceMember {
     @Id
     @Column(name = "mem_code", nullable = false)

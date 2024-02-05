@@ -1,9 +1,6 @@
 package com.wisehr.wisehr.attendance.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
@@ -11,6 +8,8 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
+@Entity
+@Table(name = "work_pattern")
 public class AttendanceWorkPattern {
     @Id
     @Column(name = "wok_code")

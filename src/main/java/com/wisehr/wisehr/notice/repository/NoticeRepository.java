@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface NoticeRepository extends JpaRepository<Notice, String> {
+public interface NoticeRepository extends JpaRepository<Notice, Integer> {
 
     //공지제목조회
     List<Notice> findByNotNameContaining(String search);
