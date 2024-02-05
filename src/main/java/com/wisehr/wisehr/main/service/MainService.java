@@ -61,4 +61,14 @@ public class MainService {
 
         return count;
     }
+
+    public Object todaySchedule(Long memCode) {
+
+        MainMember mainMember = new MainMember();
+        mainMember.setMemCode(memCode);
+
+        LocalDate currentDate = LocalDate.now();
+
+        return "";
+    }
 }
