@@ -125,10 +125,16 @@ public class TokenUtils {
 
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put("userName", user.getMemName());
-        claims.put("Role", user.getMemRole());
-        claims.put("userEmail", user.getMemEmail());
-
+        claims.put("memName", user.getMemName());
+        claims.put("memRole", user.getMemRole());
+        claims.put("memEmail", user.getMemEmail());
+//        claims.put("memPhone", user.getMemPhone());       // 필요시 주석 해제
+//        claims.put("memAddress", user.getMemAddress());
+//        claims.put("memBirth", user.getMemBirth());
+//        claims.put("memHireDate", user.getMemHireDate());
+//        claims.put("memEndDate", user.getMemEndDate());
+//        claims.put("memStatus", user.getMemStatus());
+//        claims.put("memCode", user.getMemCode());
 
         return claims;
     }

@@ -40,15 +40,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         /*
         * 권한이 필요없는 리소스
         * */
-        List<String> roleLessList = Arrays.asList(
+        List<String> roleLessList = Arrays.asList(  // 권한없이 누구나 접근 가능한 경로
                 "/signup", "/member/member", "approval/annual"
         );
 
+        // 현재 요청의 URI가 권한이 필요 없는 리소스에 해당하는 경우, 요청을 다음 필터로 넘기고 메서드를 종료합니다.
+        // 이는 정의된 경로에 대해서는 추가적인 인증 처리를 하지 않겠다
         if(roleLessList.contains(request.getRequestURI())){
             chain.doFilter(request, response);
             return;
         }
         /* BEARER lsdkjflskdfjlsdkfjlsdjflsdkfjsd=*/
+        // HTTP 요청 헤더에서 Authorization 값을 가져옵니다. 이 값은 일반적으로 "Bearer [토큰]" 형태로 제공
         String header = request.getHeader(AuthConstants.AUTH_HEADER);
 
         try{
@@ -61,10 +64,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
                     DetailsUser authentication = new DetailsUser();
                     User user = new User();
-                    user.setMemName(claims.get("userName").toString());
-                    user.setMemEmail(claims.get("userEmail").toString());
-                    user.setMemRole(ZzclubRole.valueOf(claims.get("Role").toString()));
+                    user.setMemName(claims.get("memName").toString());
+                    user.setMemEmail(claims.get("memEmail").toString());
+                    user.setMemRole(ZzclubRole.valueOf(claims.get("memRole").toString()));
+//                    user.setMemAddress(claims.get("memAddress").toString());  // 필요시 주석 해제
+//                    user.setMemPhone(claims.get("memPhone").toString());
+//                    user.setMemBirth(claims.get("memBirth").toString());
+//                    user.setMemHireDate(claims.get("memHireDate").toString());
+//                    user.setMemBirth(claims.get("memBirth").toString());
+//                    user.setMemStatus(claims.get("memStatus").toString());
                     authentication.setUser(user);
+                    // 토큰에서 클레임을 추출하고, 이를 바탕으로 사용자의 상세 정보를 설정합니다.
+                    // 여기서는 사용자 이름, 이메일, 역할 등의 정보를 설정합니다.
 
                     AbstractAuthenticationToken authenticationToken
                             = UsernamePasswordAuthenticationToken.authenticated(authentication, token, authentication.getAuthorities());
