@@ -151,7 +151,11 @@ public class OrgController {
     }
 
 
-
+    /**
+     * 중간관리자 지정
+     * @param orgMemAndOrgDepDTO
+     * @return
+     */
     @PutMapping("/updateRole/")
     public ResponseEntity<ResponseDTO> updateRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "권한 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
