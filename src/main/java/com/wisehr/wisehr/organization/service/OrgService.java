@@ -275,6 +275,7 @@ public class OrgService {
         List<OrgMember> selectedMembers = orgMemberRepository.findAllById(selectedMemberCodes);
         selectedMembers.forEach(member -> {
             member.setOrgDepAndOrgMem(odam);
+            member.setMemRole("일반사원"); //중간관리자는 부서에 1명이어야 하는데, 수정하는 과정에서 여러명이 될 수 있으므로 일반으로 초기화
             orgMemberRepository.save(member);
         });
 
@@ -282,7 +283,7 @@ public class OrgService {
 
         log.info("[OrgService] insertMember End");
 
-        return "";
+        return "멤버 추가 완료";
     }
 
 

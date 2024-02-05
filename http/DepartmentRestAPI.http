@@ -17,7 +17,7 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "depName": "호흡기내과1팀",
+  "depName": "호흡기내과2팀",
   "refDepCode": 4
 }
 
@@ -28,8 +28,8 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "depCode": 12,
-  "depName": "산부인과3팀"
+  "depCode": 17,
+  "depName": "호흡기내과3팀"
 
 }
 
@@ -47,7 +47,7 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "depCode": 13
+  "depCode": 17
 }
 
 ### 부서 개별 조회
