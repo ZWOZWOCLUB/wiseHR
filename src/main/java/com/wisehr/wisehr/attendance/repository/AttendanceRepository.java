@@ -7,4 +7,8 @@ import java.sql.Date;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     Attendance findByAttWorkDateAndAttendanceMemberMemCode(Date ediDate, Long memCode);
+
+    Attendance findFirstByAttendanceMemberMemCodeOrderByAttWorkDateDesc(Long memCode);
+
+    Attendance findFirstByAttendanceMemberMemCodeAndAttendanceSchedule_SchCodeOrderByAttWorkDateDesc(Long memCode, String schCode);
 }
