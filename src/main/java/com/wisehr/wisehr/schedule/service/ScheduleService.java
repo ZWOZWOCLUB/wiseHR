@@ -173,20 +173,25 @@ public class ScheduleService {
 
         try{
             Schedule schedule = scheduleRepository.findById(scheduleDTO.getSchCode()).get();
+            System.out.println("schedule = " + schedule);
 
             schedule = schedule.schType(scheduleDTO.getSchType())
                     .schStartDate(scheduleDTO.getSchStartDate())
                     .schEndDate(scheduleDTO.getSchEndDate())
                     .schColor(scheduleDTO.getSchColor())
-                    .schDeleteStatus(scheduleDTO.getSchDeleteStatus()).build();
+                    .schDeleteStatus(scheduleDTO.getSchDeleteStatus())
+                    .wokCode(scheduleDTO.getWokCode())
+                    .build();
 
             for (int i =0; i < patternDayDTO.size(); i++) {
                 int dayCode = patternDayDTO.get(i).getDayCode();
                 int wokCode = patternDayDTO.get(i).getWokCode();
 
                 ScheduleInsertPatternDay pattern = insertPatternDayRepository.findByDayCodeAndWokCode(dayCode, wokCode);
+                System.out.println("pattern = " + pattern);
 
                 insertPatternDayRepository.delete(pattern);
+                log.info("-----------------------------");
 
                 patternDayDTO.get(i).setDayCode(patternDayDTO.get(i).getChangeDayCode());
             }
@@ -194,6 +199,7 @@ public class ScheduleService {
             List<ScheduleInsertPatternDay> patternDay = patternDayDTO.stream()
                     .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
                     .collect(Collectors.toList());
+            System.out.println("patternDay = " + patternDay);
 
             List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
             log.info("insertPatternDayResult = " + insertPatternDayResult);
@@ -297,8 +303,9 @@ public class ScheduleService {
         try{
             ScheduleInsertAllowance allowance = insertAllowanceRepository.findByMemCodeAndSchCode(allowanceDTO.getMemCode(), allowanceDTO.getSchCode());
 
-
+            System.out.println("allowance = " + allowance);
             insertAllowanceRepository.delete(allowance);
+            log.info("-------------------------------------------");
             String schCode = allowanceDTO.getChangeSchCode();
             allowanceDTO.setSchCode(allowanceDTO.getChangeSchCode());
 

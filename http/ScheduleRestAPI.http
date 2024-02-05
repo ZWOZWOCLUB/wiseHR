@@ -40,12 +40,12 @@ Accept: */*
   },
   "patternDayDTO": [{
     "dayCode": 5,
-    "changeDayCode": 6,
+    "changeDayCode": 4,
     "wokCode": 16
   },
     {
       "dayCode": 6,
-      "changeDayCode": 8,
+      "changeDayCode": 1,
       "wokCode": 16
     }
   ]
@@ -103,7 +103,7 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "memCode": 240130007,
+  "memCode": 240202006,
   "schCode": "sch9"
 }
 
@@ -113,9 +113,9 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "memCode": 2,
-  "schCode": "sch3",
-  "changeSchCode": "sch7"
+  "memCode": 240202006,
+  "schCode": "sch10",
+  "changeSchCode": "sch1"
 }
 
 ###첫페이지 전체 조회
@@ -135,5 +135,6 @@ Accept: */*
 {
   "yearMonth": "2024-01-15"
 }
+
 
 
