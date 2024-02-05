@@ -1,9 +1,7 @@
 package com.wisehr.wisehr.schedule.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.wisehr.wisehr.setting.entity.SettingAllowance;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -32,4 +30,11 @@ public class ScheduleAttendance {
     private int memCode;
     @Column(name = "sch_code")
     private String schCode;
+    @OneToOne
+    @JoinColumns({
+            @JoinColumn(name = "sch_code", insertable=false, updatable=false),
+            @JoinColumn(name = "mem_code", insertable=false, updatable=false)
+    })
+    private SettingAllowance allowance;
+
 }

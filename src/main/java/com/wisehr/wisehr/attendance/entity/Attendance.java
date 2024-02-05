@@ -11,9 +11,12 @@ import java.sql.Time;
 @Setter
 @Getter
 @ToString
+@Entity
+@Table(name = "attendance")
 public class Attendance {
     @Id
     @Column(name = "att_code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attCode;
     @Column(name = "att_start_time")
     private Time attStartTime;

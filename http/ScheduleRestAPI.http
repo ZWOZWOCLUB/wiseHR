@@ -10,15 +10,15 @@ Accept: */*
     "schEndDate": "2024-01-30",
     "schColor": "#ffffff",
     "schDeleteStatus": "N",
-    "wokCode": 15
+    "wokCode": 16
   },
   "patternDayDTO": [{
     "dayCode": 1,
-    "wokCode": 15
+    "wokCode": 16
   },
     {
       "dayCode": 2,
-      "wokCode": 15
+      "wokCode": 16
     }
   ]
 }
@@ -30,23 +30,23 @@ Accept: */*
 
 {
   "scheduleDTO": {
-    "schCode": "sch9",
+    "schCode": "sch10",
     "schType": "테스트",
     "schStartDate": "2024-01-01",
     "schEndDate": "2024-02-15",
     "schColor": "#ffffff",
     "schDeleteStatus": "N",
-    "wokCode": 15
+    "wokCode": 16
   },
   "patternDayDTO": [{
-    "dayCode": 1,
-    "changeDayCode": 5,
-    "wokCode": 15
+    "dayCode": 5,
+    "changeDayCode": 4,
+    "wokCode": 16
   },
     {
-      "dayCode": 2,
-      "changeDayCode": 7,
-      "wokCode": 15
+      "dayCode": 6,
+      "changeDayCode": 1,
+      "wokCode": 16
     }
   ]
 }
@@ -83,18 +83,18 @@ Accept: */*
 {
   "memCode": 240130007,
   "etcDate": "2023-02-02",
-  "etcKind": "근무외 일정"
+  "etcKind": 1
 }
 
-###근무외 일정
+###근무외 일정 수정
 PUT http://localhost:8001/schedule/etcPattern
 Content-Type: application/json
 Accept: */*
 
 {
-  "etcCode": 1,
-  "etcDate": "2023-02-13",
-  "etcKind": "delete"
+  "etcCode": 14,
+  "etcDate": "2023-02-15",
+  "etcKind": 10
 }
 
 ###근무 그룹에 사람 등록
@@ -103,8 +103,8 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "memCode": 240130007,
-  "schCode": "sch7"
+  "memCode": 240202006,
+  "schCode": "sch9"
 }
 
 ###근무 그룹에 사람 수정
@@ -113,8 +113,28 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "memCode": 240130007,
-  "schCode": "sch6",
-  "changeSchCode": "sch8"
+  "memCode": 240202006,
+  "schCode": "sch10",
+  "changeSchCode": "sch1"
 }
+
+###첫페이지 전체 조회
+POST http://localhost:8001/schedule/searchMonth
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 3
+}
+
+###조건으로 조회
+POST http://localhost:8001/schedule/searchDay
+Content-Type: application/json
+Accept: */*
+
+{
+  "yearMonth": "2024-01-15"
+}
+
+
 

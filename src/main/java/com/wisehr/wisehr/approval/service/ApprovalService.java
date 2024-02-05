@@ -4,9 +4,10 @@ package com.wisehr.wisehr.approval.service;
 import com.wisehr.wisehr.approval.dto.*;
 import com.wisehr.wisehr.approval.entity.*;
 import com.wisehr.wisehr.approval.repository.*;
+import com.wisehr.wisehr.attendance.entity.Attendance;
+import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
 import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
 import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
-import com.wisehr.wisehr.schedule.repository.ScheduleRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
 import com.wisehr.wisehr.util.ApprovalUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,8 +43,9 @@ public class ApprovalService {
     private final ApproverProxyRepository approverProxyRepository;
     private final ScheduleEtcPatternRepository scheduleEtcPatternRepository;
     private final ScheduleWorkPatternRepository scheduleWorkPatternRepository;
-    private final ScheduleRepository scheduleRepository;
-//    private final AttendanceRepository1 attendanceRepository;
+    private final ApprovalScheduleRepository approvalScheduleRepository;
+    private final ApprovalPatternDayRepository approvalPatternDayRepository;
+    private final AttendanceRepository attendanceRepository;
 
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
@@ -56,7 +59,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -70,8 +73,9 @@ public class ApprovalService {
         this.approverProxyRepository = approverProxyRepository;
         this.scheduleEtcPatternRepository = scheduleEtcPatternRepository;
         this.scheduleWorkPatternRepository = scheduleWorkPatternRepository;
-        this.scheduleRepository = scheduleRepository;
-//        this.attendanceRepository = attendanceRepository;
+        this.approvalScheduleRepository = approvalScheduleRepository;
+        this.approvalPatternDayRepository = approvalPatternDayRepository;
+        this.attendanceRepository = attendanceRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -375,7 +379,11 @@ public class ApprovalService {
 
             } else if (acc.getApproval().getPayKind().contains("스케줄") && acc.getAppState().equals("승인")) {
 
+                // 상신한 결재의 종류가 스케줄이면서 승인이면 들어옴
+
                 EditSchedule es = editScheduleRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
+
+                // 상신한 결재의 결재번호를 통해서 결재 값 가져옴
 
                 log.info("es : " + es);
 
@@ -384,14 +392,16 @@ public class ApprovalService {
                 LocalDate startDate2 = es.getEshStartDate().toLocalDate();
                 LocalDate endDate2 = es.getEshEndDate().toLocalDate();
 
+                // 스케줄 정정의 시작날짜와 종료날짜를 구해서  (쉬는날, 일하는날)
+
                 log.info("startDate : " + startDate2);
                 log.info("endDate : " + endDate2);
 
-                long spendDay = ChronoUnit.DAYS.between(startDate2, endDate2);
+                long spendDay = ChronoUnit.DAYS.between(startDate2, endDate2); // 두 날짜의 간격을 통해서 며칠인지 찾고
 
                 log.info("spend : " + spendDay);
 
-                int days = (int) Math.abs(spendDay) + 1;
+                int days = (int) Math.abs(spendDay) + 1;        // 며칠이 몇일인지 같은날 시작 같은날 종료면 1일이 되도록 구해서
 
                 // 신청한 기한의 날짜 수를 확인해서 배정
 
@@ -479,24 +489,84 @@ public class ApprovalService {
                     // 퇴직일 날 승인하는걸로 ?  ? ? ?? ? ? ? ? ? ?
                 } else if (acc.getApproval().getPayKind().contains("출퇴근") && acc.getAppState().equals("승인")) {
 
-                    EditCommute ec = editCommuteRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
+                    EditCommute ec = editCommuteRepository.findByApprovalPayCode(acc.getApproval().getPayCode());   // 수정해야할 날짜를 찾기위해 결재 코드 찾기
 
                     log.info("ec : " + ec);
 
-//                    Attendance ad = attendanceRepository.findByAttWorkDate(ec.getEdiDate());
+                    Attendance ad = attendanceRepository.findByAttWorkDateAndAttendanceMemberMemCode(ec.getEdiDate(),ec.getApproval().getApprovalMember().getMemCode());
+                    // 결재코드에 존재하는 날짜와 사번을 통해서 그 날의 근태상태 가져옴
 
-//                    log.info("ad : " + ad );
+                    log.info("ad : " + ad );
+
+                    ApprovalSchedule sch = approvalScheduleRepository.findBySchCode(ad.getAttendanceSchedule().getSchCode());       // 그날의 근태가 어떤 근무였는지 알기 위해서 스케줄 값 가져옴
+
+                    log.info("sch : " + sch);
 
                     if (ec.getEdiKind().contains("출근")){
-//                        Schedule sch = scheduleRepository.findBy()
 
+                        if (ad.getAttEndTime().before(sch.getWorkPattern().getWokEndTime())){
+
+                            log.info("출근시간 정정 , 퇴근찍은 시간이 일정시간 보다 늦은 경우 조퇴");
+
+                            ad.setAttStatus("조퇴");
+
+                        }else {
+
+                            log.info("출근시간 정정 , 퇴근찍은 시간이 일정시간이랑 같을 때 출근 ");
+
+                            ad.setAttStatus("출근");
+                        }
+
+                        ad.setAttStartTime(ec.getEdiTime());
+
+                        log.info("set start time ad : " + ad );
                     } else if (ec.getEdiKind().contains("퇴근")) {
-                        
+
+                        if (ad.getAttStartTime().after(sch.getWorkPattern().getWokStartTime())){
+
+                            log.info("퇴근시간 정정 , 출근찍은 시간이 일정시간 보다 늦은 경우 지각");
+
+                            ad.setAttStatus("지각");
+
+                        }else {
+
+                            log.info("퇴근시간 정정 , 출근찍은 시간이 일정시간이랑 같을 때 출근 ");
+
+                            ad.setAttStatus("출근");
+                        }
+
+                        ad.setAttEndTime(ec.getEdiTime());
+
+                        log.info("set end Time ad : " + ad);
+
                     } else if (ec.getEdiKind().contains("결근")) {
 
+                        if (ec.getEdiKind().contains("지각")){
+
+                            log.info("지각한 시간을 받아서 찍어준다. 지각인 경우 종료타임만 정시에 찍어줌 ");
+
+                            ad.setAttStartTime(ec.getEdiTime());
+                            ad.setAttEndTime(sch.getWorkPattern().getWokEndTime());
+                            ad.setAttStatus("지각");
+
+                        } else if (ec.getEdiKind().contains("조퇴")) {
+                            log.info("조퇴한 시간을 받아서 찍어준다. 조퇴인 경우 시작시간만 정시에 찍어준다.");
+
+                            ad.setAttStartTime(sch.getWorkPattern().getWokStartTime());
+                            ad.setAttEndTime(ec.getEdiTime());
+                            ad.setAttStatus("조퇴");
+
+                        } else if (ec.getEdiKind().contains("근무")) {
+                            log.info("모두 정시로 찍어준다.");
+
+                            ad.setAttStartTime(sch.getWorkPattern().getWokStartTime());
+                            ad.setAttEndTime(sch.getWorkPattern().getWokEndTime());
+                            ad.setAttStatus("출근");
+                        }
                     }
+                    log.info("update ad : " + ad );
 
-
+                    attendanceRepository.save(ad);
             }
 
 

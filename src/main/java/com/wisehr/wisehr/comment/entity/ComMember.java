@@ -33,8 +33,8 @@ public class ComMember {
     private String memEndDate;
     @Column(name = "mem_status", nullable = false)
     private String memStatus;
-    @Column(name = "mem_roll", nullable = false)
-    private String memRoll;
+    @Column(name = "mem_role", nullable = false)
+    private String memRole;
     @Column(name = "dep_code", nullable = true)
     private Long depCode;
     @OneToOne

@@ -56,19 +56,24 @@ public class NoticeService {
         log.info("==========noticeFile : " + noticeFile);
 
 
-        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode();
+        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
 
         NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
-        noticeFileDTO.setNotAtcPath(path);
-        noticeFileDTO.setNotAtcName(noticeFile.getName());
-        noticeFileDTO.setNotice(noticeDTO);
+//        noticeFileDTO.setNotAtcCode();
+//        noticeFileDTO.setNotAtcName(noticeFile.getName());
+        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
         noticeFileDTO.setNotAtcDeleteStatus("N");
+        noticeFileDTO.setNotAtcPath(path);
+        noticeFileDTO.setNotice(noticeDTO);
+
+//        noticeFileDTO.setNotice(noticeDTO);
 
 
 
         String stroy = null;
-
+        log.info("noticeFile.getName====" +noticeFile.getName());
+        log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
         log.info("path========= : " + path);
         log.info("noticeDTO==========" + noticeDTO);
         int result = 0;
@@ -99,6 +104,22 @@ public class NoticeService {
         }
         return (result > 0)? "공지등록 성공": "공지등록 실패";
     }
+
+
+    //공지 상세 조회
+    public List<NotAttachedFileDTO> noticeDetail(String search) {
+        log.info("titleSearchList시작");
+        log.info("titleSearchList search : {}", search);
+
+        List<NotAttachedFile> noticeWithSearchValue = notAttachedFileRepository.findByNotice_NotCode(search);
+        List<NotAttachedFileDTO> notAttachedFileDTOList = noticeWithSearchValue.stream()
+                .map(notAttachedFile -> modelMapper.map(notAttachedFile, NotAttachedFileDTO.class))
+                .collect(Collectors.toList());
+        log.info("titleSearchList 서비스 끝" + noticeWithSearchValue);
+        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
+        return notAttachedFileDTOList;
+    }
+
 
     //공지 제목으로 조회
     public List<NoticeDTO> searchTitleList(String search) {

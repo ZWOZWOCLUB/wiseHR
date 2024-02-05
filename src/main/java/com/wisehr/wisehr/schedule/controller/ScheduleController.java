@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -29,41 +32,55 @@ public class ScheduleController {
 
 /**
  * 1. 첫페이지
- *  일정 조회(첫페이지에 전체 일정이 다 뜨게 이번달꺼만)
+ *  월로 조회
+ *  조건에 따른 조회 포함
  */
+@PostMapping("/searchMonth")
+public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueDTO value) {
+    if(value.getYearMonth() == null){
+    Date date = new Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+    System.out.println("simpleDateFormat = " + simpleDateFormat);
+    String now = simpleDateFormat.format(date);
+    value.setYearMonth(now);
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(value)));
 
-/**
- * 1. 부서 조회(조직도 형태)
- */
-//@PostMapping()
-
-/**
- * 1. 선택한 다른 사람 또는 부서의 일정, 년 - 월 조회
- * /
-
-/**
- *
- * 1. 이전 스케줄 조회 (년-월로 조회 schedule테이블이 아닌 attendance 테이블로 가져옴)
- */
-@GetMapping("/searchPrev/{yearMonth}")
-    public ResponseEntity<ResponseDTO> searchPrev(@PathVariable String yearMonth){
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchPrev(yearMonth)));
+    }   else {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(value)));
+    }
 }
 
     /**
-     * 1. 다음달 일정 조회(날짜에 맞는 패턴이 있으면 가져오고 없으면 미출력)
+     *
+     *  날짜로 조회
      */
+    @PostMapping("/searchDay")
+    public ResponseEntity<ResponseDTO> searchValue(@RequestBody ScheduleSearchValueDTO valueDTO) {
+
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchValue(valueDTO)));
+
+    }
+
 
     /**
      * 2. 해당 날짜 누르면 뜨는 창
-     * 그날의 근무그룹 별로 지정된 사람, 미등록된 사람 뜸
+     * 그날의 근무그룹 별로 지정된 사람(searchValue 사용), 미등록된 사람 뜸(아래 메소드)
      */
+//    @PostMapping("/notContain")
+//    public ResponseEntity<ResponseDTO> notContain(@RequestBody ScheduleSearchValueDTO valueDTO) {
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
+//
+//    }
 
     /**
      * 2. 해당 날짜 누르면 뜨는 참
      * 부서별로 사람 검색(각 부서에 몇명이 있는지도 count)
      */
+    @PostMapping("/SearchCountDepCode")
+    public ResponseEntity<ResponseDTO> SearchCountDepCode() {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.seachCountDepCode()));
 
+    }
 
     /**
      * 3. 새 근무 편성 관련
