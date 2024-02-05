@@ -74,4 +74,13 @@ Accept: */*
   [1, 4]
 
 
+### 중간관리자 권한 부여
+PUT http://localhost:8001/org/updateRole/
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 4,
+  "depCode": 6
+}
 

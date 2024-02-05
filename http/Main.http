@@ -5,8 +5,12 @@ Content-Type: application/json
 Accept: */*
 
 
-### 오늘의 일정 조회
+### 달력 전체 조회
 
+GET http://localhost:8001/main/searchMonth
+Content-Type: application/json
+Accept: */*
 
-
-### 선택한 날짜의 일정 조회
+{
+  "memCode": 3
+}
