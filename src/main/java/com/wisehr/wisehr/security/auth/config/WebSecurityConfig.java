@@ -5,6 +5,7 @@ import com.wisehr.wisehr.security.auth.filter.JwtAuthorizationFilter;
 import com.wisehr.wisehr.security.auth.handler.CustomAuthFailUserHandler;
 import com.wisehr.wisehr.security.auth.handler.CustomAuthSuccessHandler;
 import com.wisehr.wisehr.security.auth.handler.CustomAuthenticationProvider;
+import com.wisehr.wisehr.security.auth.handler.CustomLogoutSuccessHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -36,16 +39,36 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.csrf(AbstractHttpConfigurer::disable)
+        http
+                .csrf(csrf -> csrf.disable())
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))     // 세션인증 끄기
-                .formLogin(form -> form.disable())
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(formLogin -> formLogin.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(basic -> basic.disable());
-
+                .authorizeRequests(authorizeRequests ->
+                authorizeRequests.anyRequest().authenticated()
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID") // 필요한 경우 쿠키 삭제
+                                .logoutSuccessHandler(logoutSuccessHandler()) // 선택적
+                );
         return http.build();
     }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return (request, response, authentication) -> {
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"message\":\"로그아웃 성공\"}");
+        };
+    }
+
 
     /***
      * 사용자의 인증 요청을 가로채서 로그인 로직을 수행하는 필터
@@ -118,4 +141,8 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
+
 }
+

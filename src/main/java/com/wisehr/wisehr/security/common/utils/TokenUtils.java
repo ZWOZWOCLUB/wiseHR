@@ -129,6 +129,7 @@ public class TokenUtils {
         claims.put("Role", user.getMemRole());
         claims.put("userEmail", user.getMemEmail());
 
+
         return claims;
     }
 
