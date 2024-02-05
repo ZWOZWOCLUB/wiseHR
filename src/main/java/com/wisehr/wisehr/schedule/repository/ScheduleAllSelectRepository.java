@@ -4,8 +4,8 @@ import com.wisehr.wisehr.schedule.entity.ScheduleAllSelect;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSelect, String > {
@@ -16,38 +16,12 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
             "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
             "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
             "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m')")
-    List<ScheduleAllSelect> findByYearMonth(String yearMonth);
-    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT A FROM ScheduleAllSelect A " +
-            "LEFT JOIN fetch ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
-            "LEFT JOIN fetch SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
-            "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
-            "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
-            "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m') " +
-            "and E.allowanceID.memCode = :memCode ")
-    List<ScheduleAllSelect> findByYearMonthAndMemCode(String yearMonth, int memCode);
-    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT A FROM ScheduleAllSelect A " +
-            "LEFT JOIN fetch ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
-            "LEFT JOIN fetch SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
-            "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
-            "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
-            "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m') " +
-            "and F.memName = :memName ")
-    List<ScheduleAllSelect> findByYearMonthAndMemName(String yearMonth, String memName);
-    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT A FROM ScheduleAllSelect A " +
-            "LEFT JOIN fetch ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
-            "LEFT JOIN fetch SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
-            "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
-            "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
-            "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m') " +
-            "and F.depCode.depCode = :depCode ")
-    List<ScheduleAllSelect> findByYearMonthAndDepCode(String yearMonth, int depCode);
+            "WHERE (:yearMonth is null OR :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m')) " +
+            "AND (:memCode = 0 OR E.allowanceID.memCode = :memCode) " +
+            "AND (:memName is null OR F.memName = :memName) " +
+            "AND (:depCode = 0 OR F.depCode.depCode = :depCode) " +
+            "AND (:depName is null OR F.depCode.depName LIKE %:depName%)")
+    List<ScheduleAllSelect> findByYearMonth(int memCode, String memName, int depCode, String depName, String yearMonth);
 
     @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT A FROM ScheduleAllSelect A " +
@@ -56,16 +30,9 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
             "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
             "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
             "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m') " +
-            "and F.depCode.depName LIKE %:depName% ")
-    List<ScheduleAllSelect> findByYearMonthAndDepName(String yearMonth, String depName);
-    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT A FROM ScheduleAllSelect A " +
-            "LEFT JOIN fetch ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
-            "LEFT JOIN fetch SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
-            "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
-            "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
-            "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-%') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d') ")
-    List<ScheduleAllSelect> findByYearMonthDate(String yearMonth);
+            "WHERE (:yearMonth is null OR :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-%d') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d')) " +
+            "AND (:notContain is null OR :notContain BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m-%d') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m-%d')) ")
+    List<ScheduleAllSelect> findByYearMonthDate(String yearMonth, String notContain);
+
+
 }

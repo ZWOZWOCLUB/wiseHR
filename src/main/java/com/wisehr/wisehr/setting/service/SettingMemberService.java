@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Value;
 import com.wisehr.wisehr.util.FileUploadUtils;
 
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,6 @@ public class SettingMemberService {
     private final SettingCertificateFileRepository settingCertificateFileRepository;
     private final SettingDocumentFileRepository settingDocumentFileRepository;
     private final SettingSalaryFileRepository settingSalaryFileRepository;
-
     private final SettingSalaryRepository settingSalaryRepository;
     private final MPHoldVacationRepository vacationRepository;
 
@@ -797,7 +797,7 @@ public class SettingMemberService {
 
 
     @Transactional
-    public String updateVacation(MPHoldVacationDTO holdVacationDTO) {
+    public String updateVacation(HoldVacationDTO holdVacationDTO) {
         log.info("updateVacation Start~~~~~~~~~~~~");
         log.info("holdVacationDTO : " + holdVacationDTO);
 

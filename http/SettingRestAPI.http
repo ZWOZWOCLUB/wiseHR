@@ -1,5 +1,5 @@
 ### 직원 정보 등록 - 인사정보 + 사진
-POST http://localhost:8001/member/member
+POST http://localhost:8001/setting/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -63,7 +63,7 @@ Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
 < ./pikachu2.png
 
 ###직원 정보 수정
-PUT http://localhost:8001/member/member
+PUT http://localhost:8001/setting/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -133,28 +133,28 @@ Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
 
 
 ### 직원 조회
-GET http://localhost:8001/member/allMemberSearch?offset=1
+GET http://localhost:8001/setting/allMemberSearch?offset=1
 Content-Type: application/json
 Accept: */*
 
 ###직원 검색어로 조회
-GET http://localhost:8001/member/search?s=이
+GET http://localhost:8001/setting/search?s=이
 Content-Type: application/json
 Accept: */*
 
 ###직원등록 -부서 조회
-GET http://localhost:8001/member/depSearch
+GET http://localhost:8001/setting/depSearch
 Content-Type: application/json
 Accept: */*
 
 
 ###직원등록 -직급 조회
-GET http://localhost:8001/member/position
+GET http://localhost:8001/setting/position
 Content-Type: application/json
 Accept: */*
 
 ###학위정보등록
-POST http://localhost:8001/member/degree
+POST http://localhost:8001/setting/degree
 Content-Type: application/json
 Accept: */*
 
@@ -169,7 +169,7 @@ Accept: */*
 }
 
 ###학위정보수정
-PUT http://localhost:8001/member/degree
+PUT http://localhost:8001/setting/degree
 Content-Type: application/json
 Accept: */*
 
@@ -184,7 +184,7 @@ Accept: */*
 }
 
 ###학위파일등록
-POST http://localhost:8001/member/degreeFile
+POST http://localhost:8001/setting/degreeFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -198,7 +198,7 @@ Content-Disposition: form-data; name="degreeFile"; filename="pikachu.png"
 < ./pikachu.png
 
 ###자격정보등록
-POST http://localhost:8001/member/certificate
+POST http://localhost:8001/setting/certificate
 Content-Type: application/json
 Accept: */*
 
@@ -213,7 +213,7 @@ Accept: */*
 }
 
 ###자격정보수정
-PUT http://localhost:8001/member/certificate
+PUT http://localhost:8001/setting/certificate
 Content-Type: application/json
 Accept: */*
 
@@ -229,7 +229,7 @@ Accept: */*
 }
 
 ###자격파일등록
-POST http://localhost:8001/member/certificateFile
+POST http://localhost:8001/setting/certificateFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -243,7 +243,7 @@ Content-Disposition: form-data; name="certificateFile"; filename="pikachu.png"
 < ./pikachu.png
 
 ###경력정보등록
-POST http://localhost:8001/member/career
+POST http://localhost:8001/setting/career
 Content-Type: application/json
 Accept: */*
 
@@ -258,7 +258,7 @@ Accept: */*
 }
 
 ###경력정보수정
-POST http://localhost:8001/member/career
+POST http://localhost:8001/setting/career
 Content-Type: application/json
 Accept: */*
 
@@ -274,7 +274,7 @@ Accept: */*
 }
 
 ###경력파일등록
-POST http://localhost:8001/member/careerFile
+POST http://localhost:8001/setting/careerFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -288,12 +288,12 @@ Content-Disposition: form-data; name="careerFile"; filename="pikachu.png"
 < ./pikachu.png
 
 ###직원인사정보조회 - 학위, 경력, 자격, 통장
-GET http://localhost:8001/member/searchResourcesInformation?mem=240129002
+GET http://localhost:8001/setting/searchResourcesInformation?mem=240129002
 Content-Type: application/json
 Accept: */*
 
 ###급여통장 등록
-POST http://localhost:8001/member/salaryFile
+POST http://localhost:8001/setting/salaryFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -307,7 +307,7 @@ Content-Disposition: form-data; name="salaryFile"; filename="pikachu.png"
 < ./pikachu.png
 
 ###그외 파일 등록
-POST http://localhost:8001/member/documentFile
+POST http://localhost:8001/setting/documentFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -327,7 +327,7 @@ Content-Disposition: form-data; name="docAtcKind";
 
 
 ###급여 통장 정보 등록
-POST http://localhost:8001/member/salary
+POST http://localhost:8001/setting/salary
 Content-Type: application/json;
 Accept: */*
 
@@ -338,7 +338,7 @@ Accept: */*
 }
 
 ###급여 통장 정보 수정
-PUT http://localhost:8001/member/salary
+PUT http://localhost:8001/setting/salary
 Content-Type: application/json;
 Accept: */*
 
@@ -350,7 +350,7 @@ Accept: */*
 }
 
 ###서류함 그외 파일 수정
-PUT http://localhost:8001/member/documentFile
+PUT http://localhost:8001/setting/documentFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -373,7 +373,7 @@ Content-Disposition: form-data; name="docAtcKind";
 
 
 ###학위 파일 수정
-PUT http://localhost:8001/member/degreeFile
+PUT http://localhost:8001/setting/degreeFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -387,7 +387,7 @@ Content-Disposition: form-data; name="degreeFile"; filename="pikachu2.png"
 < ./pikachu2.png
 
 ###경력 파일 수정
-PUT http://localhost:8001/member/careerFile
+PUT http://localhost:8001/setting/careerFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -401,7 +401,7 @@ Content-Disposition: form-data; name="careerFile"; filename="pikachu2.png"
 < ./pikachu2.png
 
 ###자격 파일 수정
-PUT http://localhost:8001/member/certificateFile
+PUT http://localhost:8001/setting/certificateFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -416,7 +416,7 @@ Content-Disposition: form-data; name="certificateFile"; filename="pikachu2.png"
 
 
 ###급여 통장 파일 수정
-PUT http://localhost:8001/member/salaryFile
+PUT http://localhost:8001/setting/salaryFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
@@ -431,11 +431,20 @@ Content-Disposition: form-data; name="salaryFile"; filename="pikachu2.png"
 
 
 ###연차 업데이트
-PUT http://localhost:8001/member/updateVacation
+PUT http://localhost:8001/setting/updateVacation
 Content-Type: application/json;
 Accept: */*
 
 {
   "memCode": 4,
   "vctCount": 3
+}
+
+###전체 직원 근태 조회
+POST http://localhost:8001/setting/attendance
+Content-Type: application/json;
+Accept: */*
+
+{
+  "yearMonth": "2024-01"
 }

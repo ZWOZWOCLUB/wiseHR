@@ -30,7 +30,7 @@ Accept: */*
 
 {
   "scheduleDTO": {
-    "schCode": "sch14",
+    "schCode": "sch10",
     "schType": "테스트",
     "schStartDate": "2024-01-01",
     "schEndDate": "2024-02-15",
@@ -39,13 +39,13 @@ Accept: */*
     "wokCode": 16
   },
   "patternDayDTO": [{
-    "dayCode": 1,
-    "changeDayCode": 6,
+    "dayCode": 5,
+    "changeDayCode": 4,
     "wokCode": 16
   },
     {
-      "dayCode": 2,
-      "changeDayCode": 8,
+      "dayCode": 6,
+      "changeDayCode": 1,
       "wokCode": 16
     }
   ]
@@ -103,7 +103,7 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "memCode": 240130007,
+  "memCode": 240202006,
   "schCode": "sch9"
 }
 
@@ -113,9 +113,9 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "memCode": 240130007,
-  "schCode": "sch9",
-  "changeSchCode": "sch7"
+  "memCode": 240202006,
+  "schCode": "sch10",
+  "changeSchCode": "sch1"
 }
 
 ###첫페이지 전체 조회
@@ -124,16 +124,16 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "yearMonth" : ""
+  "memCode": 3
 }
 
 ###조건으로 조회
-POST http://localhost:8001/schedule/searchValue
+POST http://localhost:8001/schedule/searchDay
 Content-Type: application/json
 Accept: */*
 
 {
-"chooseDate": "2024-01-15"
+  "yearMonth": "2024-01-15"
 }
 
 

@@ -14,5 +14,5 @@ public class ScheduleSearchValueDTO {
     private String depName;
     private String chooseDate;
     private String yearMonth;
-
+    private String notContain;
 }
