@@ -35,10 +35,6 @@ public class MainController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", mainService.selectApprovalCount(memCode)));
     }
 
-//    @GetMapping("/todaySchedule/{memcode}")
-//    public ResponseEntity<ResponseDTO> todaySchedule(@PathVariable Long memcode){
-//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", mainService.todaySchedule(memcode)));
-//    }
 
 
     @GetMapping("/searchMonth")
