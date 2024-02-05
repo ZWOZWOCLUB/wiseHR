@@ -3,11 +3,17 @@ package com.wisehr.wisehr.main.service;
 import com.wisehr.wisehr.main.entity.MainAppCom;
 import com.wisehr.wisehr.main.entity.MainMember;
 import com.wisehr.wisehr.main.repository.MainAppComRepository;
+import com.wisehr.wisehr.main.repository.MainScheduleRepository;
+import com.wisehr.wisehr.schedule.dto.ScheduleAllSelectDTO;
+import com.wisehr.wisehr.schedule.dto.ScheduleSearchValueDTO;
+import com.wisehr.wisehr.schedule.entity.ScheduleAllSelect;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -15,9 +21,14 @@ public class MainService {
 
 
     private final MainAppComRepository mainAppComRepository;
+    private final ModelMapper modelMapper;
 
-    public MainService(MainAppComRepository mainAppComRepository) {
+    private final MainScheduleRepository mainScheduleRepository;
+
+    public MainService(MainAppComRepository mainAppComRepository, ModelMapper modelMapper, MainScheduleRepository mainScheduleRepository) {
         this.mainAppComRepository = mainAppComRepository;
+        this.modelMapper = modelMapper;
+        this.mainScheduleRepository = mainScheduleRepository;
     }
 
     public Map<String, Integer> selectApprovalCount(Long memCode) {
@@ -62,13 +73,33 @@ public class MainService {
         return count;
     }
 
-    public Object todaySchedule(Long memCode) {
+//    public Object todaySchedule(Long memCode) {
+//
+//        MainMember mainMember = new MainMember();
+//        mainMember.setMemCode(memCode);
+//
+//        LocalDate currentDate = LocalDate.now();
+//
+//        return "";
+//    }
 
-        MainMember mainMember = new MainMember();
-        mainMember.setMemCode(memCode);
+    public List<ScheduleAllSelectDTO> searchMonth(ScheduleSearchValueDTO value) {
+        log.info("searchDate 서비스 시작~~~~~~~~~~~~");
+        int memCode = value.getMemCode();
+        String memName = value.getMemName();
+        String yearMonth = value.getYearMonth();
 
-        LocalDate currentDate = LocalDate.now();
 
-        return "";
+        List<ScheduleAllSelect> allSelect = mainScheduleRepository.findByYearMonth(memCode, memName,yearMonth);
+        log.info("allselect : " + allSelect);
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
+                .collect(Collectors.toList());
+        System.out.println("selectDTOList = " + selectDTOList);
+
+        log.info("searchDate 서비스 끗~~~~~~~~~~~~");
+
+        return selectDTOList;
     }
 }

@@ -4,6 +4,7 @@ import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
+import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
 import com.wisehr.wisehr.organization.entity.OrgDepartment;
 import com.wisehr.wisehr.organization.entity.OrgDepartmentAndOrgMember;
 import com.wisehr.wisehr.organization.entity.OrgMemAndOrgDep;
@@ -282,6 +283,47 @@ public class OrgService {
         log.info("[OrgService] insertMember End");
 
         return "";
+    }
+
+
+    @Transactional
+    public Object updateRole(OrgMemAndOrgDepDTO orgMemAndOrgDepDTO) {
+
+        log.info("[OrgService] : updateRole ---------시작" );
+
+        //현재 부서의 중간관리자를 찾기
+        List<OrgMemAndOrgDep> memberList = orgMemAndDepRepository.findByorgDepartmentDepCodeAndMemRole(orgMemAndOrgDepDTO.getDepCode(), "중간관리자");
+
+        log.info("[OrgService] memberList {}: ", memberList);
+
+        //현재(선택한) 멤버 정보 조회
+        OrgMemAndOrgDep selectedMember = orgMemAndDepRepository.findById(orgMemAndOrgDepDTO.getMemCode()).get();
+
+        log.info("[OrgService] selectedMember {}: ", selectedMember);
+
+        //선택한 멤버의 롤이 "중간관리자"인지 검사
+        if("중간관리자".equals(selectedMember.getMemRole())){
+            return "현재 해당 부서의 팀장입니다.";
+        }
+
+        //기존 중간관리자를 일반사원으로 업데이트
+        //(memberList 리스트를 forEach를 통해 선택한 멤버의 코드와 다른 경우 일반사원으로 셋)
+        memberList.forEach(a -> {
+            if(a.getMemCode() != selectedMember.getMemCode()){
+                a.setMemRole("일반사원");
+                orgMemAndDepRepository.save(a);
+            }
+        });
+
+        //선택한 멤버를 중간관리자로 업데이트
+        selectedMember.setMemRole("중간관리자");
+        orgMemAndDepRepository.save(selectedMember);
+
+        log.info("[OrgService] : updateRole ---------끝" );
+
+        return "팀장을 지정하였습니다.";
+
+
     }
 }
 
