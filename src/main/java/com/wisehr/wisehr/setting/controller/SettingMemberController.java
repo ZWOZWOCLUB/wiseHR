@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,9 +24,10 @@ import java.util.List;
 public class SettingMemberController {
 
     private final SettingMemberService settingMemberService;
-
-    public SettingMemberController(SettingMemberService settingMemberService) {
+    private final BCryptPasswordEncoder PasswordEncoder;
+    public SettingMemberController(SettingMemberService settingMemberService, BCryptPasswordEncoder PasswordEncoder) {
         this.settingMemberService = settingMemberService;
+        this.PasswordEncoder = PasswordEncoder;
     }
 
     /**
@@ -32,7 +35,7 @@ public class SettingMemberController {
      */
     @PostMapping("/member")
     public ResponseEntity<ResponseDTO> insertMember(@ModelAttribute SettingMemberDTO settingMemberDTO, MultipartFile profile){
-
+        settingMemberDTO.setMemPassword(PasswordEncoder.encode(settingMemberDTO.getMemPassword()));
         System.out.println("settingMemberDTO = " + settingMemberDTO);
         System.out.println("profile = " + profile);
 
