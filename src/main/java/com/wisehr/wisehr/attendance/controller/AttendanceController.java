@@ -6,10 +6,7 @@ import com.wisehr.wisehr.common.ResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("attendance")
@@ -29,6 +26,14 @@ public class AttendanceController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출근 성공", attendanceService.startWork(att)));
 
+    }
+
+    @PutMapping("/off")
+    public ResponseEntity<ResponseDTO> endWork(@RequestBody AttendanceDTO att){
+
+        log.info("att : " + att);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "퇴근 성공", attendanceService.endWork(att)));
     }
 
 }

@@ -3,15 +3,22 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "attCode": 1,
-  "attStartTime": "17:00:00",
-  "attEndTime": "01:00:00",
-  "attStatus": "출근",
-  "attWorkDate": "2024-02-11",
+  "attStartTime": "07:00:00",
+  "attWorkDate": "2024-02-07",
   "attendanceMember": {
-    "memCode": 3
-  },
-  "attendanceSchedule": {
-    "schCode": "sch12"
+    "memCode": 240130003
+  }
+
+}
+
+### 퇴근찍기
+PUT http://localhost:8001/attendance/off
+Content-Type: application/json
+Accept: */*
+
+{
+  "attEndTime": "11:01:02",
+  "attendanceMember": {
+    "memCode": 240130003
   }
 }
