@@ -158,7 +158,7 @@ public class OrgController {
      */
     @PutMapping("/updateRole/")
     public ResponseEntity<ResponseDTO> updateRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "권한 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
     }
 
     }
