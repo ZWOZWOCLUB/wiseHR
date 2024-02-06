@@ -1,10 +1,13 @@
 package com.wisehr.wisehr.notice.service;
 import com.wisehr.wisehr.common.Criteria;
+import com.wisehr.wisehr.notice.dto.NotAllAlarmDTO;
 import com.wisehr.wisehr.notice.dto.NotAttachedFileDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
+import com.wisehr.wisehr.notice.entity.NotAllAlarm;
 import com.wisehr.wisehr.notice.entity.NotAttachedFile;
 import com.wisehr.wisehr.notice.entity.NotMember;
 import com.wisehr.wisehr.notice.entity.Notice;
+import com.wisehr.wisehr.notice.repository.NotAllAlarmRepository;
 import com.wisehr.wisehr.notice.repository.NotAttachedFileRepository;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
 import com.wisehr.wisehr.util.FileUploadUtils;
@@ -20,8 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +35,9 @@ public class NoticeService {
 
     private final NotAttachedFileRepository notAttachedFileRepository;
 
-
+//    private final NotMemberRepository notMemberRepository;
     private final ModelMapper modelMapper;
-
+    private final NotAllAlarmRepository notAllAlarmRepository;
 
 
     @Value("src/main/resources/static/")
@@ -43,11 +46,13 @@ public class NoticeService {
     @Value("http://localhost:8001/")
     private String IMAGE_URL;
 
-    public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper) {
+    public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper, NotAllAlarmRepository notAllAlarmRepository) {
         this.noticeRepository = noticeRepository;
         this.notAttachedFileRepository = notAttachedFileRepository;
+//        this.notMemberRepository = notMemberRepository;
         this.modelMapper = modelMapper;
 
+        this.notAllAlarmRepository = notAllAlarmRepository;
     }
 
     @Transactional
@@ -58,22 +63,20 @@ public class NoticeService {
         log.info("==========noticeFile : " + noticeFile);
 
 
+
         String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
 
         NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
 //        noticeFileDTO.setNotAtcCode();
 //        noticeFileDTO.setNotAtcName(noticeFile.getName());
-        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
-        noticeFileDTO.setNotAtcDeleteStatus("N");
-        noticeFileDTO.setNotAtcPath(path);
-        noticeFileDTO.setNotice(noticeDTO);
-
-//        noticeFileDTO.setNotice(noticeDTO);
+        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());//파일이름 원본값을 넣어줌
+        noticeFileDTO.setNotAtcDeleteStatus("N"); //삭제여부 N
+        noticeFileDTO.setNotAtcPath(path); //경로값
+        noticeFileDTO.setNotice(noticeDTO); //공지사항DTO
 
 
-
-        String stroy = null;
+        String story = null;
         log.info("noticeFile.getName====" +noticeFile.getName());
         log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
         log.info("path========= : " + path);
@@ -81,8 +84,10 @@ public class NoticeService {
         int result = 0;
 
         try {
-            stroy = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
 
+
+            //파일을 저장
+            story = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
 
             Notice insertNotice = modelMapper.map(noticeDTO, Notice.class);
             log.info("=============================== inot : " + insertNotice);
@@ -95,6 +100,27 @@ public class NoticeService {
             notAttachedFileRepository.save(notFile);
 
             log.info("공지첨부파일 성공");
+
+            if (noticeDTO.getNotAllArmCheck().equals("Y")) {  // 맴버 전체에게 알림을 보냅니다.
+//            List<NotMember> notMemberList = notMemberRepository.findAll();
+                LocalDateTime now = LocalDateTime.now();
+                NotAllAlarm notAllAlarm = new NotAllAlarm();
+                notAllAlarm.setAllArmCode(5);
+                notAllAlarm.setAllArmDate(now);
+                notAllAlarm.setNotCode(noticeDTO.getNotCode());
+                notAllAlarm.setMemCode(notFile.getNotice().getNotMember());
+                notAllAlarm.setAllArmCheck("N");
+                notAllAlarmRepository.save(notAllAlarm);
+
+
+                log.info("notAllAlarmDTO ==== " + notAllAlarm);
+
+
+                log.info("알람전송 완료");
+
+            } else { // 알림을 보내지 않습니다.
+                log.info("알람을 전송하지 않습니다.");
+            }
 
 
             result = 1;

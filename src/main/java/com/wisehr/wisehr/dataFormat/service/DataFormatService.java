@@ -52,7 +52,7 @@ public class DataFormatService {
         DataFormatDTO dataFormatDTO = new DataFormatDTO();
         DataMemberDTO dataMemberDTO = new DataMemberDTO();
 
-        dataFormatDTO.setDataCode(2L);
+        dataFormatDTO.setDataCode(1L);
         //파일 이름가져오기
         dataFormatDTO.setDataName(dataFormatFile.getOriginalFilename());
         //임의 작성자 가져오기
