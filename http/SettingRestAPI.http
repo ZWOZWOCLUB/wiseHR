@@ -6,7 +6,7 @@ Accept: */*
 --WebAppBoundary
 Content-Disposition: form-data; name="memName"
 
-노연지
+술쟁이
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memPhone"
@@ -47,6 +47,7 @@ N
 Content-Disposition: form-data; name="memRole"
 
 중간관리자
+
 
 --WebAppBoundary
 Content-Disposition: form-data; name="posCode"
@@ -131,6 +132,11 @@ Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
 
 < ./pikachu2.png
 
+--WebAppBoundary
+Content-Disposition: form-data; name="profile"; filename="pikachu.png"
+
+< pikachu.png
+--WebAppBoundary
 
 ### 직원 조회
 GET http://localhost:8001/setting/allMemberSearch?offset=1

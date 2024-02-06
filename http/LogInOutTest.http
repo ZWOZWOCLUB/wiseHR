@@ -1,0 +1,16 @@
+### 로그인테스트
+POST http://localhost:8001/login
+Content-Type: application/json
+Accept: */*
+
+{
+  "id": "240202008",
+  "pass": "0000"
+}
+
+
+### 로그아웃테스트??????????????
+POST http://localhost:8001/logout
+Content-Type: application/json
+Accept: */*
+
