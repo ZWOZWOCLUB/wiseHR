@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,23 +117,60 @@ public class NoticeService {
     public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
         log.info(" ==============updateService Start ===========");
         log.info("noticeDTO ========== "+noticeDTO);
+        log.info("noticeFile ====== "+ noticeFile);
 
 
         int result = 0;
 
 
-        /*update 할 notice 조회*/
-        Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
+        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
-        log.info("notice ==== " + notice);
+        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
+        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
+        noticeFileDTO.setNotAtcDeleteStatus("N");
+        noticeFileDTO.setNotAtcPath(path);
+        noticeFileDTO.setNotice(noticeDTO);
 
-        notice.setNotName(noticeDTO.getNotName());
-        notice.setNotComment(noticeDTO.getNotComment());
-//        notice.setNotModifyDate(noticeDTO.getNotModifyDate());
+        log.info("noticeFile.getName====" +noticeFile.getName());
+        log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+        log.info("path========= : " + path);
+        log.info("noticeDTO==========" + noticeDTO);
 
-        log.info("notice == " + notice);
+        try {
+            /*update 할 notice 조회*/
+            Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
+            log.info("notice ==== " + notice);
 
-        result = 1;
+            //공지내용 업데이트
+            notice.setNotName(noticeDTO.getNotName());
+            notice.setNotComment(noticeDTO.getNotComment());
+
+            //첨부파일이 존재할 경우
+            if(!noticeFile.isEmpty()){
+                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
+                log.info("Saved File Name ; " + savedFileName);
+
+                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
+                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
+                notAttachedFile.setNotAtcPath(path);
+
+                notAttachedFileRepository.save(notAttachedFile);
+            }
+
+
+            noticeRepository.save(notice);
+            log.info("notice ======= "+ notice);
+            log.info("noticeDTO==========" + noticeDTO);
+
+            log.info("noticeFile.getName====" +noticeFile.getName());
+            log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+
+            result = 1;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
 
 
         log.info("updateNotice 끝");

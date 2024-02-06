@@ -87,8 +87,9 @@ Content-Disposition: form-data; name="notComment"
 확인 부탁 한번 더 부탁 드립니다..
 
 --WebAppBoundary
-#Content-Disposition: form-data; name="notModifyDate"
-#
-#2024-02-04
-#
-#--WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="noticeFile"; filename="test.png"
+
+< plus.png
+--WebAppBoundary

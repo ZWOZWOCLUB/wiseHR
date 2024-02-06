@@ -19,7 +19,6 @@ public class DataFormat {
     private Long dataCode;
     @Column(name="data_name", nullable = false)
     private String dataName;
-
     @Column(name="mem_code", nullable = false)
     private Long memCode;
     @Column(name="regist_date", nullable = false)
@@ -29,6 +28,6 @@ public class DataFormat {
     @Column(name="data_path", nullable = false)
     private String dataPath;
     @Column(name="data_delete_status", nullable = false)
-    private String dataDeleteStatus;
+    private String dataDeleteStatus = "N";
 
 }
