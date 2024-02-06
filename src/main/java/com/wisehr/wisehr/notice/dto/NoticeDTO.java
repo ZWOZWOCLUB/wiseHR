@@ -22,5 +22,6 @@ public class NoticeDTO {
     private Date notModifyDate; //수정일
     private NotMemberDTO notMember; //작성자
     private String notDeleteStatus; //삭제여부
+    private String notAllArmCheck; //알람여부
 
 }

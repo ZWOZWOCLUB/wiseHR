@@ -1,10 +1,13 @@
 package com.wisehr.wisehr.notice.service;
 import com.wisehr.wisehr.common.Criteria;
+import com.wisehr.wisehr.notice.dto.NotAllAlarmDTO;
 import com.wisehr.wisehr.notice.dto.NotAttachedFileDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
+import com.wisehr.wisehr.notice.entity.NotAllAlarm;
 import com.wisehr.wisehr.notice.entity.NotAttachedFile;
 import com.wisehr.wisehr.notice.entity.NotMember;
 import com.wisehr.wisehr.notice.entity.Notice;
+import com.wisehr.wisehr.notice.repository.NotAllAlarmRepository;
 import com.wisehr.wisehr.notice.repository.NotAttachedFileRepository;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
 import com.wisehr.wisehr.util.FileUploadUtils;
@@ -19,6 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,9 +35,9 @@ public class NoticeService {
 
     private final NotAttachedFileRepository notAttachedFileRepository;
 
-
+//    private final NotMemberRepository notMemberRepository;
     private final ModelMapper modelMapper;
-
+    private final NotAllAlarmRepository notAllAlarmRepository;
 
 
     @Value("src/main/resources/static/")
@@ -41,11 +46,13 @@ public class NoticeService {
     @Value("http://localhost:8001/")
     private String IMAGE_URL;
 
-    public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper) {
+    public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper, NotAllAlarmRepository notAllAlarmRepository) {
         this.noticeRepository = noticeRepository;
         this.notAttachedFileRepository = notAttachedFileRepository;
+//        this.notMemberRepository = notMemberRepository;
         this.modelMapper = modelMapper;
 
+        this.notAllAlarmRepository = notAllAlarmRepository;
     }
 
     @Transactional
@@ -56,22 +63,20 @@ public class NoticeService {
         log.info("==========noticeFile : " + noticeFile);
 
 
+
         String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
 
         NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
 //        noticeFileDTO.setNotAtcCode();
 //        noticeFileDTO.setNotAtcName(noticeFile.getName());
-        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
-        noticeFileDTO.setNotAtcDeleteStatus("N");
-        noticeFileDTO.setNotAtcPath(path);
-        noticeFileDTO.setNotice(noticeDTO);
-
-//        noticeFileDTO.setNotice(noticeDTO);
+        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());//파일이름 원본값을 넣어줌
+        noticeFileDTO.setNotAtcDeleteStatus("N"); //삭제여부 N
+        noticeFileDTO.setNotAtcPath(path); //경로값
+        noticeFileDTO.setNotice(noticeDTO); //공지사항DTO
 
 
-
-        String stroy = null;
+        String story = null;
         log.info("noticeFile.getName====" +noticeFile.getName());
         log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
         log.info("path========= : " + path);
@@ -79,8 +84,10 @@ public class NoticeService {
         int result = 0;
 
         try {
-            stroy = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
 
+
+            //파일을 저장
+            story = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
 
             Notice insertNotice = modelMapper.map(noticeDTO, Notice.class);
             log.info("=============================== inot : " + insertNotice);
@@ -94,6 +101,27 @@ public class NoticeService {
 
             log.info("공지첨부파일 성공");
 
+            if (noticeDTO.getNotAllArmCheck().equals("Y")) {  // 맴버 전체에게 알림을 보냅니다.
+//            List<NotMember> notMemberList = notMemberRepository.findAll();
+                LocalDateTime now = LocalDateTime.now();
+                NotAllAlarm notAllAlarm = new NotAllAlarm();
+                notAllAlarm.setAllArmCode(5);
+                notAllAlarm.setAllArmDate(now);
+                notAllAlarm.setNotCode(noticeDTO.getNotCode());
+                notAllAlarm.setMemCode(notFile.getNotice().getNotMember());
+                notAllAlarm.setAllArmCheck("N");
+                notAllAlarmRepository.save(notAllAlarm);
+
+
+                log.info("notAllAlarmDTO ==== " + notAllAlarm);
+
+
+                log.info("알람전송 완료");
+
+            } else { // 알림을 보내지 않습니다.
+                log.info("알람을 전송하지 않습니다.");
+            }
+
 
             result = 1;
         } catch (Exception e){
@@ -103,6 +131,77 @@ public class NoticeService {
 
         }
         return (result > 0)? "공지등록 성공": "공지등록 실패";
+    }
+
+    /***
+     * 공지업데이트
+     * @param noticeDTO
+     * @param noticeFile
+     * @return
+     */
+    @Transactional
+    public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
+        log.info(" ==============updateService Start ===========");
+        log.info("noticeDTO ========== "+noticeDTO);
+        log.info("noticeFile ====== "+ noticeFile);
+
+
+        int result = 0;
+
+
+        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
+
+        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
+        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
+        noticeFileDTO.setNotAtcDeleteStatus("N");
+        noticeFileDTO.setNotAtcPath(path);
+        noticeFileDTO.setNotice(noticeDTO);
+
+        log.info("noticeFile.getName====" +noticeFile.getName());
+        log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+        log.info("path========= : " + path);
+        log.info("noticeDTO==========" + noticeDTO);
+
+        try {
+            /*update 할 notice 조회*/
+            Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
+            log.info("notice ==== " + notice);
+
+            //공지내용 업데이트
+            notice.setNotName(noticeDTO.getNotName());
+            notice.setNotComment(noticeDTO.getNotComment());
+
+            //첨부파일이 존재할 경우
+            if(!noticeFile.isEmpty()){
+                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
+                log.info("Saved File Name ; " + savedFileName);
+
+                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
+                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
+                notAttachedFile.setNotAtcPath(path);
+
+                notAttachedFileRepository.save(notAttachedFile);
+            }
+
+
+            noticeRepository.save(notice);
+            log.info("notice ======= "+ notice);
+            log.info("noticeDTO==========" + noticeDTO);
+
+            log.info("noticeFile.getName====" +noticeFile.getName());
+            log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+
+            result = 1;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
+        log.info("updateNotice 끝");
+        return (result > 0)? "공지업뎃 성공" : "공지업뎃 실패";
+
     }
 
 
@@ -183,4 +282,7 @@ public class NoticeService {
 
         return noticeList;
     }
+
+
+
 }
