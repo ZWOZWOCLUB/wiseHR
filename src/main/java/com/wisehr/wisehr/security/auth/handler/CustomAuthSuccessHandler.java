@@ -42,7 +42,7 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
                     .build();
 
             jsonValue = (JSONObject) ConvertUtil.convertObjectToJsonObject(tokenDTO);
-
+            responseMap.put("status", 200);
             responseMap.put("userInfo", jsonValue);
             responseMap.put("message", "로그인 성공");
 
