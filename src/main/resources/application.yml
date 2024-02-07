@@ -13,8 +13,9 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+
 #  web:
 #    resources:
 #      static-locations: classpath:/productimgs/
@@ -37,7 +38,7 @@ logging:
 image:
   # WebConfig? ??
   add-resource-locations: classpath:/static/
-  add-resource-handler: /memberFiles/**
+  add-resource-handler: /**
   image-dir: src/main/resources/static/
   image-url: http://localhost:8001/
 

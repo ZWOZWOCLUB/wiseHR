@@ -66,6 +66,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     User user = new User();
                     user.setMemName(claims.get("memName").toString());
                     user.setMemEmail(claims.get("memEmail").toString());
+                    user.setMemCode(Integer.parseInt(claims.get("memCode").toString()));
                     user.setMemRole(ZzclubRole.valueOf(claims.get("memRole").toString()));
 //                    user.setMemAddress(claims.get("memAddress").toString());  // 필요시 주석 해제
 //                    user.setMemPhone(claims.get("memPhone").toString());
