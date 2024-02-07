@@ -2,13 +2,13 @@
 GET http://localhost:8001/approval/receivedapproval/240130003
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Mjg0Mjc3MjI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDIwMjAwOCIsIm1lbUVtYWlsIjoiZGpkZGRAZ21haWwuY29tIiwibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiLsnbzrsJjsgqzsm5AiLCJleHAiOjE3MDgxNDgyNzd9.j9t2Im9tHCSyxOq39OBnBjQsPm1WRLT2s47Oy8-gTQw
+Authorization: Bearer eyJkYXRlIjoxNzA3MjkyNTgyMDI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTY1ODJ9.THONy4fN2UfnWeD0JABauO9dXJDJmftYH44am3xl81I
 
 ###보낸 결재 (mem_code) 완료
 GET http://localhost:8001/approval/sendpayment/240130003
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Mjg0Mjc3MjI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDIwMjAwOCIsIm1lbUVtYWlsIjoiZGpkZGRAZ21haWwuY29tIiwibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiLsnbzrsJjsgqzsm5AiLCJleHAiOjE3MDgxNDgyNzd9.j9t2Im9tHCSyxOq39OBnBjQsPm1WRLT2s47Oy8-gTQw
+Authorization: Bearer eyJkYXRlIjoxNzA3MjkyNTgyMDI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTY1ODJ9.THONy4fN2UfnWeD0JABauO9dXJDJmftYH44am3xl81I
 
 
 ### insert Test
@@ -94,11 +94,12 @@ Content-Disposition: form-data; name="approval.payKind"
 POST http://localhost:8001/approval/schedule
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Mjg5Nzg2MTE2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTM3ODZ9.dtAx-ldPUzyVrihu4GSx0pU0i9NwnJ8sOcz718Nn0IU
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payName"
 
-여자친구 보러가요
+테스트
 
 --WebAppBoundary
 Content-Disposition: form-data; name="eshStartDate"
@@ -239,11 +240,10 @@ Content-Disposition: form-data; name="approvalFile"; filename="plus.png"
 PUT http://localhost:8001/approval/complete
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Mjg0Mjc3MjI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDIwMjAwOCIsIm1lbUVtYWlsIjoiZGpkZGRAZ21haWwuY29tIiwibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiLsnbzrsJjsgqzsm5AiLCJleHAiOjE3MDgxNDgyNzd9.j9t2Im9tHCSyxOq39OBnBjQsPm1WRLT2s47Oy8-gTQw
 
 {
-  "appCode": "app13",
-  "appDate": "2024-02-28",
+  "appCode": "app26",
+  "appDate": "2024-04-01",
   "appState": "승인",
   "appComment": "굿 "
 }

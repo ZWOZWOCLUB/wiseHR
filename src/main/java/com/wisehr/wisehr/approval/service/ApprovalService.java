@@ -88,7 +88,8 @@ public class ApprovalService {
         log.info("memCode : " + memCode.getClass());
 
 
-        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode);
+
+        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCodeOrderByAppStateAndApprovalPayDateDesc(memCode);
 
         log.info("paymentList : " + paymentList);
 
@@ -105,7 +106,9 @@ public class ApprovalService {
     public List<ApprovalCompleteDTO> selectRecPayment(Long memCode) {
         log.info("reqPayment Service Start : " + memCode);
 
-        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalApprovalMemberMemCode(memCode);
+
+        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalApprovalMemberMemCodeOrderByAppStateAndApprovalPayDateDesc(memCode);
+
 
         log.info("log paymentList : " + paymentList);
 
