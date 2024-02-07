@@ -24,8 +24,6 @@ public class EditCommute {
     private String ediCode;
     @Column(name = "edi_kind")
     private String ediKind;
-    @Column(name = "edi_name")
-    private String ediName;
     @Column(name = "edi_contents")
     private String ediContents;
     @Column(name = "edi_date")

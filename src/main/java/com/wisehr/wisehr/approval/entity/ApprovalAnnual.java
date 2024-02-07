@@ -24,8 +24,6 @@ public class ApprovalAnnual {
     private String vacCode;
     @Column(name = "vac_kind")
     private String vacKind;
-    @Column(name = "vac_name")
-    private String vacName;
     @Column(name = "vac_contents")
     private String vacContents;
     @Column(name = "vac_start_date")

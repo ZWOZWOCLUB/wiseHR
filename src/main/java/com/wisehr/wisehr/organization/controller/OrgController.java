@@ -7,6 +7,7 @@ import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
+import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
 import com.wisehr.wisehr.organization.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -148,4 +149,16 @@ public class OrgController {
     public ResponseEntity<ResponseDTO> insertMember(@PathVariable int depCode, @RequestBody List<Integer> selectedMemberCodes){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "멤버 추가 성공", orgService.insertMember(depCode, selectedMemberCodes)));
     }
-}
+
+
+    /**
+     * 중간관리자 지정
+     * @param orgMemAndOrgDepDTO
+     * @return
+     */
+    @PutMapping("/updateRole/")
+    public ResponseEntity<ResponseDTO> updateRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
+    }
+
+    }

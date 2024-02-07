@@ -2,13 +2,15 @@ package com.wisehr.wisehr.main.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.main.service.MainService;
+import com.wisehr.wisehr.schedule.dto.ScheduleSearchValueDTO;
+import com.wisehr.wisehr.schedule.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("main")
@@ -17,8 +19,11 @@ public class MainController {
 
     private final MainService mainService;
 
-    public MainController(MainService mainService) {
+    private final ScheduleService scheduleService;
+
+    public MainController(MainService mainService, ScheduleService scheduleService) {
         this.mainService = mainService;
+        this.scheduleService = scheduleService;
     }
 
     /**
@@ -28,5 +33,22 @@ public class MainController {
     @GetMapping("/approvalCount/{memCode}")
     public ResponseEntity<ResponseDTO> selectApprovalCount(@PathVariable Long memCode){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", mainService.selectApprovalCount(memCode)));
+    }
+
+
+
+    @GetMapping("/searchMonth")
+    public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueDTO value) {
+        if(value.getYearMonth() == null){
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+            System.out.println("simpleDateFormat = " + simpleDateFormat);
+            String now = simpleDateFormat.format(date);
+            value.setYearMonth(now);
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", mainService.searchMonth(value)));
+
+        }   else {
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchMonth(value)));
+        }
     }
 }

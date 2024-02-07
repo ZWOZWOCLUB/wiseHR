@@ -14,7 +14,6 @@ import java.sql.Time;
 public class EditCommuteDTO {
     private String ediCode;
     private String ediKind;
-    private String ediName;
     private String ediContents;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date ediDate;

@@ -42,6 +42,20 @@ public class NoticeController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
     }
 
+
+    @PutMapping("/updateNotice")
+    public ResponseEntity<ResponseDTO> updateNotice(
+            @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
+        log.info("공지사항수정시작");
+        log.info("NoticeDTO ====== " + noticeDTO);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지수정성공", noticeService.updateNotice(noticeDTO, noticeFile)));
+
+    }
+
+
+
+
     /*
     * 공지 전체 조회, 페이징처리
     * */
@@ -113,5 +127,6 @@ public class NoticeController {
         return  ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "작성자조회성공", noticeService.searchMemberNameList(search)));
 
     }
+
 
 }

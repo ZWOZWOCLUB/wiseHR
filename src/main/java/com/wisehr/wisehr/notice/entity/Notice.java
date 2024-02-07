@@ -36,5 +36,9 @@ public class Notice {
     private NotMember notMember;
     @Column(name = "not_delete_status", nullable = false)
     private String notDeleteStatus;
+//    @OneToOne
+//    @JoinColumn(name = "not_all_arm_check", nullable = false)
+    private String notAllArmCheck;
+
 
 }
