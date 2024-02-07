@@ -4,14 +4,14 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "comContents": "근무하기시렁 배벅벅.",
-  "comDate": "2024-02-01",
+  "comContents": "병원에 조만간 불나면 그냥 그런갑다 하십쇼.",
+  "comDate": "2024-04-01",
   "comMember": {
-    "memCode": 2
+    "memCode": 3
   },
   "comDeleteState": "N",
   "notCode": {
-    "notCode": "not6"
+    "notCode": "not8"
   }
 }
 
@@ -22,6 +22,6 @@ Content-Type: application/json
 Accept: */*
 
 ###글코드로 댓글 조회
-GET http://localhost:8001/comment/notCodeSearch?nc=not6
+GET http://localhost:8001/comment/notCodeSearch?nc=not8
 Content-Type: application/json
 Accept: */*

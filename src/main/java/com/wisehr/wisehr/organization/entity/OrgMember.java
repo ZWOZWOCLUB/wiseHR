@@ -60,5 +60,7 @@ public class OrgMember {
 
     public void setOrgDepAndOrgMem(OrgDepartmentAndOrgMember orgDepAndOrgMem) {
         this.orgDepAndOrgMem = orgDepAndOrgMem;
+
+
     }
 }

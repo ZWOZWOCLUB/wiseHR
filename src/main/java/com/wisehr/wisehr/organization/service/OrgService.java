@@ -4,6 +4,7 @@ import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
 import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
 import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
+import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
 import com.wisehr.wisehr.organization.entity.OrgDepartment;
 import com.wisehr.wisehr.organization.entity.OrgDepartmentAndOrgMember;
 import com.wisehr.wisehr.organization.entity.OrgMemAndOrgDep;
@@ -246,9 +247,11 @@ public class OrgService {
 
         log.info("[OrgService] insertMember start");
 
-        //List<Integer>를 통해 사용자로부터 입력받은 여러개의 멤버 코드를 받아옴(컨트롤러에서 리퀘스트바디를 통해 DTO 받아준 것)
-        //받은 멤버 코드 기반으로 조회하고,
-        //조회한 멤버의 부서 코드를 현재 부서로 변경(업데이트)
+        /*
+        * List<Integer>를 통해 사용자로부터 입력받은 여러개의 멤버 코드를 받아옴(컨트롤러에서 리퀘스트바디를 통해 DTO 받아준 것)
+        * 받은 멤버 코드 기반으로 조회하고,
+        * 조회한 멤버의 부서 코드를 현재 부서로 변경(업데이트)
+        * */
 
         //현재 부서 상세 조회
         OrgDepartmentAndOrgMember odam = orgDepAndMemRepository.findById(depCode).get();
@@ -260,20 +263,23 @@ public class OrgService {
 
         log.info("[OrgService] currentMembers : {}", currentMembers);
 
+        //위의 조회한 결과(currentMembers)에서 selectedMemberCodes 가 없는 멤버들만 필터링
         List<OrgMember> removedMembers = currentMembers.stream()
                 .filter(member -> !selectedMemberCodes.contains(member.getMemCode()))
                 .collect(Collectors.toList());
 
         log.info("[OrgService] removedMembers : {}", removedMembers);
 
+        //그 멤버들은 부서코드 null로 업데이트(즉, 부서에서 제외)
         removedMembers.forEach(member -> {
             member.setOrgDepAndOrgMem(null);
             orgMemberRepository.save(member);
         });
-
+        //selectedMemberCodes(사용자가 선택한 멤버들)의 부서를 현재 부서로 업데이트
         List<OrgMember> selectedMembers = orgMemberRepository.findAllById(selectedMemberCodes);
         selectedMembers.forEach(member -> {
             member.setOrgDepAndOrgMem(odam);
+            member.setMemRole("일반사원"); //중간관리자는 부서에 1명이어야 하는데, 수정하는 과정에서 여러명이 될 수 있으므로 일반으로 초기화
             orgMemberRepository.save(member);
         });
 
@@ -281,7 +287,53 @@ public class OrgService {
 
         log.info("[OrgService] insertMember End");
 
-        return "";
+        return "멤버 추가 완료";
+    }
+
+    /**
+     * 부서에 중간관리자 지정 메소드
+     * @param orgMemAndOrgDepDTO
+     * @return
+     */
+
+    @Transactional
+    public Object updateRole(OrgMemAndOrgDepDTO orgMemAndOrgDepDTO) {
+
+        log.info("[OrgService] : updateRole ---------시작" );
+
+        //현재 부서의 중간관리자를 찾기
+        List<OrgMemAndOrgDep> memberList = orgMemAndDepRepository.findByorgDepartmentDepCodeAndMemRole(orgMemAndOrgDepDTO.getDepCode(), "중간관리자");
+
+        log.info("[OrgService] memberList {}: ", memberList);
+
+        //현재(사용자가 선택한) 멤버 정보 조회
+        OrgMemAndOrgDep selectedMember = orgMemAndDepRepository.findById(orgMemAndOrgDepDTO.getMemCode()).get();
+
+        log.info("[OrgService] selectedMember {}: ", selectedMember);
+
+        //선택한 멤버의 롤이 "중간관리자"인지 검사
+        if("중간관리자".equals(selectedMember.getMemRole())){
+            return "현재 해당 부서의 팀장입니다.";
+        }
+
+        //기존 중간관리자를 일반사원으로 업데이트
+        //(memberList 리스트를 forEach를 통해 선택한 멤버의 코드와 다른 경우 일반사원으로 셋)
+        memberList.forEach(a -> {
+            if(a.getMemCode() != selectedMember.getMemCode()){
+                a.setMemRole("일반사원");
+                orgMemAndDepRepository.save(a);
+            }
+        });
+
+        //선택한 멤버를 중간관리자로 업데이트
+        selectedMember.setMemRole("중간관리자");
+        orgMemAndDepRepository.save(selectedMember);
+
+        log.info("[OrgService] : updateRole ---------끝" );
+
+        return "팀장을 지정하였습니다.";
+
+
     }
 }
 

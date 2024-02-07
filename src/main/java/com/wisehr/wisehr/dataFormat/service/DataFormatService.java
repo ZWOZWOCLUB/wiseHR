@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.dataFormat.service;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.dataFormat.dto.DataFormatDTO;
 import com.wisehr.wisehr.dataFormat.dto.DataMemberDTO;
 import com.wisehr.wisehr.dataFormat.entity.DataFormat;
@@ -8,11 +9,17 @@ import com.wisehr.wisehr.dataFormat.repository.DataFormatRepository;
 import com.wisehr.wisehr.util.FileUploadUtils;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Insert;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Stack;
@@ -37,7 +44,7 @@ public class DataFormatService {
 
     //서식자료 등록
     @Transactional
-    public String insertDataFormat(MultipartFile dataFormatFile) {
+    public String insertDataFormat( MultipartFile dataFormatFile) {
         log.info("==--dataInsert start--==");
         log.info("dataFormatFile =====" + dataFormatFile);
 
@@ -89,5 +96,22 @@ public class DataFormatService {
 
 //        return "";
         return (result > 0)? "자료등록 성공": "자료등록 실패";
+    }
+
+    //서식자료 조회
+    public Page<DataFormatDTO> allDataFormatWithPaging(Criteria criteria) {
+
+        log.info("서식자료 전체조회 시작");
+        int index = criteria.getPageNum() -1;
+        int count = criteria.getAmount();
+
+        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC, "dataCode"));
+
+        Page<DataFormat> result = dataFormatRepository.findAll(paging);
+
+        Page<DataFormatDTO> dataList = result.map(dataFormat -> modelMapper.map(dataFormat, DataFormatDTO.class));
+        System.out.println("result = " + result);
+
+        return dataList;
     }
 }

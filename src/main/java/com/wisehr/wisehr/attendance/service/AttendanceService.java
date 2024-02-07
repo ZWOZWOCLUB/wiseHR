@@ -174,6 +174,8 @@ public class AttendanceService {
             attendanceRepository.save(modelMapper.map(att, Attendance.class));
             log.info("코딩 킹 갓 제너럴 ");
 
+
+
         }catch (Exception e){
             e.printStackTrace();
             return "오류가 발생했습니다. ";

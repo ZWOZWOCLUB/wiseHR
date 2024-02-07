@@ -96,7 +96,7 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
 --WebAppBoundary
-Content-Disposition: form-data; name="eshName"
+Content-Disposition: form-data; name="approval.payName"
 
 여자친구 보러가요
 

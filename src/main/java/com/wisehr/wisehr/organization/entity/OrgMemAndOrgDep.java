@@ -22,6 +22,8 @@ public class OrgMemAndOrgDep {
     private String memName;
     @Column(name = "mem_status")
     private String memStatus;
+    @Column(name = "mem_role")
+    private String memRole;
 
 
     @OneToOne
