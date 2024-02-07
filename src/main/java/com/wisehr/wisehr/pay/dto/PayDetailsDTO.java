@@ -2,6 +2,8 @@ package com.wisehr.wisehr.pay.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,5 +25,9 @@ public class PayDetailsDTO {
     private int medicalInsurance;
     private int deductedAmount;
     private int totalDeduction;
+    private int totalDdeSalary;
+    private int totalDeductedAmount;
+    private int totalDeductions;
     private PaySalaryDTO salCode;
+
 }

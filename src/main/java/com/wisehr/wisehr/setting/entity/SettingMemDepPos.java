@@ -37,9 +37,9 @@ public class SettingMemDepPos {
     private String memRole;
     @OneToOne
     @JoinColumn(name = "dep_code")
-    private SettingDepartment depCode;
+    private SettingDepartment departmentDTO;
     @OneToOne
     @JoinColumn(name = "pos_code")
-    private SettingPosition posCode;
+    private SettingPosition positionDTO;
 
 }
