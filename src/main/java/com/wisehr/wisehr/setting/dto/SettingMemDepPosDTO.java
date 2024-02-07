@@ -19,6 +19,6 @@ public class SettingMemDepPosDTO {
     private String memEndDate;
     private String memStatus;
     private String memRole;
-    private SettingPositionDTO posCode;
-    private SettingDepartmentDTO depCode;
+    private SettingPositionDTO positionDTO;
+    private SettingDepartmentDTO departmentDTO;
 }

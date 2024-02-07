@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         DetailsUser detailsUser = (DetailsUser) detailsService.loadUserByUsername(id);
 
-        if(!passwordEncoder.matches(pass, detailsUser.getPassword())){
+        if(!passwordEncoder.matches(pass, detailsUser.getUser().getMemPassword())){
             throw new BadCredentialsException(pass + "는 비밀번호가 아닙니다.");
         }
         return new UsernamePasswordAuthenticationToken(detailsUser, pass, detailsUser.getAuthorities());

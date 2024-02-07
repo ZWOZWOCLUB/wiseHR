@@ -30,7 +30,7 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
     JSONObject jsonObject;
         if(user.getMemStatus().equals("Y")){
             responseMap.put("userInfo", jsonValue);
-            responseMap.put("message","퇴사한 계정입니다.");
+            responseMap.put("message","퇴사한 직원의 계정입니다.");
         }else{
             String token = TokenUtils.generateJwtToken(user);
 

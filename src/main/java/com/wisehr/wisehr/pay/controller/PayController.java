@@ -31,5 +31,10 @@ public class PayController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", payService.searchYear(memCode)));
     }
 
+    @GetMapping("/hireYearList/{memCode}")
+    public ResponseEntity<ResponseDTO> hireYearList(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", payService.hireYearList(memCode)));
+    }
+
 
 }
