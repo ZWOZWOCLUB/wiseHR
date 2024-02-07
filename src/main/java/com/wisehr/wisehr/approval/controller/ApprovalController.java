@@ -133,4 +133,5 @@ public class ApprovalController {
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(requestBody)));
     }
+
 }
