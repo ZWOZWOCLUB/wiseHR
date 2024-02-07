@@ -25,7 +25,7 @@ public class ApprovalController {
 
 
     // 받은 결재 조회
-    @GetMapping("/receivedpayment/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
+    @GetMapping("/receivedapproval/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
     public ResponseEntity<ResponseDTO> reqPayment(@PathVariable Long memCode){
         log.info("memCodere : " + memCode);
 
@@ -33,7 +33,7 @@ public class ApprovalController {
     }
 
     // 보낸 결재 조회
-    @GetMapping("/sendpayment/{memCode}")
+    @GetMapping("/sendapproval/{memCode}")
     public ResponseEntity<ResponseDTO> recPayment(@PathVariable Long memCode){
         log.info("memCode : " + memCode);
 
@@ -133,4 +133,5 @@ public class ApprovalController {
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(requestBody)));
     }
+
 }

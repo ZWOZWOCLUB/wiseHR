@@ -23,8 +23,6 @@ public class EditSchedule {
             strategy = "com.wisehr.wisehr.common.MyGenerator")
     @Column(name="esh_code")
     private String eshCode;
-    @Column(name="esh_name")
-    private String eshName;
     @Column(name="esh_start_date")
     private Date eshStartDate;
     @Column(name="esh_end_date")

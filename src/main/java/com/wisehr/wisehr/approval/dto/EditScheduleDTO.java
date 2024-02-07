@@ -13,7 +13,6 @@ import java.sql.Date;
 @ToString
 public class EditScheduleDTO {
     private String eshCode;
-    private String eshName;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date eshStartDate;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
