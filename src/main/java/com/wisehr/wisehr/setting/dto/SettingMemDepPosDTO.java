@@ -21,4 +21,5 @@ public class SettingMemDepPosDTO {
     private String memRole;
     private SettingPositionDTO positionDTO;
     private SettingDepartmentDTO departmentDTO;
+    private SettingDocumentFileDTO documentFileDTO;
 }

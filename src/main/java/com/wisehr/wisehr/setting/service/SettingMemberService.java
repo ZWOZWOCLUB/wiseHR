@@ -132,6 +132,8 @@ public class SettingMemberService {
 
                 String url = "profile/" + resultFileDTO.getDocAtcConvertName();
                 memberDTO.setProfileURL(url);
+                System.out.println("memberDTO = " + memberDTO);
+                return memberDTO;
 
 
 
@@ -142,11 +144,11 @@ public class SettingMemberService {
                 System.out.println("insertResult = " + insertResult);
 
                 SettingMemberDTO memberDTO = modelMapper.map(insertResult, SettingMemberDTO.class);
+                return memberDTO;
 
             }
 
 
-        result = 1;
 
 
         }catch(Exception e) {
@@ -154,11 +156,11 @@ public class SettingMemberService {
             throw new RuntimeException(e);
         }
 
-        return settingMemberDTO;
+
     }
 
     @Transactional
-    public String updateMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
+    public SettingMemberDTO updateMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("updateMember Start~~~~~~~~~~~~");
         log.info("settingMemberDTO : " + settingMemberDTO);
         String path = IMAGE_DIR + "profile/";
@@ -189,6 +191,10 @@ public class SettingMemberService {
                     .depCode(settingMemberDTO.getDepCode())
                     .posCode(settingMemberDTO.getPosCode()).build();
 
+            SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
+
+
+
             if (profile != null) {
 
 
@@ -212,16 +218,32 @@ public class SettingMemberService {
 
                 boolean isDelete = FileUploadUtils.deleteFile(path, oriImage);
 
+
+                SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
+
+                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                memberDTO.setProfileURL(url);
+                System.out.println("memberDTO = " + memberDTO);
+                return memberDTO;
+
+
             } else {
                 file = file.docAtcOriginName(oriImage).build();
+
+
+                SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
+
+                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                memberDTO.setProfileURL(url);
+                System.out.println("memberDTO = " + memberDTO);
+                return memberDTO;
+
             }
-            result = 1;
 
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
         }
-        return (result > 0) ? "인사정보 업데이트 성공" : "인사정보 업데이트 실패";
     }
 
 
