@@ -77,7 +77,7 @@ public class SettingMemberService {
 
 
     @Transactional
-    public String insertMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
+    public SettingMemberDTO insertMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("insertMember Start~~~~~~~~~~~~");
         log.info(settingMemberDTO.toString());
         if(!"일반사원".equals(settingMemberDTO.getMemRole())) {
@@ -109,6 +109,7 @@ public class SettingMemberService {
                 System.out.println("insertResult = " + insertResult);
 
 
+
                 replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
 
                 fileDTO.setMemCode(settingMemberDTO.getMemCode());
@@ -124,11 +125,24 @@ public class SettingMemberService {
 
                 SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
                 settingDocumentFileRepository.save(insertFile);
+
+                SettingMemberDTO memberDTO = modelMapper.map(insertResult, SettingMemberDTO.class);
+
+                SettingDocumentFileDTO resultFileDTO = modelMapper.map(insertFile, SettingDocumentFileDTO.class);
+
+                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                memberDTO.setProfileURL(url);
+
+
+
             }else {
                 SettingMember insertMember = modelMapper.map(settingMemberDTO, SettingMember.class);
 
                 SettingMember insertResult = settingMemberRepository.save(insertMember);
                 System.out.println("insertResult = " + insertResult);
+
+                SettingMemberDTO memberDTO = modelMapper.map(insertResult, SettingMemberDTO.class);
+
             }
 
 
@@ -140,7 +154,7 @@ public class SettingMemberService {
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "등록 성공": "등록 실패";
+        return settingMemberDTO;
     }
 
     @Transactional
