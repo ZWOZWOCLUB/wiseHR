@@ -1,0 +1,26 @@
+package com.wisehr.wisehr.mypage.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
+
+@Entity
+@Table(name = "department")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class MPDepartment {
+    @Id
+    @Column(name = "dep_code")
+    private int depCode;
+    @Column(name = "dep_name")
+    private String depName;
+    @Column(name = "dep_birth_date")
+    private String depBirthDate;
+    @Column(name = "dep_delete_status")
+    private String depDeleteStatus;
+}
