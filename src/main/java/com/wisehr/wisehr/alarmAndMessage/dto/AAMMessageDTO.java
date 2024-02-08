@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.alarmAndMessage.dto;
 
+import com.wisehr.wisehr.alarmAndMessage.entity.AAMRecMessenger;
 import lombok.*;
 
 import java.sql.Date;
@@ -9,12 +10,13 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class AAMSendMessengerDTO {
-    private String msgCode;
+public class AAMMessageDTO {
+
+    private int msgCode;
+    private AAMRecMessengerDTO aamRecMessenger;
     private Date msgDate;
     private String msgContents;
-
     private int memCode;
-    private AAMMemberDTO aamMember;
     private String msgDeleteStatus;
+
 }

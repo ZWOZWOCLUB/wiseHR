@@ -1,4 +1,4 @@
-package com.wisehr.wisehr.mypage.dto;
+package com.wisehr.wisehr.alarmAndMessage.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class MPMyPageDTO {
+public class AAMMemberDTO {
     private int memCode;
     private String memName;
     private String memPhone;

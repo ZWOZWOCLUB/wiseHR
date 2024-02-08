@@ -7,8 +7,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class AAMRecMessengerDTO {
+public class AAMRecMessageDTO {
+
     private String msgCode;
+    private AAMSendMessengerDTO aamSendMessenger;
     private int memCode;
-    private AAMMemberDTO aamMember;
 }
