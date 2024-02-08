@@ -33,6 +33,10 @@ public class MPMyPageMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
+    @Column(name = "dep_code")
+    private String depCode;
+    @Column(name = "pos_code")
+    private String posCode;
 
     public MPMyPageMember() {
     }
@@ -81,11 +85,19 @@ public class MPMyPageMember {
         this.memRole = memRole;
         return this;
     }
+    public MPMyPageMember depCode(String depCode) {
+        this.depCode = depCode;
+        return this;
+    }
+    public MPMyPageMember posCode(String posCode) {
+        this.posCode = posCode;
+        return this;
+    }
     public MPMyPageMember build(){
         return new MPMyPageMember(memCode, memName, memPhone,
                 memEmail, memAddress, memBirth,
                 memPassword, memHireDate,
                 memEndDate, memStatus,
-                memRole);
+                memRole, depCode, posCode);
     }
 }

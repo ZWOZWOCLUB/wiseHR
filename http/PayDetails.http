@@ -9,4 +9,9 @@ GET http://localhost:8001/pay/pay-List2/2
 Content-Type: application/json
 Accept: */*
 
+### 연차 구하기
+GET http://localhost:8001/pay/hireYearList/2
+Content-Type: application/json
+Accept: */*
+
 

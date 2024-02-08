@@ -27,6 +27,8 @@ public class Approval {
     private Date payDate;
     @Column(name = "pay_kind")
     private String payKind;
+    @Column(name = "pay_name")
+    private String payName;
     @OneToOne
     @JoinColumn(name = "mem_code")
     @JsonIgnore

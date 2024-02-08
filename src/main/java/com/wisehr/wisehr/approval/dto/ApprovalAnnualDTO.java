@@ -14,7 +14,6 @@ import java.sql.Date;
 public class ApprovalAnnualDTO {
     private String vacCode;
     private String vacKind;
-    private String vacName;
     private String vacContents;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date vacStartDate;

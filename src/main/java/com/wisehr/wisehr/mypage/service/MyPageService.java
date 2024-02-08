@@ -36,6 +36,7 @@ public class MyPageService {
     private final MPHoldVacationRepository holdVacationRepository;
     private final MPMyPageAnnualRepository myPageAnnualRepository;
     private final MPDocumentFileRepository documentFileRepository;
+    private final MPDepartmentRepository mpDepartmentRepository;
     private final MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository;
     private final ModelMapper modelMapper;
 
@@ -49,7 +50,7 @@ public class MyPageService {
     public MyPageService(MPMyPageRepository myPageRepository, MPDegreeRepository degreeRepository, MPCertificateRepository certificateRepository, MPCareerRepository careerRepository, MPAttendanceRepository attendanceRepository,
                          MPDocumentFileRepository documentFileRepository, MPDocumentRepository documentRepository,
                          MPVacationHistoryRepository vacationHistoryRepository, MPHoldVacationRepository holdVacationRepository,
-                         MPMyPageAnnualRepository myPageAnnualRepository, MPDocumentFileRepository documentFileRepository1, MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository,
+                         MPMyPageAnnualRepository myPageAnnualRepository, MPDocumentFileRepository documentFileRepository1, MPDepartmentRepository mpDepartmentRepository, MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository,
                          ModelMapper modelMapper) {
         this.myPageRepository = myPageRepository;
         this.degreeRepository = degreeRepository;
@@ -61,6 +62,7 @@ public class MyPageService {
         this.holdVacationRepository = holdVacationRepository;
         this.myPageAnnualRepository = myPageAnnualRepository;
         this.documentFileRepository = documentFileRepository1;
+        this.mpDepartmentRepository = mpDepartmentRepository;
         this.vacationHistoryAndApprovalPaymentRepository = vacationHistoryAndApprovalPaymentRepository;
         this.modelMapper = modelMapper;
     }
@@ -70,6 +72,13 @@ public class MyPageService {
 
         MPMyPageMember myPageMember = myPageRepository.findById(memCode).get();
         MPMyPageDTO settingMemberDTO = modelMapper.map(myPageMember, MPMyPageDTO.class);
+        System.out.println("settingMemberDTO = " + settingMemberDTO);
+
+        MPDepartment mpDepartment = mpDepartmentRepository.findByDepCode(settingMemberDTO.getDepCode());
+        MPDepartmentDTO departmentDTO = modelMapper.map(mpDepartment, MPDepartmentDTO.class);
+        System.out.println("departmentDTO = " + departmentDTO);
+
+        settingMemberDTO.setDepName(departmentDTO.getDepName());
 
         return settingMemberDTO;
 

@@ -33,13 +33,13 @@ public class SettingMemDepPos {
     private String memEndDate;
     @Column(name = "mem_status")
     private String memStatus;
-    @Column(name = "mem_roll")
-    private String memRoll;
+    @Column(name = "mem_role")
+    private String memRole;
     @OneToOne
     @JoinColumn(name = "dep_code")
-    private SettingDepartment depCode;
+    private SettingDepartment departmentDTO;
     @OneToOne
     @JoinColumn(name = "pos_code")
-    private SettingPosition posCode;
+    private SettingPosition positionDTO;
 
 }

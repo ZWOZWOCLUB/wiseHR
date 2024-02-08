@@ -1,12 +1,15 @@
 ###받은 결재 (mem_code) 완료
-GET http://localhost:8001/approval/receivedpayment/240130003
+GET http://localhost:8001/approval/receivedapproval/240130003
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Mjg0Mjc3MjI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDIwMjAwOCIsIm1lbUVtYWlsIjoiZGpkZGRAZ21haWwuY29tIiwibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiLsnbzrsJjsgqzsm5AiLCJleHAiOjE3MDgxNDgyNzd9.j9t2Im9tHCSyxOq39OBnBjQsPm1WRLT2s47Oy8-gTQw
 
 ###보낸 결재 (mem_code) 완료
 GET http://localhost:8001/approval/sendpayment/240130003
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MTEyOTU1NjU4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDIwMjAwOCIsIm1lbUVtYWlsIjoiZGpkZGRAZ21haWwuY29tIiwibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDc5NzY5NTV9.aVLesfaPOHNl33AxDsEzi6TtAvHWhQyssP8Pfqja_GE
+
 
 ### insert Test
 POST http://localhost:8001/approval/submit
@@ -93,7 +96,7 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
 --WebAppBoundary
-Content-Disposition: form-data; name="eshName"
+Content-Disposition: form-data; name="approval.payName"
 
 여자친구 보러가요
 

@@ -2,11 +2,12 @@
 POST http://localhost:8001/setting/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Mjg3MzU5MDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODE1MTM1OX0.mwSFQ2mprpRmxwbAOiGlH8egUXhWGFx9jRwQgfkf8Zc
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memName"
 
-노연지
+술쟁이
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memPhone"
@@ -47,6 +48,7 @@ N
 Content-Disposition: form-data; name="memRole"
 
 중간관리자
+
 
 --WebAppBoundary
 Content-Disposition: form-data; name="posCode"
@@ -131,6 +133,11 @@ Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
 
 < ./pikachu2.png
 
+--WebAppBoundary
+Content-Disposition: form-data; name="profile"; filename="pikachu.png"
+
+< pikachu.png
+--WebAppBoundary
 
 ### 직원 조회
 GET http://localhost:8001/setting/allMemberSearch?offset=1

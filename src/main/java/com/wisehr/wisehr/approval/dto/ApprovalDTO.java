@@ -15,6 +15,7 @@ public class ApprovalDTO {
     private String payCode;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private Date payDate;
+    private String payName;
     private String payKind;
     private ApprovalMemberDTO approvalMember;
 }
