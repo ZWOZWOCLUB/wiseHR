@@ -1,9 +1,6 @@
 package com.wisehr.wisehr.alarmAndMessage.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,13 +9,26 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class AAMRecMessenger {
 
     @Id
     @Column(name = "msg_code")
-    private String msgCode;
-    @Column(name = "mem_code")
-    private int memCode;
+    private Integer msgCode;
 
+    @Column(name="mem_code")
+    private Integer memCode;
+
+    @JoinColumn(name = "mem_code", insertable=false, updatable=false)
+    @OneToOne
+    private AAMMember aamMember;
+//    @JoinColumn(name = "mem_code", referencedColumnName = "mem_code")
+//    @OneToOne
+//    private AAMMember aamMember;
+
+    @Override
+    public String toString() {
+        return "AAMRecMessenger{" +
+                "msgCode='" + msgCode + '\'' +
+                '}';
+    }
 }
