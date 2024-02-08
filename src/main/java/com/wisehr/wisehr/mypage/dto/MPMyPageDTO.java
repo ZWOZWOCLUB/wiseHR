@@ -19,6 +19,9 @@ public class MPMyPageDTO {
     private String memEndDate;
     private String memStatus;
     private String memRole;
+    private int depCode;
+    private int posCode;
+    private String depName;
 
 
 }
