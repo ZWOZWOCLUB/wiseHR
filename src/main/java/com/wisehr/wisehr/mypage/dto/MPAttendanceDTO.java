@@ -17,4 +17,5 @@ public class MPAttendanceDTO {
     private java.sql.Date attWorkDate;
     private int memCode;
     private String schCode;
+    private String totalWork;
 }
