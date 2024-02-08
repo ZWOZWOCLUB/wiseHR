@@ -244,13 +244,12 @@ public class ApprovalService {
 
     // 연차결재상신
     @Transactional
-    public String submitAnnual(ApprovalAnnualDTO annual, MultipartFile approvalFile) {
+    public String submitAnnual(ApprovalAnnual2DTO annual, MultipartFile approvalFile) {
 
         log.info("===== attchment start : " + approvalFile);
         log.info("-===== paymentAnnual : " + annual);
 
         int result = 0;
-
 
             try {
                 Approval approval = modelMapper.map(annual.getApproval(), Approval.class);
@@ -279,11 +278,9 @@ public class ApprovalService {
                     log.info("첫 메서드 만들기 성공!");
                 }
 
-                ApprovalMember depRole = fileUtils.roleMember(annual.getApproval().getApprovalMember().getMemCode());
-
                 ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
-                ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
+                ac.setApprovalMember(modelMapper.map(annual.getCmember(), ApprovalMemberDTO.class));
                 ac.setApproval(annual.getApproval());
                 ac.setAppState("대기");
 

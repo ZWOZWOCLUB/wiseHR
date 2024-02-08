@@ -42,7 +42,7 @@ public class ApprovalController {
 
     // 연차 신청 상신
     @PostMapping("/annual")
-    public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute ApprovalAnnualDTO annual, MultipartFile approvalFile){
+    public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute ApprovalAnnual2DTO annual, MultipartFile approvalFile){
         // paymentFile = > http에 업로드한 이미지 (값이 주소값 처럼 나온다.
         // annual => http에 넣은 값이 온다
 
