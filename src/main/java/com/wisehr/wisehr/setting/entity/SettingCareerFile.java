@@ -26,8 +26,14 @@ public class SettingCareerFile {
     private String crrAtcConvertName;
     @Column(name = "crr_code")
     private String crrCode;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "crr_code", insertable = false, updatable = false)
+    private SettingCareer career;
 
     public SettingCareerFile() {
+    }
+
+    public SettingCareerFile(int crrAtcCode, String crrAtcName, String crrAtcRegistDate, String crrAtcDeleteStatus, String crrAtcPath, String crrAtcExtends, String crrAtcConvertName, String crrCode) {
     }
 
 

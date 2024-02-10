@@ -30,9 +30,9 @@ public class PayService {
         this.modelMapper = modelMapper;
     }
 
-    public List<PayDetailsDTO> selectPayList(String year, String memCode) {
+    public List<PayDetailsDTO> selectPayList(String yearMonth, String memCode) {
         log.info("selectPayList 서비스 시작~~~~~~~~~~~~");
-        List<PayDetails> payList = payDetailsRepository.findByMemCodeAndPdeYymm(year, memCode);
+        List<PayDetails> payList = payDetailsRepository.findByMemCodeAndPdeYymm(yearMonth, memCode);
 
         List<PayDetailsDTO> payDetailsDTOList = payList.stream()
                 .map(pay -> modelMapper.map(pay, PayDetailsDTO.class))

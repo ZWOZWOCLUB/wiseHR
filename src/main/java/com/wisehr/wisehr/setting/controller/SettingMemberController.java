@@ -138,9 +138,9 @@ public class SettingMemberController {
     /**
      * 직원 인사 조회 (학위, 자격, 경력, 통장)
      */
-    @GetMapping("/searchResourcesInformation")
+    @GetMapping("/searchResourcesInformation/{memCode}")
     public ResponseEntity<ResponseDTO> searchResourcesInformation(
-            @RequestParam(name = "mem", defaultValue = "all") int memCode){
+            @PathVariable int memCode){
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", settingMemberService.searchResourcesInformation(memCode)));
     }
@@ -261,6 +261,7 @@ public class SettingMemberController {
 
 
 
+
     /**
      * 자격 파일 수정
      */
@@ -292,6 +293,14 @@ public class SettingMemberController {
     public ResponseEntity<ResponseDTO> AllMemberAttendance(@RequestBody SettingSearchValueDTO valueDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.AllMemberAttendance(valueDTO)));
     }
+
+
+//    @GetMapping("/searchResourcesFilesInformation/{memCode}")
+//    public ResponseEntity<ResponseDTO> searchResourcesFilesInformation(
+//            @PathVariable int memCode){
+//
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", settingMemberService.searchResourcesFilesInformation(memCode)));
+//    }
 
 
 

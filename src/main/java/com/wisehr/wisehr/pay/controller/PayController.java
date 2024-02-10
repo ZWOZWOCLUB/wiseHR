@@ -21,9 +21,9 @@ public class PayController {
         this.payService = payService;
     }
 
-    @GetMapping("/payList/{memCode}/{year}")
-    public ResponseEntity<ResponseDTO> payList(@PathVariable String year, @PathVariable String memCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", payService.selectPayList(year, memCode)));
+    @GetMapping("/payList/{memCode}/{yearMonth}")
+    public ResponseEntity<ResponseDTO> payList(@PathVariable String yearMonth, @PathVariable String memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", payService.selectPayList(yearMonth, memCode)));
     }
 
     @GetMapping("/pay-List2/{memCode}")

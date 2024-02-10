@@ -294,9 +294,10 @@ Content-Disposition: form-data; name="careerFile"; filename="pikachu.png"
 < ./pikachu.png
 
 ###직원인사정보조회 - 학위, 경력, 자격, 통장
-GET http://localhost:8001/setting/searchResourcesInformation?mem=240129002
+GET http://localhost:8001/setting/searchResourcesInformation/240130007
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NTQxNjUxOTE0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODQwNTY1MX0.cv_yv5ey_mD8lIqO3IvkAIaWys5aln4eJt2exykuPPs
 
 ###급여통장 등록
 POST http://localhost:8001/setting/salaryFile
@@ -410,6 +411,7 @@ Content-Disposition: form-data; name="careerFile"; filename="pikachu2.png"
 PUT http://localhost:8001/setting/certificateFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NTcxMTg2MDE5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODQzNTE4Nn0.HEHwoPp45ZOnTxmS0mJf6E5EHIIArnTP5Vb-NuJitZY
 
 --WebAppBoundary
 Content-Disposition: form-data; name="cerAtcCode";
@@ -425,11 +427,16 @@ Content-Disposition: form-data; name="certificateFile"; filename="pikachu2.png"
 PUT http://localhost:8001/setting/salaryFile
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NTcxMTg2MDE5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODQzNTE4Nn0.HEHwoPp45ZOnTxmS0mJf6E5EHIIArnTP5Vb-NuJitZY
 
 --WebAppBoundary
 Content-Disposition: form-data; name="salAtcCode";
 
 6
+--WebAppBoundary
+Content-Disposition: form-data; name="salCode";
+
+sal1
 --WebAppBoundary
 Content-Disposition: form-data; name="salaryFile"; filename="pikachu2.png"
 
@@ -450,6 +457,8 @@ Accept: */*
 POST http://localhost:8001/setting/attendance
 Content-Type: application/json;
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NTQxNjUxOTE0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODQwNTY1MX0.cv_yv5ey_mD8lIqO3IvkAIaWys5aln4eJt2exykuPPs
+
 
 {
   "yearMonth": "2024-01"
