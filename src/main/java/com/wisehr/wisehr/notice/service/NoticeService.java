@@ -105,11 +105,11 @@ public class NoticeService {
 //            List<NotMember> notMemberList = notMemberRepository.findAll();
                 LocalDateTime now = LocalDateTime.now();
                 NotAllAlarm notAllAlarm = new NotAllAlarm();
-                notAllAlarm.setAllArmCode(5);
+                notAllAlarm.setAllArmCode(6);
                 notAllAlarm.setAllArmDate(now);
+                notAllAlarm.setAllArmCheck("N");
                 notAllAlarm.setNotCode(noticeDTO.getNotCode());
                 notAllAlarm.setMemCode(notFile.getNotice().getNotMember());
-                notAllAlarm.setAllArmCheck("N");
                 notAllAlarmRepository.save(notAllAlarm);
 
 

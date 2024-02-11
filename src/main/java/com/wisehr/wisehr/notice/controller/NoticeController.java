@@ -42,7 +42,9 @@ public class NoticeController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
     }
 
-
+/*
+* 공지 수정
+* */
     @PutMapping("/updateNotice")
     public ResponseEntity<ResponseDTO> updateNotice(
             @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
@@ -52,9 +54,6 @@ public class NoticeController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지수정성공", noticeService.updateNotice(noticeDTO, noticeFile)));
 
     }
-
-
-
 
     /*
     * 공지 전체 조회, 페이징처리
@@ -86,7 +85,7 @@ public class NoticeController {
      * @param search notCode
      * @return
      */
-    @GetMapping("/detaill/{notCode}")
+    @GetMapping("/detaill")
     public ResponseEntity<ResponseDTO> noticeDetail(
             @RequestParam(value = "nc", defaultValue = "not")String search){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지상세조회성공", noticeService.noticeDetail(search)));

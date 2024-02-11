@@ -2,7 +2,7 @@
 GET http://localhost:8001/approval/receivedapproval/240130003
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3MjkyNTgyMDI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTY1ODJ9.THONy4fN2UfnWeD0JABauO9dXJDJmftYH44am3xl81I
+Authorization: Bearer eyJkYXRlIjoxNzA3MzQ3Njc3MTQ5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgyMTE2Nzd9.TSiOTnxPLdnW1WMz2Cvx807shWOQQMgMNdmlCKoL4YY
 
 ###보낸 결재 (mem_code) 완료
 GET http://localhost:8001/approval/sendpayment/240130003
@@ -94,7 +94,7 @@ Content-Disposition: form-data; name="approval.payKind"
 POST http://localhost:8001/approval/schedule
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Mjg5Nzg2MTE2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTM3ODZ9.dtAx-ldPUzyVrihu4GSx0pU0i9NwnJ8sOcz718Nn0IU
+
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payName"
