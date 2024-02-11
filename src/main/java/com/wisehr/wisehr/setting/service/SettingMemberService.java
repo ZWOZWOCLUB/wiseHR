@@ -169,75 +169,68 @@ public class SettingMemberService {
         String kind = "프로필";
         int result = 0;
 
-
-
         try {
             SettingMember member = settingMemberRepository.findById(settingMemberDTO.getMemCode()).get();
             System.out.println("member = " + member);
+
+
+                member = member.memName(settingMemberDTO.getMemName())
+                        .memPhone(settingMemberDTO.getMemPhone())
+                        .memEmail(settingMemberDTO.getMemEmail())
+                        .memAddress(settingMemberDTO.getMemAddress())
+                        .memBirth(settingMemberDTO.getMemBirth())
+                        .memHireDate(settingMemberDTO.getMemHireDate())
+                        .memEndDate(settingMemberDTO.getMemEndDate())
+                        .memStatus(settingMemberDTO.getMemStatus())
+                        .memRole(settingMemberDTO.getMemRole())
+                        .depCode(settingMemberDTO.getDepCode())
+                        .posCode(settingMemberDTO.getPosCode()).build();
+
+                SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
             SettingDocumentFile file = settingDocumentFileRepository.findByMemCodeAndDocAtcKind(settingMemberDTO.getMemCode(), kind);
-            System.out.println("file = " + file);
-            String oriImage = file.getDocAtcConvertName();
 
+            if(file != null) {
 
-            member = member.memName(settingMemberDTO.getMemName())
-                    .memPhone(settingMemberDTO.getMemPhone())
-                    .memEmail(settingMemberDTO.getMemEmail())
-                    .memAddress(settingMemberDTO.getMemAddress())
-                    .memBirth(settingMemberDTO.getMemBirth())
-                    .memHireDate(settingMemberDTO.getMemHireDate())
-                    .memEndDate(settingMemberDTO.getMemEndDate())
-                    .memStatus(settingMemberDTO.getMemStatus())
-                    .memRole(settingMemberDTO.getMemRole())
-                    .depCode(settingMemberDTO.getDepCode())
-                    .posCode(settingMemberDTO.getPosCode()).build();
+                if (profile != null) {
+                    System.out.println("file = " + file);
 
-            SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
+                    String fileName = UUID.randomUUID().toString().replace("-", "");
 
+                    String[] extend = profile.getOriginalFilename().split("\\.");
 
+                    String realExtend = extend[1];
 
-            if (profile != null) {
+                    replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
 
+                    file = file.memCode(member.getMemCode())
+                            .docAtcCode(file.getDocAtcCode())
+                            .docAtcExtends(realExtend)
+                            .docAtcConvertName(replaceFileName)
+                            .docAtcRegistDate(LocalDate.now().toString())
+                            .docAtcStorage(path)
+                            .docAtcOriginName(profile.getOriginalFilename())
+                            .docAtcKind("프로필")
+                            .docAtcPath(path).build();
 
-                String fileName = UUID.randomUUID().toString().replace("-", "");
+                    SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
 
-                String[] extend = profile.getOriginalFilename().split("\\.");
+                    String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                    memberDTO.setProfileURL(url);
+                    System.out.println("memberDTO = " + memberDTO);
+                    return memberDTO;
+                } else {
+                    String oriImage = file.getDocAtcConvertName();
+                    file = file.docAtcOriginName(oriImage).build();
 
-                String realExtend = extend[1];
+                    SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
 
-                replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
-
-                file = file.memCode(member.getMemCode())
-                        .docAtcCode(file.getDocAtcCode())
-                        .docAtcExtends(realExtend)
-                        .docAtcConvertName(replaceFileName)
-                        .docAtcRegistDate(LocalDate.now().toString())
-                        .docAtcStorage(path)
-                        .docAtcOriginName(profile.getOriginalFilename())
-                        .docAtcKind("프로필")
-                        .docAtcPath(path).build();
-
-                boolean isDelete = FileUploadUtils.deleteFile(path, oriImage);
-
-
-                SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
-
-                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
-                memberDTO.setProfileURL(url);
-                System.out.println("memberDTO = " + memberDTO);
+                    String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                    memberDTO.setProfileURL(url);
+                    System.out.println("memberDTO = " + memberDTO);
+                    return memberDTO;
+                }
+            }else {
                 return memberDTO;
-
-
-            } else {
-                file = file.docAtcOriginName(oriImage).build();
-
-
-                SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
-
-                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
-                memberDTO.setProfileURL(url);
-                System.out.println("memberDTO = " + memberDTO);
-                return memberDTO;
-
             }
 
         } catch (Exception e) {
@@ -379,6 +372,7 @@ public class SettingMemberService {
         resourcesDTO.setCareerFileDTO(careerFileDTOList);
         resourcesDTO.setDocumentFileDTO(documentFileDTOList);
         resourcesDTO.setDegreeFileDTO(degreeFileDTOList);
+        resourcesDTO.setCertificateFileDTO(certificateFileDTOList);
 
 
         log.info("searchResourcesInformation 서비스 끗~~~~~~~~~~");
@@ -680,9 +674,9 @@ public class SettingMemberService {
             etcfileDTO.setDocAtcExtends(realExtend);
             etcfileDTO.setDocAtcConvertName(replaceFileName);
             etcfileDTO.setDocAtcRegistDate(LocalDate.now().toString());
-            etcfileDTO.setDocAtcStorage(IMAGE_DIR);
+            etcfileDTO.setDocAtcStorage(path);
             etcfileDTO.setDocAtcDeleteStatus("N");
-            etcfileDTO.setDocAtcPath(IMAGE_DIR);
+            etcfileDTO.setDocAtcPath(path);
             etcfileDTO.setDocAtcOriginName(etcFile.getOriginalFilename());
 
             SettingDocumentFile insertFile = modelMapper.map(etcfileDTO, SettingDocumentFile.class);
@@ -834,33 +828,41 @@ public class SettingMemberService {
     public String updateDocumentFile(SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile) {
         log.info("updateDocumentFile Start~~~~~~~~~~~~");
         log.info("etcfileDTO : " + etcfileDTO);
+        System.out.println("여기11111");
 
         String path = IMAGE_DIR + "etcDocumentFile/";
+        System.out.println("여기11133311");
 
         String replaceFileName = null;
-
+        System.out.println("여기114444111");
 
         int result = 0;
-
-
+        System.out.println("여기11111");
 
         try {
-
+            if(etcFile != null && !etcFile.isEmpty()) {
+                System.out.println("여기");
                 SettingDocumentFile file = settingDocumentFileRepository.findByDocAtcCode(etcfileDTO.getDocAtcCode());
 
-            String[] extend = etcFile.getOriginalFilename().split("\\.");
-            String realExtend = extend[1];
-            String fileName = UUID.randomUUID().toString().replace("-", "");
+                String[] extend = etcFile.getOriginalFilename().split("\\.");
+                String realExtend = extend[1];
+                String fileName = UUID.randomUUID().toString().replace("-", "");
 
-            replaceFileName = FileUploadUtils.saveFile(path, fileName, etcFile);
+                replaceFileName = FileUploadUtils.saveFile(path, fileName, etcFile);
 
-            file = file.docAtcExtends(realExtend)
-                    .docAtcConvertName(replaceFileName)
-                    .docAtcRegistDate(LocalDate.now().toString())
-                    .docAtcOriginName(etcFile.getOriginalFilename())
-                    .docAtcPath(path)
-                    .docAtcPath(etcfileDTO.getDocAtcKind())
-                    .docAtcKind(etcfileDTO.getDocAtcKind()).build();
+                file = file.docAtcExtends(realExtend)
+                        .docAtcConvertName(replaceFileName)
+                        .docAtcRegistDate(LocalDate.now().toString())
+                        .docAtcOriginName(etcFile.getOriginalFilename())
+                        .docAtcPath(path)
+                        .docAtcKind(etcfileDTO.getDocAtcKind()).build();
+            }else {
+                System.out.println("여기~~");
+
+                SettingDocumentFile file = settingDocumentFileRepository.findByDocAtcCode(etcfileDTO.getDocAtcCode());
+                System.out.println("file = " + file);
+                file = file.docAtcKind(etcfileDTO.getDocAtcKind()).build();
+            }
 
             result = 1;
 
@@ -1085,39 +1087,69 @@ public class SettingMemberService {
         return resultDTO;
     }
 
-//    public SettingResourcesDTO searchResourcesFilesInformation(int memCode) {
-//        log.info("searchResourcesInformation 서비스 시작~~~~~~~~~~");
-//
-//        List<SettingCertificateFile> certificateList = settingCertificateFileRepository.findByMemCode(memCode);
-//        List<SettingCareerFile> careerList = setting.findByMemCode(memCode);
-//        List<SettingDegreeFile> degreeList = settingDegreeRepository.findByMemCode(memCode);
-//        SettingSalaryFile salary = settingSalaryRepository.findByMemCode(memCode);
-//        System.out.println("degreeList = " + degreeList);
-//        System.out.println("careerList = " + careerList);
-//        System.out.println("certificateList = " + certificateList);
-//        System.out.println("salary = " + salary);
-//
-//        List<SettingCertificateDTO> certificateDTOList = certificateList.stream()
-//                .map(certificate -> modelMapper.map(certificate, SettingCertificateDTO.class))
-//                .collect(Collectors.toList());
-//        List<SettingCareerDTO> careerDTOList = careerList.stream()
-//                .map(career -> modelMapper.map(career, SettingCareerDTO.class))
-//                .collect(Collectors.toList());
-//        List<SettingDegreeDTO> degreeDTOList = degreeList.stream()
-//                .map(degree -> modelMapper.map(degree, SettingDegreeDTO.class))
-//                .collect(Collectors.toList());
-//        SettingSalary settingSalary = modelMapper.map(salary, SettingSalary.class);
-//
-//        SettingResourcesDTO resourcesDTO = new SettingResourcesDTO();
-//        resourcesDTO.setMemCode(memCode);
-//        resourcesDTO.setCareerDTO(careerDTOList);
-//        resourcesDTO.setDegreeDTO(degreeDTOList);
-//        resourcesDTO.setCertificateDTO(certificateDTOList);
-//        resourcesDTO.setSalary(settingSalary);
-//
-//        log.info("searchResourcesInformation 서비스 끗~~~~~~~~~~");
-//
-//        return resourcesDTO;
-//    }
-
+    @Transactional
+    public String deleteSalaryFile(SettingSalaryFileDTO salaryFileDTO) {
+        log.info("deleteSalaryFile Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingSalaryFileRepository.deleteById(salaryFileDTO.getSalAtcCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteSalaryFile 끝~~~~~~~~~~~~");
+        return (result > 0) ? "통장 파일 삭제 성공" : "통장 파일 삭제 실패";
+    }
+    @Transactional
+    public String deleteDocumentFile(SettingDocumentFileDTO documentFileDTO) {
+        log.info("deleteDocumentFile Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingDocumentFileRepository.deleteById(documentFileDTO.getDocAtcCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteDocumentFile 끝~~~~~~~~~~~~");
+        return (result > 0) ? "그외 파일 삭제 성공" : "통장 파일 삭제 실패";
+    }
+    @Transactional
+    public String deleteDegreeFile(SettingDegreeFileDTO degreeFileDTO) {
+        log.info("deleteDegreeFile Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingDegreeFileRepository.deleteById(degreeFileDTO.getDegAtcCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteDegreeFile 끝~~~~~~~~~~~~");
+        return (result > 0) ? "학위 파일 삭제 성공" : "학위 파일 삭제 실패";
+    }
+    @Transactional
+    public String deleteCertificateFile(SettingCertificateFileDTO certificateFileDTO) {
+        log.info("deleteCertificateFile Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingCertificateFileRepository.deleteById(certificateFileDTO.getCerAtcCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteCertificateFile 끝~~~~~~~~~~~~");
+        return (result > 0) ? "자격 파일 삭제 성공" : "자격 파일 삭제 실패";
+    }
+    @Transactional
+    public String deleteCareerFile(SettingCareerFileDTO careerFileDTO) {
+        log.info("deleteCareerFile Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingCareerFileRepository.deleteById(careerFileDTO.getCrrAtcCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteCareerFile 끝~~~~~~~~~~~~");
+        return (result > 0) ? "경력 파일 삭제 성공" : "경력 파일 삭제 실패";
+    }
 }

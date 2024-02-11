@@ -124,7 +124,7 @@ public class SettingMemberController {
     public ResponseEntity<ResponseDTO> insertCertificateFile(@ModelAttribute SettingCertificateDTO certificateDTO, MultipartFile certificateFile){
         System.out.println("degreeDTO = " + certificateDTO);
         System.out.println("degreeFile = " + certificateFile);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 등록 파일 성공", settingMemberService.insertCertificateFile(certificateDTO, certificateFile)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 등록 성공", settingMemberService.insertCertificateFile(certificateDTO, certificateFile)));
     }
 
     /**
@@ -239,7 +239,7 @@ public class SettingMemberController {
      */
     @PutMapping(value = "/documentFile")
     public ResponseEntity<ResponseDTO> updateDocumentFile(@ModelAttribute SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.updateDocumentFile(etcfileDTO, etcFile)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 수정 성공", settingMemberService.updateDocumentFile(etcfileDTO, etcFile)));
     }
 
 
@@ -259,14 +259,13 @@ public class SettingMemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 수정 성공", settingMemberService.updateSalaryFile(salaryFileDTO, salaryFile)));
     }
 
-
-
-
     /**
      * 자격 파일 수정
      */
     @PutMapping(value = "/certificateFile")
     public ResponseEntity<ResponseDTO> updateCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile){
+        System.out.println("certificateFileDTO = " + certificateFileDTO);
+        System.out.println("certificateFile = " + certificateFile);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 수정 성공", settingMemberService.updateCertificateFile(certificateFileDTO, certificateFile)));
     }
 
@@ -294,14 +293,41 @@ public class SettingMemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.AllMemberAttendance(valueDTO)));
     }
 
+    /**
+     * 통장 파일 삭제
+     */
+    @DeleteMapping("/salaryFile")
+    public ResponseEntity<ResponseDTO> deleteSalaryFile(@ModelAttribute SettingSalaryFileDTO salaryFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 삭제 성공", settingMemberService.deleteSalaryFile(salaryFileDTO)));
+    }
+    /**
+     * 그외 파일 삭제
+     */
+    @DeleteMapping("/documentFile")
+    public ResponseEntity<ResponseDTO> deleteDocumentFile(@ModelAttribute SettingDocumentFileDTO documentFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 파일 삭제 성공", settingMemberService.deleteDocumentFile(documentFileDTO)));
+    }
+    /**
+     * 학위 파일 삭제
+     */
+    @DeleteMapping("/degreeFile")
+    public ResponseEntity<ResponseDTO> deleteDegreeFile(@ModelAttribute SettingDegreeFileDTO degreeFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 파일 삭제 성공", settingMemberService.deleteDegreeFile(degreeFileDTO)));
+    }
 
-//    @GetMapping("/searchResourcesFilesInformation/{memCode}")
-//    public ResponseEntity<ResponseDTO> searchResourcesFilesInformation(
-//            @PathVariable int memCode){
-//
-//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", settingMemberService.searchResourcesFilesInformation(memCode)));
-//    }
-
-
+    /**
+     * 자격 파일 삭제
+     */
+    @DeleteMapping("/certificateFile")
+    public ResponseEntity<ResponseDTO> deleteCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 삭제 성공", settingMemberService.deleteCertificateFile(certificateFileDTO)));
+    }
+    /**
+     * 경력 파일 삭제
+     */
+    @DeleteMapping("/careerFile")
+    public ResponseEntity<ResponseDTO> deleteCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 삭제 성공", settingMemberService.deleteCareerFile(careerFileDTO)));
+    }
 
 }

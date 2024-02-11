@@ -37,6 +37,7 @@ Accept: */*
 GET http://localhost:8001/myPage/annualHistory/3
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NjUwMjMyOTUwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODUxNDIzMn0.G3ZHxIJuttuKU77ql9hrVTEhu7KN_zfqEzisAS-izkU
 
 ### 회원 정보 수정
 PUT http://localhost:8001/myPage/updateMem
