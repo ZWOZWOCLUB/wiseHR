@@ -1,17 +1,16 @@
 package com.wisehr.wisehr.approval.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import java.sql.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @ToString
-public class EditScheduleDTO {
+public class EditSchedule2DTO {
     private String eshCode;
 //    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
     private String eshStartDate;
@@ -22,4 +21,6 @@ public class EditScheduleDTO {
     private String eshDateType;
     private String eshOffStartDate;
     private String eshOffEndDate;
+    private ApprovalMemberDTO cMember;
+    private List<ReferencerDTO> rMember;
 }

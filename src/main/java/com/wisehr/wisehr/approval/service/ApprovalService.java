@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -123,7 +126,7 @@ public class ApprovalService {
 
     // 출퇴근 정정 상신
     @Transactional
-    public String submitCommute(EditCommuteDTO edit, MultipartFile approvalFile) {
+    public String submitCommute(EditCommute2DTO edit, MultipartFile approvalFile) {
 
         int result = 0;
         try {
@@ -139,7 +142,9 @@ public class ApprovalService {
 
             log.info("결재 완료 + edit : " + edit);
 
-            editCommuteRepository.save(modelMapper.map(edit, EditCommute.class));
+            EditCommute editCommute = modelMapper.map(edit, EditCommute.class);
+
+            editCommuteRepository.save(editCommute);
 
             log.info("출퇴근 정정 완료 ");
 
@@ -280,8 +285,10 @@ public class ApprovalService {
 
                 ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
-                ac.setApprovalMember(modelMapper.map(annual.getCmember(), ApprovalMemberDTO.class));
+                ac.setApprovalMember(annual.getCMember());
+                log.info("여기? ");
                 ac.setApproval(annual.getApproval());
+                log.info("여기?!");
                 ac.setAppState("대기");
 
                 log.info("ac : " + ac);
@@ -352,8 +359,8 @@ public class ApprovalService {
                 ApprovalAnnual aa = approvalAnnualRepository.findByApprovalPayCode(ac.getApproval().getPayCode());
                 log.info("aa : " + aa);
 
-                LocalDate startDate = aa.getVacStartDate().toLocalDate();
-                LocalDate endDate = aa.getVacEndDate().toLocalDate();
+                LocalDate startDate = LocalDate.parse(aa.getVacStartDate());
+                LocalDate endDate = LocalDate.parse(aa.getVacEndDate());
 
                 log.info("startDate : " + startDate);
                 log.info("endDate : " + endDate);
@@ -387,10 +394,10 @@ public class ApprovalService {
 
                 log.info("es : " + es);
 
-                LocalDate startDate = es.getEshOffStartDate().toLocalDate();
-                LocalDate endDate = es.getEshOffEndDate().toLocalDate();
-                LocalDate startDate2 = es.getEshStartDate().toLocalDate();
-                LocalDate endDate2 = es.getEshEndDate().toLocalDate();
+                LocalDate startDate = Date.valueOf(es.getEshOffStartDate()).toLocalDate();
+                LocalDate endDate = Date.valueOf(es.getEshOffEndDate()).toLocalDate();
+                LocalDate startDate2 = Date.valueOf(es.getEshStartDate()).toLocalDate();
+                LocalDate endDate2 = Date.valueOf(es.getEshEndDate()).toLocalDate();
 
                 // 스케줄 정정의 시작날짜와 종료날짜를 구해서  (쉬는날, 일하는날)
 
@@ -493,7 +500,7 @@ public class ApprovalService {
 
                     log.info("ec : " + ec);
 
-                    Attendance ad = attendanceRepository.findByAttWorkDateAndAttendanceMemberMemCode(ec.getEdiDate(),ec.getApproval().getApprovalMember().getMemCode());
+                    Attendance ad = attendanceRepository.findByAttWorkDateAndAttendanceMemberMemCode(Date.valueOf(ec.getEdiDate()), ec.getApproval().getApprovalMember().getMemCode());
                     // 결재코드에 존재하는 날짜와 사번을 통해서 그 날의 근태상태 가져옴
 
                     log.info("ad : " + ad );
@@ -517,7 +524,7 @@ public class ApprovalService {
                             ad.setAttStatus("출근");
                         }
 
-                        ad.setAttStartTime(ec.getEdiTime());
+                        ad.setAttStartTime(Time.valueOf(ec.getEdiTime()));
 
                         log.info("set start time ad : " + ad );
                     } else if (ec.getEdiKind().contains("퇴근")) {
@@ -535,7 +542,7 @@ public class ApprovalService {
                             ad.setAttStatus("출근");
                         }
 
-                        ad.setAttEndTime(ec.getEdiTime());
+                        ad.setAttEndTime(Time.valueOf(ec.getEdiTime()));
 
                         log.info("set end Time ad : " + ad);
 
@@ -545,7 +552,7 @@ public class ApprovalService {
 
                             log.info("지각한 시간을 받아서 찍어준다. 지각인 경우 종료타임만 정시에 찍어줌 ");
 
-                            ad.setAttStartTime(ec.getEdiTime());
+                            ad.setAttStartTime(Time.valueOf(ec.getEdiTime()));
                             ad.setAttEndTime(sch.getWorkPattern().getWokEndTime());
                             ad.setAttStatus("지각");
 
@@ -553,7 +560,7 @@ public class ApprovalService {
                             log.info("조퇴한 시간을 받아서 찍어준다. 조퇴인 경우 시작시간만 정시에 찍어준다.");
 
                             ad.setAttStartTime(sch.getWorkPattern().getWokStartTime());
-                            ad.setAttEndTime(ec.getEdiTime());
+                            ad.setAttEndTime(Time.valueOf(ec.getEdiTime()));
                             ad.setAttStatus("조퇴");
 
                         } else if (ec.getEdiKind().contains("근무")) {

@@ -13,8 +13,8 @@ import java.sql.Date;
 public class ApprovalCompleteDTO {
     private String appCode;
     private String appState;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
-    private Date appDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
+    private String appDate;
     private String appComment;
     private ApprovalDTO approval;
     private ApprovalMemberDTO approvalMember;

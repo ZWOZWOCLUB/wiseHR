@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -49,21 +50,19 @@ public class ApprovalUtils {
 
             String story = null;
 
+            String fileName = UUID.randomUUID().toString().replace("-", "");
+
             ApprovalAttachmentDTO att = new ApprovalAttachmentDTO();
             // 엔티티로 바꿔서 DB에 넣어주기 위해 DTO에 값을 설정하는 과정
 
-            att.setPayAtcPath(path);
-            att.setPayAtcName(approvalFile.getName());
-            att.setApproval(approval);
-            att.setPayAtcDeleteStatus("N");
-
             log.info("att : " + att);
 
+            story = FileUploadUtils.saveFile(path, fileName, approvalFile);
 
-            story = FileUploadUtils.saveFile(path, approvalFile.getName(), approvalFile);
-
-            log.info("파일 이름 : " + approvalFile.getName());
-
+            att.setPayAtcPath(path);
+            att.setPayAtcName(fileName);
+            att.setApproval(approval);
+            att.setPayAtcDeleteStatus("N");
 
             log.info("storyClass : " + story.getClass());
 

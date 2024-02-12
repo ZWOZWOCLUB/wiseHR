@@ -27,9 +27,9 @@ public class EditCommute {
     @Column(name = "edi_contents")
     private String ediContents;
     @Column(name = "edi_date")
-    private Date ediDate;
+    private String ediDate;
     @Column(name = "edi_time")
-    private Time ediTime;
+    private String ediTime;
     @OneToOne
     @JoinColumn(name = "pay_code")
     private Approval approval;

@@ -55,10 +55,11 @@ public class ApprovalController {
 
     // 출퇴근 정정 신청 상신
     @PostMapping("/commute")
-    public ResponseEntity<ResponseDTO> submitCommute(@ModelAttribute EditCommuteDTO edit, MultipartFile approvalFile){
+    public ResponseEntity<ResponseDTO> submitCommute(@ModelAttribute EditCommute2DTO edit, MultipartFile approvalFile){
 
         log.info("edit : " + edit);
         log.info("file : " + approvalFile);
+
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "출퇴근 정정 성공", approvalService.submitCommute(edit, approvalFile)));

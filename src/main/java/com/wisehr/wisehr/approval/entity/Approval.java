@@ -24,7 +24,7 @@ public class Approval {
     @Column(name = "pay_code")
     private String payCode;
     @Column(name = "pay_date")
-    private Date payDate;
+    private String payDate;
     @Column(name = "pay_kind")
     private String payKind;
     @Column(name = "pay_name")
