@@ -83,7 +83,7 @@ public class SettingMemberController {
      * 직원 학위 정보 수정
      */
     @PutMapping(value = "/degree")
-    public ResponseEntity<ResponseDTO> updateDegree(@RequestBody SettingDegreeDTO degreeDTO){
+    public ResponseEntity<ResponseDTO> updateDegree(@RequestBody List<SettingDegreeDTO> degreeDTO){
         System.out.println("degreeDTO = " + degreeDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 수정 성공", settingMemberService.updateDegree(degreeDTO)));
     }
@@ -92,7 +92,7 @@ public class SettingMemberController {
      * 직원 자격 정보 수정
      */
     @PutMapping(value = "/certificate")
-    public ResponseEntity<ResponseDTO> updateCertificate(@RequestBody SettingCertificateDTO certificateDTO){
+    public ResponseEntity<ResponseDTO> updateCertificate(@RequestBody List<SettingCertificateDTO> certificateDTO){
         System.out.println("degreeDTO = " + certificateDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 정보 수정 성공", settingMemberService.updateCertificate(certificateDTO)));
     }
@@ -101,7 +101,7 @@ public class SettingMemberController {
      * 직원 경력 정보 수정
      */
     @PutMapping(value = "/career")
-    public ResponseEntity<ResponseDTO> updateCareer(@RequestBody SettingCareerDTO careerDTO){
+    public ResponseEntity<ResponseDTO> updateCareer(@RequestBody List<SettingCareerDTO> careerDTO){
         System.out.println("degreeDTO = " + careerDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 수정 성공", settingMemberService.updateCareer(careerDTO)));
     }
@@ -210,12 +210,12 @@ public class SettingMemberController {
     }
 
     /**
-     * 직원 경력 정보 수정
+     * 급여 통장 정보 수정
      */
     @PutMapping(value = "/salary")
     public ResponseEntity<ResponseDTO> updateSalary(@RequestBody SettingSalaryDTO salaryDTO){
         System.out.println("salaryDTO = " + salaryDTO);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 수정 성공", settingMemberService.updateSalary(salaryDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 정보 수정 성공", settingMemberService.updateSalary(salaryDTO)));
     }
 
     /**
@@ -290,7 +290,7 @@ public class SettingMemberController {
      */
     @PostMapping("/attendance")
     public ResponseEntity<ResponseDTO> AllMemberAttendance(@RequestBody SettingSearchValueDTO valueDTO){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.AllMemberAttendance(valueDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "전직원 근태 조회 성공", settingMemberService.AllMemberAttendance(valueDTO)));
     }
 
     /**
@@ -328,6 +328,42 @@ public class SettingMemberController {
     @DeleteMapping("/careerFile")
     public ResponseEntity<ResponseDTO> deleteCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 삭제 성공", settingMemberService.deleteCareerFile(careerFileDTO)));
+    }
+
+    /**
+     * 직원 자격 정보 삭제
+     */
+    @DeleteMapping(value = "/certificate")
+    public ResponseEntity<ResponseDTO> deleteCertificate(@RequestBody SettingCertificateDTO certificateDTO){
+        System.out.println("certificateDTO = " + certificateDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 정보 삭제 성공", settingMemberService.deleteCertificate(certificateDTO)));
+    }
+
+    /**
+     * 직원 경력 정보 삭제
+     */
+    @DeleteMapping(value = "/career")
+    public ResponseEntity<ResponseDTO> deleteCareer(@RequestBody SettingCareerDTO careerDTO){
+        System.out.println("careerDTO = " + careerDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 삭제 성공", settingMemberService.deleteCareer(careerDTO)));
+    }
+
+    /**
+     * 직원 학위 정보 삭제
+     */
+    @DeleteMapping(value = "/degree")
+    public ResponseEntity<ResponseDTO> deleteDegree(@RequestBody SettingDegreeDTO degreeDTO){
+        System.out.println("degreeDTO = " + degreeDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 삭제 성공", settingMemberService.deleteDegree(degreeDTO)));
+    }
+
+    /**
+     * 직원 통장 정보 삭제
+     */
+    @DeleteMapping(value = "/salary")
+    public ResponseEntity<ResponseDTO> deleteSalary(@RequestBody SettingSalaryDTO salaryDTO){
+        System.out.println("salaryDTO = " + salaryDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 정보 삭제 성공", settingMemberService.deleteSalary(salaryDTO)));
     }
 
 }

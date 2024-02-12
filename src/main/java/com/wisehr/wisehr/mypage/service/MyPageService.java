@@ -76,16 +76,21 @@ public class MyPageService {
         MPMyPageDTO settingMemberDTO = modelMapper.map(myPageMember, MPMyPageDTO.class);
         System.out.println("settingMemberDTO = " + settingMemberDTO);
 
-        MPDepartment mpDepartment = mpDepartmentRepository.findByDepCode(settingMemberDTO.getDepCode());
-        MPDepartmentDTO departmentDTO = modelMapper.map(mpDepartment, MPDepartmentDTO.class);
-        System.out.println("departmentDTO = " + departmentDTO);
+        if(settingMemberDTO.getDepCode() != 0 ){
+            MPDepartment mpDepartment = mpDepartmentRepository.findByDepCode(settingMemberDTO.getDepCode());
+            MPDepartmentDTO departmentDTO = modelMapper.map(mpDepartment, MPDepartmentDTO.class);
+            System.out.println("departmentDTO = " + departmentDTO);
 
-        MPPosition mpPosition = mpPositionRepository.findByPosCode(settingMemberDTO.getPosCode());
-        MPPositionDTO mpPositionDTO = modelMapper.map(mpPosition, MPPositionDTO.class);
-        System.out.println("mpPositionDTO = " + mpPositionDTO);
+            settingMemberDTO.setDepName(departmentDTO.getDepName());
+        }
 
-        settingMemberDTO.setDepName(departmentDTO.getDepName());
-        settingMemberDTO.setPosName(mpPositionDTO.getPosName());
+        if(settingMemberDTO.getPosCode() != 0) {
+            MPPosition mpPosition = mpPositionRepository.findByPosCode(settingMemberDTO.getPosCode());
+            MPPositionDTO mpPositionDTO = modelMapper.map(mpPosition, MPPositionDTO.class);
+            System.out.println("mpPositionDTO = " + mpPositionDTO);
+
+            settingMemberDTO.setPosName(mpPositionDTO.getPosName());
+        }
 
         return settingMemberDTO;
 

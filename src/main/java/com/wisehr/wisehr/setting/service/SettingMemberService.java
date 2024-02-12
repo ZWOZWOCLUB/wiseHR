@@ -21,6 +21,7 @@ import com.wisehr.wisehr.util.FileUploadUtils;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -695,21 +696,28 @@ public class SettingMemberService {
     }
 
     @Transactional
-    public String updateDegree(SettingDegreeDTO degreeDTO) {
+    public String updateDegree(List<SettingDegreeDTO> degreeDTO) {
         log.info("updateDegree Start~~~~~~~~~~~~");
         log.info(degreeDTO.toString());
+        List<SettingDegreeDTO> updateDegree = new ArrayList<>();
 
         int result = 0;
 
         try{
-            SettingDegree degree = settingDegreeRepository.findById(degreeDTO.getDegCode()).get();
+            for (SettingDegreeDTO settingDegreeDTO : degreeDTO) {
 
-            degree = degree.degKind(degreeDTO.getDegKind())
-                    .degMajor(degreeDTO.getDegMajor())
-                    .degName(degreeDTO.getDegName())
-                    .degGraduation(degreeDTO.getDegGraduation())
-                    .degState(degreeDTO.getDegState())
-                    .degAdmissions(degreeDTO.getDegAdmissions()).build();
+                SettingDegree degree = settingDegreeRepository.findById(settingDegreeDTO.getDegCode()).get();
+                if (degree != null) {
+
+                    degree = degree.degKind(settingDegreeDTO.getDegKind())
+                            .degMajor(settingDegreeDTO.getDegMajor())
+                            .degName(settingDegreeDTO.getDegName())
+                            .degGraduation(settingDegreeDTO.getDegGraduation())
+                            .degState(settingDegreeDTO.getDegState())
+                            .degAdmissions(settingDegreeDTO.getDegAdmissions()).build();
+                }
+
+            }
 
             result = 1;
 
@@ -722,22 +730,28 @@ public class SettingMemberService {
     }
 
     @Transactional
-    public String updateCertificate(SettingCertificateDTO certificateDTO) {
+    public String updateCertificate(List<SettingCertificateDTO> certificateDTO) {
         log.info("updateCertificate Start~~~~~~~~~~~~");
         log.info(certificateDTO.toString());
+        List<SettingCertificateDTO> updateCertificate = new ArrayList<>();
 
         int result = 0;
 
         try{
-            SettingCertificate certificate = settingCertificateRepository.findById(certificateDTO.getCerCode()).get();
+            for (SettingCertificateDTO certificateDTO1 : certificateDTO) {
+                SettingCertificate certificate = settingCertificateRepository.findById(certificateDTO1.getCerCode()).get();
 
-            certificate = certificate.cerName(certificateDTO.getCerName())
-                    .cerKind(certificateDTO.getCerKind())
-                    .cerDay(certificateDTO.getCerDay())
-                    .cerEndDate(certificateDTO.getCerEndDate())
-                    .cerDescription(certificateDTO.getCerDescription())
-                    .cerInstitution(certificateDTO.getCerInstitution())
-                    .build();
+                if (certificate != null) {
+
+                    certificate = certificate.cerName(certificateDTO1.getCerName())
+                            .cerKind(certificateDTO1.getCerKind())
+                            .cerDay(certificateDTO1.getCerDay())
+                            .cerEndDate(certificateDTO1.getCerEndDate())
+                            .cerDescription(certificateDTO1.getCerDescription())
+                            .cerInstitution(certificateDTO1.getCerInstitution())
+                            .build();
+                }
+            }
 
             result = 1;
 
@@ -750,32 +764,38 @@ public class SettingMemberService {
     }
 
     @Transactional
-    public String updateCareer(SettingCareerDTO careerDTO) {
-        log.info("updateCareer Start~~~~~~~~~~~~");
-        log.info(careerDTO.toString());
-
+    public String updateCareer(List<SettingCareerDTO> careerDTOList) {
+        log.info("updateCareers Start~~~~~~~~~~~~");
         int result = 0;
 
-        try{
-            SettingCareer career = settingCareerRepository.findById(careerDTO.getCrrCode()).get();
+        List<SettingCareerDTO> updatedCareers = new ArrayList<>();
 
-            career = career.crrName(careerDTO.getCrrName())
-                    .crrPosition(careerDTO.getCrrPosition())
-                    .crrStartDate(careerDTO.getCrrStartDate())
-                    .crrEndDate(careerDTO.getCrrEndDate())
-                    .crrState(careerDTO.getCrrState())
-                    .crrDescription(careerDTO.getCrrDescription())
-                    .build();
+        try {
+            for (SettingCareerDTO careerDTO : careerDTOList) {
+                SettingCareer career = settingCareerRepository.findById(careerDTO.getCrrCode()).get();
 
+                if (career != null) {
+                    career = career.crrName(careerDTO.getCrrName())
+                            .crrPosition(careerDTO.getCrrPosition())
+                            .crrStartDate(careerDTO.getCrrStartDate())
+                            .crrEndDate(careerDTO.getCrrEndDate())
+                            .crrState(careerDTO.getCrrState())
+                            .crrDescription(careerDTO.getCrrDescription())
+                            .build();
+
+                }
+
+            }
             result = 1;
 
-        }catch(Exception e) {
-            log.info("오류~~~~~~~");
-            throw new RuntimeException(e);
-        }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+            return (result > 0)? "수정 성공": "수정 실패";
+        } catch (Exception e) {
+            log.error("오류 발생: ", e);
+            throw new RuntimeException("수정 실패: 오류 발생");
+        }
     }
+
 
     @Transactional
     public String insertSalary(SettingSalaryDTO salaryDTO) {
@@ -1152,4 +1172,61 @@ public class SettingMemberService {
         log.info("deleteCareerFile 끝~~~~~~~~~~~~");
         return (result > 0) ? "경력 파일 삭제 성공" : "경력 파일 삭제 실패";
     }
+
+    @Transactional
+    public String deleteCertificate(SettingCertificateDTO certificateDTO) {
+        log.info("deleteCertificate Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingCertificateRepository.deleteById(certificateDTO.getCerCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteCertificate 끝~~~~~~~~~~~~");
+        return (result > 0) ? "자격 정보 삭제 성공" : "자격 정보 삭제 실패";
+    }
+
+    @Transactional
+    public String deleteCareer(SettingCareerDTO careerDTO) {
+        log.info("deleteCertificate Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingCareerRepository.deleteById(careerDTO.getCrrCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteCertificate 끝~~~~~~~~~~~~");
+        return (result > 0) ? "경력 정보 삭제 성공" : "경력 정보 삭제 실패";
+    }
+
+    @Transactional
+    public String deleteDegree(SettingDegreeDTO degreeDTO) {
+        log.info("deleteCertificate Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingDegreeRepository.deleteById(degreeDTO.getDegCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteCertificate 끝~~~~~~~~~~~~");
+        return (result > 0) ? "학위 정보 삭제 성공" : "학위 정보 삭제 실패";
+    }
+
+    @Transactional
+    public String deleteSalary(SettingSalaryDTO salaryDTO) {
+        log.info("deleteSalary Start~~~~~~~~~~~~");
+        int result = 0;
+        try {
+            settingSalaryRepository.deleteById(salaryDTO.getSalCode());
+            result = 1;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        log.info("deleteSalary 끝~~~~~~~~~~~~");
+        return (result > 0) ? "학위 정보 삭제 성공" : "학위 정보 삭제 실패";
+    }
+
 }
