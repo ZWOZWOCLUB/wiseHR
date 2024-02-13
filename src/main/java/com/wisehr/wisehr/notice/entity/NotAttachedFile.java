@@ -21,7 +21,6 @@ public class NotAttachedFile {
     private String notAtcDeleteStatus;//삭제여부
     @Column(name = "not_atc_path", nullable = false)
     private String notAtcPath;        //파일경로
-    @ManyToOne
-    @JoinColumn(name = "not_code", nullable = false)
-    private Notice notice;           //글코드
+    @Column(name = "not_code")
+    private String code;           //글코드
 }
