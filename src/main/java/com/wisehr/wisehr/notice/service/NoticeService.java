@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,7 @@ public class NoticeService {
 
     @Value("http://localhost:8001/")
     private String IMAGE_URL;
+
 
     public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper, NotAllAlarmRepository notAllAlarmRepository) {
         this.noticeRepository = noticeRepository;
@@ -272,9 +274,11 @@ public class NoticeService {
         int index = criteria.getPageNum() -1;
         int count = criteria.getAmount();
 
+//        Pageable paging = PageRequest.of(index, count);
+//        Page<Notice> result = noticeRepository.findAllWithCustomOrder(paging);
         Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCode"));
-
         Page<Notice> result = noticeRepository.findAll(paging);
+
 
         Page<NoticeDTO> noticeList = result.map(notice -> modelMapper.map(notice, NoticeDTO.class));
         System.out.println("result = " + result);

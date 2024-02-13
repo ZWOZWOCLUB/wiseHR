@@ -86,3 +86,8 @@ Accept: */*
   "depCode": 6
 }
 
+### 트리뷰조회
+GET http://localhost:8001/org/treeView
+Content-Type: application/json
+Accept: */*
+

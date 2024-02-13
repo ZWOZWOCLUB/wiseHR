@@ -27,6 +27,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect  # MySQL8 설정 추가
 
 # Logging Level
 logging:

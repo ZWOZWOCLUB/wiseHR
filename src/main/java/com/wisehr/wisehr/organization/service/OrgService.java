@@ -1,18 +1,9 @@
 package com.wisehr.wisehr.organization.service;
 
 import com.wisehr.wisehr.common.Criteria;
-import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
-import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
-import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
-import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
-import com.wisehr.wisehr.organization.entity.OrgDepartment;
-import com.wisehr.wisehr.organization.entity.OrgDepartmentAndOrgMember;
-import com.wisehr.wisehr.organization.entity.OrgMemAndOrgDep;
-import com.wisehr.wisehr.organization.entity.OrgMember;
-import com.wisehr.wisehr.organization.repository.OrgDepAndMemRepository;
-import com.wisehr.wisehr.organization.repository.OrgMemAndDepRepository;
-import com.wisehr.wisehr.organization.repository.OrgMemberRepository;
-import com.wisehr.wisehr.organization.repository.OrgRepository;
+import com.wisehr.wisehr.organization.dto.*;
+import com.wisehr.wisehr.organization.entity.*;
+import com.wisehr.wisehr.organization.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.modelmapper.ModelMapper;
@@ -33,14 +24,18 @@ public class OrgService {
     private final OrgDepAndMemRepository orgDepAndMemRepository;
     private final OrgMemberRepository orgMemberRepository;
     private final OrgMemAndDepRepository orgMemAndDepRepository;
+    private final OrgTreeRepository orgTreeRepository;
+    private final OrgTreeMemRepository orgTreeMemRepository;
     private final ModelMapper modelMapper;
 
-        public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, OrgMemberRepository orgMemberRepository, OrgMemAndDepRepository orgMemAndDepRepository, ModelMapper modelMapper) {
+        public OrgService(OrgRepository orgRepository, OrgDepAndMemRepository orgDepAndMemRepository, OrgMemberRepository orgMemberRepository, OrgMemAndDepRepository orgMemAndDepRepository, OrgTreeRepository orgTreeRepository, OrgTreeMemRepository orgTreeMemRepository, ModelMapper modelMapper) {
 
         this.orgRepository = orgRepository;
         this.orgDepAndMemRepository = orgDepAndMemRepository;
             this.orgMemberRepository = orgMemberRepository;
             this.orgMemAndDepRepository = orgMemAndDepRepository;
+            this.orgTreeRepository = orgTreeRepository;
+            this.orgTreeMemRepository = orgTreeMemRepository;
             this.modelMapper = modelMapper;
     }
 
@@ -335,5 +330,38 @@ public class OrgService {
 
 
     }
+
+
+    @Transactional
+    public TreeDepDTO showTreeView() {
+
+        //최상위부서 목록 조회
+        List<TreeDepDTO> topDep = orgTreeRepository.findTopDep();
+        //최상위부서 목록이 비어있지 않은 경우
+        if(!topDep.isEmpty()){
+            TreeDepDTO rootDep = topDep.get(0); //리스트의 첫번째요소를 최상위 부서로 선택
+            rootDep = subDepAndMemberList(rootDep); //subDepAndMemberList 메서드로 하위, 멤버 트리 구조 구성
+            return rootDep;
+        }
+        return null; //최상위부서가 없다면 null
+    }
+
+    private TreeDepDTO subDepAndMemberList(TreeDepDTO treeDepDTO) {
+
+        Integer depCode = treeDepDTO.getDepCode();
+        System.out.println("depCode = " + depCode);
+
+        List<TreeDepDTO> subDep = orgTreeRepository.findSubDep(treeDepDTO.getDepCode());
+
+        subDep.forEach(this::subDepAndMemberList);
+        treeDepDTO.setChildren(subDep);
+
+        List<TreeMemDTO> memberList = orgTreeMemRepository.findMembersByDepartment(treeDepDTO.getDepCode());
+        treeDepDTO.setMemberList(memberList);
+
+        return treeDepDTO;
+    }
+
+
 }
 
