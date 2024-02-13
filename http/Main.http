@@ -3,6 +3,8 @@
 GET http://localhost:8001/main/approvalCount/2
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 
 ### 달력 전체 조회
@@ -10,6 +12,8 @@ Accept: */*
 GET http://localhost:8001/main/searchMonth
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 {
   "memCode": 3
