@@ -23,7 +23,10 @@ public class AAMSendMessenger {
     @Column(name = "msg_contents")
     private String msgContents;
     @Column(name = "mem_code")
-    private Long memCode;
+    private Integer memCode;
+    @JoinColumn(name = "mem_code", insertable=false, updatable=false)
+    @OneToOne
+    private AAMMember aamMember;
     @Column(name = "msg_delete_status")
     private String msgDeleteStatus;
 

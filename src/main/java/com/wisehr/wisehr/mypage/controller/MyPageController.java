@@ -58,7 +58,7 @@ public class MyPageController {
 //    서류함 조회
     @GetMapping("/document/{memCode}")
     public ResponseEntity<ResponseDTO> selectDocumentDetail(@PathVariable int memCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출퇴근 상세조회 성공" , myPageService.selectDocument(memCode)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서류함 상세조회 성공" , myPageService.selectDocument(memCode)));
     }
 
 //    소유/ 소멸 예정 연차 조회

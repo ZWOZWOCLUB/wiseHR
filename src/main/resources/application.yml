@@ -2,7 +2,6 @@
 server:
   port: 8001
 
-
 # db connection info & fileupload config
 spring:
   datasource:
@@ -16,10 +15,6 @@ spring:
       max-file-size: 1000MB
       max-request-size: 1000MB
 
-#  web:
-#    resources:
-#      static-locations: classpath:/productimgs/
-
   # jpa config
   jpa:
     hibernate:
@@ -28,6 +23,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect  # MySQL8 설정 추가
 
 # Logging Level
 logging:
@@ -36,9 +32,6 @@ logging:
 
 ## 이미지 저장할 위치와 응답할 때 이미지 주소 세팅
 image:
-  # WebConfig? ??
-  add-resource-locations: classpath:/static/
-  add-resource-handler: /**
   image-dir: src/main/resources/static/
   image-url: http://localhost:8001/
 

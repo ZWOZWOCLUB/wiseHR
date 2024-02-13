@@ -1,23 +1,15 @@
 package com.wisehr.wisehr.alarmAndMessage.service;
 
-import com.wisehr.wisehr.alarmAndMessage.dto.AAMAllAlarmDTO;
-import com.wisehr.wisehr.alarmAndMessage.dto.AAMPerAlarmDTO;
-import com.wisehr.wisehr.alarmAndMessage.dto.AAMRecMessengerDTO;
-import com.wisehr.wisehr.alarmAndMessage.dto.AAMSendMessengerDTO;
-import com.wisehr.wisehr.alarmAndMessage.entity.AAMAllAlarm;
-import com.wisehr.wisehr.alarmAndMessage.entity.AAMPerAlarm;
-import com.wisehr.wisehr.alarmAndMessage.entity.AAMRecMessenger;
-import com.wisehr.wisehr.alarmAndMessage.entity.AAMSendMessenger;
-import com.wisehr.wisehr.alarmAndMessage.repository.AAMAllAlarmRepository;
-import com.wisehr.wisehr.alarmAndMessage.repository.AAMPerAlarmRepository;
+import com.wisehr.wisehr.alarmAndMessage.dto.*;
+import com.wisehr.wisehr.alarmAndMessage.entity.*;
+import com.wisehr.wisehr.alarmAndMessage.repository.*;
 
-import com.wisehr.wisehr.alarmAndMessage.repository.AAMRecMessengerRepository;
-import com.wisehr.wisehr.alarmAndMessage.repository.AAMSendMessengerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,23 +20,43 @@ public class AlarmAndMessageService {
     private final AAMPerAlarmRepository perAlarmRepository;
     private final AAMSendMessengerRepository sendMessengerRepository;
     private final AAMRecMessengerRepository recMessengerRepository;
+    private final AAMApprovalCompleteRepository aamApprovalCompleteRepository;
+    private final AAMMessageRepository aamMessageRepository;
+    private final AAMRecMessageRepository aamRecMessageRepository;
     private final ModelMapper modelMapper;
-    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, ModelMapper modelMapper) {
+    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, AAMApprovalCompleteRepository aamApprovalCompleteRepository, AAMMessageRepository aamMessageRepository, AAMRecMessageRepository aamRecMessageRepository, ModelMapper modelMapper) {
         this.allAlarmRepository = allAlarmRepository;
         this.perAlarmRepository = perAlarmRepository;
         this.sendMessengerRepository = sendMessengerRepository;
         this.recMessengerRepository = recMessengerRepository;
+        this.aamApprovalCompleteRepository = aamApprovalCompleteRepository;
+        this.aamMessageRepository = aamMessageRepository;
+        this.aamRecMessageRepository = aamRecMessageRepository;
         this.modelMapper = modelMapper;
     }
 
-    public List<AAMPerAlarmDTO> selectPerAlarm(int memCode) {
-        List<AAMPerAlarm> perAlarm = perAlarmRepository.findByMemCode(memCode);
+    public List<AAMApprovalCompleteDTO> selectPerAlarm(int memCode) {
+        List<AAMPerAlarm> perAlarm = perAlarmRepository.findByMemCodeOrderByPerArmCodeDesc(memCode);
 
+        // 개인 알람 리스트 조회
         List<AAMPerAlarmDTO> degreeDTO = perAlarm.stream()
                 .map(exam -> modelMapper.map(exam, AAMPerAlarmDTO.class))
                 .collect(Collectors.toList());
 
-        return degreeDTO;
+
+        List<AAMApprovalCompleteDTO> aamApprovalCompleteDTOS = new ArrayList<>();
+        // 추가로 고유결재번호와 state(승인, 반려 상태의)가 필요함
+        for(AAMPerAlarmDTO code : degreeDTO){
+            System.out.println("code.getPerArmCode() = " + code.getPerArmCode());
+            AAMApprovalComplete myPageMember = aamApprovalCompleteRepository.findByPerArmCode(code.getPerArmCode());
+            AAMApprovalCompleteDTO settingMemberDTO = modelMapper.map(myPageMember, AAMApprovalCompleteDTO.class);
+
+            aamApprovalCompleteDTOS.add(settingMemberDTO);
+            System.out.println("settingMemberDTO = " + settingMemberDTO);
+        }
+        System.out.println("aamApprovalCompleteDTOS = " + aamApprovalCompleteDTOS);
+
+        return aamApprovalCompleteDTOS;
 
     }
 
@@ -58,24 +70,29 @@ public class AlarmAndMessageService {
         return degreeDTO;
 
     }
-    public List<AAMSendMessengerDTO> selectSendMessenger(int memCode) {
-        List<AAMSendMessenger> perAlarm = sendMessengerRepository.findByMemCode(memCode);
+    public List<AAMMessageDTO> selectSendMessenger(int memCode) {
+        System.out.println("memCode = " + memCode);
+        List<AAMMessage> perAlarm = aamMessageRepository.findByMemCode(memCode);
+        System.out.println("perAlarm = " + perAlarm);
 
-        List<AAMSendMessengerDTO> degreeDTO = perAlarm.stream()
-                .map(exam -> modelMapper.map(exam, AAMSendMessengerDTO.class))
+        List<AAMMessageDTO> degreeDTO = perAlarm.stream()
+                .map(exam -> modelMapper.map(exam, AAMMessageDTO.class))
                 .collect(Collectors.toList());
+        System.out.println("degreeDTO = " + degreeDTO);
 
         return degreeDTO;
 
     }
 
 
-    public List<AAMRecMessengerDTO> selectRecMessenger(int memCode) {
-        List<AAMRecMessenger> perAlarm = recMessengerRepository.findByMemCode(memCode);
+    public List<AAMRecMessageDTO> selectRecMessenger(int memCode) {
+        List<AAMRecMessage> perAlarm = aamRecMessageRepository.findByMemCode(memCode);
+        System.out.println("perAlarm = " + perAlarm);
 
-        List<AAMRecMessengerDTO> degreeDTO = perAlarm.stream()
-                .map(exam -> modelMapper.map(exam, AAMRecMessengerDTO.class))
+        List<AAMRecMessageDTO> degreeDTO = perAlarm.stream()
+                .map(exam -> modelMapper.map(exam, AAMRecMessageDTO.class))
                 .collect(Collectors.toList());
+        System.out.println("degreeDTO = " + degreeDTO);
 
         return degreeDTO;
 

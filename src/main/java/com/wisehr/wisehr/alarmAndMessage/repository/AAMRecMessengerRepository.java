@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AAMRecMessengerRepository extends JpaRepository<AAMRecMessenger, Integer> {
 
-    List<AAMRecMessenger> findByMemCode(int memCode);
+    List<AAMRecMessenger> findByMemCode(Integer memCode);
 }

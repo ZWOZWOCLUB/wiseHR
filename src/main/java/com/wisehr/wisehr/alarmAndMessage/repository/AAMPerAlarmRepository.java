@@ -8,4 +8,6 @@ import java.util.List;
 public interface AAMPerAlarmRepository extends JpaRepository<AAMPerAlarm, Integer> {
 
     List<AAMPerAlarm> findByMemCode(int memCode);
+
+    List<AAMPerAlarm> findByMemCodeOrderByPerArmCodeDesc(int memCode);
 }

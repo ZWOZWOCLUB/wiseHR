@@ -21,6 +21,7 @@ public class AlarmAndMessageController {
 //    개인 알람 조회
     @GetMapping("/perAlarm/{memCode}")
     public ResponseEntity<ResponseDTO> selectPerAlarm(@PathVariable int memCode){
+        System.out.println("memCode ===================== " + memCode);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 알람 조회 성공" , alarmService.selectPerAlarm(memCode)));
     }
 
