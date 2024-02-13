@@ -4,12 +4,10 @@ import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.organization.dto.OrgDepartmentAndOrgMemberDTO;
-import com.wisehr.wisehr.organization.dto.OrgDepartmentDTO;
-import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
-import com.wisehr.wisehr.organization.dto.OrgMemberDTO;
+import com.wisehr.wisehr.organization.dto.*;
 import com.wisehr.wisehr.organization.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -159,6 +157,13 @@ public class OrgController {
     @PutMapping("/updateRole/")
     public ResponseEntity<ResponseDTO> updateRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
+    }
+
+
+    @GetMapping("/treeView")
+    public ResponseEntity<ResponseDTO> treeView(){
+        TreeDepDTO tree = orgService.showTreeView();
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조직도 조회 성공", tree));
     }
 
     }
