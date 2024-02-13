@@ -24,9 +24,9 @@ public class EditSchedule {
     @Column(name="esh_code")
     private String eshCode;
     @Column(name="esh_start_date")
-    private Date eshStartDate;
+    private String eshStartDate;
     @Column(name="esh_end_date")
-    private Date eshEndDate;
+    private String eshEndDate;
     @Column(name="esh_contents")
     private String eshContents;
     @Column(name ="esh_date_type")
@@ -35,7 +35,7 @@ public class EditSchedule {
     @JoinColumn(name = "pay_code")
     private Approval approval;
     @Column(name = "esh_off_start_date")
-    private Date eshOffStartDate;
+    private String eshOffStartDate;
     @Column(name = "esh_off_end_date")
-    private Date eshOffEndDate;
+    private String eshOffEndDate;
 }

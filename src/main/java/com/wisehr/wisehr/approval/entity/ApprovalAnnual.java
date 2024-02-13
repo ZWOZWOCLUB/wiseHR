@@ -27,9 +27,9 @@ public class ApprovalAnnual {
     @Column(name = "vac_contents")
     private String vacContents;
     @Column(name = "vac_start_date")
-    private Date vacStartDate;
+    private String vacStartDate;
     @Column(name = "vac_end_date")
-    private Date vacEndDate;
+    private String vacEndDate;
     @OneToOne
     @JoinColumn(name = "pay_code")
     private Approval approval;
