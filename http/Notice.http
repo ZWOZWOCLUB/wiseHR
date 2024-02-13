@@ -8,17 +8,17 @@ Authorization: Bearer eyJkYXRlIjoxNzA3MzcyNzI4NTgyLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 --WebAppBoundary
 Content-Disposition: form-data; name="notCode"
 
-not9
+not10
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notName"
 
-2024 2분기 월급인상 발표.
+2월 근무표 수정본입니다.
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notComment"
 
-이번년도는 병원 사정상 월급인상은 어려울것같아요.
+2월 근무표 수정본입니다. 작성된 내용 확인해주세요.
 --WebAppBoundary
 Content-Disposition: form-data; name="notView"
 
@@ -26,11 +26,11 @@ Content-Disposition: form-data; name="notView"
 --WebAppBoundary
 Content-Disposition: form-data; name="notCreateDate"
 
-2024-05-01
+2024-01-29
 --WebAppBoundary
 Content-Disposition: form-data; name="notMember.memCode"
 
-1
+240130010
 --WebAppBoundary
 Content-Disposition: form-data; name="notDeleteStatus"
 
@@ -51,7 +51,7 @@ Content-Disposition: form-data; name="noticeFile"; filename="pikachu.png"
 GET http://localhost:8001/notice/allNoticeSearch
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3MzcyNzI4NTgyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNjcyOH0.wGwthhUk15xV7SZaCZCgZxQjjxusKddDxFFxV25HXQ8
+Authorization: eyJkYXRlIjoxNzA3NTc0Mjk4Nzg3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODQzODI5OH0.bqe-Fz92FpSzmQ_sKotQoUDR6yzXOzEcGKWzK45DbCM
 
 ###공지상세 조회
 GET http://localhost:8001/notice/detaill?nc=not8
