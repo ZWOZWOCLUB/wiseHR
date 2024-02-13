@@ -9,6 +9,7 @@ import com.wisehr.wisehr.notice.entity.NotMember;
 import com.wisehr.wisehr.notice.entity.Notice;
 import com.wisehr.wisehr.notice.repository.NotAllAlarmRepository;
 import com.wisehr.wisehr.notice.repository.NotAttachedFileRepository;
+import com.wisehr.wisehr.notice.repository.NotMemberRepository;
 import com.wisehr.wisehr.notice.repository.NoticeRepository;
 import com.wisehr.wisehr.util.FileUploadUtils;
 import jakarta.transaction.Transactional;
@@ -46,6 +47,7 @@ public class NoticeService {
 
     @Value("http://localhost:8001/")
     private String IMAGE_URL;
+    private NotMemberRepository notMemberRepository;
 
 
     public NoticeService(NoticeRepository noticeRepository, NotAttachedFileRepository notAttachedFileRepository, ModelMapper modelMapper, NotAllAlarmRepository notAllAlarmRepository) {
@@ -70,12 +72,12 @@ public class NoticeService {
 
         NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 
-//        noticeFileDTO.setNotAtcCode();
-//        noticeFileDTO.setNotAtcName(noticeFile.getName());
+        noticeFileDTO.setNotAtcCode(99L);
+        noticeFileDTO.setNotAtcName(noticeFile.getName());
         noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());//파일이름 원본값을 넣어줌
         noticeFileDTO.setNotAtcDeleteStatus("N"); //삭제여부 N
         noticeFileDTO.setNotAtcPath(path); //경로값
-        noticeFileDTO.setNotice(noticeDTO); //공지사항DTO
+
 
 
         String story = null;
@@ -104,14 +106,14 @@ public class NoticeService {
             log.info("공지첨부파일 성공");
 
             if (noticeDTO.getNotAllArmCheck().equals("Y")) {  // 맴버 전체에게 알림을 보냅니다.
-//            List<NotMember> notMemberList = notMemberRepository.findAll();
+            List<NotMember> notMemberList = notMemberRepository.findAll();
                 LocalDateTime now = LocalDateTime.now();
                 NotAllAlarm notAllAlarm = new NotAllAlarm();
                 notAllAlarm.setAllArmCode(6);
                 notAllAlarm.setAllArmDate(now);
                 notAllAlarm.setAllArmCheck("N");
                 notAllAlarm.setNotCode(noticeDTO.getNotCode());
-                notAllAlarm.setMemCode(notFile.getNotice().getNotMember());
+//                notAllAlarm.setMemCode(notFile.getNotice().getNotMember());
                 notAllAlarmRepository.save(notAllAlarm);
 
 
@@ -157,7 +159,7 @@ public class NoticeService {
         noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
         noticeFileDTO.setNotAtcDeleteStatus("N");
         noticeFileDTO.setNotAtcPath(path);
-        noticeFileDTO.setNotice(noticeDTO);
+//        noticeFileDTO.setNotice(noticeDTO);
 
         log.info("noticeFile.getName====" +noticeFile.getName());
         log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
@@ -178,11 +180,13 @@ public class NoticeService {
                 String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
                 log.info("Saved File Name ; " + savedFileName);
 
-                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
-                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
-                notAttachedFile.setNotAtcPath(path);
+//                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
 
-                notAttachedFileRepository.save(notAttachedFile);
+
+//                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
+//                notAttachedFile.setNotAtcPath(path);
+//
+//                notAttachedFileRepository.save(notAttachedFile);
             }
 
 
@@ -208,17 +212,25 @@ public class NoticeService {
 
 
     //공지 상세 조회
-    public List<NotAttachedFileDTO> noticeDetail(String search) {
+    public List<NoticeDTO> noticeDetail(String search) {
         log.info("titleSearchList시작");
         log.info("titleSearchList search : {}", search);
 
-        List<NotAttachedFile> noticeWithSearchValue = notAttachedFileRepository.findByNotice_NotCode(search);
-        List<NotAttachedFileDTO> notAttachedFileDTOList = noticeWithSearchValue.stream()
-                .map(notAttachedFile -> modelMapper.map(notAttachedFile, NotAttachedFileDTO.class))
+        List<Notice> searchNoticeList = noticeRepository.findByNotCode(search);
+        List<NoticeDTO> SearchNoticeDTOList = searchNoticeList.stream()
+                .map(notice -> modelMapper.map(notice, NoticeDTO.class))
                 .collect(Collectors.toList());
-        log.info("titleSearchList 서비스 끝" + noticeWithSearchValue);
-        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
-        return notAttachedFileDTOList;
+
+//        List<NotAttachedFile> noticeWithSearchValue = notAttachedFileRepository.findByNotice_NotCode(search);
+//        List<NotAttachedFileDTO> notAttachedFileDTOList = noticeWithSearchValue.stream()
+//                .map(notAttachedFile -> modelMapper.map(notAttachedFile, NotAttachedFileDTO.class))
+//                .collect(Collectors.toList());
+
+        log.info("searchNoticeList : " + searchNoticeList);
+        System.out.println("SearchNoticeDTOList = " + SearchNoticeDTOList);
+//        log.info("titleSearchList 서비스 끝" + noticeWithSearchValue);
+//        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
+        return SearchNoticeDTOList;
     }
 
 

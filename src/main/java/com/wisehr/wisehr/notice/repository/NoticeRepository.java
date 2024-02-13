@@ -22,4 +22,6 @@ public interface NoticeRepository extends JpaRepository<Notice, String> {
             countQuery = "SELECT count(*) FROM notice",
             nativeQuery = true)
     Page<Notice> findAllWithCustomOrder(Pageable pageable);
+
+    List<Notice> findByNotCode(String search);
 }

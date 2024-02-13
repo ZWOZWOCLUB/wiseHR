@@ -3,12 +3,12 @@ POST http://localhost:8001/notice/notice
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 Access-Control-Allow-Origin: *
-Authorization: Bearer eyJkYXRlIjoxNzA3MzcyNzI4NTgyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNjcyOH0.wGwthhUk15xV7SZaCZCgZxQjjxusKddDxFFxV25HXQ8
+Authorization: Bearer eyJkYXRlIjoxNzA3ODEzNzAzNTQ0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY3NzcwM30.FiS-bZTM584VqmzDqaIiN-zRVb6gCH5M1Hc3IhRnZk8
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notCode"
 
-not10
+not99
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notName"
@@ -42,29 +42,31 @@ Content-Disposition: form-data; name="notAllArmCheck"
 Y
 
 --WebAppBoundary
-Content-Disposition: form-data; name="noticeFile"; filename="pikachu.png"
+Content-Disposition: form-data; name="notAttachedFile"; filename="pikachu.png"
 
 < pikachu.png
+
 --WebAppBoundary
 
+
 ###공지전체 조회 offset 페이지
-GET http://localhost:8001/notice/allNoticeSearch
+GET http://localhost:8001/notice/allNoticeSearch?offset=1
 Content-Type: application/json
 Accept: */*
-Authorization: eyJkYXRlIjoxNzA3NTc0Mjk4Nzg3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODQzODI5OH0.bqe-Fz92FpSzmQ_sKotQoUDR6yzXOzEcGKWzK45DbCM
+Authorization: Bearer eyJkYXRlIjoxNzA3ODEzNzAzNTQ0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY3NzcwM30.FiS-bZTM584VqmzDqaIiN-zRVb6gCH5M1Hc3IhRnZk8
 
 ###공지상세 조회
-GET http://localhost:8001/notice/detaill?nc=not8
+GET http://localhost:8001/notice/detail?nc=not7
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3MzczNDQ1OTAzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNzQ0NX0.r2LsASVeUuhkIWKlG1PB05F_shrgqWSatBiKVSXhw4U
+Authorization: Bearer eyJkYXRlIjoxNzA3ODEzNzAzNTQ0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY3NzcwM30.FiS-bZTM584VqmzDqaIiN-zRVb6gCH5M1Hc3IhRnZk8
 
 
 ###공지제목 조회
 GET http://localhost:8001/notice/titleSearch?t=야유
 Content-Type: application/json
 Accept: */*
-Authorization: eyJkYXRlIjoxNzA3MzcxNzY5OTM2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTc2OX0._GRr4qwMMnRfW3f7NwFnSQlxPI81W-PAaOvlB5wFNEg
+Authorization: Bearer eyJkYXRlIjoxNzA3ODEyNDkwNDU1LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY3NjQ5MH0.Jx_UlaxSFHtFdZ68L5eHYGIMKlTL7Xo9bdjw7dhRILc
 
 ###공지내용 조회
 GET http://localhost:8001/notice/commentSearch?c=지급

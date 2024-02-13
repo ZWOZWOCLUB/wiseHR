@@ -85,7 +85,7 @@ public class NoticeController {
      * @param search notCode
      * @return
      */
-    @GetMapping("/detaill")
+    @GetMapping("/detail")
     public ResponseEntity<ResponseDTO> noticeDetail(
             @RequestParam(value = "nc", defaultValue = "not")String search){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지상세조회성공", noticeService.noticeDetail(search)));

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface NotAttachedFileRepository extends JpaRepository<NotAttachedFile, String> {
 
-    List<NotAttachedFile> findByNotice_NotName(String search);
+//    List<NotAttachedFile> findByNotice_NotName(String search);
 
-    List<NotAttachedFile> findByNotice_NotCode(String search);
+//    List<NotAttachedFile> findByNotice_NotCode(String search);
 
-    NotAttachedFile findByNotice(Notice notice);
+
 }
