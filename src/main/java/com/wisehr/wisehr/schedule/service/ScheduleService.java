@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,9 +28,10 @@ public class ScheduleService {
 
     private final ScheduleCountDepCodeRepository countDepCodeRepository;
 
+    private final ScheduleSearchWorkPatternRepository searchWorkPatternRepository;
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository) {
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository, ScheduleSearchWorkPatternRepository searchWorkPatternRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -43,6 +43,7 @@ public class ScheduleService {
         this.insertPatternDayRepository = insertPatternDayRepository;
         this.insertAllowanceRepository = insertAllowanceRepository;
         this.countDepCodeRepository = countDepCodeRepository;
+        this.searchWorkPatternRepository = searchWorkPatternRepository;
     }
 
 
@@ -59,8 +60,8 @@ public class ScheduleService {
         log.info("allselect : " + allSelect);
 
         List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
-                        .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
-                        .collect(Collectors.toList());
+                .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
+                .collect(Collectors.toList());
         System.out.println("selectDTOList = " + selectDTOList);
 
         log.info("searchDate 서비스 끗~~~~~~~~~~~~");
@@ -87,7 +88,7 @@ public class ScheduleService {
 
 
             System.out.println("patternDayDTO = " + patternDayDTO);
-            for (SchedulePatternDayDTO pattern: patternDayDTO) {
+            for (SchedulePatternDayDTO pattern : patternDayDTO) {
                 pattern.setWokCode(insertDTO.getScheduleDTO().getWokCode());
                 System.out.println("pattern = " + pattern);
 
@@ -95,7 +96,6 @@ public class ScheduleService {
             List<ScheduleInsertPatternDay> patternDay = patternDayDTO.stream()
                     .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
                     .collect(Collectors.toList());
-
 
 
             List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
@@ -109,7 +109,7 @@ public class ScheduleService {
 
 
         log.info("insertWorkPattern 끗~~~~~~~~~~~~");
-        return (result > 1)? "등록 성공": "등록 실패";
+        return (result > 1) ? "등록 성공" : "등록 실패";
     }
 
 
@@ -120,7 +120,7 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             ScheduleWorkPattern insertWorkPattern = modelMapper.map(patternDTO, ScheduleWorkPattern.class);
 
             ScheduleWorkPattern insertResult = workPatternRepository.save(insertWorkPattern);
@@ -128,12 +128,12 @@ public class ScheduleService {
 
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "등록 성공": "등록 실패";
+        return (result > 0) ? "등록 성공" : "등록 실패";
     }
 
     @Transactional
@@ -143,7 +143,7 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             ScheduleWorkPattern pattern = workPatternRepository.findById(patternDTO.getWokCode()).get();
 
             pattern = pattern.wokStartTime(patternDTO.getWokStartTime())
@@ -154,12 +154,12 @@ public class ScheduleService {
 
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     @Transactional
@@ -171,7 +171,7 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             Schedule schedule = scheduleRepository.findById(scheduleDTO.getSchCode()).get();
             System.out.println("schedule = " + schedule);
 
@@ -183,7 +183,7 @@ public class ScheduleService {
                     .wokCode(scheduleDTO.getWokCode())
                     .build();
 
-            for (int i =0; i < patternDayDTO.size(); i++) {
+            for (int i = 0; i < patternDayDTO.size(); i++) {
                 int dayCode = patternDayDTO.get(i).getDayCode();
                 int wokCode = patternDayDTO.get(i).getWokCode();
 
@@ -205,16 +205,14 @@ public class ScheduleService {
             log.info("insertPatternDayResult = " + insertPatternDayResult);
 
 
-
-
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     @Transactional
@@ -224,7 +222,7 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             ScheduleEtcPattern insertEtcPattern = modelMapper.map(etcPatternDTO, ScheduleEtcPattern.class);
 
             ScheduleEtcPattern insertResult = etcPatternRepository.save(insertEtcPattern);
@@ -232,12 +230,12 @@ public class ScheduleService {
 
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "등록 성공": "등록 실패";
+        return (result > 0) ? "등록 성공" : "등록 실패";
     }
 
     @Transactional
@@ -247,13 +245,13 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             if (!"10".equals(etcPatternDTO.getEtcKind())) {
                 ScheduleEtcPattern pattern = etcPatternRepository.findById(etcPatternDTO.getEtcCode()).get();
 
                 pattern = pattern.etcDate(etcPatternDTO.getEtcDate())
                         .etcKind(etcPatternDTO.getEtcKind()).build();
-            }else {
+            } else {
                 ScheduleEtcPattern pattern = etcPatternRepository.findById(etcPatternDTO.getEtcCode()).get();
 
                 etcPatternRepository.delete(pattern);
@@ -262,12 +260,12 @@ public class ScheduleService {
 
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     @Transactional
@@ -277,7 +275,7 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             ScheduleInsertAllowance insertAllowance = modelMapper.map(allowanceDTO, ScheduleInsertAllowance.class);
 
             ScheduleInsertAllowance insertResult = insertAllowanceRepository.save(insertAllowance);
@@ -285,12 +283,12 @@ public class ScheduleService {
 
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "등록 성공": "등록 실패";
+        return (result > 0) ? "등록 성공" : "등록 실패";
     }
 
     @Transactional
@@ -300,7 +298,7 @@ public class ScheduleService {
 
         int result = 0;
 
-        try{
+        try {
             ScheduleInsertAllowance allowance = insertAllowanceRepository.findByMemCodeAndSchCode(allowanceDTO.getMemCode(), allowanceDTO.getSchCode());
 
             System.out.println("allowance = " + allowance);
@@ -317,28 +315,30 @@ public class ScheduleService {
 
             result = 1;
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     public List<ScheduleAllSelectDTO> searchValue(ScheduleSearchValueDTO valueDTO) {
         log.info("searchValue 시작~~~~~~~~~~");
 
-            log.info("날짜로 조회~~~~~~~~~");
-            String yearMonth = valueDTO.getYearMonth();
-            String notContain = valueDTO.getNotContain();
+        log.info("날짜로 조회~~~~~~~~~");
+        String yearMonth = valueDTO.getYearMonth();
+        String notContain = valueDTO.getNotContain();
 
-            List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthDate(yearMonth, notContain);
+        List<ScheduleAllSelect> allSelects = allSelectRepository.findByYearMonthDate(yearMonth, notContain);
 
-            List<ScheduleAllSelectDTO> list = allSelects.stream()
-                    .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
-                    .collect(Collectors.toList());
+        List<ScheduleAllSelectDTO> list = allSelects.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleAllSelectDTO.class))
+                .collect(Collectors.toList());
+        System.out.println("list = " + list);
+        log.info("searchValue 끝~~~~~~~~~~");
 
-            return list;
+        return list;
 
     }
 
@@ -365,5 +365,41 @@ public class ScheduleService {
                 .collect(Collectors.toList());
 
         return list;
+    }
+
+    public List<ScheduleAllSelectDTO> patternAndDaySearch() {
+
+        log.info("patternAndDaySearch 시작~~~~~~~");
+
+
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByAll();
+        log.info("allselect : " + allSelect);
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
+                .collect(Collectors.toList());
+        System.out.println("selectDTOList = " + selectDTOList);
+
+
+        log.info("patternAndDaySearch 끝~~~~~~~");
+        return selectDTOList;
+    }
+
+    public List<ScheduleWorkPatternDTO> patternSearch() {
+
+        log.info("patternSearch 시작~~~~~~~");
+
+
+        List<ScheduleWorkPattern> patterns = workPatternRepository.findAll();
+        log.info("patterns : " + patterns);
+
+        List<ScheduleWorkPatternDTO> selectDTOList = patterns.stream()
+                .map(list -> modelMapper.map(list, ScheduleWorkPatternDTO.class))
+                .collect(Collectors.toList());
+        System.out.println("selectDTOList = " + selectDTOList);
+
+
+        log.info("patternSearch 끝~~~~~~~");
+        return selectDTOList;
     }
 }

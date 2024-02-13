@@ -2,6 +2,8 @@ package com.wisehr.wisehr.schedule.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -13,4 +15,5 @@ public class ScheduleWorkPatternDTO {
     private String wokRestTime;
     private String wokEndTime;
     private String wokDeleteState;
+    private List<SchedulePatternDayIDDTO> schedulePatternDayList;
 }

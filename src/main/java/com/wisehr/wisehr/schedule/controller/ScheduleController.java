@@ -99,7 +99,6 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      * 3.새 근무 편성 관련
      * 근무 패턴 수정
      */
-
     @Tag(name = "스케줄 패턴 수정", description = "스케줄 패턴 수정")
     @PutMapping(value = "/workPattern")
     public ResponseEntity<ResponseDTO> updateWorkPattern(@RequestBody ScheduleWorkPatternDTO patternDTO){
@@ -165,6 +164,18 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
     @PutMapping(value = "/etcPattern")
     public ResponseEntity<ResponseDTO> updateEtcPattern(@RequestBody ScheduleEtcPatternDTO etcPatternDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무외 일정 수정 성공", scheduleService.updateEtcPattern(etcPatternDTO)));
+    }
+
+
+    @Tag(name = "스케줄 패턴 조회", description = "스케줄 패턴 조회")
+    @GetMapping("/patternAndDaySearch")
+    public ResponseEntity<ResponseDTO> patternAndDaySearch(){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.patternAndDaySearch()));
+    }
+
+    @GetMapping("/patternSearch")
+    public ResponseEntity<ResponseDTO> patternSearch(){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.patternSearch()));
     }
 
 }
