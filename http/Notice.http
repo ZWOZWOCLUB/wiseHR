@@ -51,7 +51,7 @@ Content-Disposition: form-data; name="noticeFile"; filename="pikachu.png"
 GET http://localhost:8001/notice/allNoticeSearch
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3MzcyNzI4NTgyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNjcyOH0.wGwthhUk15xV7SZaCZCgZxQjjxusKddDxFFxV25HXQ8
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2Njc0NzY3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY1MDY3NH0.Fkbkd40l9Ln1gTxa0lpdlz2-fb5I0aGalS7fRHFo4Gs
 
 ###공지상세 조회
 GET http://localhost:8001/notice/detaill?nc=not8

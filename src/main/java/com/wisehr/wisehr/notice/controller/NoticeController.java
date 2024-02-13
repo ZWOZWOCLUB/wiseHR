@@ -65,7 +65,7 @@ public class NoticeController {
         log.info("전체 공지 조회");
         log.info("페이지 번호", offset);
 
-        Criteria criteria = new Criteria(Integer.valueOf(offset), 2);
+        Criteria criteria = new Criteria(Integer.valueOf(offset), 10);
 
         PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
 
