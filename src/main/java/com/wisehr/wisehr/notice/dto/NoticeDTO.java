@@ -3,8 +3,10 @@ package com.wisehr.wisehr.notice.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,5 +25,5 @@ public class NoticeDTO {
     private NotMemberDTO notMember; //작성자
     private String notDeleteStatus; //삭제여부
     private String notAllArmCheck; //알람여부
-
+    private List<MultipartFile> notAttachedFile; // 파일
 }

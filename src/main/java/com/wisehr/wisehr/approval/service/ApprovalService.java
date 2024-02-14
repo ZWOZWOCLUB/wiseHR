@@ -6,6 +6,8 @@ import com.wisehr.wisehr.approval.entity.*;
 import com.wisehr.wisehr.approval.repository.*;
 import com.wisehr.wisehr.attendance.entity.Attendance;
 import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
+import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
+import com.wisehr.wisehr.mypage.repository.MPHoldVacationRepository;
 import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
 import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
@@ -20,11 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,6 +49,8 @@ public class ApprovalService {
     private final ApprovalScheduleRepository approvalScheduleRepository;
     private final ApprovalPatternDayRepository approvalPatternDayRepository;
     private final AttendanceRepository attendanceRepository;
+    private final ApprovalAttachmentRepository approvalAttachmentRepository;
+    private final MPHoldVacationRepository holdVacationRepository;
 
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
@@ -62,7 +64,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -79,6 +81,8 @@ public class ApprovalService {
         this.approvalScheduleRepository = approvalScheduleRepository;
         this.approvalPatternDayRepository = approvalPatternDayRepository;
         this.attendanceRepository = attendanceRepository;
+        this.approvalAttachmentRepository = approvalAttachmentRepository;
+        this.holdVacationRepository = holdVacationRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -157,9 +161,8 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
-            ApprovalMember depRole = fileUtils.roleMember(edit.getApproval().getApprovalMember().getMemCode());
 
-            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
+            ac.setApprovalMember(edit.getCMember());
             ac.setApproval(edit.getApproval());
             ac.setAppState("대기");
 
@@ -186,7 +189,7 @@ public class ApprovalService {
 
     // 퇴직 요청 상신
     @Transactional
-    public String submitRetired(ApprovalRetiredDTO retired, MultipartFile approvalFile) {
+    public String submitRetired(ApprovalRetired2DTO retired, MultipartFile approvalFile) {
 
         int result = 0;
 
@@ -218,9 +221,8 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
-            ApprovalMember depRole = fileUtils.roleMember(retired.getApproval().getApprovalMember().getMemCode());
 
-            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
+            ac.setApprovalMember(retired.getCMember());
             ac.setApproval(retired.getApproval());
             ac.setAppState("대기");
 
@@ -377,10 +379,70 @@ public class ApprovalService {
                 av.setVhiSpend(days);
                 av.setAppCode(acc);
                 av.setApprovalMember(acc.getApproval().getApprovalMember());
+                av.setVhiKind(aa.getVacKind());
 
                 log.info("av : " + av);
 
-                approvalVHRepository.save(av);
+
+                MPHoldVacation holdVacation = holdVacationRepository.findByMemCode((acc.getApproval().getApprovalMember().getMemCode()).intValue());
+                log.info("holdVacation == : " + holdVacation);
+
+                if (aa.getVacKind().contains("무급")){
+                    log.info("여기서는 연차 개수를 조정하지 않습니다. ");
+
+                }else {
+
+                    log.info("연차 계산 시작 ");
+
+                    if (holdVacation.getVctDeadline() > 0) {   //먼저 소멸예정 연차를 차감하기 위하여 0 이상일 경우로 설정
+
+                        if (holdVacation.getVctDeadline() - days < 0) { // 사용한 연차 개수보다 소멸예정 연차가 적을 경우
+                            int spendVacation = -(holdVacation.getVctDeadline() - days);      // 남은걸 양수로 만들고
+                            int spendVacation2 = holdVacation.getVctCount() - spendVacation;  // 연차를 마저 빼주는 것
+                            log.info("spendVacation : " + spendVacation);
+                            log.info("spendVacation2 : " + spendVacation2);
+
+                            if (spendVacation2 < 0) {   // 남은 연차가 부족할 경우
+
+                                acc.setAppState("반려");
+
+                                approvalCompleteRepository.save(acc); // 반려로 처리
+
+                                return "연차가 부족합니다.";
+                            }
+
+                            holdVacation.vctDeadline(0);
+                            holdVacation.vctCount(spendVacation2);
+                            holdVacation.vctAmountSpendVacation(holdVacation.getVctAmountSpendVacation() + days);
+                            log.info("holdVacation : ", holdVacation);
+                            holdVacationRepository.save(holdVacation);
+                        } else {
+
+                            int spendVacation = holdVacation.getVctDeadline() - days;
+                            log.info("spendVacation : " + spendVacation);
+
+                            if (spendVacation < 0) {// 연차 부족 반려
+
+                                acc.setAppState("반려");
+
+                                approvalCompleteRepository.save(acc);
+
+                                return "연차가 부족합니다.";
+                            }
+
+                            holdVacation.vctDeadline(spendVacation);
+                            holdVacation.vctAmountSpendVacation(holdVacation.getVctAmountSpendVacation() + days);
+                            holdVacationRepository.save(holdVacation);
+                            log.info("holdVacation : ", holdVacation);
+                            log.info("연차 소유 누적 까지 성공 ");
+
+                        }
+                    }
+                }
+
+
+
+                approvalVHRepository.save(av);  // 연차이력 저장
 
                 log.info("연차이력까지 성공");
 
@@ -489,11 +551,14 @@ public class ApprovalService {
                     ApprovalMember retiredMember = approvalMemberRepository.findByMemCode(retiredMemCode);
                     log.info("retiredMember : " + retiredMember);
 
-                    retiredMember.setMemStatus("Y");    //이거 퇴직일 시점에 해야하는데 어떻게 ? ? ? ? ? ? 스크립트에서 할라고 하는데 ?  ? ? ? ?? ?
+                    ApprovalRetired retired = approvalRetiredRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
+                    log.info("----" + String.valueOf(retired.getTirDate()));
+
+                    retiredMember.setMemStatus("Y");
+                    retiredMember.setMemEndDate(String.valueOf(retired.getTirDate()));
 
                     approvalMemberRepository.save(retiredMember);
 
-                    // 퇴직일 날 승인하는걸로 ?  ? ? ?? ? ? ? ? ? ?
                 } else if (acc.getApproval().getPayKind().contains("출퇴근") && acc.getAppState().equals("승인")) {
 
                     EditCommute ec = editCommuteRepository.findByApprovalPayCode(acc.getApproval().getPayCode());   // 수정해야할 날짜를 찾기위해 결재 코드 찾기
@@ -591,7 +656,7 @@ public class ApprovalService {
 
     // 스케줄 정정 결재 상신
     @Transactional
-    public String submitSchedule(EditScheduleDTO schedule, MultipartFile approvalFile) {
+    public String submitSchedule(EditSchedule2DTO schedule, MultipartFile approvalFile) {
 
         int result = 0;
 
@@ -623,9 +688,8 @@ public class ApprovalService {
 
             log.info("schedule  : " + schedule);
 
-            ApprovalMember depRole = fileUtils.roleMember(schedule.getApproval().getApprovalMember().getMemCode());
 
-            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
+            ac.setApprovalMember(schedule.getCMember());
             ac.setApproval(schedule.getApproval());
             ac.setAppState("대기");
 
@@ -653,7 +717,7 @@ public class ApprovalService {
 
     // 서류 요청 상신
     @Transactional
-    public String submitReqDocumnet(ApprovalReqDocumentDTO reqDocument, MultipartFile approvalFile) {
+    public String submitReqDocumnet(ApprovalReqDocument2DTO reqDocument, MultipartFile approvalFile) {
 
         int result = 0;
 
@@ -683,9 +747,8 @@ public class ApprovalService {
 
             ApprovalCompleteDTO ac = new ApprovalCompleteDTO();
 
-            ApprovalMember depRole = fileUtils.roleMember(reqDocument.getApproval().getApprovalMember().getMemCode());
 
-            ac.setApprovalMember(modelMapper.map(depRole, ApprovalMemberDTO.class));
+            ac.setApprovalMember(reqDocument.getCMember());
             ac.setApproval(reqDocument.getApproval());
             ac.setAppState("대기");
 
@@ -785,5 +848,55 @@ public class ApprovalService {
         }
 
         return (result > 0 ) ? "성공" : "실패";
+    }
+
+    public List<ApprovalDTO> selectApproval(String payCode) {
+
+        List<Approval> approvalList = approvalRepository.findByPayCode(payCode);
+
+
+        log.info("approval : " + approvalList);
+
+        return approvalList.stream().map(approval -> modelMapper.map(approval, ApprovalDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<ApprovalCompleteDTO> selectApprovalComplete(String payCode) {
+
+        List<ApprovalComplete> approvalList = approvalCompleteRepository.findByApprovalPayCode(payCode);
+
+        return approvalList.stream().map(approvalComplete -> modelMapper.map(approvalComplete, ApprovalCompleteDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<ApprovalAttachmentDTO> selectApprovalAttachment(String payCode) {
+
+        List<ApprovalAttachment> approvalAttachmentList = approvalAttachmentRepository.findByApprovalPayCode(payCode);
+
+        return approvalAttachmentList.stream().map(approvalAttachment -> modelMapper.map(approvalAttachment, ApprovalAttachmentDTO.class)).collect(Collectors.toList());
+    }
+
+
+    public Object selectApprovalType(String payCode) {
+
+        List<Approval> approval = approvalRepository.findByPayCode(payCode);
+
+        log.info("approval : " + approval.get(0));
+
+        if (approval.get(0).getPayKind().contains("연차")){
+            log.info("연차");
+            return modelMapper.map(approvalAnnualRepository.findByApprovalPayCode(payCode), ApprovalAnnualDTO.class);
+        } else if (approval.get(0).getPayKind().contains("스케줄")) {
+            log.info("스케줄");
+            return modelMapper.map(editScheduleRepository.findByApprovalPayCode(payCode), EditScheduleDTO.class);
+        } else if (approval.get(0).getPayKind().contains("출퇴근")) {
+            log.info("출퇴근");
+            return modelMapper.map(editCommuteRepository.findByApprovalPayCode(payCode), EditCommuteDTO.class);
+        } else if (approval.get(0).getPayKind().contains("서류")) {
+            log.info("서류");
+            return modelMapper.map(approvalReqDocumentRepository.findByApprovalPayCode(payCode), ApprovalReqDocumentDTO.class);
+        } else if (approval.get(0).getPayKind().contains("퇴직")){
+            log.info("퇴직");
+            return modelMapper.map(approvalRetiredRepository.findByApprovalPayCode(payCode), ApprovalRetiredDTO.class);
+        }
+        return "잘못된 요청입니다.";
     }
 }

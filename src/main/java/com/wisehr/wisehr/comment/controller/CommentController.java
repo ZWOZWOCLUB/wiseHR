@@ -19,7 +19,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    /*댓글 등록 아직안댐*/
+    /*댓글 등록*/
     @PostMapping("/comment")
     public ResponseEntity<ResponseDTO> insertComment(@RequestBody CommentDTO commentDTO){
 

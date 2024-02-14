@@ -3,6 +3,7 @@ package com.wisehr.wisehr.mypage.controller;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.mypage.dto.MPDocumentFileDTO;
 import com.wisehr.wisehr.mypage.dto.MPMyPageDTO;
+import com.wisehr.wisehr.mypage.dto.MPPassDTO;
 import com.wisehr.wisehr.mypage.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -68,9 +69,9 @@ public class MyPageController {
     }
 
 //    사용한 연차 기록을 알기 위한 고유 결재 코드를 가져오는 로직
-    @GetMapping("/annualHistory/{memCode}")
-    public ResponseEntity<ResponseDTO> selectAnnualHistoryDetail(@PathVariable int memCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사용 연차 상세조회 성공" , myPageService.selectAnnualHistory(memCode)));
+    @GetMapping("/annualHistory/{memCode}/{year}")
+    public ResponseEntity<ResponseDTO> selectAnnualHistoryDetail(@PathVariable int memCode,@PathVariable String year){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사용 연차 상세조회 성공" , myPageService.selectAnnualHistory(memCode,year)));
     }
 
 //    개인 정보 수정
@@ -80,6 +81,11 @@ public class MyPageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공",  myPageService.updateMem(productDTO)));
     }
 
+//    이미 입력한 서명이 있는지 조회
+    @GetMapping("/selectSign/{memCode}")
+    public ResponseEntity<ResponseDTO> selectSign(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서명 조회 성공" , myPageService.selectSign(memCode)));
+    }
 
     @PostMapping("/insertSign")
     public ResponseEntity<ResponseDTO> insertSign(@ModelAttribute MPDocumentFileDTO myPageDTO, MultipartFile productImage){
@@ -97,6 +103,24 @@ public class MyPageController {
                         , myPageService.updateSign(myPageDTO, productImage)));
     }
 
+    @PutMapping("/updatePass")
+    public ResponseEntity<ResponseDTO> updatePass(@ModelAttribute MPPassDTO productDTO) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "비밀번호 수정 성공",  myPageService.updatePass(productDTO)));
+    }
+
+
+//    프로필 사진 조회
+    @GetMapping("/selectProfile/{memCode}")
+    public ResponseEntity<ResponseDTO> selectProfile(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "프로필 조회 성공" , myPageService.selectProfile(memCode)));
+    }
+
+//    서류함만!! 조회
+    @GetMapping("/selectDoc/{memCode}")
+    public ResponseEntity<ResponseDTO> selectDoc(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서류함만!! 조회 성공" , myPageService.selectDoc(memCode)));
+    }
 
 
 }

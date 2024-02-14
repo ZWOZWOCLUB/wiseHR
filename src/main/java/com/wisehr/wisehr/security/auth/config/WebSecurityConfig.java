@@ -2,10 +2,7 @@ package com.wisehr.wisehr.security.auth.config;
 
 import com.wisehr.wisehr.security.auth.filter.CustomAuthenticationFilter;
 import com.wisehr.wisehr.security.auth.filter.JwtAuthorizationFilter;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthFailUserHandler;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthSuccessHandler;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthenticationProvider;
-import com.wisehr.wisehr.security.auth.handler.CustomLogoutSuccessHandler;
+import com.wisehr.wisehr.security.auth.handler.*;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +27,9 @@ public class WebSecurityConfig {
      * 정적 자원에 대한 인증된 사용자의 접근을 설정하는 메소드
      */
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**",
+                "/lib/**", "/career/**", "/certificate/**", "/dataFomats/**", "/degree/**", "/etcDocumentFile/**", "/memberFiles/**", "/noticeFiles/**", "/profile/**", "/salary/**", "/sign/**");
     }
 
     /***
@@ -154,7 +152,6 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
 }

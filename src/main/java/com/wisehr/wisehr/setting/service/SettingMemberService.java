@@ -50,7 +50,7 @@ public class SettingMemberService {
 
     private final ModelMapper modelMapper;
 
-    @Value("src/main/resources/static/")
+    @Value("${image.image-dir}")
     private String IMAGE_DIR;
 
     @Value("http://localhost:8001/")
@@ -81,8 +81,8 @@ public class SettingMemberService {
     public SettingMemberDTO insertMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("insertMember Start~~~~~~~~~~~~");
         log.info(settingMemberDTO.toString());
-        if(!"일반사원".equals(settingMemberDTO.getMemRole())) {
-            settingMemberDTO.setMemRole("중간관리자");
+        if(!"USER".equals(settingMemberDTO.getMemRole())) {
+            settingMemberDTO.setMemRole("ADMIN");
         }
 
         SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();

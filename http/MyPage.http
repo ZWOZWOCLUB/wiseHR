@@ -41,7 +41,7 @@ Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 ### 연차 사용 이력 조회
-GET http://localhost:8001/myPage/annualHistory/3
+GET http://localhost:8001/myPage/annualHistory/3/2024
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
@@ -51,6 +51,7 @@ Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 PUT http://localhost:8001/myPage/updateMem
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memCode"
@@ -73,10 +74,20 @@ Content-Disposition: form-data; name="memBirth"
 
 1999-09-09
 
+
+### 서명 조회
+GET http://localhost:8001/myPage/selectSign/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
+
 ### 서명 등록
 POST http://localhost:8001/myPage/insertSign
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memCode"
@@ -91,6 +102,8 @@ Content-Disposition: form-data; name="productImage"; filename="pikachu.png"
 PUT http://localhost:8001/myPage/updateSign
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memCode"
@@ -100,3 +113,39 @@ Content-Disposition: form-data; name="memCode"
 Content-Disposition: form-data; name="productImage"; filename="pikachu2.png"
 
 < ./pikachu2.png
+
+### 비밀번호 수정
+PUT http://localhost:8001/myPage/updatePass
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="originMemPassword"
+
+1111
+--WebAppBoundary
+Content-Disposition: form-data; name="newMemPassword1"
+
+0000
+--WebAppBoundary
+Content-Disposition: form-data; name="newMemPassword2"
+
+0000
+
+### 프로필 조회
+GET http://localhost:8001/myPage/selectProfile/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
+
+### 서류함만!! 조회
+GET http://localhost:8001/myPage/selectDoc/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk

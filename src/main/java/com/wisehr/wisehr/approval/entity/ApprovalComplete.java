@@ -25,7 +25,7 @@ public class ApprovalComplete {
     @Column(name = "app_state")
     private String appState;
     @Column(name = "app_date")
-    private Date appDate;
+    private String appDate;
     @Column(name = "app_comment")
     private String appComment;
     @OneToOne

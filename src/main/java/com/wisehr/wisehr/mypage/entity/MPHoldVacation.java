@@ -18,6 +18,8 @@ public class MPHoldVacation {
     private int vctCount;
     @Column(name = "vct_deadline")
     private int vctDeadline;
+    @Column(name = "vct_amount_spend_vacation")
+    private int vctAmountSpendVacation;
 
 
     public MPHoldVacation() {
@@ -38,8 +40,13 @@ public class MPHoldVacation {
             return this;
         }
 
+    public MPHoldVacation vctAmountSpendVacation(int vctAmountSpendVacation) {
+        this.vctAmountSpendVacation = vctAmountSpendVacation;
+        return this;
+    }
+
         public MPHoldVacation build() {
-            return new MPHoldVacation(memCode, vctCount, vctDeadline);
+            return new MPHoldVacation(memCode, vctCount, vctDeadline, vctAmountSpendVacation);
         }
 
 }

@@ -41,7 +41,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         * 권한이 필요없는 리소스
         * */
         List<String> roleLessList = Arrays.asList(  // 권한없이 누구나 접근 가능한 경로
-                "/signup", "/member/member", "approval/annual","/login"
+                "/signup", "/member/member", "approval/annual","/login",
+                "/swagger-ui/(.*)",        //swagger 설정
+                "/swagger-ui/index.html",  //swagger 설정
+                "/v3/api-docs",              //swagger 설정
+                "/v3/api-docs/(.*)",         //swagger 설정
+                "/swagger-resources",        //swagger 설정
+                "/swagger-resources/(.*)"    //swagger 설정
         );
 
         // 현재 요청의 URI가 권한이 필요 없는 리소스에 해당하는 경우, 요청을 다음 필터로 넘기고 메서드를 종료합니다.

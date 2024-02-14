@@ -15,7 +15,7 @@ public class ScheduleAllowance {
 
     @OneToOne
     @JoinColumn(name = "mem_code", insertable = false, updatable = false)
-    private ScheduleMember member;
+    private ScheduleMember memberList;
 
     public ScheduleAllowance() {
     }

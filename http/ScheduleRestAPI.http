@@ -122,9 +122,10 @@ Accept: */*
 POST http://localhost:8001/schedule/searchMonth
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NzkwNzQ5NzUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY1NDc0OX0.GVMug5sb9rsX5_2C5dyHmn5iXqXaAvgNLj3bIBAQgao
 
 {
-  "memCode": 3
+  "yearMonth": "2024-02"
 }
 
 ###조건으로 조회
@@ -137,4 +138,10 @@ Accept: */*
 }
 
 
+
+###조건으로 조회
+GET http://localhost:8001/schedule/patternSearch
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NzkwNzQ5NzUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY1NDc0OX0.GVMug5sb9rsX5_2C5dyHmn5iXqXaAvgNLj3bIBAQgao
 

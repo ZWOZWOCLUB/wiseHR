@@ -20,6 +20,8 @@ public class MPVacationHistory {
     private int memCode;
     @Column(name = "vhi_spend")
     private int vhiSpend;
+    @Column(name = "vhi_kind")
+    private String vhiKind;
     @Column(name = "app_code")
     private String appCode;
 

@@ -23,12 +23,19 @@ public class ScheduleWorkPattern {
     private String wokEndTime;
     @Column(name = "wok_delete_state")
     private String wokDeleteState;
+    @Column(name = "wok_color")
+    private String wokColor;
+    @Column(name = "wok_type")
+    private String wokType;
 
     @OneToMany
     @JoinColumn(name = "wok_code")
     private List<SchedulePatternDay> patternDayList;
 
     public ScheduleWorkPattern() {
+    }
+
+    public ScheduleWorkPattern(int wokCode, String wokStartTime, String wokRestTime, String wokEndTime, String wokDeleteState, List<SchedulePatternDay> patternDayList, String wokColor) {
     }
 
     public ScheduleWorkPattern wokCode(int wokCode) {
@@ -61,8 +68,13 @@ public class ScheduleWorkPattern {
         return this;
     }
 
+    public ScheduleWorkPattern  wokColor(String  wokColor) {
+        this.wokColor = wokColor;
+        return this;
+    }
+
     public ScheduleWorkPattern build() {
-        return new ScheduleWorkPattern(wokCode, wokStartTime, wokRestTime, wokEndTime, wokDeleteState, patternDayList);
+        return new ScheduleWorkPattern(wokCode, wokStartTime, wokRestTime, wokEndTime, wokDeleteState, patternDayList, wokColor);
     }
 
 }
