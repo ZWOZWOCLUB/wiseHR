@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,26 +115,28 @@ public class ScheduleService {
 
 
     @Transactional
-    public String insertWorkPattern(ScheduleWorkPatternDTO patternDTO) {
+    public List<ScheduleWorkPatternDTO> insertWorkPattern(ScheduleWorkPatternDTO patternDTO) {
         log.info("insertWorkPattern Start~~~~~~~~~~~~");
         log.info(patternDTO.toString());
 
-        int result = 0;
+        List<ScheduleWorkPatternDTO> list = new ArrayList<>();
 
         try {
             ScheduleWorkPattern insertWorkPattern = modelMapper.map(patternDTO, ScheduleWorkPattern.class);
 
             ScheduleWorkPattern insertResult = workPatternRepository.save(insertWorkPattern);
             System.out.println("insertResult = " + insertResult);
-
-            result = 1;
+            List<ScheduleWorkPattern> findAll = workPatternRepository.findAll();
+            list = findAll.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleWorkPatternDTO.class))
+                    .collect(Collectors.toList());
 
         } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0) ? "등록 성공" : "등록 실패";
+        return list;
     }
 
     @Transactional

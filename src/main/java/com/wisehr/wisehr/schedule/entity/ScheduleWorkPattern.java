@@ -25,6 +25,8 @@ public class ScheduleWorkPattern {
     private String wokDeleteState;
     @Column(name = "wok_color")
     private String wokColor;
+    @Column(name = "wok_type")
+    private String wokType;
 
     @OneToMany
     @JoinColumn(name = "wok_code")
