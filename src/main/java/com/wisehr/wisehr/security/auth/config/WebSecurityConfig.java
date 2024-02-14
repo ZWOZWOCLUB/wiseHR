@@ -29,8 +29,9 @@ public class WebSecurityConfig {
      * 정적 자원에 대한 인증된 사용자의 접근을 설정하는 메소드
      */
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**",
+                "/lib/**", "/career/**", "/certificate/**", "/dataFomats/**", "/degree/**", "/etcDocumentFile/**", "/memberFiles/**", "/noticeFiles/**", "/profile/**", "/salary/**", "/sign/**");
     }
 
     /***
