@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Notice {
+public class NoticeResponse {
     @Id
     @GeneratedValue(generator = "eegenerator")
     @GenericGenerator(name = "eegenerator",

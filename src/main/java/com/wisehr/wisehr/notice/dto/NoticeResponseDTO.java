@@ -1,9 +1,8 @@
 package com.wisehr.wisehr.notice.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wisehr.wisehr.notice.entity.NotAttachedFile;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class NoticeDTO {
+public class NoticeResponseDTO {
     private String notCode;
     private String notName;
     private String notComment;  //내용
@@ -25,5 +24,5 @@ public class NoticeDTO {
     private NotMemberDTO notMember; //작성자
     private String notDeleteStatus; //삭제여부
     private String notAllArmCheck; //알람여부
-    private List<MultipartFile> notAttachedFile; // 파일
+    private List<NotAttachedFile> notAttachedFile; // 파일
 }
