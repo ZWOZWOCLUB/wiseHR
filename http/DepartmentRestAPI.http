@@ -3,20 +3,23 @@
 GET http://localhost:8001/org/list
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NTI0MzAyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDUyNH0.b6EX_Ddhliifk8L07Bpisb3HwqSVHOkn2UU5uYdkSzY
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
 
 ### 상위 부서 조회
 
 GET http://localhost:8001/org/repList
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NTI0MzAyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDUyNH0.b6EX_Ddhliifk8L07Bpisb3HwqSVHOkn2UU5uYdkSzY
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 ### 부서 생성
 
 POST http://localhost:8001/org/insertOrgDep
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 {
   "depName": "호흡기내과2팀",
@@ -28,6 +31,8 @@ Accept: */*
 PUT http://localhost:8001/org/modifyOrgDep
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 {
   "depCode": 17,
@@ -40,6 +45,8 @@ Accept: */*
 GET http://localhost:8001/org/AllMemOfDep
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 
 ### 부서 삭제(delete 아닌 status Y 및 각 회원정보 null로 변경)
@@ -47,6 +54,8 @@ Accept: */*
 PUT http://localhost:8001/org/deleteOrgDep
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 {
   "depCode": 17
@@ -57,6 +66,8 @@ Accept: */*
 GET http://localhost:8001/org/list/6
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 
 
@@ -65,6 +76,8 @@ Accept: */*
 GET http://localhost:8001/org/memberList?offset=2
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 
 ### 부서에 멤버 추가
@@ -72,6 +85,8 @@ Accept: */*
 PUT http://localhost:8001/org/insertMember/6
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
   [1, 4]
 
@@ -80,6 +95,8 @@ Accept: */*
 PUT http://localhost:8001/org/updateRole/
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 
 {
   "memCode": 4,
@@ -90,5 +107,6 @@ Accept: */*
 GET http://localhost:8001/org/treeView
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NTI0MzAyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDUyNH0.b6EX_Ddhliifk8L07Bpisb3HwqSVHOkn2UU5uYdkSzY
+Authorization: Bearer eyJkYXRlIjoxNzA3Nzg2NjA2NDQ2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODY1MDYwNn0.7rRpWagAKI8y2IDVY6BpaxWZhBY55ZF_074Th2KUxh0
+
 

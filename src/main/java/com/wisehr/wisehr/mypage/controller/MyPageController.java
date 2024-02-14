@@ -3,6 +3,7 @@ package com.wisehr.wisehr.mypage.controller;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.mypage.dto.MPDocumentFileDTO;
 import com.wisehr.wisehr.mypage.dto.MPMyPageDTO;
+import com.wisehr.wisehr.mypage.dto.MPPassDTO;
 import com.wisehr.wisehr.mypage.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -80,6 +81,11 @@ public class MyPageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공",  myPageService.updateMem(productDTO)));
     }
 
+//    이미 입력한 서명이 있는지 조회
+    @GetMapping("/selectSign/{memCode}")
+    public ResponseEntity<ResponseDTO> selectSign(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서명 조회 성공" , myPageService.selectSign(memCode)));
+    }
 
     @PostMapping("/insertSign")
     public ResponseEntity<ResponseDTO> insertSign(@ModelAttribute MPDocumentFileDTO myPageDTO, MultipartFile productImage){
@@ -95,6 +101,12 @@ public class MyPageController {
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "서명 수정 성공"
                         , myPageService.updateSign(myPageDTO, productImage)));
+    }
+
+    @PutMapping("/updatePass")
+    public ResponseEntity<ResponseDTO> updatePass(@ModelAttribute MPPassDTO productDTO) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "비밀번호 수정 성공",  myPageService.updatePass(productDTO)));
     }
 
 

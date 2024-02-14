@@ -332,7 +332,6 @@ public class OrgService {
     }
 
 
-    @Transactional
     public TreeDepDTO showTreeView() {
 
         //최상위부서 목록 조회

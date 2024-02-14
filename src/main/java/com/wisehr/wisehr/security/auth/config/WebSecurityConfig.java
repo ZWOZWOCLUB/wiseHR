@@ -2,10 +2,7 @@ package com.wisehr.wisehr.security.auth.config;
 
 import com.wisehr.wisehr.security.auth.filter.CustomAuthenticationFilter;
 import com.wisehr.wisehr.security.auth.filter.JwtAuthorizationFilter;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthFailUserHandler;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthSuccessHandler;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthenticationProvider;
-import com.wisehr.wisehr.security.auth.handler.CustomLogoutSuccessHandler;
+import com.wisehr.wisehr.security.auth.handler.*;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -154,7 +151,6 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
 }

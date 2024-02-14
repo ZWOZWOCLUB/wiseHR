@@ -1,5 +1,6 @@
 package com.wisehr.wisehr.mypage.service;
 
+import com.wisehr.wisehr.exception.PasswordNotEqualException;
 import com.wisehr.wisehr.mypage.dto.*;
 import com.wisehr.wisehr.mypage.entity.*;
 import com.wisehr.wisehr.mypage.repository.*;
@@ -7,6 +8,8 @@ import com.wisehr.wisehr.util.FileUploadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +43,7 @@ public class MyPageService {
     private final MPPositionRepository mpPositionRepository;
     private final MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository;
     private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     /* 이미지 저장 할 위치 및 응답 할 이미지 주소 */
     @Value("${image.image-dir}")
@@ -52,7 +56,7 @@ public class MyPageService {
                          MPDocumentFileRepository documentFileRepository, MPDocumentRepository documentRepository,
                          MPVacationHistoryRepository vacationHistoryRepository, MPHoldVacationRepository holdVacationRepository,
                          MPMyPageAnnualRepository myPageAnnualRepository, MPDocumentFileRepository documentFileRepository1, MPDepartmentRepository mpDepartmentRepository, MPPositionRepository mpPositionRepository, MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository,
-                         ModelMapper modelMapper) {
+                         ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder, BCryptPasswordEncoder passwordEncoder1) {
         this.myPageRepository = myPageRepository;
         this.degreeRepository = degreeRepository;
         this.certificateRepository = certificateRepository;
@@ -67,6 +71,7 @@ public class MyPageService {
         this.mpPositionRepository = mpPositionRepository;
         this.vacationHistoryAndApprovalPaymentRepository = vacationHistoryAndApprovalPaymentRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder1;
     }
 
 
@@ -239,6 +244,7 @@ public class MyPageService {
     public String insertSign(MPDocumentFileDTO productDTO, MultipartFile productImage) {
         log.info("[ProductService] insertProduct Start ===================");
         log.info("[ProductService] productDTO : " + productDTO);
+        log.info("[ProductService] productImage : " + productImage);
 
         String imageName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
@@ -246,20 +252,19 @@ public class MyPageService {
         System.out.println(productImage.getContentType());
         System.out.println(productImage.getOriginalFilename());
         System.out.println(productImage.getName());
-        String[] extend = productImage.getOriginalFilename().split("\\.");
-
-        System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
-        String realExtend = extend[1];
+//        String[] extend = productImage.getOriginalFilename().split("\\.");
+//        System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
+//        String realExtend = extend[1];
         System.out.println(LocalDate.now().toString());
         try{
-            replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, productImage);
+            replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR+"/sign", imageName, productImage);
 
-            productDTO.setDocAtcExtends(realExtend);
+            productDTO.setDocAtcExtends("png"); // 확장자 내가 임의로 씀
             productDTO.setDocAtcConvertName(replaceFileName);
             productDTO.setDocAtcRegistDate(LocalDate.now().toString());
-            productDTO.setDocAtcStorage(IMAGE_DIR);
+            productDTO.setDocAtcStorage(IMAGE_DIR+"/sign");
             productDTO.setDocAtcDeleteStatus("N");
-            productDTO.setDocAtcPath(IMAGE_DIR);
+            productDTO.setDocAtcPath(IMAGE_DIR+"/sign");
             productDTO.setDocAtcOriginName(productImage.getOriginalFilename());
             productDTO.setDocAtcKind("서명");
             /*
@@ -342,5 +347,54 @@ public class MyPageService {
         }
         log.info("[ProductService] updateProduct End ===================================");
         return (result > 0) ? "서명 수정 성공" : "서명 수정 실패";
+    }
+
+
+    @Transactional
+    public String updatePass(MPPassDTO productDTO) {
+
+//        1. 기존 비밀번호가 맞는지 확인
+        MPMyPageMember product = myPageRepository.findById(productDTO.getMemCode()).get();
+
+        if(!passwordEncoder.matches(productDTO.getOriginMemPassword(), product.getMemPassword())){ // 둘이 비교
+            throw new BadCredentialsException(productDTO.getOriginMemPassword() + "는 비밀번호가 아닙니다.");
+        }
+
+        log.info("[ProductService] updateProduct Start ===================================");
+        log.info("[ProductService] productDTO : " + productDTO);
+
+        String replaceFileName = null;
+        int result = 0;
+
+        System.out.println("product = " + product);
+
+//        변경할 비밀번호가 확실한지 비교 확인
+        System.out.println("productDTO = " + productDTO.getNewMemPassword1());
+        System.out.println("productDTO = " + productDTO.getNewMemPassword2());
+
+        if(!productDTO.getNewMemPassword1().equals(productDTO.getNewMemPassword2())){
+            throw new PasswordNotEqualException(productDTO.getOriginMemPassword() + " 변경될 비밀번호가 동일하지 않습니다.");
+        }
+
+        /* update를 위한 엔티티 값 수정 */
+
+        product = product.memPassword(passwordEncoder.encode(productDTO.getNewMemPassword1())).build();
+
+        System.out.println("product = " + product);
+
+        result = 1;
+
+        log.info("[ProductService] updateProduct End ===================================");
+        return (result > 0) ? "비밀번호 업데이트 성공" : "비밀번호 업데이트 실패";
+    }
+
+    public MPDocumentFileDTO selectSign(int memCode) {
+
+        String kind = "서명";
+        MPDocumentFile product = documentFileRepository.findByMemCodeAndDocAtcKind(memCode,kind);
+        MPDocumentFileDTO settingMemberDTO = modelMapper.map(product, MPDocumentFileDTO.class);
+
+        return settingMemberDTO;
+
     }
 }
