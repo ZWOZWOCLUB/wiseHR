@@ -18,4 +18,7 @@ public interface ApprovalCompleteRepository extends JpaRepository<ApprovalComple
 
     @Query("SELECT ac FROM ApprovalComplete ac WHERE ac.approvalMember.memCode = :memCode ORDER BY CASE WHEN ac.appState = '대기' THEN 0 ELSE 1 END, ac.approval.payDate DESC")
     List<ApprovalComplete> findByApprovalMemberMemCodeOrderByAppStateAndApprovalPayDateDesc(@Param("memCode") Long memCode);
+
+    List<ApprovalComplete> findByApprovalPayCode(String payCode);
+
 }

@@ -40,6 +40,37 @@ public class ApprovalController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", approvalService.selectRecPayment(memCode)));
     }
 
+    // 결재 조회
+    @GetMapping("/approval/{payCode}")
+    public ResponseEntity<ResponseDTO> approvalDetail(@PathVariable String payCode){
+
+        log.info("payCode : " + payCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectApproval(payCode)));
+    }
+
+    @GetMapping("/approvalcomplete/{payCode}")
+    public ResponseEntity<ResponseDTO> approvalComplete(@PathVariable String payCode){
+        log.info("payCode : " + payCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectApprovalComplete(payCode)));
+    }
+
+    @GetMapping("/approvalattachment/{payCode}")
+    public ResponseEntity<ResponseDTO> approvalAttachment(@PathVariable String payCode){
+        log.info("payCode : " + payCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectApprovalAttachment(payCode)));
+    }
+
+    @GetMapping("/approvaltype/{payCode}")
+    public ResponseEntity<ResponseDTO> approvalType(@PathVariable String payCode){
+
+        log.info("payCode : " + payCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectApprovalType(payCode)));
+    }
+
     // 연차 신청 상신
     @PostMapping("/annual")
     public ResponseEntity<ResponseDTO> submitAnnual(@ModelAttribute ApprovalAnnual2DTO annual, MultipartFile approvalFile){
@@ -68,7 +99,7 @@ public class ApprovalController {
 
     //스케줄 정정 신청 상신
     @PostMapping("/schedule")
-    public ResponseEntity<ResponseDTO> submitSchedule(@ModelAttribute EditScheduleDTO schedule, MultipartFile approvalFile){
+    public ResponseEntity<ResponseDTO> submitSchedule(@ModelAttribute EditSchedule2DTO schedule, MultipartFile approvalFile){
 
         log.info("edit : " + schedule);
         log.info("file : " + approvalFile);
@@ -80,7 +111,7 @@ public class ApprovalController {
 
     // 서류 요청 상신
     @PostMapping("/requestdocument")
-    public ResponseEntity<ResponseDTO> submitReqDoucument(@ModelAttribute ApprovalReqDocumentDTO reqDocument, MultipartFile approvalFile){
+    public ResponseEntity<ResponseDTO> submitReqDoucument(@ModelAttribute ApprovalReqDocument2DTO reqDocument, MultipartFile approvalFile){
 
         log.info("reqDocument : " + reqDocument);
         log.info("file : " + approvalFile);
@@ -92,7 +123,7 @@ public class ApprovalController {
 
     //퇴직 신청 상신
     @PostMapping("/retired")
-    public ResponseEntity<ResponseDTO> submitRetired(@ModelAttribute ApprovalRetiredDTO retired, MultipartFile approvalFile){
+    public ResponseEntity<ResponseDTO> submitRetired(@ModelAttribute ApprovalRetired2DTO retired, MultipartFile approvalFile){
 
         log.info("retired : " + retired);
         log.info("file : " + approvalFile);

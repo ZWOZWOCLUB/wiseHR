@@ -10,6 +10,11 @@ Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3MjkyNTgyMDI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTY1ODJ9.THONy4fN2UfnWeD0JABauO9dXJDJmftYH44am3xl81I
 
+###결재 확인
+GET http://localhost:8001/approval/approvalattachment/pay5
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3ODA2ODE3NTc2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImxlZUBnLmNvbSIsIm1lbUNvZGUiOjMsIm1lbU5hbWUiOiLsnbTtmITqsJUiLCJtZW1Sb2xlIjoi7J2867CY7IKs7JuQIiwiZXhwIjoxNzA4NjcwODE3fQ.MdbkEuGdLlSkkRY7mqiXBv_WJ1TozlgAyjaYWDxxs9M
 
 ### insert Test
 POST http://localhost:8001/approval/submit
