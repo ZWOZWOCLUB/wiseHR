@@ -8,4 +8,6 @@ public interface MPMyPageAnnualRepository extends JpaRepository<MPAnnual, String
 
 
     MPAnnual findByPayCode(String exam);
+
+    MPAnnual findByPayCodeAndVacStartDateLike(String exam, String s);
 }

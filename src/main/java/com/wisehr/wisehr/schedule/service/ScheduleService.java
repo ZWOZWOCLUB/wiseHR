@@ -30,7 +30,8 @@ public class ScheduleService {
 
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository ) {
+
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -42,6 +43,7 @@ public class ScheduleService {
         this.insertPatternDayRepository = insertPatternDayRepository;
         this.insertAllowanceRepository = insertAllowanceRepository;
         this.countDepCodeRepository = countDepCodeRepository;
+
     }
 
 
