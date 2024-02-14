@@ -1,19 +1,17 @@
 package com.wisehr.wisehr.setting.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.mypage.dto.HoldVacationDTO;
+import com.wisehr.wisehr.mypage.dto.MPHoldVacationDTO;
 import com.wisehr.wisehr.setting.dto.*;
-import com.wisehr.wisehr.setting.entity.SettingResources;
 import com.wisehr.wisehr.setting.service.SettingMemberService;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,9 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("member")
+@RequestMapping("setting")
+@PreAuthorize("hasRole('ADMIN') OR hasRole('SUPER')") //권한 부여
+
 public class SettingMemberController {
 
     private final SettingMemberService settingMemberService;
@@ -250,9 +250,52 @@ public class SettingMemberController {
      * 연차 수정
      */
     @PutMapping("/updateVacation")
-    public ResponseEntity<ResponseDTO> updateVacation(@RequestBody HoldVacationDTO holdVacationDTO){
+    public ResponseEntity<ResponseDTO> updateVacation(@RequestBody MPHoldVacationDTO holdVacationDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "연차 수정 성공", settingMemberService.updateVacation(holdVacationDTO)));
     }
+
+    /**
+     * 통장 파일 수정
+     */
+    @PutMapping(value = "/salaryFile")
+    public ResponseEntity<ResponseDTO> updateSalaryFile(@ModelAttribute SettingSalaryFileDTO salaryFileDTO, MultipartFile salaryFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 수정 성공", settingMemberService.updateSalaryFile(salaryFileDTO, salaryFile)));
+    }
+
+
+
+    /**
+     * 자격 파일 수정
+     */
+    @PutMapping(value = "/certificateFile")
+    public ResponseEntity<ResponseDTO> updateCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 수정 성공", settingMemberService.updateCertificateFile(certificateFileDTO, certificateFile)));
+    }
+
+    /**
+     * 학위 파일 수정
+     */
+    @PutMapping(value = "/degreeFile")
+    public ResponseEntity<ResponseDTO> updateDegreeFile(@ModelAttribute SettingDegreeFileDTO degreeFileDTO, MultipartFile degreeFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 파일 수정 성공", settingMemberService.updateDegreeFile(degreeFileDTO, degreeFile)));
+    }
+
+    /**
+     * 경력 파일 수정
+     */
+    @PutMapping(value = "/careerFile")
+    public ResponseEntity<ResponseDTO> updateCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO, MultipartFile careerFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 수정 성공", settingMemberService.updateCareerFile(careerFileDTO, careerFile)));
+    }
+
+    /**
+     * 전직원 근태 조회
+     */
+    @PostMapping("/attendance")
+    public ResponseEntity<ResponseDTO> AllMemberAttendance(@RequestBody SettingSearchValueDTO valueDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.AllMemberAttendance(valueDTO)));
+    }
+
 
 
 }

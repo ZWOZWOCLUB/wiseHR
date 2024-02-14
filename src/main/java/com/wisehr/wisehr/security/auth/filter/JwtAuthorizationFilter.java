@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.security.auth.filter;
 
 import com.wisehr.wisehr.security.auth.model.DetailsUser;
+import com.wisehr.wisehr.security.auth.model.dto.MemberRoleDTO;
 import com.wisehr.wisehr.security.common.AuthConstants;
 import com.wisehr.wisehr.security.common.ZzclubRole;
 import com.wisehr.wisehr.security.common.utils.TokenUtils;
@@ -20,12 +21,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import com.wisehr.wisehr.security.auth.model.dto.AuthorityDTO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -41,7 +41,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         * 권한이 필요없는 리소스
         * */
         List<String> roleLessList = Arrays.asList(  // 권한없이 누구나 접근 가능한 경로
-                "/signup", "/member/member", "approval/annual"
+                "/signup", "/member/member", "approval/annual", "/login"
         );
 
         // 현재 요청의 URI가 권한이 필요 없는 리소스에 해당하는 경우, 요청을 다음 필터로 넘기고 메서드를 종료합니다.
@@ -67,6 +67,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     user.setMemName(claims.get("memName").toString());
                     user.setMemEmail(claims.get("memEmail").toString());
                     user.setMemRole(ZzclubRole.valueOf(claims.get("memRole").toString()));
+//                    System.out.println("user =========== " + user);  // 여기까지 잘옴
 //                    user.setMemAddress(claims.get("memAddress").toString());  // 필요시 주석 해제
 //                    user.setMemPhone(claims.get("memPhone").toString());
 //                    user.setMemBirth(claims.get("memBirth").toString());
@@ -74,8 +75,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 //                    user.setMemBirth(claims.get("memBirth").toString());
 //                    user.setMemStatus(claims.get("memStatus").toString());
                     authentication.setUser(user);
+
                     // 토큰에서 클레임을 추출하고, 이를 바탕으로 사용자의 상세 정보를 설정합니다.
                     // 여기서는 사용자 이름, 이메일, 역할 등의 정보를 설정합니다.
+                    List<MemberRoleDTO> memRoles = mapToMemRoleList(claims.get("memRole"));
+                    authentication.setRoles(memRoles);
+
+                    System.out.println("memRole ============== " + memRoles);
+
 
                     AbstractAuthenticationToken authenticationToken
                             = UsernamePasswordAuthenticationToken.authenticated(authentication, token, authentication.getAuthorities());
@@ -93,12 +100,33 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
             PrintWriter printWriter = response.getWriter();
-            JSONObject jsonObect = jsonresponseWrapper(e);
+            JSONObject jsonObject = jsonresponseWrapper(e);
 
-            printWriter.println(jsonObect);
+            printWriter.println(jsonObject);
             printWriter.flush();
             printWriter.close();
         }
+    }
+
+    private List<MemberRoleDTO> mapToMemRoleList(Object memRoleObject) {
+        List<MemberRoleDTO> memRoles = new ArrayList<>();
+        if(memRoleObject instanceof List<?>){
+            for(Map<String, Object> roleMap : (List<Map<String, Object>>) memRoleObject){
+                MemberRoleDTO memRole = new MemberRoleDTO();
+                memRole.setMemCode((Integer) roleMap.get("memCode"));
+                memRole.setAuthorityCode((Integer) roleMap.get("authCode"));
+                System.out.println("roleMap ======= " + roleMap);
+                System.out.println("memRoleObject ======= " + memRoleObject);
+
+                Object authorityObject = roleMap.get("authority");
+                memRole.setAuthority(AuthorityDTO.fromLinkedHashMap((LinkedHashMap<String, Object>) authorityObject));
+
+                memRoles.add(memRole);
+            }
+            System.out.println("memRoles = " + memRoles);
+
+        }
+        return memRoles;
     }
 
     /***

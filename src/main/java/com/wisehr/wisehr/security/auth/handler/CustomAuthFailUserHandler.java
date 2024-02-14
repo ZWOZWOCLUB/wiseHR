@@ -49,7 +49,7 @@ public class CustomAuthFailUserHandler implements AuthenticationFailureHandler {
             failMsg = "인증 요청이 거부되었습니다.";
         }else if (exception instanceof UsernameNotFoundException) {
             // db에 사용자의 정보가 없는 경우 발생하는 오류이다
-            failMsg = "존재하지 않는 이메일 입니다.";
+            failMsg = "존재하지 않는 사용자 입니다.";
         }else{
             failMsg = "정의되있는 케이스의 오류가 아닙니다.";
         }

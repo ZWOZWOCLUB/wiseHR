@@ -3,14 +3,24 @@ package com.wisehr.wisehr.security.auth.model;
 import com.wisehr.wisehr.security.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.wisehr.wisehr.security.auth.model.dto.MemberRoleDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class DetailsUser implements UserDetails {
 
     private User user;
+    private List<MemberRoleDTO> roles;
+
+    public void setRoles(List<MemberRoleDTO> roles) {
+        this.roles = roles;
+    }
+    public List<MemberRoleDTO> getRoles() {
+        return roles;
+    }
 
     public DetailsUser() {
     }

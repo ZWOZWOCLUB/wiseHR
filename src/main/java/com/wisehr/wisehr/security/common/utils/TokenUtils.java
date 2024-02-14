@@ -93,7 +93,7 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())
                 .setClaims(createClaims(user))
-                .setSubject("ohgiraffers token : " + user.getMemCode())
+                .setSubject("zzclub token : " + user.getMemCode())
                 .signWith(SignatureAlgorithm.HS256, createSignature())
                 .setExpiration(expireTime);
         return builder.compact();
