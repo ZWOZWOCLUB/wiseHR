@@ -28,10 +28,13 @@ public class ScheduleService {
 
     private final ScheduleCountDepCodeRepository countDepCodeRepository;
 
-    private final ScheduleSearchWorkPatternRepository searchWorkPatternRepository;
+//    private final ScheduleSearchWorkPatternRepository searchWorkPatternRepository;
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository, ScheduleSearchWorkPatternRepository searchWorkPatternRepository) {
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository,
+                           ScheduleCountDepCodeRepository countDepCodeRepository
+//                           ScheduleSearchWorkPatternRepository searchWorkPatternRepository
+    ) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -43,7 +46,7 @@ public class ScheduleService {
         this.insertPatternDayRepository = insertPatternDayRepository;
         this.insertAllowanceRepository = insertAllowanceRepository;
         this.countDepCodeRepository = countDepCodeRepository;
-        this.searchWorkPatternRepository = searchWorkPatternRepository;
+//        this.searchWorkPatternRepository = searchWorkPatternRepository;
     }
 
 
