@@ -13,10 +13,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("classpath:/static/memberFiles/")
+    @Value("${image.add-resource-locations}")
     private String ADD_RESOURCE_LOCATION;
 
-    @Value("/memberFiles/**")
+    @Value("${image.add-resource-handler}")
     private String ADD_RESOURCE_HANDLER;
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/static/", "classpath:/public/", "classpath:/",

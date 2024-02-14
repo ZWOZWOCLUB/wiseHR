@@ -50,7 +50,7 @@ public class SettingMemberService {
 
     private final ModelMapper modelMapper;
 
-    @Value("src/main/resources/static/")
+    @Value("${image.image-dir}")
     private String IMAGE_DIR;
 
     @Value("http://localhost:8001/")
