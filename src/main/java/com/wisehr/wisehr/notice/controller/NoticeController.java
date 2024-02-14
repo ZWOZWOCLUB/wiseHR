@@ -5,6 +5,7 @@ import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
+import com.wisehr.wisehr.notice.dto.NoticeResponseDTO;
 import com.wisehr.wisehr.notice.service.NoticeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.print.attribute.standard.Media;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,13 +35,26 @@ public class NoticeController {
     * */
     @PostMapping("/notice")
     public ResponseEntity<ResponseDTO> insertNotice(
-            @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
+            @ModelAttribute NoticeDTO noticeDTO,
+//            List<MultipartFile> noticeFiles
+            @RequestParam("noticeFiles") List<MultipartFile> noticeFiles
+    ){
 
-        System.out.println("noticeDTO = " + noticeDTO);
-        log.info("noticeDTO============"+noticeDTO);
-        System.out.println("noticeFile = " + noticeFile);
-        log.info("noticeFile ==========" + noticeFile);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFile)));
+//        System.out.println("noticeDTO = " + noticeDTO);
+//        log.info("noticeDTO============"+noticeDTO);
+//        System.out.println("noticeFile = " + noticeFiles);
+//        log.info("noticeFile ==========" + noticeFiles);
+
+        System.out.println("noticeFile = " + noticeFiles);
+        if (noticeFiles != null) {
+            noticeFiles.forEach(file -> {
+                System.out.println("Received file: " + file.getOriginalFilename() + " with size " + file.getSize());
+            });
+        } else {
+            System.out.println("No files received.");
+        }
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFiles)));
     }
 
 /*
@@ -70,7 +85,7 @@ public class NoticeController {
         PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
 
         //offset의 번호에 맞는 페이지에 뿌려줄 공지사항정보
-        Page<NoticeDTO> noticeList = noticeService.allNoticeSearchWithPaging(criteria);
+        Page<NoticeResponseDTO> noticeList = noticeService.allNoticeSearchWithPaging(criteria);
         pagingResponseDTO.setData(noticeList);
         pagingResponseDTO.setPageInfo(new PageDTO(criteria, (int) noticeList.getTotalElements()));
 
