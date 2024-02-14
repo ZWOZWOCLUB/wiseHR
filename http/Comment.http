@@ -4,22 +4,25 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "comContents": "감사합니다.",
-  "comDate": "2024-01-29",
+  "comContents": "병원에 조만간 불나면 그냥 그런갑다 하십쇼.",
+  "comDate": "2024-04-01",
   "comMember": {
-    "memCode": 2
+    "memCode": 3
   },
   "comDeleteState": "N",
-  "notCode": "not5"
+  "notCode": {
+    "notCode": "not8"
+  }
 }
 
 
-###공지댓글전체조회
+###공지댓글전체조회 필요없는기능
 GET http://localhost:8001/comment/allComment
 Content-Type: application/json
 Accept: */*
 
 ###글코드로 댓글 조회
-GET http://localhost:8001/comment/notCodeSearch?nc=not4
+GET http://localhost:8001/comment/notCodeSearch?nc=not8
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzczNDQ1OTAzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNzQ0NX0.r2LsASVeUuhkIWKlG1PB05F_shrgqWSatBiKVSXhw4U

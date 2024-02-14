@@ -66,6 +66,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     User user = new User();
                     user.setMemName(claims.get("memName").toString());
                     user.setMemEmail(claims.get("memEmail").toString());
+                    user.setMemCode(Integer.parseInt(claims.get("memCode").toString()));
                     user.setMemRole(ZzclubRole.valueOf(claims.get("memRole").toString()));
 //                    System.out.println("user =========== " + user);  // 여기까지 잘옴
 //                    user.setMemAddress(claims.get("memAddress").toString());  // 필요시 주석 해제
@@ -100,9 +101,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
             PrintWriter printWriter = response.getWriter();
-            JSONObject jsonObject = jsonresponseWrapper(e);
+            JSONObject jsonObect = jsonresponseWrapper(e);
 
-            printWriter.println(jsonObject);
+            printWriter.println(jsonObect);
             printWriter.flush();
             printWriter.close();
         }

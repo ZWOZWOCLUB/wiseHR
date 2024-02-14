@@ -21,4 +21,5 @@ public class SettingMemberDTO {
     private String memRole;
     private int posCode;
     private int depCode;
+    private String profileURL;
 }

@@ -59,7 +59,7 @@ public class CommentService {
         log.info("searchNotCodeComment 시작");
         log.info("searchNotCodeComment : {}", search);
 
-        List<Comment> notCodeSearchCommentValue = commentRepository.findByNotCodeContaining(search);
+        List<Comment> notCodeSearchCommentValue = commentRepository.findByNotCodeNotCode(search);
         List<CommentDTO> commentDTOList = notCodeSearchCommentValue.stream()
                 .map(comment -> modelMapper.map(comment, CommentDTO.class))
                 .collect(Collectors.toList());

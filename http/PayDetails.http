@@ -3,9 +3,15 @@
 GET http://localhost:8001/pay/payList/2/2023
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzkyOTcwMDA5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODI1Njk3MH0.BZP1O_VAuc1bsgq5x3K9N2MEbI7wmLXIy_HehgvlA-c
 
 ### 연도 select태그 입력값 가져오기(입사년도부터 올해까지)
 GET http://localhost:8001/pay/pay-List2/2
+Content-Type: application/json
+Accept: */*
+
+### 연차 구하기
+GET http://localhost:8001/pay/hireYearList/2
 Content-Type: application/json
 Accept: */*
 

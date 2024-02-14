@@ -1,7 +1,7 @@
 package com.wisehr.wisehr.alarmAndMessage.controller;
 
 
-import com.wisehr.wisehr.alarmAndMessage.dto.SendMessengerDTO;
+import com.wisehr.wisehr.alarmAndMessage.dto.AAMSendMessengerDTO;
 import com.wisehr.wisehr.alarmAndMessage.service.AlarmAndMessageService;
 import com.wisehr.wisehr.common.ResponseDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ public class AlarmAndMessageController {
 //    개인 알람 조회
     @GetMapping("/perAlarm/{memCode}")
     public ResponseEntity<ResponseDTO> selectPerAlarm(@PathVariable int memCode){
+        System.out.println("memCode ===================== " + memCode);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 알람 조회 성공" , alarmService.selectPerAlarm(memCode)));
     }
 
@@ -44,7 +45,7 @@ public class AlarmAndMessageController {
 
 //    메신저 등록
     @PostMapping("/messenger")
-    public ResponseEntity<ResponseDTO> insertMessenger(@ModelAttribute SendMessengerDTO sendMessengerDTO){
+    public ResponseEntity<ResponseDTO> insertMessenger(@ModelAttribute AAMSendMessengerDTO sendMessengerDTO){
         System.out.println("sendMessengerDTO controller= " + sendMessengerDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "메신저 등록 성공" , alarmService.insertMessenger(sendMessengerDTO)));
     }

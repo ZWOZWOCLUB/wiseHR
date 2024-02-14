@@ -1,0 +1,13 @@
+### 서식자료실 조회
+GET http://localhost:8001/dataFormat/allData
+
+
+### 서식자료실 자료 등록
+POST http://localhost:8001/dataFormat/data
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="dataFormatFile"; filename="pikachu.png"
+
+< pikachu.png
+--WebAppBoundary

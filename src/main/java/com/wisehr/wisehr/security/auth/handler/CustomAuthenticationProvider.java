@@ -24,11 +24,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken loginToken = (UsernamePasswordAuthenticationToken) authentication;
 
         String id = loginToken.getName();
-        String pass = (String) loginToken.getCredentials();
+        String pass = (String) loginToken.getCredentials(); // 사용자가 입력한 값
 
-        DetailsUser detailsUser = (DetailsUser) detailsService.loadUserByUsername(id);
+        DetailsUser detailsUser = (DetailsUser) detailsService.loadUserByUsername(id); // DB에서 꺼내온 값
 
-        if(!passwordEncoder.matches(pass, detailsUser.getPassword())){
+        if(!passwordEncoder.matches(pass, detailsUser.getUser().getMemPassword())){ // 둘이 비교
             throw new BadCredentialsException(pass + "는 비밀번호가 아닙니다.");
         }
         return new UsernamePasswordAuthenticationToken(detailsUser, pass, detailsUser.getAuthorities());

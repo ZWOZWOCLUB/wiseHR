@@ -1,12 +1,15 @@
 ###받은 결재 (mem_code) 완료
-GET http://localhost:8001/approval/receivedpayment/240130003
+GET http://localhost:8001/approval/receivedapproval/240130003
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzQ3Njc3MTQ5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgyMTE2Nzd9.TSiOTnxPLdnW1WMz2Cvx807shWOQQMgMNdmlCKoL4YY
 
 ###보낸 결재 (mem_code) 완료
 GET http://localhost:8001/approval/sendpayment/240130003
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MjkyNTgyMDI5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJvaGdpcmFmZmVycyB0b2tlbiA6IDI0MDEzMDAwMyIsIm1lbUVtYWlsIjoiZ29kZ29kZ29kMjNAZ21haWwuY29tIiwibWVtTmFtZSI6IuyLoOyKueykgCIsIm1lbVJvbGUiOiLspJHqsITqtIDrpqzsnpAiLCJleHAiOjE3MDgxNTY1ODJ9.THONy4fN2UfnWeD0JABauO9dXJDJmftYH44am3xl81I
+
 
 ### insert Test
 POST http://localhost:8001/approval/submit
@@ -76,7 +79,6 @@ Content-Disposition: form-data; name="tirContents"
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
 3
-
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
 
@@ -93,35 +95,50 @@ POST http://localhost:8001/approval/schedule
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 
---WebAppBoundary
-Content-Disposition: form-data; name="eshName"
 
-쉴래용
+--WebAppBoundary
+Content-Disposition: form-data; name="approval.payName"
+
+테스트
 
 --WebAppBoundary
 Content-Disposition: form-data; name="eshStartDate"
 
-2024-03-21
+2024-04-01
 
 --WebAppBoundary
 Content-Disposition: form-data; name="eshEndDate"
 
-2024-03-21
+2024-04-03
 
+--WebAppBoundary
+Content-Disposition: form-data; name="eshOffEndDate"
+
+2024-04-21
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshOffStartDate"
+
+2024-04-23
 --WebAppBoundary
 Content-Disposition: form-data; name="eshContents"
 
-쉴거라구요!!!!
+이때는 못해요..
+
+--WebAppBoundary
+Content-Disposition: form-data; name="eshDateType"
+
+Day
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-1
+3
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
 
-2024-02-29
+2024-02-01
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payKind"
@@ -137,7 +154,7 @@ Accept: */*
 --WebAppBoundary
 Content-Disposition: form-data; name="ediKind"
 
-결근
+출근시간
 
 --WebAppBoundary
 Content-Disposition: form-data; name="ediName"
@@ -157,7 +174,7 @@ Content-Disposition: form-data; name="ediDate"
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.approvalMember.memCode"
 
-240130003
+3
 
 --WebAppBoundary
 Content-Disposition: form-data; name="approval.payDate"
@@ -225,8 +242,33 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "appCode": "app15",
-  "appDate": "2024-01-31",
-  "appState": "반려",
-  "appComment": "놉"
+  "appCode": "app26",
+  "appDate": "2024-04-01",
+  "appState": "승인",
+  "appComment": "굿 "
+}
+
+### 전결자 지정 로직
+PUT http://localhost:8001/approval/roleupdate
+Content-Type: application/json
+Accept: */*
+
+{
+  "roleMember": {
+    "memCode":240130003
+  },
+  "proMember": {
+    "memCode": 3
+  },
+  "proStartDate": "2024-02-02",
+  "proEndDate": "2024-02-12"
+}
+
+### 전결자 복구 로직
+PUT http://localhost:8001/approval/rolerecovery
+Content-Type: application/json
+Accept: */*
+
+{
+  "memCode": 240130003
 }

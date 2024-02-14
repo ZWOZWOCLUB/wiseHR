@@ -1,9 +1,9 @@
 package com.wisehr.wisehr.mypage.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
-import com.wisehr.wisehr.mypage.dto.DocumentDTO;
-import com.wisehr.wisehr.mypage.dto.DocumentFileDTO;
-import com.wisehr.wisehr.mypage.dto.MyPageDTO;
+import com.wisehr.wisehr.mypage.dto.MPDocumentFileDTO;
+import com.wisehr.wisehr.mypage.dto.MPMyPageDTO;
+import com.wisehr.wisehr.mypage.dto.MPPassDTO;
 import com.wisehr.wisehr.mypage.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -59,7 +59,7 @@ public class MyPageController {
 //    서류함 조회
     @GetMapping("/document/{memCode}")
     public ResponseEntity<ResponseDTO> selectDocumentDetail(@PathVariable int memCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출퇴근 상세조회 성공" , myPageService.selectDocument(memCode)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서류함 상세조회 성공" , myPageService.selectDocument(memCode)));
     }
 
 //    소유/ 소멸 예정 연차 조회
@@ -76,14 +76,19 @@ public class MyPageController {
 
 //    개인 정보 수정
     @PutMapping(value = "/updateMem")
-    public ResponseEntity<ResponseDTO> updateProduct(@ModelAttribute MyPageDTO productDTO) {
+    public ResponseEntity<ResponseDTO> updateProduct(@ModelAttribute MPMyPageDTO productDTO) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공",  myPageService.updateMem(productDTO)));
     }
 
+//    이미 입력한 서명이 있는지 조회
+    @GetMapping("/selectSign/{memCode}")
+    public ResponseEntity<ResponseDTO> selectSign(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서명 조회 성공" , myPageService.selectSign(memCode)));
+    }
 
     @PostMapping("/insertSign")
-    public ResponseEntity<ResponseDTO> insertSign(@ModelAttribute DocumentFileDTO myPageDTO, MultipartFile productImage){
+    public ResponseEntity<ResponseDTO> insertSign(@ModelAttribute MPDocumentFileDTO myPageDTO, MultipartFile productImage){
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "서명 입력 성공"
@@ -91,11 +96,17 @@ public class MyPageController {
     }
 
     @PutMapping("/updateSign")
-    public ResponseEntity<ResponseDTO> updateSign(@ModelAttribute DocumentFileDTO myPageDTO, MultipartFile productImage){
+    public ResponseEntity<ResponseDTO> updateSign(@ModelAttribute MPDocumentFileDTO myPageDTO, MultipartFile productImage){
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "서명 수정 성공"
                         , myPageService.updateSign(myPageDTO, productImage)));
+    }
+
+    @PutMapping("/updatePass")
+    public ResponseEntity<ResponseDTO> updatePass(@ModelAttribute MPPassDTO productDTO) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "비밀번호 수정 성공",  myPageService.updatePass(productDTO)));
     }
 
 

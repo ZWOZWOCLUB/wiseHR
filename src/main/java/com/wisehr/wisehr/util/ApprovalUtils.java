@@ -1,11 +1,11 @@
 package com.wisehr.wisehr.util;
 
-import com.wisehr.wisehr.payment.dto.ApprovalAttachmentDTO;
-import com.wisehr.wisehr.payment.dto.ApprovalDTO;
-import com.wisehr.wisehr.payment.entity.ApprovalAttachment;
-import com.wisehr.wisehr.payment.entity.ApprovalMember;
-import com.wisehr.wisehr.payment.repository.ApprovalAttachmentRepository;
-import com.wisehr.wisehr.payment.repository.ApprovalMemberRepository;
+import com.wisehr.wisehr.approval.dto.ApprovalAttachmentDTO;
+import com.wisehr.wisehr.approval.dto.ApprovalDTO;
+import com.wisehr.wisehr.approval.entity.ApprovalAttachment;
+import com.wisehr.wisehr.approval.entity.ApprovalMember;
+import com.wisehr.wisehr.approval.repository.ApprovalAttachmentRepository;
+import com.wisehr.wisehr.approval.repository.ApprovalMemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.modelmapper.ModelMapper;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -46,21 +50,19 @@ public class ApprovalUtils {
 
             String story = null;
 
+            String fileName = UUID.randomUUID().toString().replace("-", "");
+
             ApprovalAttachmentDTO att = new ApprovalAttachmentDTO();
             // 엔티티로 바꿔서 DB에 넣어주기 위해 DTO에 값을 설정하는 과정
 
-            att.setPayAtcPath(path);
-            att.setPayAtcName(approvalFile.getName());
-            att.setApproval(approval);
-            att.setPayAtcDeleteStatus("N");
-
             log.info("att : " + att);
 
+            story = FileUploadUtils.saveFile(path, fileName, approvalFile);
 
-            story = FileUploadUtils.saveFile(path, approvalFile.getName(), approvalFile);
-
-            log.info("파일 이름 : " + approvalFile.getName());
-
+            att.setPayAtcPath(path);
+            att.setPayAtcName(fileName);
+            att.setApproval(approval);
+            att.setPayAtcDeleteStatus("N");
 
             log.info("storyClass : " + story.getClass());
 
@@ -87,6 +89,7 @@ public class ApprovalUtils {
     public ApprovalMember roleMember(Long memberCode){
         //결재자를 찾기 위해서 결재 기안자와 같은 부서의 관리자급을 찾기.
 
+
         ApprovalMember memDep = approvalMemberRepository.findByMemCode(memberCode);
 
         log.info("memDep : " + memDep);
@@ -108,11 +111,52 @@ public class ApprovalUtils {
                     depRole = roleMem.get(i);
                     log.info("중간관리자의 결재 상신");
                 }
+            } else {
+                depRole = memDep;
             }
         }
 
         log.info("depRole : " + depRole);
 
         return depRole;
+    }
+
+
+    // 날짜 구하는 메서드
+    public List<LocalDate> findDays(LocalDate startDate, LocalDate endDate, int[] needDays){
+
+        List<LocalDate> days = new ArrayList<>();
+
+        LocalDate date = startDate;
+
+        log.info("date : " + date);
+        log.info("needDays : " + Arrays.toString(needDays));
+
+        while (!date.isAfter(endDate)){
+
+            int week = date.getDayOfWeek().getValue();
+
+            if (bools(needDays, week)){
+
+                days.add(date);
+
+                log.info("days : " + days );
+            }
+            date = date.plusDays(1);
+        }
+
+        log.info("days : " + days);
+
+        return days;
+    }
+
+    private boolean bools(int[] need, int day){
+
+        for (int date : need){
+            if (date == day){
+                return true;
+            }
+        }
+        return false;
     }
 }

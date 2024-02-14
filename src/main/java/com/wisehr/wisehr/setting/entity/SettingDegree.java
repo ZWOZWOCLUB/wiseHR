@@ -30,8 +30,14 @@ public class SettingDegree {
     private String degAdmissions;
     @Column(name = "mem_code")
     private int memCode;
+    @OneToOne(mappedBy = "degree", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "deg_code", insertable = false, updatable = false)
+    private SettingDegreeFile degreeFile;
 
     public SettingDegree() {
+    }
+
+    public SettingDegree(String degCode, String degKind, String degMajor, String degName, String degGraduation, String degState, String degAdmissions, int memCode) {
     }
 
     @Override

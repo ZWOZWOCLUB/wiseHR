@@ -2,21 +2,26 @@
 GET http://localhost:8001/alarm/perAlarm/1
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
 
 ### 전체 알람 조회
 GET http://localhost:8001/alarm/allAlarm/1
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
 
 ### 보낸 메신저 조회
 GET http://localhost:8001/alarm/sendMessenger/1
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
 
 ### 받은 메신저 조회
 GET http://localhost:8001/alarm/recMessenger/1
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
 
 ### 메신저 등록
 POST http://localhost:8001/alarm/messenger

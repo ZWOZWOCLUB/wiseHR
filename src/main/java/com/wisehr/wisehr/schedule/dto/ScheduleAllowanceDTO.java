@@ -10,4 +10,5 @@ import lombok.*;
 public class ScheduleAllowanceDTO {
     private int memCode;
     private String schCode;
+    private String changeSchCode;
 }

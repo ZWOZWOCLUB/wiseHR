@@ -2,10 +2,7 @@ package com.wisehr.wisehr.security.auth.config;
 
 import com.wisehr.wisehr.security.auth.filter.CustomAuthenticationFilter;
 import com.wisehr.wisehr.security.auth.filter.JwtAuthorizationFilter;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthFailUserHandler;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthSuccessHandler;
-import com.wisehr.wisehr.security.auth.handler.CustomAuthenticationProvider;
-import com.wisehr.wisehr.security.auth.handler.CustomLogoutSuccessHandler;
+import com.wisehr.wisehr.security.auth.handler.*;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,24 +39,35 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // CSRF 보호 비활성화
                 .csrf(csrf -> csrf.disable())
+                // JWT 인증 필터 추가
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 세션 관리 정책 설정: STATELESS로 설정하여 세션을 사용하지 않음
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 폼 로그인 및 HTTP 기본 인증 비활성화
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests(authorizeRequests ->
-                authorizeRequests.anyRequest().authenticated()
-                )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login?logout")
-                                .invalidateHttpSession(true)
-                                .deleteCookies("JSESSIONID") // 필요한 경우 쿠키 삭제
-                                .logoutSuccessHandler(logoutSuccessHandler()) // 선택적
+                // 사용자 정의 인증 필터 추가
+                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http
+//                // URL 별 접근 권한 설정
+//                .authorizeRequests()
+//                .requestMatchers("/approval/**").hasRole("ADMIN")
+//                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+//                .requestMatchers("/public/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and();
+        http
+                // 로그아웃 설정
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler(logoutSuccessHandler())
                 );
+
         return http.build();
     }
 
@@ -68,6 +76,8 @@ public class WebSecurityConfig {
         return (request, response, authentication) -> {
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write("{\"message\":\"로그아웃 성공\"}");
+
+            System.out.println("authentication = " + authentication);
         };
     }
 
@@ -143,7 +153,6 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
 }

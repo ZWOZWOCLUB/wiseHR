@@ -242,7 +242,7 @@ public class SettingMemberController {
      */
     @PutMapping(value = "/documentFile")
     public ResponseEntity<ResponseDTO> updateDocumentFile(@ModelAttribute SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 등록 성공", settingMemberService.updateDocumentFile(etcfileDTO, etcFile)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 인사 파일 수정 성공", settingMemberService.updateDocumentFile(etcfileDTO, etcFile)));
     }
 
 
@@ -297,5 +297,119 @@ public class SettingMemberController {
     }
 
 
+    /**
+     * 통장 파일 수정
+     */
+    @PutMapping(value = "/salaryFile")
+    public ResponseEntity<ResponseDTO> updateSalaryFile(@ModelAttribute SettingSalaryFileDTO salaryFileDTO, MultipartFile salaryFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 수정 성공", settingMemberService.updateSalaryFile(salaryFileDTO, salaryFile)));
+    }
+
+    /**
+     * 자격 파일 수정
+     */
+    @PutMapping(value = "/certificateFile")
+    public ResponseEntity<ResponseDTO> updateCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile){
+        System.out.println("certificateFileDTO = " + certificateFileDTO);
+        System.out.println("certificateFile = " + certificateFile);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 수정 성공", settingMemberService.updateCertificateFile(certificateFileDTO, certificateFile)));
+    }
+
+    /**
+     * 학위 파일 수정
+     */
+    @PutMapping(value = "/degreeFile")
+    public ResponseEntity<ResponseDTO> updateDegreeFile(@ModelAttribute SettingDegreeFileDTO degreeFileDTO, MultipartFile degreeFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 파일 수정 성공", settingMemberService.updateDegreeFile(degreeFileDTO, degreeFile)));
+    }
+
+    /**
+     * 경력 파일 수정
+     */
+    @PutMapping(value = "/careerFile")
+    public ResponseEntity<ResponseDTO> updateCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO, MultipartFile careerFile){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 수정 성공", settingMemberService.updateCareerFile(careerFileDTO, careerFile)));
+    }
+
+    /**
+     * 전직원 근태 조회
+     */
+    @PostMapping("/attendance")
+    public ResponseEntity<ResponseDTO> AllMemberAttendance(@RequestBody SettingSearchValueDTO valueDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "전직원 근태 조회 성공", settingMemberService.AllMemberAttendance(valueDTO)));
+    }
+
+    /**
+     * 통장 파일 삭제
+     */
+    @DeleteMapping("/salaryFile")
+    public ResponseEntity<ResponseDTO> deleteSalaryFile(@ModelAttribute SettingSalaryFileDTO salaryFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 파일 삭제 성공", settingMemberService.deleteSalaryFile(salaryFileDTO)));
+    }
+    /**
+     * 그외 파일 삭제
+     */
+    @DeleteMapping("/documentFile")
+    public ResponseEntity<ResponseDTO> deleteDocumentFile(@ModelAttribute SettingDocumentFileDTO documentFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "그외 파일 삭제 성공", settingMemberService.deleteDocumentFile(documentFileDTO)));
+    }
+    /**
+     * 학위 파일 삭제
+     */
+    @DeleteMapping("/degreeFile")
+    public ResponseEntity<ResponseDTO> deleteDegreeFile(@ModelAttribute SettingDegreeFileDTO degreeFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 파일 삭제 성공", settingMemberService.deleteDegreeFile(degreeFileDTO)));
+    }
+
+    /**
+     * 자격 파일 삭제
+     */
+    @DeleteMapping("/certificateFile")
+    public ResponseEntity<ResponseDTO> deleteCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 파일 삭제 성공", settingMemberService.deleteCertificateFile(certificateFileDTO)));
+    }
+    /**
+     * 경력 파일 삭제
+     */
+    @DeleteMapping("/careerFile")
+    public ResponseEntity<ResponseDTO> deleteCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 파일 삭제 성공", settingMemberService.deleteCareerFile(careerFileDTO)));
+    }
+
+    /**
+     * 직원 자격 정보 삭제
+     */
+    @DeleteMapping(value = "/certificate")
+    public ResponseEntity<ResponseDTO> deleteCertificate(@RequestBody SettingCertificateDTO certificateDTO){
+        System.out.println("certificateDTO = " + certificateDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자격 정보 삭제 성공", settingMemberService.deleteCertificate(certificateDTO)));
+    }
+
+    /**
+     * 직원 경력 정보 삭제
+     */
+    @DeleteMapping(value = "/career")
+    public ResponseEntity<ResponseDTO> deleteCareer(@RequestBody SettingCareerDTO careerDTO){
+        System.out.println("careerDTO = " + careerDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "경력 정보 삭제 성공", settingMemberService.deleteCareer(careerDTO)));
+    }
+
+    /**
+     * 직원 학위 정보 삭제
+     */
+    @DeleteMapping(value = "/degree")
+    public ResponseEntity<ResponseDTO> deleteDegree(@RequestBody SettingDegreeDTO degreeDTO){
+        System.out.println("degreeDTO = " + degreeDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "학위 정보 삭제 성공", settingMemberService.deleteDegree(degreeDTO)));
+    }
+
+    /**
+     * 직원 통장 정보 삭제
+     */
+    @DeleteMapping(value = "/salary")
+    public ResponseEntity<ResponseDTO> deleteSalary(@RequestBody SettingSalaryDTO salaryDTO){
+        System.out.println("salaryDTO = " + salaryDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 정보 삭제 성공", settingMemberService.deleteSalary(salaryDTO)));
+    }
 
 }

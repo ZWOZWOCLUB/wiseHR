@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -31,4 +30,47 @@ public class Schedule {
     @Column(name = "wok_code")
     private int wokCode;
 
+    public Schedule() {
+    }
+
+
+    public Schedule schCode(String schCode) {
+        this.schCode = schCode;
+        return this;
+    }
+
+    public Schedule schType(String schType) {
+        this.schType = schType;
+        return this;
+    }
+
+    public Schedule schStartDate(String schStartDate) {
+        this.schStartDate = schStartDate;
+        return this;
+    }
+
+    public Schedule schEndDate(String schEndDate) {
+        this.schEndDate = schEndDate;
+        return this;
+    }
+
+    public Schedule schColor(String schColor) {
+        this.schColor = schColor;
+        return this;
+    }
+
+    public Schedule schDeleteStatus(String schDeleteStatus) {
+        this.schDeleteStatus = schDeleteStatus;
+        return this;
+    }
+
+    public Schedule wokCode(int wokCode) {
+        this.wokCode = wokCode;
+        return this;
+    }
+
+    public Schedule build() {
+        return new Schedule(schCode, schType, schStartDate, schEndDate, schColor, schDeleteStatus, wokCode);
+
+    }
 }

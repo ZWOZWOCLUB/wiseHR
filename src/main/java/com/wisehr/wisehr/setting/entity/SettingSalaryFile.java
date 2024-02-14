@@ -5,7 +5,6 @@ import lombok.*;
 
 @AllArgsConstructor
 @Getter
-@ToString
 @Entity
 @Table(name = "sal_attached_file")
 public class SettingSalaryFile {
@@ -25,13 +24,21 @@ public class SettingSalaryFile {
     private String salCode;
     @Column(name = "sal_atc_convert_name")
     private String salAtcConvertName;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sal_code", insertable = false, updatable = false)
+    private SettingSalary settingSalary;
 
-    public SettingSalaryFile() {
+
+
+
+    public SettingSalaryFile(int salAtcCode, String salAtcName, String salAtcDeleteStatus, String salAtcPath, String salAtcRegistDate, String salCode, String salAtcConvertName) {
     }
 
+    public SettingSalaryFile() {
 
+    }
 
-        public SettingSalaryFile salAtcCode(int salAtcCode) {
+    public SettingSalaryFile salAtcCode(int salAtcCode) {
             this.salAtcCode = salAtcCode;
             return this;
         }
@@ -69,7 +76,20 @@ public class SettingSalaryFile {
         public SettingSalaryFile build() {
             return new SettingSalaryFile(salAtcCode, salAtcName, salAtcDeleteStatus, salAtcPath, salAtcRegistDate, salCode, salAtcConvertName);
         }
+
+    @Override
+    public String toString() {
+        return "SettingSalaryFile{" +
+                "salAtcCode=" + salAtcCode +
+                ", salAtcName='" + salAtcName + '\'' +
+                ", salAtcDeleteStatus='" + salAtcDeleteStatus + '\'' +
+                ", salAtcPath='" + salAtcPath + '\'' +
+                ", salAtcRegistDate='" + salAtcRegistDate + '\'' +
+                ", salAtcConvertName='" + salAtcConvertName + '\'' +
+                ", salCode='" + salCode + '\'' +
+                '}';
     }
+}
 
 
 

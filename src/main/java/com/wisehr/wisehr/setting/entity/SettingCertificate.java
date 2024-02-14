@@ -30,7 +30,9 @@ public class SettingCertificate {
     private String cerInstitution;
     @Column(name = "mem_code")
     private int memCode;
-
+    @OneToOne(mappedBy = "certificate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cer_code", insertable = false, updatable = false)
+    private SettingCertificateFile certificateFile;
     @Override
     public String toString() {
         return "SettingCertificate{" +
@@ -45,6 +47,9 @@ public class SettingCertificate {
     }
 
     public SettingCertificate() {
+    }
+
+    public SettingCertificate(String cerCode, String cerName, String cerKind, String cerDay, String cerEndDate, String cerDescription, String cerInstitution, int memCode) {
     }
 
 

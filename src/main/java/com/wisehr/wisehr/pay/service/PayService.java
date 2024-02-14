@@ -1,12 +1,18 @@
 package com.wisehr.wisehr.pay.service;
 
 import com.wisehr.wisehr.pay.dto.PayDetailsDTO;
+import com.wisehr.wisehr.pay.dto.PayMemberDTO;
 import com.wisehr.wisehr.pay.entity.PayDetails;
+import com.wisehr.wisehr.pay.entity.PayMember;
 import com.wisehr.wisehr.pay.repository.PayDetailsRepository;
+import com.wisehr.wisehr.pay.repository.PayMemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Member;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,35 +20,41 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PayService {
     private final PayDetailsRepository payDetailsRepository;
+    private final PayMemberRepository memberRepository;
     private final ModelMapper modelMapper;
 
 
-    public PayService(PayDetailsRepository payDetailsRepository, ModelMapper modelMapper) {
+    public PayService(PayDetailsRepository payDetailsRepository, PayMemberRepository memberRepository, ModelMapper modelMapper) {
         this.payDetailsRepository = payDetailsRepository;
+        this.memberRepository = memberRepository;
         this.modelMapper = modelMapper;
     }
 
-    public List<PayDetailsDTO> selectPayList(String year, String memCode) {
+    public List<PayDetailsDTO> selectPayList(String yearMonth, String memCode) {
         log.info("selectPayList 서비스 시작~~~~~~~~~~~~");
-        List<PayDetails> payList = payDetailsRepository.findByMemCodeAndPdeYymm(year, memCode);
+        List<PayDetails> payList = payDetailsRepository.findByMemCodeAndPdeYymm(yearMonth, memCode);
 
         List<PayDetailsDTO> payDetailsDTOList = payList.stream()
                 .map(pay -> modelMapper.map(pay, PayDetailsDTO.class))
                 .collect(Collectors.toList());
 
+        int totalDdeSalary = 0;
+        int totalDeductedAmount = 0;
+        int totalDeductions = 0;
+
         for(int i = 0; i < payDetailsDTOList.size(); i++){
             int pdeSalary = payDetailsDTOList.get(i).getPdeSalary();
             int basicSalary = pdeSalary - 200000;
-            int nationalPension = 0;
+            int nationalPension = 0; //국민연금
             if (pdeSalary > 590000) {
                 nationalPension = 265500;
             } else {
                 nationalPension = (int) (pdeSalary * 0.045);
             }
-            int healthInsurance = (int) (pdeSalary * 0.03454);
+            int healthInsurance = (int) (pdeSalary * 0.03454); //건강보험
             payDetailsDTOList.get(0).setHealthInsurance(healthInsurance);
-            int employmentInsurance = (int) (pdeSalary * 0.09);
-            int incomeTax = 0;
+            int employmentInsurance = (int) (pdeSalary * 0.09); //고용보험
+            int incomeTax = 0; //소득세
             if (basicSalary >= 3000000 && basicSalary <3020000) {
                 incomeTax = 74350;
             } else if (basicSalary >= 3020000 && basicSalary <3040000) {incomeTax = 76060;
@@ -397,8 +409,14 @@ public class PayService {
             }else {incomeTax = 3822980;}
 
 
-            int localIncomeTax = (int) (incomeTax * 0.1);
-            int medicalInsurance = (int) (pdeSalary * 0.004591);
+            int localIncomeTax = (int) (incomeTax * 0.1); //지방소득세
+            int medicalInsurance = (int) (pdeSalary * 0.004591); //장기요양보험료
+            int deductedAmount = nationalPension + healthInsurance + employmentInsurance + incomeTax + localIncomeTax + medicalInsurance;
+            int totalDeduction = basicSalary - deductedAmount; //총 공제 금액
+            totalDdeSalary += pdeSalary; //1년 지급 총액
+            totalDeductedAmount += deductedAmount;  //1년 총 공제 총액
+            totalDeductions += totalDeduction; //1년 총 차감지급금액
+
 
             payDetailsDTOList.get(i).setBasicSalary(basicSalary);
             payDetailsDTOList.get(i).setFoodExpenses(200000);
@@ -408,6 +426,11 @@ public class PayService {
             payDetailsDTOList.get(i).setIncomeTax(incomeTax);
             payDetailsDTOList.get(i).setLocalIncomeTax(localIncomeTax);
             payDetailsDTOList.get(i).setMedicalInsurance(medicalInsurance);
+            payDetailsDTOList.get(i).setDeductedAmount(deductedAmount);
+            payDetailsDTOList.get(i).setTotalDeduction(totalDeduction);
+            payDetailsDTOList.get(i).setTotalDdeSalary(totalDdeSalary);
+            payDetailsDTOList.get(i).setTotalDeductedAmount(totalDeductedAmount);
+            payDetailsDTOList.get(i).setTotalDeductions(totalDeductions);
         }
         log.info("selectPayList 서비스 끗~~~~~~~~~~~~");
         System.out.println("payList = " + payList);
@@ -431,4 +454,30 @@ public class PayService {
     }
 
 
+    public List<Integer > hireYearList(int memCode) {
+        log.info("hireYearList 서비스 시작~~~~~~~~~~~~~~~~");
+        PayMember details = memberRepository.findAllByMemCode(memCode);
+        System.out.println("details = " + details);
+
+        PayMemberDTO memberDTO = modelMapper.map(details, PayMemberDTO.class);
+
+        String hireYear = memberDTO.getMemHireDate();
+        int startYear = Integer.parseInt(hireYear.substring(0, 4)); // 입사 연도 추출
+        int currentYear = LocalDate.now().getYear(); // 현재 연도 가져오기
+
+        List<Integer> resultYearList = new ArrayList<>();
+
+        for (int year = startYear; year <= currentYear; year++) {
+            resultYearList.add(year); // 입사 연도부터 현재 연도까지의 연도 목록 생성
+            log.info(resultYearList.toString());
+        }
+
+
+        log.info("searchYear 서비스 끗~~~~~~~~~~~~~~~~");
+
+
+
+        return resultYearList;
+
+    }
 }

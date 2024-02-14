@@ -13,11 +13,11 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 10MB
-      max-request-size: 10MB
-#  web:
-#    resources:
-#      static-locations: classpath:/productimgs/
+      max-file-size: 100MB
+      max-request-size: 100MB
+  web:
+    resources:
+      static-locations: classpath:/salary/
 
   # jpa config
   jpa:
@@ -27,6 +27,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect  # MySQL8 설정 추가
 
 # Logging Level
 logging:
@@ -35,13 +36,18 @@ logging:
 
 ## 이미지 저장할 위치와 응답할 때 이미지 주소 세팅
 image:
-  # WebConfig? ??
   add-resource-locations: classpath:/static/
-  add-resource-handler: /memberFiles/**
-  image-dir: src/main/resources/static/
+  add-resource-handler: /**
+
+  image-dir: src/main/resources/static
   image-url: http://localhost:8001/
 
 # Generate jws key // 토큰 유효 시간(밀리세컨)
 jwt:
   key: a67wzId2jEVOEGH5Gy8wyrQtds3U5xULPLrbzw17UL0=
   time: 864000000
+
+springdoc:
+  packages-to-scan: com.wisehr.wisehr
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8

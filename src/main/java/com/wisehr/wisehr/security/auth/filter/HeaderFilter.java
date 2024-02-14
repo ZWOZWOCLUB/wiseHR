@@ -19,7 +19,7 @@ public class HeaderFilter implements Filter {
         res.setHeader("Access-Control-Max-Age", "3600"); // 캐싱을 허용할 시간
         res.setHeader(
                 "Access-Control-Allow-Headers",
-                "X-Requested-With, Content-Type, Authorization, X-XSRF-token"
+                "Access-Control-Allow-Origin, Access-Control-Allow-Headers, X-Requested-With, Content-Type, Authorization, X-XSRF-token"
         );
         res.setHeader("Access-Control-Allow-Credentials", "false");
         chain.doFilter(request, response);

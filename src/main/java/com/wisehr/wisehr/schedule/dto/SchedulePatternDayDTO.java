@@ -12,4 +12,5 @@ import java.io.Serializable;
 public class SchedulePatternDayDTO {
     private int dayCode;
     private int wokCode;
+    private int changeDayCode;
 }

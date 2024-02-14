@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,5 +23,6 @@ public class NoticeDTO {
     private Date notModifyDate; //수정일
     private NotMemberDTO notMember; //작성자
     private String notDeleteStatus; //삭제여부
-
+    private String notAllArmCheck; //알람여부
+    private List<NotAttachedFileDTO> notAttachedFile; // 파일
 }

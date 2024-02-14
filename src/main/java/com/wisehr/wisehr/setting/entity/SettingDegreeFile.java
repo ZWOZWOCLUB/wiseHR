@@ -27,12 +27,15 @@ public class SettingDegreeFile {
     private String degAtcConvertName;
     @Column(name = "deg_code")
     private String degCode;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deg_code", insertable = false, updatable = false)
+    private SettingDegree degree;
 
     public SettingDegreeFile() {
     }
 
-
-
+    public SettingDegreeFile(int degAtcCode, String degAtcName, String degAtcRegistDate, String degAtcDeleteStatus, String degAtcPath, String degAtcExtends, String degAtcConvertName, String degCode) {
+        }
         public SettingDegreeFile degAtcCode(int degAtcCode) {
             this.degAtcCode = degAtcCode;
             return this;

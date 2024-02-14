@@ -1,0 +1,24 @@
+POST http://localhost:8001/attendance/on
+Content-Type: application/json
+Accept: */*
+
+{
+  "attStartTime": "07:00:00",
+  "attWorkDate": "2024-02-07",
+  "attendanceMember": {
+    "memCode": 240130003
+  }
+
+}
+
+### 퇴근찍기
+PUT http://localhost:8001/attendance/off
+Content-Type: application/json
+Accept: */*
+
+{
+  "attEndTime": "11:01:02",
+  "attendanceMember": {
+    "memCode": 240130003
+  }
+}

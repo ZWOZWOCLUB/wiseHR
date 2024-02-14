@@ -1,6 +1,5 @@
 package com.wisehr.wisehr.setting.entity;
 
-import com.wisehr.wisehr.mypage.entity.MyPageMember;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "career")
 @AllArgsConstructor
 @Getter
+
 public class SettingCareer {
     @Id
     @GeneratedValue(generator = "eegenerator")
@@ -31,14 +31,19 @@ public class SettingCareer {
     private String crrDescription;
     @Column(name = "mem_code")
     private int memCode;
-
+    @OneToOne(mappedBy = "career", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "crr_code", insertable = false, updatable = false)
+    private SettingCareerFile careerFile;
 
     public SettingCareer() {
     }
 
+    public SettingCareer(String crrCode, String crrName, String crrPosition, String crrStartDate, String crrEndDate, String crrState, String crrDescription, int memCode) {
+    }
 
 
-        public SettingCareer crrCode(String crrCode) {
+
+    public SettingCareer crrCode(String crrCode) {
             this.crrCode = crrCode;
             return this;
         }
@@ -78,6 +83,7 @@ public class SettingCareer {
             return this;
         }
 
+
     @Override
     public String toString() {
         return "SettingCareer{" +
@@ -94,5 +100,6 @@ public class SettingCareer {
         public SettingCareer build() {
             return new SettingCareer(crrCode, crrName, crrPosition, crrStartDate, crrEndDate, crrState, crrDescription, memCode);
         }
+
 
 }
