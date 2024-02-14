@@ -69,9 +69,9 @@ public class MyPageController {
     }
 
 //    사용한 연차 기록을 알기 위한 고유 결재 코드를 가져오는 로직
-    @GetMapping("/annualHistory/{memCode}")
-    public ResponseEntity<ResponseDTO> selectAnnualHistoryDetail(@PathVariable int memCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사용 연차 상세조회 성공" , myPageService.selectAnnualHistory(memCode)));
+    @GetMapping("/annualHistory/{memCode}/{year}")
+    public ResponseEntity<ResponseDTO> selectAnnualHistoryDetail(@PathVariable int memCode,@PathVariable String year){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사용 연차 상세조회 성공" , myPageService.selectAnnualHistory(memCode,year)));
     }
 
 //    개인 정보 수정
@@ -109,6 +109,18 @@ public class MyPageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "비밀번호 수정 성공",  myPageService.updatePass(productDTO)));
     }
 
+
+//    프로필 사진 조회
+    @GetMapping("/selectProfile/{memCode}")
+    public ResponseEntity<ResponseDTO> selectProfile(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "프로필 조회 성공" , myPageService.selectProfile(memCode)));
+    }
+
+//    서류함만!! 조회
+    @GetMapping("/selectDoc/{memCode}")
+    public ResponseEntity<ResponseDTO> selectDoc(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서류함만!! 조회 성공" , myPageService.selectDoc(memCode)));
+    }
 
 
 }

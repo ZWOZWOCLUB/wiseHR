@@ -13,13 +13,14 @@ import lombok.*;
 @Getter
 @Setter
 public class MPSalary {
-    @Id
+
     @Column(name = "sal_code")
     private String salCode;
     @Column(name = "sal_number")
     private String salNumber;
     @Column(name = "sal_bank_name")
     private String salBankNumber;
+    @Id
     @Column(name = "mem_code")
     private int memCode;
 }
