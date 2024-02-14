@@ -81,8 +81,8 @@ public class SettingMemberService {
     public SettingMemberDTO insertMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("insertMember Start~~~~~~~~~~~~");
         log.info(settingMemberDTO.toString());
-        if(!"일반사원".equals(settingMemberDTO.getMemRole())) {
-            settingMemberDTO.setMemRole("중간관리자");
+        if(!"USER".equals(settingMemberDTO.getMemRole())) {
+            settingMemberDTO.setMemRole("ADMIN");
         }
 
         SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
