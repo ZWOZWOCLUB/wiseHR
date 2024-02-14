@@ -13,4 +13,5 @@ public class MPHoldVacationDTO {
     private int memCode;
     private int vctCount;
     private int vctDeadline;
+    private int vctAmountSpendVacation;
 }

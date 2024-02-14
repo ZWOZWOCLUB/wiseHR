@@ -18,6 +18,8 @@ public class ApprovalVH {
     private Long vhiCode;
     @Column(name = "vhi_spend")
     private int vhiSpend;
+    @Column(name = "vhi_kind")
+    private String vhiKind;
     @OneToOne
     @JoinColumn(name = "app_code")
     private ApprovalComplete appCode;

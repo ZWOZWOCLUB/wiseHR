@@ -6,6 +6,8 @@ import com.wisehr.wisehr.approval.entity.*;
 import com.wisehr.wisehr.approval.repository.*;
 import com.wisehr.wisehr.attendance.entity.Attendance;
 import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
+import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
+import com.wisehr.wisehr.mypage.repository.MPHoldVacationRepository;
 import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
 import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
@@ -48,6 +50,7 @@ public class ApprovalService {
     private final ApprovalPatternDayRepository approvalPatternDayRepository;
     private final AttendanceRepository attendanceRepository;
     private final ApprovalAttachmentRepository approvalAttachmentRepository;
+    private final MPHoldVacationRepository holdVacationRepository;
 
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
@@ -61,7 +64,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -79,6 +82,7 @@ public class ApprovalService {
         this.approvalPatternDayRepository = approvalPatternDayRepository;
         this.attendanceRepository = attendanceRepository;
         this.approvalAttachmentRepository = approvalAttachmentRepository;
+        this.holdVacationRepository = holdVacationRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -375,10 +379,70 @@ public class ApprovalService {
                 av.setVhiSpend(days);
                 av.setAppCode(acc);
                 av.setApprovalMember(acc.getApproval().getApprovalMember());
+                av.setVhiKind(aa.getVacKind());
 
                 log.info("av : " + av);
 
-                approvalVHRepository.save(av);
+
+                MPHoldVacation holdVacation = holdVacationRepository.findByMemCode((acc.getApproval().getApprovalMember().getMemCode()).intValue());
+                log.info("holdVacation == : " + holdVacation);
+
+                if (aa.getVacKind().contains("무급")){
+                    log.info("여기서는 연차 개수를 조정하지 않습니다. ");
+
+                }else {
+
+                    log.info("연차 계산 시작 ");
+
+                    if (holdVacation.getVctDeadline() > 0) {   //먼저 소멸예정 연차를 차감하기 위하여 0 이상일 경우로 설정
+
+                        if (holdVacation.getVctDeadline() - days < 0) { // 사용한 연차 개수보다 소멸예정 연차가 적을 경우
+                            int spendVacation = -(holdVacation.getVctDeadline() - days);      // 남은걸 양수로 만들고
+                            int spendVacation2 = holdVacation.getVctCount() - spendVacation;  // 연차를 마저 빼주는 것
+                            log.info("spendVacation : " + spendVacation);
+                            log.info("spendVacation2 : " + spendVacation2);
+
+                            if (spendVacation2 < 0) {   // 남은 연차가 부족할 경우
+
+                                acc.setAppState("반려");
+
+                                approvalCompleteRepository.save(acc); // 반려로 처리
+
+                                return "연차가 부족합니다.";
+                            }
+
+                            holdVacation.vctDeadline(0);
+                            holdVacation.vctCount(spendVacation2);
+                            holdVacation.vctAmountSpendVacation(holdVacation.getVctAmountSpendVacation() + days);
+                            log.info("holdVacation : ", holdVacation);
+                            holdVacationRepository.save(holdVacation);
+                        } else {
+
+                            int spendVacation = holdVacation.getVctDeadline() - days;
+                            log.info("spendVacation : " + spendVacation);
+
+                            if (spendVacation < 0) {// 연차 부족 반려
+
+                                acc.setAppState("반려");
+
+                                approvalCompleteRepository.save(acc);
+
+                                return "연차가 부족합니다.";
+                            }
+
+                            holdVacation.vctDeadline(spendVacation);
+                            holdVacation.vctAmountSpendVacation(holdVacation.getVctAmountSpendVacation() + days);
+                            holdVacationRepository.save(holdVacation);
+                            log.info("holdVacation : ", holdVacation);
+                            log.info("연차 소유 누적 까지 성공 ");
+
+                        }
+                    }
+                }
+
+
+
+                approvalVHRepository.save(av);  // 연차이력 저장
 
                 log.info("연차이력까지 성공");
 
@@ -487,11 +551,14 @@ public class ApprovalService {
                     ApprovalMember retiredMember = approvalMemberRepository.findByMemCode(retiredMemCode);
                     log.info("retiredMember : " + retiredMember);
 
-                    retiredMember.setMemStatus("Y");    //이거 퇴직일 시점에 해야하는데 어떻게 ? ? ? ? ? ? 스크립트에서 할라고 하는데 ?  ? ? ? ?? ?
+                    ApprovalRetired retired = approvalRetiredRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
+                    log.info("----" + String.valueOf(retired.getTirDate()));
+
+                    retiredMember.setMemStatus("Y");
+                    retiredMember.setMemEndDate(String.valueOf(retired.getTirDate()));
 
                     approvalMemberRepository.save(retiredMember);
 
-                    // 퇴직일 날 승인하는걸로 ?  ? ? ?? ? ? ? ? ? ?
                 } else if (acc.getApproval().getPayKind().contains("출퇴근") && acc.getAppState().equals("승인")) {
 
                     EditCommute ec = editCommuteRepository.findByApprovalPayCode(acc.getApproval().getPayCode());   // 수정해야할 날짜를 찾기위해 결재 코드 찾기
@@ -822,7 +889,7 @@ public class ApprovalService {
             return modelMapper.map(editScheduleRepository.findByApprovalPayCode(payCode), EditScheduleDTO.class);
         } else if (approval.get(0).getPayKind().contains("출퇴근")) {
             log.info("출퇴근");
-            return modelMapper.map(editCommuteRepository.findByApprovalPayCode(payCode), EditScheduleDTO.class);
+            return modelMapper.map(editCommuteRepository.findByApprovalPayCode(payCode), EditCommuteDTO.class);
         } else if (approval.get(0).getPayKind().contains("서류")) {
             log.info("서류");
             return modelMapper.map(approvalReqDocumentRepository.findByApprovalPayCode(payCode), ApprovalReqDocumentDTO.class);
