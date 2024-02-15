@@ -10,4 +10,6 @@ public interface AAMPerAlarmRepository extends JpaRepository<AAMPerAlarm, Intege
     List<AAMPerAlarm> findByMemCode(int memCode);
 
     List<AAMPerAlarm> findByMemCodeOrderByPerArmCodeDesc(int memCode);
+
+    List<AAMPerAlarm> findTop30ByMemCodeOrderByPerArmCodeDesc(int memCode);
 }
