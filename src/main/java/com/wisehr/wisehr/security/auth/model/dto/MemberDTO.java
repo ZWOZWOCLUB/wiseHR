@@ -24,11 +24,11 @@ public class MemberDTO implements UserDetails {
     private String memHireDate;
     private String memEndDate;
     private String memStatus;
-//    private String memRole;
+    private String memRole;
     private int posCode;
     private int depCode;
 
-    private List<MemberRoleDTO> memRole;
+   // private List<MemberRoleDTO> memRole;
     private Collection<GrantedAuthority> authorities;
 
     @Override

@@ -93,7 +93,6 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())
                 .setClaims(createClaims(user))
-                .setSubject("zzclub token : " + user.getMemCode())
                 .signWith(SignatureAlgorithm.HS256, createSignature())
                 .setExpiration(expireTime);
         return builder.compact();
@@ -134,7 +133,7 @@ public class TokenUtils {
 //        claims.put("memHireDate", user.getMemHireDate());
 //        claims.put("memEndDate", user.getMemEndDate());
 //        claims.put("memStatus", user.getMemStatus());
-//        claims.put("memCode", user.getMemCode());
+        claims.put("memCode", user.getMemCode());
 
         return claims;
     }

@@ -85,10 +85,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
                     // 토큰에서 클레임을 추출하고, 이를 바탕으로 사용자의 상세 정보를 설정합니다.
                     // 여기서는 사용자 이름, 이메일, 역할 등의 정보를 설정합니다.
-                    List<MemberRoleDTO> memRoles = mapToMemRoleList(claims.get("memRole"));
-                    authentication.setRoles(memRoles);
+//                    List<MemberRoleDTO> memRoles = mapToMemRoleList(claims.get("memRole"));
+//                    authentication.setRoles(memRoles);
 
-                    System.out.println("memRole ============== " + memRoles);
+                    System.out.println("memRole ============== " + authentication);
 
 
                     AbstractAuthenticationToken authenticationToken
@@ -115,26 +115,26 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
     }
 
-    private List<MemberRoleDTO> mapToMemRoleList(Object memRoleObject) {
-        List<MemberRoleDTO> memRoles = new ArrayList<>();
-        if(memRoleObject instanceof List<?>){
-            for(Map<String, Object> roleMap : (List<Map<String, Object>>) memRoleObject){
-                MemberRoleDTO memRole = new MemberRoleDTO();
-                memRole.setMemCode((Integer) roleMap.get("memCode"));
-                memRole.setAuthorityCode((Integer) roleMap.get("authCode"));
-                System.out.println("roleMap ======= " + roleMap);
-                System.out.println("memRoleObject ======= " + memRoleObject);
-
-                Object authorityObject = roleMap.get("authority");
-                memRole.setAuthority(AuthorityDTO.fromLinkedHashMap((LinkedHashMap<String, Object>) authorityObject));
-
-                memRoles.add(memRole);
-            }
-            System.out.println("memRoles = " + memRoles);
-
-        }
-        return memRoles;
-    }
+//    private List<MemberRoleDTO> mapToMemRoleList(Object memRoleObject) {
+//        List<MemberRoleDTO> memRoles = new ArrayList<>();
+//        if(memRoleObject instanceof List<?>){
+//            for(Map<String, Object> roleMap : (List<Map<String, Object>>) memRoleObject){
+//                MemberRoleDTO memRole = new MemberRoleDTO();
+//                memRole.setMemCode((Integer) roleMap.get("memCode"));
+//                memRole.setAuthorityCode((Integer) roleMap.get("authCode"));
+//                System.out.println("roleMap ======= " + roleMap);
+//                System.out.println("memRoleObject ======= " + memRoleObject);
+//
+//                Object authorityObject = roleMap.get("authority");
+//                memRole.setAuthority(AuthorityDTO.fromLinkedHashMap((LinkedHashMap<String, Object>) authorityObject));
+//
+//                memRoles.add(memRole);
+//            }
+//            System.out.println("memRoles = " + memRoles);
+//
+//        }
+//        return memRoles;
+//    }
 
     /***
      * 토큰 관련된 Exception 발생 시 예외 응답
@@ -150,7 +150,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             resultMsg = "Token SignatureException Login";
         } else if(e instanceof JwtException) { // Jwt 토큰 내에서 오류 발생 시
             resultMsg = "Token Parsing JwtException";
-        } else { // 이외의 Jwt 토큰애에서 오류 발생
+        } else { // 이외의 Jwt 토큰에서 오류 발생
             resultMsg = "Other Token Error";
         }
 

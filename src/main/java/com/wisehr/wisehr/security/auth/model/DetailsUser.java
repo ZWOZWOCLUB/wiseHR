@@ -46,6 +46,8 @@ public class DetailsUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         user.getRoleList().forEach(role -> authorities.add(() -> role));
+
+        System.out.println("user ========= " + authorities);
         return authorities;
     }
 
@@ -78,5 +80,13 @@ public class DetailsUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "DetailsUser{" +
+                "user=" + user +
+                ", roles=" + roles +
+                '}';
     }
 }
