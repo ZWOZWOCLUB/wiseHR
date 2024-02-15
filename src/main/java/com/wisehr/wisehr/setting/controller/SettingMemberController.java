@@ -40,7 +40,7 @@ public class SettingMemberController {
     /**
      * 직원 정보 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 정보 등록", description = "직원 정보 등록")
     @PostMapping("/member")
     public ResponseEntity<ResponseDTO> insertMember(@ModelAttribute SettingMemberDTO settingMemberDTO, MultipartFile profile){
@@ -68,7 +68,7 @@ public class SettingMemberController {
     /**
      * 직원 학위 정보 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 학위 정보 등록", description = "직원 학위 정보 등록")
     @PostMapping("/degree")
     public ResponseEntity<ResponseDTO> insertDegree(@RequestBody List<SettingDegreeDTO> degreeDTO){
@@ -79,7 +79,7 @@ public class SettingMemberController {
     /**
      * 직원 자격 정보 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 자격 정보 등록", description = "직원 자격 정보 등록")
     @PostMapping("/certificate")
     public ResponseEntity<ResponseDTO> insertCertificate(@RequestBody List<SettingCertificateDTO> certificateDTO){
@@ -89,7 +89,7 @@ public class SettingMemberController {
     /**
      * 직원 경력 정보 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 경력 정보 등록", description = "직원 경력 정보 등록")
     @PostMapping("/career")
     public ResponseEntity<ResponseDTO> insertCareer(@RequestBody List<SettingCareerDTO> careerDTO){
@@ -132,7 +132,7 @@ public class SettingMemberController {
     /**
      * 직원 학위 정보 파일 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 학위 정보 파일 등록", description = "직원 학위 정보 파일 등록")
     @PostMapping("/degreeFile")
     public ResponseEntity<ResponseDTO> insertDegreeFile(@ModelAttribute SettingDegreeDTO degreeDTO, MultipartFile degreeFile){
@@ -145,7 +145,7 @@ public class SettingMemberController {
     /**
      * 직원 자격 정보 파일 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 자격 정보 파일 등록", description = "직원 자격 정보 파일 등록")
         @PostMapping("/certificateFile")
     public ResponseEntity<ResponseDTO> insertCertificateFile(@ModelAttribute SettingCertificateDTO certificateDTO, MultipartFile certificateFile){
@@ -157,7 +157,7 @@ public class SettingMemberController {
     /**
      * 직원 경력 정보 파일 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 직원 경력 정보 파일 등록", description = "직원 경력 정보 파일 등록")
     @PostMapping("/careerFile")
     public ResponseEntity<ResponseDTO> insertCareerFile(@ModelAttribute SettingCareerDTO careerDTO, MultipartFile careerFile){
@@ -243,7 +243,7 @@ public class SettingMemberController {
     /**
      *급여 통장 정보 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 통장 정보 등록", description = "직원 급여 통장 정보 등록")
     @PostMapping("/salary")
     public ResponseEntity<ResponseDTO> insertSalary(@RequestBody SettingSalaryDTO salaryDTO){
@@ -253,7 +253,7 @@ public class SettingMemberController {
     /**
      * 급여 통장 정보 수정
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 통장 정보 수정", description = "직원 급여 통장 정보 수정")
     @PutMapping(value = "/salary")
     public ResponseEntity<ResponseDTO> updateSalary(@RequestBody SettingSalaryDTO salaryDTO){
@@ -264,7 +264,7 @@ public class SettingMemberController {
     /**
      * 급여 통장 파일 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 통장 파일 등록", description = "직원 급여 통장 파일 등록")
     @PostMapping("/salaryFile")
     public ResponseEntity<ResponseDTO> insertSalaryFile(@ModelAttribute SettingSalaryDTO salaryDTO, MultipartFile salaryFile){
@@ -274,7 +274,7 @@ public class SettingMemberController {
     /**
      * 그외 파일 등록
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 그외 파일 등록", description = "직원 그외 통장 파일 등록")
     @PostMapping("/documentFile")
     public ResponseEntity<ResponseDTO> insertDocumentFile(@ModelAttribute SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile){
@@ -357,7 +357,7 @@ public class SettingMemberController {
     /**
      * 통장 파일 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 통장 파일 삭제", description = "통장 파일 삭제")
     @DeleteMapping("/salaryFile")
     public ResponseEntity<ResponseDTO> deleteSalaryFile(@ModelAttribute SettingSalaryFileDTO salaryFileDTO){
@@ -366,7 +366,7 @@ public class SettingMemberController {
     /**
      * 그외 파일 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 그외 파일 삭제", description = "그외 파일 삭제")
     @DeleteMapping("/documentFile")
     public ResponseEntity<ResponseDTO> deleteDocumentFile(@ModelAttribute SettingDocumentFileDTO documentFileDTO){
@@ -375,7 +375,7 @@ public class SettingMemberController {
     /**
      * 학위 파일 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 학위 파일 삭제", description = "학위 파일 삭제")
     @DeleteMapping("/degreeFile")
     public ResponseEntity<ResponseDTO> deleteDegreeFile(@ModelAttribute SettingDegreeFileDTO degreeFileDTO){
@@ -385,7 +385,7 @@ public class SettingMemberController {
     /**
      * 자격 파일 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 자격 파일 삭제", description = "자격 파일 삭제")
     @DeleteMapping("/certificateFile")
     public ResponseEntity<ResponseDTO> deleteCertificateFile(@ModelAttribute SettingCertificateFileDTO certificateFileDTO){
@@ -394,7 +394,7 @@ public class SettingMemberController {
     /**
      * 경력 파일 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 경력 파일 삭제", description = "경력 파일 삭제")
     @DeleteMapping("/careerFile")
     public ResponseEntity<ResponseDTO> deleteCareerFile(@ModelAttribute SettingCareerFileDTO careerFileDTO){
@@ -404,7 +404,7 @@ public class SettingMemberController {
     /**
      * 직원 자격 정보 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 자격 정보 삭제", description = "자격 정보 삭제")
     @DeleteMapping(value = "/certificate")
     public ResponseEntity<ResponseDTO> deleteCertificate(@RequestBody SettingCertificateDTO certificateDTO){
@@ -415,7 +415,7 @@ public class SettingMemberController {
     /**
      * 직원 경력 정보 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 경력 정보 삭제", description = "경력 정보 삭제")
     @DeleteMapping(value = "/career")
     public ResponseEntity<ResponseDTO> deleteCareer(@RequestBody SettingCareerDTO careerDTO){
@@ -426,7 +426,7 @@ public class SettingMemberController {
     /**
      * 직원 학위 정보 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 학위 정보 삭제", description = "학위 정보 삭제")
     @DeleteMapping(value = "/degree")
     public ResponseEntity<ResponseDTO> deleteDegree(@RequestBody SettingDegreeDTO degreeDTO){
@@ -437,7 +437,7 @@ public class SettingMemberController {
     /**
      * 직원 통장 정보 삭제
      */
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "설정 통장 정보 삭제", description = "통장 정보 삭제")
     @DeleteMapping(value = "/salary")
     public ResponseEntity<ResponseDTO> deleteSalary(@RequestBody SettingSalaryDTO salaryDTO){
