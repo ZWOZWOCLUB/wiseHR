@@ -274,7 +274,7 @@ public class OrgService {
         List<OrgMember> selectedMembers = orgMemberRepository.findAllById(selectedMemberCodes);
         selectedMembers.forEach(member -> {
             member.setOrgDepAndOrgMem(odam);
-            member.setMemRole("일반사원"); //중간관리자는 부서에 1명이어야 하는데, 수정하는 과정에서 여러명이 될 수 있으므로 일반으로 초기화
+            member.setMemRole("USER"); //중간관리자는 부서에 1명이어야 하는데, 수정하는 과정에서 여러명이 될 수 있으므로 일반으로 초기화
             orgMemberRepository.save(member);
         });
 
@@ -297,7 +297,7 @@ public class OrgService {
         log.info("[OrgService] : updateRole ---------시작" );
 
         //현재 부서의 중간관리자를 찾기
-        List<OrgMemAndOrgDep> memberList = orgMemAndDepRepository.findByorgDepartmentDepCodeAndMemRole(orgMemAndOrgDepDTO.getDepCode(), "중간관리자");
+        List<OrgMemAndOrgDep> memberList = orgMemAndDepRepository.findByorgDepartmentDepCodeAndMemRole(orgMemAndOrgDepDTO.getDepCode(), "ADMIN");
 
         log.info("[OrgService] memberList {}: ", memberList);
 
@@ -307,7 +307,7 @@ public class OrgService {
         log.info("[OrgService] selectedMember {}: ", selectedMember);
 
         //선택한 멤버의 롤이 "중간관리자"인지 검사
-        if("중간관리자".equals(selectedMember.getMemRole())){
+        if("ADMIN".equals(selectedMember.getMemRole())){
             return "현재 해당 부서의 팀장입니다.";
         }
 
@@ -315,13 +315,13 @@ public class OrgService {
         //(memberList 리스트를 forEach를 통해 선택한 멤버의 코드와 다른 경우 일반사원으로 셋)
         memberList.forEach(a -> {
             if(a.getMemCode() != selectedMember.getMemCode()){
-                a.setMemRole("일반사원");
+                a.setMemRole("USER");
                 orgMemAndDepRepository.save(a);
             }
         });
 
         //선택한 멤버를 중간관리자로 업데이트
-        selectedMember.setMemRole("중간관리자");
+        selectedMember.setMemRole("ADMIN");
         orgMemAndDepRepository.save(selectedMember);
 
         log.info("[OrgService] : updateRole ---------끝" );
