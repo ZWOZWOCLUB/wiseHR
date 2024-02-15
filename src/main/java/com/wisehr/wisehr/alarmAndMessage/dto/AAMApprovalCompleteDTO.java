@@ -16,4 +16,5 @@ public class AAMApprovalCompleteDTO {
     private String appComment;
     private String payCode;
     private int perArmCode;
+    private String perArmCheckStatus;
 }

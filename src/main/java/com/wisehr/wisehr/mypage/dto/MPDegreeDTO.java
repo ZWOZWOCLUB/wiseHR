@@ -1,6 +1,8 @@
 package com.wisehr.wisehr.mypage.dto;
 
 
+import com.wisehr.wisehr.common.DateToStringConverter;
+import jakarta.persistence.Convert;
 import lombok.*;
 
 import java.sql.Date;
@@ -16,8 +18,10 @@ public class MPDegreeDTO {
     private String degKind;
     private String degMajor;
     private String degName;
-    private Date degGraduation;
+    @Convert(converter= DateToStringConverter.class)
+    private String degGraduation;
     private char degState;
-    private Date degAdmissions;
+    @Convert(converter= DateToStringConverter.class)
+    private String degAdmissions;
     private int memCode;
 }

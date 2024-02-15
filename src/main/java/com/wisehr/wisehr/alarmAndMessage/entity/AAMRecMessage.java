@@ -20,13 +20,20 @@ public class AAMRecMessage {
     private AAMSendMessenger aamSendMessenger;
     @Column(name = "mem_code")
     private int memCode;
+    @Column(name = "rec_msg_delete_status")
+    private String recMsgDeleteStatus;
+    @Column(name = "rec_msg_check_status")
+    private String recMsgCheckStatus;
+
 
     @Override
     public String toString() {
         return "AAMRecMessage{" +
-                "msgCode='" + msgCode + '\'' +
+                "msgCode=" + msgCode +
                 ", aamSendMessenger=" + aamSendMessenger +
                 ", memCode=" + memCode +
+                ", recMsgDeleteStatus='" + recMsgDeleteStatus + '\'' +
+                ", recMsgCheckStatus='" + recMsgCheckStatus + '\'' +
                 '}';
     }
 }

@@ -18,6 +18,10 @@ public class AAMRecMessenger {
     @Column(name="mem_code")
     private Integer memCode;
 
+    @Column(name = "rec_msg_delete_status")
+    private String recMsgDeleteStatus;
+    @Column(name = "rec_msg_check_status")
+    private String recMsgCheckStatus;
     @JoinColumn(name = "mem_code", insertable=false, updatable=false)
     @OneToOne
     private AAMMember aamMember;
@@ -25,10 +29,13 @@ public class AAMRecMessenger {
 //    @OneToOne
 //    private AAMMember aamMember;
 
+
     @Override
     public String toString() {
         return "AAMRecMessenger{" +
-                "msgCode='" + msgCode + '\'' +
+                "msgCode=" + msgCode +
+                ", recMsgDeleteStatus='" + recMsgDeleteStatus + '\'' +
+                ", recMsgCheckStatus='" + recMsgCheckStatus + '\'' +
                 '}';
     }
 }
