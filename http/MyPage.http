@@ -41,7 +41,7 @@ Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 ### 연차 사용 이력 조회
-GET http://localhost:8001/myPage/annualHistory/3
+GET http://localhost:8001/myPage/annualHistory/3/2024
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
@@ -136,3 +136,16 @@ Content-Disposition: form-data; name="newMemPassword1"
 Content-Disposition: form-data; name="newMemPassword2"
 
 0000
+
+### 프로필 조회
+GET http://localhost:8001/myPage/selectProfile/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk
+
+
+### 서류함만!! 조회
+GET http://localhost:8001/myPage/selectDoc/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3MzcxMTczNTIxLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODIzNTE3M30.I2To74tCzqxGcPnhVLPkdxuefnimCVtwh1qfhChhFRk

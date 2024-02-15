@@ -9,4 +9,7 @@ public interface MPVacationHistoryAndApprovalPaymentRepository extends JpaReposi
 
 
     List<MPVacationHistoryAndApprovalPayment> findByMemCode(int memCode);
+
+    List<MPVacationHistoryAndApprovalPayment> findByMemCodeOrderByVhiCodeDesc(int memCode);
+
 }

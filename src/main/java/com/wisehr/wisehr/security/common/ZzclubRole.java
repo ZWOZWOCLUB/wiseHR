@@ -4,8 +4,7 @@ public enum ZzclubRole {
     USER("USER"),
     ADMIN("ADMIN"),
     SUPERADMIN("SUPERADMIN"),
-    ALL("USER, ADMIN, SUPERADMIN");
-
+    ALL("USER, ADMIN, SUPER");
 
     private final String memRole;
 

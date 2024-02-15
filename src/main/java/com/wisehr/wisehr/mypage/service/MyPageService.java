@@ -166,7 +166,9 @@ public class MyPageService {
     public MPDocumentDTO selectDocument(int memCode) {
 
         MPDocument myPageMember = documentRepository.findByMemCode(memCode);
+        System.out.println("myPageMember = " + myPageMember);
         MPDocumentDTO settingMemberDTO = modelMapper.map(myPageMember, MPDocumentDTO.class);
+        System.out.println("settingMemberDTO = " + settingMemberDTO);
 
         return settingMemberDTO;
 
@@ -181,9 +183,10 @@ public class MyPageService {
     }
 
 
-    public List<MPAnnualDTO> selectAnnualHistory(int memCode) {
+    public List<MPAnnualDTO> selectAnnualHistory(int memCode,String year) {
+        System.out.println("year = " + year);
 
-        List<MPVacationHistoryAndApprovalPayment> degree = vacationHistoryAndApprovalPaymentRepository.findByMemCode(memCode);
+        List<MPVacationHistoryAndApprovalPayment> degree = vacationHistoryAndApprovalPaymentRepository.findByMemCodeOrderByVhiCodeDesc(memCode);
         List<MPVacationHistoryAndApprovalPaymentDTO> degreeDTO = degree.stream()
                 .map(exam -> modelMapper.map(exam, MPVacationHistoryAndApprovalPaymentDTO.class))
                 .collect(Collectors.toList());
@@ -200,7 +203,7 @@ public class MyPageService {
         List<MPAnnualDTO> annualDTOS = new ArrayList<>();
         for (String exam : code){
             System.out.println("exam = " + exam);
-            MPAnnual myPageMember = myPageAnnualRepository.findByPayCode(exam);
+            MPAnnual myPageMember = myPageAnnualRepository.findByPayCodeAndVacStartDateLike(exam,"%2024%");
             MPAnnualDTO settingMemberDTO = modelMapper.map(myPageMember, MPAnnualDTO.class);
             annualDTOS.add(settingMemberDTO);
         }
@@ -257,14 +260,14 @@ public class MyPageService {
 //        String realExtend = extend[1];
         System.out.println(LocalDate.now().toString());
         try{
-            replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR+"/sign", imageName, productImage);
+            replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR+"/sign/", imageName, productImage);
 
-            productDTO.setDocAtcExtends("png"); // 확장자 내가 임의로 씀
+            productDTO.setDocAtcExtends("blob"); // 확장자 내가 임의로 씀
             productDTO.setDocAtcConvertName(replaceFileName);
             productDTO.setDocAtcRegistDate(LocalDate.now().toString());
-            productDTO.setDocAtcStorage(IMAGE_DIR+"/sign");
+            productDTO.setDocAtcStorage(IMAGE_DIR+"/sign/");
             productDTO.setDocAtcDeleteStatus("N");
-            productDTO.setDocAtcPath(IMAGE_DIR+"/sign");
+            productDTO.setDocAtcPath(IMAGE_DIR+"/sign/");
             productDTO.setDocAtcOriginName(productImage.getOriginalFilename());
             productDTO.setDocAtcKind("서명");
             /*
@@ -312,24 +315,27 @@ public class MyPageService {
             String oriImage = product.getDocAtcConvertName();
             log.info("[updateProduct] oriImage : " + oriImage);
 
-            String[] extend = productImage.getOriginalFilename().split("\\.");
-            System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
-            String realExtend = extend[1];
+//            String[] extend = productImage.getOriginalFilename().split("\\.");
+//            System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
+//            String realExtend = extend[1];
 
 //            /* update를 위한 엔티티 값 수정 */
-            product = product.docAtcExtends(realExtend)
-                    .docAtcRegistDate(LocalDate.now().toString())
-                    .docAtcOriginName(productImage.getOriginalFilename()).build();
+//            product = product.docAtcRegistDate(LocalDate.now().toString())
+//                    .docAtcOriginName(productImage.getOriginalFilename()).build();
 
             if(productImage != null){
                 String imageName = UUID.randomUUID().toString().replace("-", "");
-                replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, productImage);
+                replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR+"/sign/", imageName, productImage);
                 log.info("[updateProduct] InsertFileName : " + replaceFileName);
 
-                product = product.docAtcConvertName(replaceFileName).build();	// 새로운 파일 이름으로 update
+                System.out.println("replaceFileName = " + replaceFileName);
+                product = product.docAtcRegistDate(LocalDate.now().toString())
+                        .docAtcOriginName(productImage.getOriginalFilename())// 새로운 파일 이름으로 update
+                        .docAtcConvertName(replaceFileName).build();
+//                product = product.docAtcConvertName(replaceFileName).build();
                 log.info("[updateProduct] deleteImage : " + oriImage);
 
-                boolean isDelete = FileUploadUtils.deleteFile(IMAGE_DIR, oriImage);
+                boolean isDelete = FileUploadUtils.deleteFile(IMAGE_DIR+"/sign/", oriImage); // 기존 파일을 삭제
                 log.info("[update] isDelete : " + isDelete);
 
             } else {
@@ -342,7 +348,7 @@ public class MyPageService {
 
         } catch (IOException e) {
             log.info("[updateProduct] Exception!!");
-            FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
+            FileUploadUtils.deleteFile(IMAGE_DIR+"/sign/", replaceFileName);
             throw new RuntimeException(e);
         }
         log.info("[ProductService] updateProduct End ===================================");
@@ -394,7 +400,42 @@ public class MyPageService {
         MPDocumentFile product = documentFileRepository.findByMemCodeAndDocAtcKind(memCode,kind);
         MPDocumentFileDTO settingMemberDTO = modelMapper.map(product, MPDocumentFileDTO.class);
 
+        settingMemberDTO.setDocAtcPath(IMAGE_URL+"sign/"+settingMemberDTO.getDocAtcConvertName());
+
         return settingMemberDTO;
 
+    }
+
+
+    public MPDocumentFileDTO selectProfile(int memCode) {
+
+        String kind = "프로필";
+        MPDocumentFile product = documentFileRepository.findByMemCodeAndDocAtcKind(memCode,kind);
+        MPDocumentFileDTO settingMemberDTO = modelMapper.map(product, MPDocumentFileDTO.class);
+
+        settingMemberDTO.setDocAtcPath(IMAGE_URL+"profile/"+settingMemberDTO.getDocAtcConvertName());
+
+        return settingMemberDTO;
+
+    }
+
+    public Object selectDoc(int memCode) {
+
+        List<MPDocumentFile> certificates = documentFileRepository.findByMemCodeAndDocAtcKindNotAndDocAtcKindNot(memCode,"프로필","서명");
+        List<MPDocumentFileDTO> degreeDTO = certificates.stream()
+                .map(exam -> modelMapper.map(exam, MPDocumentFileDTO.class))
+                .collect(Collectors.toList());
+
+//        파일 저장 경로 지정해줘야할듯
+
+        return degreeDTO;
+
+//        String kind = "서명";
+//        MPDocumentFile product = documentFileRepository.findByMemCodeAndDocAtcKind(memCode,kind);
+//        MPDocumentFileDTO settingMemberDTO = modelMapper.map(product, MPDocumentFileDTO.class);
+//
+//        settingMemberDTO.setDocAtcPath(IMAGE_URL+"sign/"+settingMemberDTO.getDocAtcConvertName());
+//
+//        return settingMemberDTO;
     }
 }
