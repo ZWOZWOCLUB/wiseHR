@@ -66,13 +66,15 @@ Accept: */*
 PUT http://localhost:8001/schedule/workPattern
 Content-Type: application/json
 Accept: */*
+Authorization: beatet eyJkYXRlIjoxNzA3OTY0NDA2NTU1LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4Mjg0MDZ9.PGzj8h5S8prxWwBwYf3A_3fmwAtMQ5xymlKE2Tmu5wU
+
 
 {
   "wokCode": 15,
   "wokStartTime": "07:01:00",
   "wokRestTime": "01:00:00",
   "wokEndTime": "13:00:00",
-  "wokDeleteState": "N"
+  "wokDeleteState": "Y"
 }
 
 ###근무외 일정 등록
@@ -122,7 +124,7 @@ Accept: */*
 POST http://localhost:8001/schedule/searchMonth
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3NzkwNzQ5NzUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODY1NDc0OX0.GVMug5sb9rsX5_2C5dyHmn5iXqXaAvgNLj3bIBAQgao
+Authorization: Bearer eyJkYXRlIjoxNzA3OTc4MjEwNzY4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4NDIyMTB9.LQGQXOmTHe_seDhkpaLp-MBXDmLAeoTvveEUXk4EesA
 
 {
   "yearMonth": "2024-02"

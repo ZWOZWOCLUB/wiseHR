@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ScheduleWorkPatternRepository extends JpaRepository<ScheduleWorkPattern, Integer> {
 
+
+    List<ScheduleWorkPattern> findByWokDeleteState(String N);
 }
