@@ -5,6 +5,7 @@ import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.mypage.dto.MPHoldVacationDTO;
+import com.wisehr.wisehr.security.auth.model.dto.MemberDTO;
 import com.wisehr.wisehr.setting.dto.*;
 import com.wisehr.wisehr.setting.service.SettingMemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("setting")
 @Tag(name = "설정 관련 스웨거 연동")
+
 public class SettingMemberController {
 
     private final SettingMemberService settingMemberService;
@@ -30,11 +34,13 @@ public class SettingMemberController {
     public SettingMemberController(SettingMemberService settingMemberService, BCryptPasswordEncoder PasswordEncoder) {
         this.settingMemberService = settingMemberService;
         this.PasswordEncoder = PasswordEncoder;
+
     }
 
     /**
      * 직원 정보 등록
      */
+
     @Tag(name = "설정 직원 정보 등록", description = "직원 정보 등록")
     @PostMapping("/member")
     public ResponseEntity<ResponseDTO> insertMember(@ModelAttribute SettingMemberDTO settingMemberDTO, MultipartFile profile){

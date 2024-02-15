@@ -2,11 +2,12 @@
 POST http://localhost:8001/setting/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3NTQxNjUxOTE0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODQwNTY1MX0.cv_yv5ey_mD8lIqO3IvkAIaWys5aln4eJt2exykuPPs
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memName"
 
-술쟁이
+우영우
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memPhone"
@@ -46,7 +47,7 @@ N
 --WebAppBoundary
 Content-Disposition: form-data; name="memRole"
 
-중간관리자
+SUPERADMIN
 
 
 --WebAppBoundary

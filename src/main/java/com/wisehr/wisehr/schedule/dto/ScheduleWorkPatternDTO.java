@@ -16,5 +16,4 @@ public class ScheduleWorkPatternDTO {
     private String wokEndTime;
     private String wokDeleteState;
     private String wokColor;
-    private List<SchedulePatternDayIDDTO> schedulePatternDayList;
 }
