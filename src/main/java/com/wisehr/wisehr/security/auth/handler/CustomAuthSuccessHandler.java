@@ -5,6 +5,7 @@ import com.wisehr.wisehr.security.common.AuthConstants;
 import com.wisehr.wisehr.security.common.utils.ConvertUtil;
 import com.wisehr.wisehr.security.common.utils.TokenUtils;
 import com.wisehr.wisehr.security.user.entity.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

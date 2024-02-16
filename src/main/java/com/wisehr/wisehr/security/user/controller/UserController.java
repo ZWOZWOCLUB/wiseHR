@@ -3,6 +3,7 @@ package com.wisehr.wisehr.security.user.controller;
 import com.wisehr.wisehr.security.user.entity.User;
 import com.wisehr.wisehr.security.user.repository.UserRepository;
 import com.wisehr.wisehr.security.user.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class UserController {
         this.userService = userService;
         this.PasswordEncoder = PasswordEncoder;
     }
-
+    @Tag(name = "사용자 등록", description = "사용자 등록")
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody User user){
         System.out.println("user ============= " + user);

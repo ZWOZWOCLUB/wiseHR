@@ -16,15 +16,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-//    public Optional<User> findUser(Integer code) {
-//        Optional<User> user = userRepository.findByMem_code(code);
-//
-//        return user;
-//    }
 
     public Optional<User> findUserByCode(int code) {
-        // userRepository.findByCode(code)를 호출하는 로직을 구현하세요.
-        // 예시:
+
         return userRepository.findByMemCode(code);
     }
 

@@ -7,7 +7,7 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTc5OTM2NjU3LCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 --WebAppBoundary
 Content-Disposition: form-data; name="memName"
 
-역삼역
+테스트
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memPhone"
