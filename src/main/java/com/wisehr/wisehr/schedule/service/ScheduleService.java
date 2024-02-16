@@ -115,9 +115,10 @@ public class ScheduleService {
 
 
     @Transactional
-    public List<ScheduleWorkPatternDTO> insertWorkPattern(ScheduleWorkPatternDTO patternDTO) {
+    public String  insertWorkPattern(ScheduleWorkPatternDTO patternDTO) {
         log.info("insertWorkPattern Start~~~~~~~~~~~~");
         log.info(patternDTO.toString());
+        int result = 0;
 
         List<ScheduleWorkPatternDTO> list = new ArrayList<>();
 
@@ -130,13 +131,14 @@ public class ScheduleService {
             list = findAll.stream()
                     .map(resultList -> modelMapper.map(resultList, ScheduleWorkPatternDTO.class))
                     .collect(Collectors.toList());
+            result = 1;
 
         } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return list;
+        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     @Transactional
@@ -149,10 +151,17 @@ public class ScheduleService {
         try {
             ScheduleWorkPattern pattern = workPatternRepository.findById(patternDTO.getWokCode()).get();
 
-            pattern = pattern.wokStartTime(patternDTO.getWokStartTime())
-                    .wokEndTime(patternDTO.getWokEndTime())
-                    .wokRestTime(patternDTO.getWokRestTime())
-                    .wokDeleteState(patternDTO.getWokDeleteState()).build();
+            if (patternDTO.getWokDeleteState().equals("N")) {
+                pattern = pattern.wokStartTime(patternDTO.getWokStartTime())
+                        .wokEndTime(patternDTO.getWokEndTime())
+                        .wokRestTime(patternDTO.getWokRestTime())
+                        .wokColor(patternDTO.getWokColor())
+                        .wokType(patternDTO.getWokType())
+                        .wokDeleteState(patternDTO.getWokDeleteState()).build();
+            }else {
+                System.out.println("여기~~~~~~");
+                pattern = pattern.wokDeleteState("Y").build();
+            }
 
 
             result = 1;
@@ -393,7 +402,7 @@ public class ScheduleService {
         log.info("patternSearch 시작~~~~~~~");
 
 
-        List<ScheduleWorkPattern> patterns = workPatternRepository.findAll();
+        List<ScheduleWorkPattern> patterns = workPatternRepository.findByWokDeleteState("N");
         log.info("patterns : " + patterns);
 
         List<ScheduleWorkPatternDTO> selectDTOList = patterns.stream()

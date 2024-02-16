@@ -50,4 +50,34 @@ public class AlarmAndMessageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "메신저 등록 성공" , alarmService.insertMessenger(sendMessengerDTO)));
     }
 
+    //    받은 메신저 확인 상태 업데이트
+    @PutMapping("/recUpdateCheck/{msgCode}")
+    public ResponseEntity<ResponseDTO> recUpdateCheck(@PathVariable int msgCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메신저 확인 상태 업데이트 성공" , alarmService.recUpdateCheck(msgCode)));
+    }
+
+//    보낸 메세지 삭제하기 (recMessage, sendMessage 둘다 update)
+    @PutMapping("/deleteSendAndRecMsg/{msgCode}")
+    public ResponseEntity<ResponseDTO> deleteSendMsg(@PathVariable int msgCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "보낸 메세지 삭제하기 (recMessage, sendMessage 둘다 update) 성공" , alarmService.deleteSendAndRecMsg(msgCode)));
+    }
+
+//    받은 메세지 삭제하기 (recMessage에서만 update)
+    @PutMapping("/deleteRecMsg/{msgCode}")
+    public ResponseEntity<ResponseDTO> deleteRecMsg(@PathVariable int msgCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메세지 삭제하기 (recMessage에서만 update) 성공" , alarmService.deleteRecMsg(msgCode)));
+    }
+
+//    개인 알람 확인 상태 업데이트
+    @PutMapping("/perAlarmCheckUpdate/{perArmCode}")
+    public ResponseEntity<ResponseDTO> perAlarmCheckUpdate(@PathVariable int perArmCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 알람 확인 상태 업데이트 성공" , alarmService.perAlarmCheckUpdate(perArmCode)));
+    }
+
+//    전체 알람 확인 상태 업데이트
+    @PutMapping("/allAlarmCheckUpdate/{allArmCode}")
+    public ResponseEntity<ResponseDTO> allAlarmCheckUpdate(@PathVariable int allArmCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 알람 확인 상태 업데이트 성공" , alarmService.allAlarmCheckUpdate(allArmCode)));
+    }
+
 }

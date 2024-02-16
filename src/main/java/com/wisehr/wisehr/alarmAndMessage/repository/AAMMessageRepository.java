@@ -9,4 +9,8 @@ import java.util.List;
 public interface AAMMessageRepository extends JpaRepository<AAMMessage, Integer> {
 
     List<AAMMessage> findByMemCode(Integer memCode);
+
+    List<AAMMessage> findByMemCodeAndMsgDeleteStatusOrderByMsgCodeDesc(int memCode, String n);
+
+    List<AAMMessage> findTop30ByMemCodeAndMsgDeleteStatusOrderByMsgCodeDesc(int memCode, String n);
 }

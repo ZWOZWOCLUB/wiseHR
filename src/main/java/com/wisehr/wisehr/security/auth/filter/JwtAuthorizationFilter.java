@@ -25,7 +25,10 @@ import com.wisehr.wisehr.security.auth.model.dto.AuthorityDTO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -52,8 +55,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         // 현재 요청의 URI가 권한이 필요 없는 리소스에 해당하는 경우, 요청을 다음 필터로 넘기고 메서드를 종료합니다.
         // 이는 정의된 경로에 대해서는 추가적인 인증 처리를 하지 않겠다
-        if(roleLessList.contains(request.getRequestURI())){
-            chain.doFilter(request, response);
+        if(roleLessList.stream().anyMatch(uri -> roleLessList.stream().anyMatch(pattern -> Pattern.matches(pattern, request.getRequestURI())))){
+            chain.doFilter(request,response);
             return;
         }
         /* BEARER lsdkjflskdfjlsdkfjlsdjflsdkfjsd=*/
@@ -74,7 +77,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     user.setMemEmail(claims.get("memEmail").toString());
                     user.setMemCode(Integer.parseInt(claims.get("memCode").toString()));
                     user.setMemRole(ZzclubRole.valueOf(claims.get("memRole").toString()));
-//                    System.out.println("user =========== " + user);  // 여기까지 잘옴
 //                    user.setMemAddress(claims.get("memAddress").toString());  // 필요시 주석 해제
 //                    user.setMemPhone(claims.get("memPhone").toString());
 //                    user.setMemBirth(claims.get("memBirth").toString());
@@ -82,11 +84,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 //                    user.setMemBirth(claims.get("memBirth").toString());
 //                    user.setMemStatus(claims.get("memStatus").toString());
                     authentication.setUser(user);
-
                     // 토큰에서 클레임을 추출하고, 이를 바탕으로 사용자의 상세 정보를 설정합니다.
                     // 여기서는 사용자 이름, 이메일, 역할 등의 정보를 설정합니다.
-//                    List<MemberRoleDTO> memRoles = mapToMemRoleList(claims.get("memRole"));
-//                    authentication.setRoles(memRoles);
 
                     System.out.println("memRole ============== " + authentication);
 
@@ -114,27 +113,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             printWriter.close();
         }
     }
-
-//    private List<MemberRoleDTO> mapToMemRoleList(Object memRoleObject) {
-//        List<MemberRoleDTO> memRoles = new ArrayList<>();
-//        if(memRoleObject instanceof List<?>){
-//            for(Map<String, Object> roleMap : (List<Map<String, Object>>) memRoleObject){
-//                MemberRoleDTO memRole = new MemberRoleDTO();
-//                memRole.setMemCode((Integer) roleMap.get("memCode"));
-//                memRole.setAuthorityCode((Integer) roleMap.get("authCode"));
-//                System.out.println("roleMap ======= " + roleMap);
-//                System.out.println("memRoleObject ======= " + memRoleObject);
-//
-//                Object authorityObject = roleMap.get("authority");
-//                memRole.setAuthority(AuthorityDTO.fromLinkedHashMap((LinkedHashMap<String, Object>) authorityObject));
-//
-//                memRoles.add(memRole);
-//            }
-//            System.out.println("memRoles = " + memRoles);
-//
-//        }
-//        return memRoles;
-//    }
 
     /***
      * 토큰 관련된 Exception 발생 시 예외 응답

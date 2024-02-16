@@ -23,8 +23,10 @@ public class AlarmAndMessageService {
     private final AAMApprovalCompleteRepository aamApprovalCompleteRepository;
     private final AAMMessageRepository aamMessageRepository;
     private final AAMRecMessageRepository aamRecMessageRepository;
+    private final AAMRecUpdateRepository aamRecUpdateRepository;
+    private final AAMSendUpdateRepository aamSendUpdateRepository;
     private final ModelMapper modelMapper;
-    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, AAMApprovalCompleteRepository aamApprovalCompleteRepository, AAMMessageRepository aamMessageRepository, AAMRecMessageRepository aamRecMessageRepository, ModelMapper modelMapper) {
+    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, AAMApprovalCompleteRepository aamApprovalCompleteRepository, AAMMessageRepository aamMessageRepository, AAMRecMessageRepository aamRecMessageRepository, AAMRecUpdateRepository aamRecUpdateRepository, AAMSendUpdateRepository aamSendUpdateRepository, ModelMapper modelMapper) {
         this.allAlarmRepository = allAlarmRepository;
         this.perAlarmRepository = perAlarmRepository;
         this.sendMessengerRepository = sendMessengerRepository;
@@ -32,13 +34,16 @@ public class AlarmAndMessageService {
         this.aamApprovalCompleteRepository = aamApprovalCompleteRepository;
         this.aamMessageRepository = aamMessageRepository;
         this.aamRecMessageRepository = aamRecMessageRepository;
+        this.aamRecUpdateRepository = aamRecUpdateRepository;
+        this.aamSendUpdateRepository = aamSendUpdateRepository;
         this.modelMapper = modelMapper;
     }
 
     public List<AAMApprovalCompleteDTO> selectPerAlarm(int memCode) {
-        List<AAMPerAlarm> perAlarm = perAlarmRepository.findByMemCodeOrderByPerArmCodeDesc(memCode);
+        List<AAMPerAlarm> perAlarm = perAlarmRepository.findTop30ByMemCodeOrderByPerArmCodeDesc(memCode);
 
         // 개인 알람 리스트 조회
+//        perAlarm 에서 memCode를 기준으로 조회
         List<AAMPerAlarmDTO> degreeDTO = perAlarm.stream()
                 .map(exam -> modelMapper.map(exam, AAMPerAlarmDTO.class))
                 .collect(Collectors.toList());
@@ -46,10 +51,14 @@ public class AlarmAndMessageService {
 
         List<AAMApprovalCompleteDTO> aamApprovalCompleteDTOS = new ArrayList<>();
         // 추가로 고유결재번호와 state(승인, 반려 상태의)가 필요함
+
+//        아까 찾은 perAlarm에서의 perArmCode를 가지고 approval_complete에서 조회 후 리스트에 담아 반환
         for(AAMPerAlarmDTO code : degreeDTO){
             System.out.println("code.getPerArmCode() = " + code.getPerArmCode());
             AAMApprovalComplete myPageMember = aamApprovalCompleteRepository.findByPerArmCode(code.getPerArmCode());
             AAMApprovalCompleteDTO settingMemberDTO = modelMapper.map(myPageMember, AAMApprovalCompleteDTO.class);
+
+            settingMemberDTO.setPerArmCheckStatus(code.getPerArmCheckStatus());
 
             aamApprovalCompleteDTOS.add(settingMemberDTO);
             System.out.println("settingMemberDTO = " + settingMemberDTO);
@@ -72,7 +81,7 @@ public class AlarmAndMessageService {
     }
     public List<AAMMessageDTO> selectSendMessenger(int memCode) {
         System.out.println("memCode = " + memCode);
-        List<AAMMessage> perAlarm = aamMessageRepository.findByMemCode(memCode);
+        List<AAMMessage> perAlarm = aamMessageRepository.findTop30ByMemCodeAndMsgDeleteStatusOrderByMsgCodeDesc(memCode,"N");
         System.out.println("perAlarm = " + perAlarm);
 
         List<AAMMessageDTO> degreeDTO = perAlarm.stream()
@@ -85,8 +94,9 @@ public class AlarmAndMessageService {
     }
 
 
+//    받은 내역에서 확인하는 곳
     public List<AAMRecMessageDTO> selectRecMessenger(int memCode) {
-        List<AAMRecMessage> perAlarm = aamRecMessageRepository.findByMemCode(memCode);
+        List<AAMRecMessage> perAlarm = aamRecMessageRepository.findTop30ByMemCodeAndRecMsgDeleteStatusOrderByMsgCodeDesc(memCode,"N");
         System.out.println("perAlarm = " + perAlarm);
 
         List<AAMRecMessageDTO> degreeDTO = perAlarm.stream()
@@ -124,5 +134,94 @@ public class AlarmAndMessageService {
 
         log.info("[ProductService] insertProduct End ===================");
         return (result > 0)? "메신저 입력 성공": "메신저 입력 실패";
+    }
+
+    @Transactional
+    public Object recUpdateCheck(int memCode) {
+//        멤코드라 써있지만 msgCode로 조회할거임
+        int result = 0;
+
+//            update 할 엔티티 조회
+        AAMRecUpdate recUpdate = aamRecUpdateRepository.findById(memCode).get();
+
+//            값 조회 후 update.build();
+        recUpdate = recUpdate.recMsgCheckStatus("Y").build();
+
+        if(recUpdate.getRecMsgCheckStatus() == "Y"){
+            result = 1;
+        }
+        return (result > 0) ? "받은 메신저 확인 상태 업데이트 성공" : "받은 메신저 확인 상태 업데이트 실패";
+    }
+
+//    보낸 메세지 삭제하기
+    @Transactional
+    public Object deleteSendAndRecMsg(int msgCode) {
+        int result = 0;
+
+//        1. recMessage 업데이트
+        AAMRecUpdate recUpdate = aamRecUpdateRepository.findById(msgCode).get();
+        recUpdate = recUpdate.recMsgDeleteStatus("Y").build();
+
+//        2. sendMessage 업데이트
+        AAMSendUpdate sendUpdate = aamSendUpdateRepository.findById(msgCode).get();
+        sendUpdate = sendUpdate.msgDeleteStatus("Y").build();
+
+        if(recUpdate.getRecMsgDeleteStatus() == "Y" && sendUpdate.getMsgDeleteStatus() == "Y"){
+            result = 1;
+        }
+        return (result > 0) ? "보낸 메세지 삭제 성공" : "보낸 메세지 삭제 실패";
+
+    }
+
+//    받은 메세지 삭제하기
+    @Transactional
+    public Object deleteRecMsg(int msgCode) {
+        int result = 0;
+
+        AAMRecUpdate recUpdate = aamRecUpdateRepository.findById(msgCode).get();
+        recUpdate = recUpdate.recMsgDeleteStatus("Y").build();
+
+        if(recUpdate.getRecMsgDeleteStatus() == "Y"){
+            result = 1;
+        }
+        return (result > 0) ? "받은 메세지 삭제 성공" : "받은 메세지 삭제 실패";
+    }
+
+
+//    개인 알람 확인 상태 업데이트
+    @Transactional
+    public Object perAlarmCheckUpdate(int perArmCode) {
+
+        int result = 0;
+
+//            update 할 엔티티 조회
+        AAMPerAlarm perAlarm = perAlarmRepository.findById(perArmCode).get();
+
+//            값 조회 후 update.build();
+        perAlarm = perAlarm.perArmCheckStatus("Y").build();
+
+        if(perAlarm.getPerArmCheckStatus() == "Y"){
+            result = 1;
+        }
+        return (result > 0) ? "개인 알람 확인 상태 업데이트 성공" : "개인 알람 확인 상태 업데이트 실패";
+    }
+
+
+
+    //    전체 알람 확인 상태 업데이트
+    @Transactional
+    public Object allAlarmCheckUpdate(int allArmCode) {
+
+        int result = 0;
+//            update 할 엔티티 조회
+        AAMAllAlarm allAlarm = allAlarmRepository.findById(allArmCode).get();
+
+//            값 조회 후 update.build();
+        allAlarm = allAlarm.allArmCheck("Y").build();
+
+        if(allAlarm.getAllArmCheck() == "Y"){
+            result = 1;
+        }
+        return (result > 0) ? "전체 알람 확인 상태 업데이트 성공" : "전체 알람 확인 상태 업데이트 실패";
     }
 }

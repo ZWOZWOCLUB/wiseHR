@@ -81,9 +81,12 @@ public class SettingMemberService {
     public SettingMemberDTO insertMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("insertMember Start~~~~~~~~~~~~");
         log.info(settingMemberDTO.toString());
-        if(!"USER".equals(settingMemberDTO.getMemRole())) {
+        if("Y".equals(settingMemberDTO.getMemRole())) {
             settingMemberDTO.setMemRole("ADMIN");
+        }else {
+            settingMemberDTO.setMemRole("USER");
         }
+
 
         SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
 

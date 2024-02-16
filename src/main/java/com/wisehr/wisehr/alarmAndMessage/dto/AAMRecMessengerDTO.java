@@ -10,5 +10,7 @@ import lombok.*;
 public class AAMRecMessengerDTO {
     private String msgCode;
     private int memCode;
+    private String recMsgDeleteStatus;
+    private String recMsgCheckStatus;
     private AAMMemberDTO aamMember;
 }

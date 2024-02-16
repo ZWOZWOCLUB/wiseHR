@@ -24,7 +24,7 @@ public class AAMMessage {
     @OneToOne
     private AAMRecMessenger aamRecMessenger;
     @Column(name = "msg_date")
-    private Date msgDate;
+    private String msgDate;
     @Column(name = "msg_contents")
     private String msgContents;
     @Column(name = "mem_code")

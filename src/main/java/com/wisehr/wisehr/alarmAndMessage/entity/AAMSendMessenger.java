@@ -17,9 +17,9 @@ public class AAMSendMessenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "msg_code")
-    private String msgCode;
+    private int msgCode;
     @Column(name = "msg_date")
-    private Date msgDate;
+    private String msgDate;
     @Column(name = "msg_contents")
     private String msgContents;
     @Column(name = "mem_code")

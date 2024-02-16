@@ -6,6 +6,8 @@ import lombok.*;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Setter
 @Getter
 @ToString
 @Entity
@@ -32,49 +34,50 @@ public class ScheduleWorkPattern {
     @JoinColumn(name = "wok_code")
     private List<SchedulePatternDay> patternDayList;
 
-    public ScheduleWorkPattern() {
-    }
 
-    public ScheduleWorkPattern(int wokCode, String wokStartTime, String wokRestTime, String wokEndTime, String wokDeleteState, List<SchedulePatternDay> patternDayList, String wokColor) {
-    }
 
     public ScheduleWorkPattern wokCode(int wokCode) {
-        this.wokCode = wokCode;
-        return this;
+            this.wokCode = wokCode;
+            return this;
+        }
+
+        public ScheduleWorkPattern wokStartTime(String wokStartTime) {
+            this.wokStartTime = wokStartTime;
+            return this;
+        }
+
+        public ScheduleWorkPattern wokRestTime(String wokRestTime) {
+            this.wokRestTime = wokRestTime;
+            return this;
+        }
+
+        public ScheduleWorkPattern wokEndTime(String wokEndTime) {
+            this.wokEndTime = wokEndTime;
+            return this;
+        }
+
+        public ScheduleWorkPattern wokDeleteState(String wokDeleteState) {
+            this.wokDeleteState = wokDeleteState;
+            return this;
+        }
+
+        public ScheduleWorkPattern wokColor(String wokColor) {
+            this.wokColor = wokColor;
+            return this;
+        }
+
+        public ScheduleWorkPattern wokType(String wokType) {
+            this.wokType = wokType;
+            return this;
+        }
+
+        public ScheduleWorkPattern patternDayList(List<SchedulePatternDay> patternDayList) {
+            this.patternDayList = patternDayList;
+            return this;
+        }
+
+        public ScheduleWorkPattern build() {
+            return new ScheduleWorkPattern(wokCode, wokStartTime, wokRestTime, wokEndTime, wokDeleteState, wokColor, wokType, patternDayList);
+        }
     }
 
-    public ScheduleWorkPattern wokStartTime(String wokStartTime) {
-        this.wokStartTime = wokStartTime;
-        return this;
-    }
-
-    public ScheduleWorkPattern wokRestTime(String wokRestTime) {
-        this.wokRestTime = wokRestTime;
-        return this;
-    }
-
-    public ScheduleWorkPattern wokEndTime(String wokEndTime) {
-        this.wokEndTime = wokEndTime;
-        return this;
-    }
-
-    public ScheduleWorkPattern wokDeleteState(String wokDeleteState) {
-        this.wokDeleteState = wokDeleteState;
-        return this;
-    }
-
-    public ScheduleWorkPattern patternDayList(List<SchedulePatternDay> patternDays) {
-        this.patternDayList = patternDays;
-        return this;
-    }
-
-    public ScheduleWorkPattern  wokColor(String  wokColor) {
-        this.wokColor = wokColor;
-        return this;
-    }
-
-    public ScheduleWorkPattern build() {
-        return new ScheduleWorkPattern(wokCode, wokStartTime, wokRestTime, wokEndTime, wokDeleteState, patternDayList, wokColor);
-    }
-
-}
