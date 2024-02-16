@@ -59,7 +59,7 @@ public class NoticeService {
 
     @Transactional
     // 공지 등록
-    public String insertNotice(NoticeDTO noticeDTO, List<MultipartFile> noticeFiles) {
+    public String insertNotice(NoticeDTO noticeDTO, MultipartFile noticeFiles) {
         log.info("---insertNotice Start---");
         log.info(noticeDTO.toString());
         log.info("==========noticeFile : " + noticeFiles);
@@ -67,9 +67,12 @@ public class NoticeService {
 
         //공지
         Notice insertNotice = modelMapper.map(noticeDTO, Notice.class);
-        System.out.println("noticeDTO.getNotCode()" + noticeDTO.getNotCode());
+
+        System.out.println("여기");
+
 
         noticeRepository.save(insertNotice);
+        System.out.println("noticeDTO.getNotCode()" + insertNotice);
 
         log.info("공지등록 성공");
         //알림
@@ -93,10 +96,9 @@ public class NoticeService {
             String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
             try {
 
-                for (MultipartFile file : noticeFiles) {
                     //파일
                     // 파일 원본 이름
-                    String originalFileName = file.getOriginalFilename();
+                    String originalFileName = noticeFiles.getOriginalFilename();
                     // 파일 확장자 추출
                     String extension = FilenameUtils.getExtension(originalFileName);
                     // 저장할 파일 이름 설정
@@ -110,7 +112,7 @@ public class NoticeService {
                     log.info("=====noticeFile : " + storedFileName);
 
                     //파일저장
-                    String story = FileUploadUtils.saveFile(path, storedFileName, file);
+                    String story = FileUploadUtils.saveFile(path, storedFileName, noticeFiles);
 
                     //DTO
                     NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
@@ -122,7 +124,6 @@ public class NoticeService {
                     //전환
                     NotAttachedFile notFile = modelMapper.map(noticeFileDTO, NotAttachedFile.class);
                     notAttachedFileRepository.save(notFile);
-                }
 
 
                 result = 1;
@@ -294,7 +295,7 @@ public class NoticeService {
 
 //        Pageable paging = PageRequest.of(index, count);
 //        Page<Notice> result = noticeRepository.findAllWithCustomOrder(paging);
-        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCode"));
+        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCodeNumber"));
         Page<Notice> result = noticeRepository.findAll(paging);
 
 

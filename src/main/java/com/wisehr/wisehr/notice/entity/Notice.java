@@ -22,6 +22,9 @@ public class Notice {
             strategy = "com.wisehr.wisehr.common.MyGenerator")
     private String notCode;
 
+    @Column(name = "not_code_number", nullable = false)
+    private Long notCodeNumber;
+
     @Column(name = "not_name", nullable = false)
     private String notName;
 
@@ -37,8 +40,11 @@ public class Notice {
     @Column(name = "not_modify_date", nullable = true)
     private Date notModifyDate;
 
+    @Column(name = "mem_code")
+    private String memCode;
+
     @OneToOne
-    @JoinColumn(name = "mem_code",nullable = false)
+    @JoinColumn(name = "mem_code",nullable = false, insertable = false, updatable = false)
     private NotMember notMember;
 
     @Column(name = "not_delete_status", nullable = false)
@@ -52,4 +58,12 @@ public class Notice {
     @JoinColumn(name = "not_code")
     private List<NotAttachedFile> notAttachedFile;
 
+    @PrePersist
+    @PreUpdate
+    private void updateNotCodeNumber() {
+        if (this.notCode != null && !this.notCode.isEmpty()) {
+            String numberPart = this.notCode.replaceAll("[^0-9]", "");
+            this.notCodeNumber = Long.parseLong(numberPart);
+        }
+    }
 }
