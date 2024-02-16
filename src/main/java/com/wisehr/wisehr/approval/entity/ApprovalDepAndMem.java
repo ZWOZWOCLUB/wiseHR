@@ -15,7 +15,6 @@ import java.util.List;
 @ToString(exclude = "approvalMembers")
 public class ApprovalDepAndMem {
 
-
     @Id
     @Column(name = "dep_code")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

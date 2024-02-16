@@ -2,6 +2,7 @@ package com.wisehr.wisehr.approval.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wisehr.wisehr.approval.entity.ApprovalPosAndMem;
 import lombok.*;
 
 import java.sql.Date;
@@ -26,6 +27,6 @@ public class ApprovalMemberDTO {
     private Date memEndDate;
     private String memStatus;
     private String memRole;
-    private Long posCode;
-    private ApprovalDepAndMemDTO depCode;
+    private ApprovalPosAndMem position;
+    private ApprovalDepAndMemDTO department;
 }

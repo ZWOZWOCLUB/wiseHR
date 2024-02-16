@@ -9,6 +9,7 @@ import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
 import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
 import com.wisehr.wisehr.mypage.repository.MPHoldVacationRepository;
 import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
+import com.wisehr.wisehr.schedule.entity.ScheduleMember;
 import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
 import com.wisehr.wisehr.util.ApprovalUtils;
@@ -25,6 +26,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,6 +53,7 @@ public class ApprovalService {
     private final AttendanceRepository attendanceRepository;
     private final ApprovalAttachmentRepository approvalAttachmentRepository;
     private final MPHoldVacationRepository holdVacationRepository;
+    private final AppSchMemberRepository approvalScheduleMemberRepository;
 
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
@@ -64,7 +67,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, AppSchMemberRepository approvalScheduleMemberRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -83,6 +86,7 @@ public class ApprovalService {
         this.attendanceRepository = attendanceRepository;
         this.approvalAttachmentRepository = approvalAttachmentRepository;
         this.holdVacationRepository = holdVacationRepository;
+        this.approvalScheduleMemberRepository = approvalScheduleMemberRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
@@ -898,5 +902,39 @@ public class ApprovalService {
             return modelMapper.map(approvalRetiredRepository.findByApprovalPayCode(payCode), ApprovalRetiredDTO.class);
         }
         return "잘못된 요청입니다.";
+    }
+
+    public List<ApprovalMemberDTO> searchDate(ApprovalDateDTO date) {
+
+        String startDate = date.getProStartDate();
+        String endDate = date.getProEndDate();
+
+        List<ApprovalAnnual> annuals = approvalAnnualRepository.findOverlappingVacations(startDate, endDate);
+
+        List<String> payCode = new ArrayList<>();
+
+        for (int i = 0; i < annuals.size(); i++) {
+            payCode.add(annuals.get(i).getApproval().getPayCode());
+        }
+
+        List<Long> memCode = new ArrayList<>();
+
+        for (int i = 0; i < payCode.size(); i++) {
+
+            memCode.add(approvalRepository.findByPayCode(payCode.get(i)).get(0).getApprovalMember().getMemCode());
+
+        }
+
+        ApprovalMember member = approvalMemberRepository.findByMemCode(date.getMemCode());
+
+        List<ApprovalMember> memberList = approvalMemberRepository.findByDepartmentDepCode(member.getDepartment().getDepCode());
+
+        List<ApprovalMember> filterMember = memberList.stream().filter((member1) -> !memCode.contains(member1.getMemCode())).collect(Collectors.toList());
+
+        log.info("filter member : " + filterMember);
+
+        log.info("department : " + filterMember.get(0).getDepartment());
+
+        return filterMember.stream().map(a -> modelMapper.map(a, ApprovalMemberDTO.class)).collect(Collectors.toList());
     }
 }

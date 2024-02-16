@@ -37,11 +37,12 @@ public class ApprovalMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
-
     @ManyToOne
     @JoinColumn(name = "dep_code")
     @JsonIgnore
     private ApprovalDepAndMem department;
-
-
+    @ManyToOne
+    @JoinColumn(name = "pos_code")
+    @JsonIgnore
+    private ApprovalPosAndMem position;
 }
