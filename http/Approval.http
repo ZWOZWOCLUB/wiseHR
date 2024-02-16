@@ -277,3 +277,16 @@ Accept: */*
 {
   "memCode": 240130003
 }
+
+### 연차 날짜 확인
+GET http://localhost:8001/approval/{proStartDate}/date/{proEndDate}/date/{roleMemCode}
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3OTg0NDUxNTA0LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4NDg0NTF9.-ddsPT8p2IrMwesZTXNRuixr0laxaVm6PgJ-QbCtEVU
+
+{
+
+  "proStartDate": "2024-04-02",
+  "proEndDate": "2024-04-30",
+  "memCode": 3
+}

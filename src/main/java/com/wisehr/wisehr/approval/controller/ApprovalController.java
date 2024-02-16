@@ -166,4 +166,22 @@ public class ApprovalController {
                 .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(requestBody)));
     }
 
+    @GetMapping(value = "/{proStartDate}/date/{proEndDate}/datte/{roleMemCode}")
+    public ResponseEntity<ResponseDTO> dateSearch(@PathVariable String proStartDate ,
+                                                  @PathVariable String proEndDate,
+                                                  @PathVariable String roleMemCode){
+
+        ApprovalDateDTO date = new ApprovalDateDTO();
+
+        date.setProStartDate(proStartDate);
+        date.setProEndDate(proEndDate);
+        date.setMemCode(Long.parseLong(roleMemCode));
+
+
+        log.info("date : " + date );
+
+        return  ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "검색완료", approvalService.searchDate(date)));
+    }
+
 }
