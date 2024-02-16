@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -52,8 +53,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         // 현재 요청의 URI가 권한이 필요 없는 리소스에 해당하는 경우, 요청을 다음 필터로 넘기고 메서드를 종료합니다.
         // 이는 정의된 경로에 대해서는 추가적인 인증 처리를 하지 않겠다
-        if(roleLessList.contains(request.getRequestURI())){
-            chain.doFilter(request, response);
+        if(roleLessList.stream().anyMatch(uri -> roleLessList.stream().anyMatch(pattern -> Pattern.matches(pattern, request.getRequestURI())))){
+            chain.doFilter(request,response);
             return;
         }
         /* BEARER lsdkjflskdfjlsdkfjlsdjflsdkfjsd=*/
