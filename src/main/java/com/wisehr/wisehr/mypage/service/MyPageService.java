@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,6 +41,9 @@ public class MyPageService {
     private final MPDepartmentRepository mpDepartmentRepository;
     private final MPPositionRepository mpPositionRepository;
     private final MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository;
+    private final MPSalAttachedFileRepository mpSalAttachedFileRepository;
+
+    private final MPSalaryRepository mpSalaryRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -56,7 +58,7 @@ public class MyPageService {
                          MPDocumentFileRepository documentFileRepository, MPDocumentRepository documentRepository,
                          MPVacationHistoryRepository vacationHistoryRepository, MPHoldVacationRepository holdVacationRepository,
                          MPMyPageAnnualRepository myPageAnnualRepository, MPDocumentFileRepository documentFileRepository1, MPDepartmentRepository mpDepartmentRepository, MPPositionRepository mpPositionRepository, MPVacationHistoryAndApprovalPaymentRepository vacationHistoryAndApprovalPaymentRepository,
-                         ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder, BCryptPasswordEncoder passwordEncoder1) {
+                         MPSalAttachedFileRepository mpSalAttachedFileRepository, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder, MPSalaryRepository mpSalaryRepository, BCryptPasswordEncoder passwordEncoder1) {
         this.myPageRepository = myPageRepository;
         this.degreeRepository = degreeRepository;
         this.certificateRepository = certificateRepository;
@@ -70,7 +72,9 @@ public class MyPageService {
         this.mpDepartmentRepository = mpDepartmentRepository;
         this.mpPositionRepository = mpPositionRepository;
         this.vacationHistoryAndApprovalPaymentRepository = vacationHistoryAndApprovalPaymentRepository;
+        this.mpSalAttachedFileRepository = mpSalAttachedFileRepository;
         this.modelMapper = modelMapper;
+        this.mpSalaryRepository = mpSalaryRepository;
         this.passwordEncoder = passwordEncoder1;
     }
 
@@ -437,5 +441,19 @@ public class MyPageService {
 //        settingMemberDTO.setDocAtcPath(IMAGE_URL+"sign/"+settingMemberDTO.getDocAtcConvertName());
 //
 //        return settingMemberDTO;
+    }
+
+    public Object selectSal(int memCode) {
+
+        MPSalary product = mpSalaryRepository.findByMemCode(memCode);
+
+        MPSalAttachedFile mpSalAttachedFile = mpSalAttachedFileRepository.findBySalCode(product.getSalCode());
+
+        MPSalAttachedFileDTO settingMemberDTO = modelMapper.map(mpSalAttachedFile, MPSalAttachedFileDTO.class);
+
+//        settingMemberDTO.setDocAtcPath(IMAGE_URL+"profile/"+settingMemberDTO.getDocAtcConvertName());
+
+        return settingMemberDTO;
+
     }
 }

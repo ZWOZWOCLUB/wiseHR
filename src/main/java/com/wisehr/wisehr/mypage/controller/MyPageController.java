@@ -122,5 +122,10 @@ public class MyPageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서류함만!! 조회 성공" , myPageService.selectDoc(memCode)));
     }
 
+    @GetMapping("/selectSal/{memCode}")
+    public ResponseEntity<ResponseDTO> selectSal(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장만!! 조회 성공" , myPageService.selectSal(memCode)));
+    }
+
 
 }
