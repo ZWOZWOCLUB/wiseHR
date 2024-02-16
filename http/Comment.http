@@ -5,14 +5,14 @@ Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTA4MzQ3MjQ3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg3NzIzNDd9.hLRjSSZOJNCHgp32VtWMfQDlJMNvOHGERMYnJedMIZw
 
 {
-  "comContents": "네 알겠습니다..",
-  "comDate": "2024-02-01",
+  "comContents": "공지가 따듯하네요..",
+  "comDate": "2024-02-15",
   "comMember": {
     "memCode": 3
   },
   "comDeleteState": "N",
   "notCode": {
-    "notCode": "not12"
+    "notCode": "not13"
   }
 }
 
@@ -23,7 +23,7 @@ Content-Type: application/json
 Accept: */*
 
 ###글코드로 댓글 조회
-GET http://localhost:8001/comment/notCodeSearch?nc=not12
+GET http://localhost:8001/comment/notCodeSearch?nc=not8
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTA4MzQ3MjQ3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg3NzIzNDd9.hLRjSSZOJNCHgp32VtWMfQDlJMNvOHGERMYnJedMIZw

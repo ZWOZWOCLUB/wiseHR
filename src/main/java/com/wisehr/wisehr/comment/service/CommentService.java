@@ -24,14 +24,15 @@ public class CommentService {
 
     public String  insertComment(CommentDTO commentDTO) {
         log.info("insertComment Start");
-        log.info(commentDTO.toString());
 
         int result =0;
 
         try {
             Comment insertComment = modelMapper.map(commentDTO, Comment.class);
             log.info("insertComment ==========", insertComment);
-            commentRepository.save(insertComment);
+            System.out.println("wwwwwwwww");
+            Comment comment = commentRepository.save(insertComment);
+        log.info(comment.toString());
 
             result = 1;
         } catch (Exception e){
