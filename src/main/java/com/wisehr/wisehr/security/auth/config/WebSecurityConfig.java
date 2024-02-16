@@ -50,12 +50,12 @@ public class WebSecurityConfig {
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated()
-                )
-                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(new CustomAccessDeniedHandler())
-
-                )
+//                .authorizeRequests(authorizeRequests ->
+//                        authorizeRequests.anyRequest().authenticated()
+//                )
+//                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(new CustomAccessDeniedHandler())
+//
+//                )
 
                 .logout(logout ->
                         logout
