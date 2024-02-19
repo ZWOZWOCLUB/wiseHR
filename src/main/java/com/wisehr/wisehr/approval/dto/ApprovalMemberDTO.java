@@ -27,6 +27,6 @@ public class ApprovalMemberDTO {
     private Date memEndDate;
     private String memStatus;
     private String memRole;
-    private ApprovalPosAndMem position;
-    private ApprovalDepAndMemDTO department;
+    private ApprovalPosDTO posCode;
+    private ApprovalDepDTO depCode;
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-@ToString(exclude = "approvalMembers")
+@ToString(exclude = "approvalMembers" )
 public class ApprovalMember {
     @Id
     @Column(name = "mem_code", nullable = false)
@@ -37,12 +37,12 @@ public class ApprovalMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "dep_code")
     @JsonIgnore
-    private ApprovalDepAndMem department;
-    @ManyToOne
+    private ApprovalDep department;
+    @OneToOne
     @JoinColumn(name = "pos_code")
     @JsonIgnore
-    private ApprovalPosAndMem position;
+    private ApprovalPos position;
 }

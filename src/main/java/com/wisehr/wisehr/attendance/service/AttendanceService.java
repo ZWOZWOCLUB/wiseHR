@@ -7,6 +7,7 @@ import com.wisehr.wisehr.approval.repository.ApprovalPatternDayRepository;
 import com.wisehr.wisehr.approval.repository.ApprovalScheduleRepository;
 import com.wisehr.wisehr.approval.repository.ApprovalWorkPatternRepository;
 import com.wisehr.wisehr.attendance.dto.AttendanceDTO;
+import com.wisehr.wisehr.attendance.dto.AttendanceDateDTO;
 import com.wisehr.wisehr.attendance.dto.AttendanceScheduleDTO;
 import com.wisehr.wisehr.attendance.entity.Attendance;
 import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
@@ -72,7 +73,7 @@ public class AttendanceService {
                 day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
             }
 
-            int[] days = Arrays.stream(day).distinct().toArray();   // 배열의 값을 유니크한 값만 남기도록
+            int[] days = Arrays.stream(day).distinct().toArray();   // 배열의 값을 유니크한 값만 남기도록 (어차피 날짜가 중복되게 짜지 않을거니까 )
 
             Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
 
@@ -182,5 +183,85 @@ public class AttendanceService {
         }
 
         return "퇴근이 완료되었습니다. \n 퇴근시간은 " + att.getAttEndTime() + " 입니다. \n 고생하셨습니다.";
+    }
+
+    public List<AttendanceDateDTO> searchDate(String memCode , String searchDate) {
+        log.info("날짜 찾기 서비스 시작 ");
+
+        List<ScheduleAllowance> scheduleList = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode(Integer.parseInt(memCode));
+
+        log.info("getSchCode : " + scheduleList);
+
+        List<ApprovalSchedule> getWokCode = new ArrayList<>();
+        List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
+
+        for (int i = 0; i < scheduleList.size(); i++) {
+            getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
+            getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
+        }
+
+        log.info("getWokCode : " + getWokCode);
+        log.info("getPatternDay : " + getPatternDay);
+
+        int[] day = new int[getPatternDay.size()];
+
+        for (int i = 0; i < getPatternDay.size(); i++) {
+            day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
+        }
+
+        int[] days = Arrays.stream(day).distinct().toArray();
+
+        Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
+
+        for (int i = 0; i < getWokCode.size(); i++) {
+            schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),days));
+        }
+
+        log.info("days : " + days);
+        log.info("schWorkDayMap : " + schWorkDayMap);
+
+        LocalDate workDate = LocalDate.parse(searchDate);
+        String needSchCode = null;
+
+        log.info("workDate : " + workDate);
+
+
+        for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
+            log.info("엔트리 값 : " + entry.getValue());
+            log.info("날짜 값 : " + workDate);
+            if (entry.getValue().contains(workDate)){
+                log.info("entry.getValue : " + entry.getValue());
+                log.info("여기 들어오냐?");
+                needSchCode = entry.getKey();
+            }
+        }
+
+        if (needSchCode == null ){
+            log.info("가라 ");
+            return null;
+        }
+
+        ApprovalSchedule schSet = attendanceScheduleRepository.findBySchCode(needSchCode);
+        log.info("wokCode : " + schSet);
+
+        List<ScheduleAllowance> memberList = attendanceScheduleAllowanceRepository.findByAllowanceID_SchCode(needSchCode);
+
+        log.info("memberList : " + memberList);
+
+
+        List<AttendanceDateDTO> result = new ArrayList<>();
+        log.info("??? : " + memberList.size());
+
+        for (int i = 0; i < memberList.size(); i++) {
+            AttendanceDateDTO addResult = new AttendanceDateDTO();
+            addResult.setPosName(memberList.get(i).getMemberList().getPosCode().getPosName());
+            addResult.setMemName(memberList.get(i).getMemberList().getMemName());
+            addResult.setStartTime(String.valueOf(schSet.getWorkPattern().getWokStartTime()));
+            addResult.setEndTime(String.valueOf(schSet.getWorkPattern().getWokEndTime()));
+            result.add(addResult);
+            log.info("result " + i + " " + result);
+        }
+
+        return result;
     }
 }

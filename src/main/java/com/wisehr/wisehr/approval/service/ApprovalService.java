@@ -9,7 +9,6 @@ import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
 import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
 import com.wisehr.wisehr.mypage.repository.MPHoldVacationRepository;
 import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
-import com.wisehr.wisehr.schedule.entity.ScheduleMember;
 import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
 import com.wisehr.wisehr.util.ApprovalUtils;
@@ -53,6 +52,7 @@ public class ApprovalService {
     private final AttendanceRepository attendanceRepository;
     private final ApprovalAttachmentRepository approvalAttachmentRepository;
     private final MPHoldVacationRepository holdVacationRepository;
+    private final ApprovalMember2Repository approvalMember2Repository;
     private final AppSchMemberRepository approvalScheduleMemberRepository;
 
     private final ModelMapper modelMapper;
@@ -67,7 +67,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, AppSchMemberRepository approvalScheduleMemberRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, ApprovalMember2Repository approvalMember2Repository, AppSchMemberRepository approvalScheduleMemberRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -86,6 +86,7 @@ public class ApprovalService {
         this.attendanceRepository = attendanceRepository;
         this.approvalAttachmentRepository = approvalAttachmentRepository;
         this.holdVacationRepository = holdVacationRepository;
+        this.approvalMember2Repository = approvalMember2Repository;
         this.approvalScheduleMemberRepository = approvalScheduleMemberRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
@@ -104,13 +105,20 @@ public class ApprovalService {
 
         log.info("paymentList : " + paymentList);
 
-        List<ApprovalCompleteDTO> payment = paymentList.stream()
-                .map(paymt -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
+//        List<ApprovalCompleteDTO> payment =;
+
+//        log.info("받은 결재 완료 payment : " + payment);
+
+        log.info("맞음? ");
+        List<ApprovalCompleteDTO> result = paymentList.stream()
+                .map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
                 .collect(Collectors.toList());
+        log.info("------------->" + result);
+        log.info("보낸 결재 완료 payment : " + result.get(0));
+        return result;
 
-        log.info("받은 결재 완료 payment : " + payment);
 
-        return payment;
+
     }
 
     //보낸결재
@@ -127,7 +135,7 @@ public class ApprovalService {
                 .map(paymt -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
                 .collect(Collectors.toList());
 
-        log.info("보낸 결재 완료 payment : " + payment);
+
 
         return payment;
     }
@@ -337,9 +345,12 @@ public class ApprovalService {
             LocalDateTime now = LocalDateTime.now();
 
             ApprovalPerAlarm apa = new ApprovalPerAlarm();
+            log.info("22");
             apa.setPerArmCheckStatus("N");
             apa.setPerArmDateTime(now);
+            log.info("33");
             apa.setReceiveAramMember(modelMapper.map(ac.getApproval().getApprovalMember(),ReceiveAramMember.class));
+            log.info("44");
 
             log.info("apa : " + apa);
 
@@ -904,7 +915,7 @@ public class ApprovalService {
         return "잘못된 요청입니다.";
     }
 
-    public List<ApprovalMemberDTO> searchDate(ApprovalDateDTO date) {
+    public List<ApprovalMember2DTO> searchDate(ApprovalDateDTO date) {
 
         String startDate = date.getProStartDate();
         String endDate = date.getProEndDate();
@@ -924,17 +935,18 @@ public class ApprovalService {
             memCode.add(approvalRepository.findByPayCode(payCode.get(i)).get(0).getApprovalMember().getMemCode());
 
         }
+        memCode.add(date.getMemCode());
 
         ApprovalMember member = approvalMemberRepository.findByMemCode(date.getMemCode());
 
-        List<ApprovalMember> memberList = approvalMemberRepository.findByDepartmentDepCode(member.getDepartment().getDepCode());
+        List<ApprovalMember2> memberList = approvalMember2Repository.findByDepartmentDepCode(member.getDepartment().getDepCode());
 
-        List<ApprovalMember> filterMember = memberList.stream().filter((member1) -> !memCode.contains(member1.getMemCode())).collect(Collectors.toList());
+        List<ApprovalMember2> filterMember = memberList.stream().filter((member1) -> !memCode.contains(member1.getMemCode())).collect(Collectors.toList());
 
         log.info("filter member : " + filterMember);
 
         log.info("department : " + filterMember.get(0).getDepartment());
 
-        return filterMember.stream().map(a -> modelMapper.map(a, ApprovalMemberDTO.class)).collect(Collectors.toList());
+        return filterMember.stream().map(a -> modelMapper.map(a, ApprovalMember2DTO.class)).collect(Collectors.toList());
     }
 }

@@ -12,4 +12,7 @@ import java.util.Map;
         ScheduleAllowance findByAllowanceID(ScheduleAllowanceID scheduleAllowanceID);
 
         List<ScheduleAllowance> findByAllowanceID_MemCode(int memCode);
+
+        List<ScheduleAllowance> findByAllowanceID_SchCode(String needSchCode);
+
     }

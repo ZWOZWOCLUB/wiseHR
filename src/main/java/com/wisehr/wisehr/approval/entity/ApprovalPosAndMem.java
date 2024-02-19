@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 @Table(name = "position")
 @AllArgsConstructor
 @Getter
-@ToString(exclude = "approvalMembers")
+@Setter
+//@ToString(exclude = "approvalMembers")
 public class ApprovalPosAndMem {
     @Id
     @Column(name = "pos_code")
@@ -24,7 +26,7 @@ public class ApprovalPosAndMem {
     private Long posSalary;
 
     @OneToMany(mappedBy = "position")
-    @JsonIgnore
+//    @JsonIgnore
     private List<ApprovalMember> approvalMembers;
 
     public ApprovalPosAndMem() {

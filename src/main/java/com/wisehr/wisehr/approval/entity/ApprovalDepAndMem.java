@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.List;
 @Table(name = "department")
 @AllArgsConstructor
 @Getter
-@ToString(exclude = "approvalMembers")
+@Setter
+//@ToString(exclude = "approvalMembers")
 public class ApprovalDepAndMem {
 
     @Id
@@ -29,7 +31,7 @@ public class ApprovalDepAndMem {
     private String depDeleteStatus;
 
     @OneToMany(mappedBy = "department")
-    @JsonIgnore
+//    @JsonIgnore
     private List<ApprovalMember> approvalMembers;
 
 
