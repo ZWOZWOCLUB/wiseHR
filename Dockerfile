@@ -10,11 +10,11 @@ COPY . /build
 RUN gradle build -x test --parallel
 
 # APP
-FROM openjdk:17.0-slim
+FROM openjdk:17.0
 WORKDIR /app
 
 # 빌더 이미지에서 jar 파일만 복사
-COPY --from=builder /build/build/libs/<wiseHR-0.0.1-SNAPSHOT>.jar .
+COPY --from=builder /build/build/libs/wiseHR-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
@@ -25,5 +25,5 @@ ENTRYPOINT [ \
    "-jar", \
    "-Djava.security.egd=file:/dev/./urandom", \
    "-Dsun.net.inetaddr.ttl=0", \
-   "<생성된 jar 파일명>.jar" \
+   "wiseHR-0.0.1-SNAPSHOT.jar" \
 ]
