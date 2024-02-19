@@ -8,5 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ApprovalRepository extends JpaRepository<Approval, String> {
-    List<Approval> findByPayCode(@Param("payCode") String payCode);
+    List<Approval> findByPayCode(String payCode);
+
 }

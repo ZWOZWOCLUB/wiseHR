@@ -2,12 +2,12 @@
 POST http://localhost:8001/setting/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4MjQyNjB9.7izWw88VrlXXxhBeoy8Zv9h2h5XVeDN83FrTDsIiCgQ
+Authorization: Bearer eyJkYXRlIjoxNzA3OTc5OTM2NjU3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImRqZGRkQGdtYWlsLmNvbSIsIm1lbUNvZGUiOjI0MDIwMjAwNywibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiJBRE1JTiIsImV4cCI6MTcwODg0MzkzNn0.gHoJUau4mU_NuEi7zGP-40ALugoyq40g63V8BY1nF68
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memName"
 
-술쟁이
+역삼역
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memPhone"
@@ -47,7 +47,7 @@ N
 --WebAppBoundary
 Content-Disposition: form-data; name="memRole"
 
-USER
+SUPERADMIN
 
 
 --WebAppBoundary
@@ -68,11 +68,12 @@ Content-Disposition: form-data; name="profile"; filename="pikachu2.png"
 PUT http://localhost:8001/setting/member
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3OTc5OTM2NjU3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImRqZGRkQGdtYWlsLmNvbSIsIm1lbUNvZGUiOjI0MDIwMjAwNywibWVtTmFtZSI6IuyIoOyfgeydtCIsIm1lbVJvbGUiOiJBRE1JTiIsImV4cCI6MTcwODg0MzkzNn0.gHoJUau4mU_NuEi7zGP-40ALugoyq40g63V8BY1nF68
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memCode"
 
-240208001
+240215062
 
 --WebAppBoundary
 Content-Disposition: form-data; name="memName"
@@ -117,7 +118,7 @@ N
 --WebAppBoundary
 Content-Disposition: form-data; name="memRole"
 
-중간관리자
+ADMIN
 
 --WebAppBoundary
 Content-Disposition: form-data; name="posCode"

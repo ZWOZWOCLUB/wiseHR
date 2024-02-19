@@ -26,7 +26,6 @@ public class ScheduleService {
     private final ScheduleAllSelectRepository allSelectRepository;
     private final ScheduleInsertPatternDayRepository insertPatternDayRepository;
     private final ScheduleInsertAllowanceRepository insertAllowanceRepository;
-
     private final ScheduleCountDepCodeRepository countDepCodeRepository;
 
 

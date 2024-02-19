@@ -22,7 +22,7 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 {
-  "depName": "호흡기내과2팀",
+  "depName": "호흡기내과3팀",
   "refDepCode": 4
 }
 
@@ -35,9 +35,9 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 {
-  "depCode": 17,
-  "depName": "호흡기내과3팀"
-
+  "depCode": 16,
+  "depName": "호흡기내과2팀",
+  "refDepCode": 3
 }
 
 ### 부서별 멤버 전체 조회(트리, 카드 조회)
@@ -91,15 +91,15 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSF
   [240207003, 240207010, 240207011]
 
 
-### 중간관리자 지정
+### 멤버권한 지정
 PUT http://localhost:8001/org/updateRole/
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4MjQyNjB9.7izWw88VrlXXxhBeoy8Zv9h2h5XVeDN83FrTDsIiCgQ
 
 {
-  "memCode": 240207003,
-  "depCode": 13
+  "memCode": 240207020,
+  "memRole": "ADMIN"
 }
 
 ### 트리뷰조회
@@ -108,4 +108,10 @@ Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4MjQyNjB9.7izWw88VrlXXxhBeoy8Zv9h2h5XVeDN83FrTDsIiCgQ
 
+
+### 이름으로 검색
+GET http://localhost:8001/org/nameSearch?n=유
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3OTYwMjYwMTg5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4MjQyNjB9.7izWw88VrlXXxhBeoy8Zv9h2h5XVeDN83FrTDsIiCgQ
 

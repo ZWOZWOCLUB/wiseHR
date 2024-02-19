@@ -4,9 +4,10 @@ Content-Type: application/json
 Accept: */*
 
 {
-  "id": "240130010",
+  "id": "240202007",
   "pass": "0000"
 }
+
 
 
 ### 로그아웃테스트??????????????

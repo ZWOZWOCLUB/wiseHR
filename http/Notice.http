@@ -3,22 +3,22 @@ POST http://localhost:8001/notice/notice
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 Access-Control-Allow-Origin: *
-Authorization: Bearer eyJkYXRlIjoxNzA3ODc2OTg5NjUzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6Iuy1nOqzoOq0gOumrOyekCIsImV4cCI6MTcwODc0MDk4OX0.Vrz6J8afL7yylVXQhZe6Fhj0pHmZkJLGw9cjzBlICbk
+Authorization: Bearer eyJkYXRlIjoxNzA3OTcwMzY1NTg4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDg4MzQzNjV9.czb4Oc9HIuCkYsaoOBBjbH33ilrU49eT7YrZYSWT4jQ
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notCode"
 
-not12
+not13
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notName"
 
-2월 근무표 수정본입니다.
+오늘은 날씨가 차갑습니다.
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notComment"
 
-2월 근무표 수정본입니다. 작성된 내용 확인해주세요.
+감기에 유의해주세요.
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notView"
@@ -28,7 +28,7 @@ Content-Disposition: form-data; name="notView"
 --WebAppBoundary
 Content-Disposition: form-data; name="notCreateDate"
 
-2024-01-29
+2024-02-15
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notMember.memCode"

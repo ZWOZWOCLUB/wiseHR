@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.security.auth.filter;
 
 import com.wisehr.wisehr.security.auth.model.DetailsUser;
+import com.wisehr.wisehr.security.auth.model.dto.MemberRoleDTO;
 import com.wisehr.wisehr.security.common.AuthConstants;
 import com.wisehr.wisehr.security.common.ZzclubRole;
 import com.wisehr.wisehr.security.common.utils.TokenUtils;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import com.wisehr.wisehr.security.auth.model.dto.AuthorityDTO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,6 +87,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     // 토큰에서 클레임을 추출하고, 이를 바탕으로 사용자의 상세 정보를 설정합니다.
                     // 여기서는 사용자 이름, 이메일, 역할 등의 정보를 설정합니다.
 
+                    System.out.println("memRole ============== " + authentication);
+
+
                     AbstractAuthenticationToken authenticationToken
                             = UsernamePasswordAuthenticationToken.authenticated(authentication, token, authentication.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetails(request));
@@ -123,7 +128,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             resultMsg = "Token SignatureException Login";
         } else if(e instanceof JwtException) { // Jwt 토큰 내에서 오류 발생 시
             resultMsg = "Token Parsing JwtException";
-        } else { // 이외의 Jwt 토큰애에서 오류 발생
+        } else { // 이외의 Jwt 토큰에서 오류 발생
             resultMsg = "Other Token Error";
         }
 

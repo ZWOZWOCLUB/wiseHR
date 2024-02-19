@@ -3,18 +3,22 @@ package com.wisehr.wisehr.security.auth.config;
 import com.wisehr.wisehr.security.auth.filter.CustomAuthenticationFilter;
 import com.wisehr.wisehr.security.auth.filter.JwtAuthorizationFilter;
 import com.wisehr.wisehr.security.auth.handler.*;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -22,12 +26,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
     /***
      * 정적 자원에 대한 인증된 사용자의 접근을 설정하는 메소드
      */
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
+    public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**",
                 "/lib/**", "/career/**", "/certificate/**", "/dataFomats/**", "/degree/**", "/etcDocumentFile/**", "/memberFiles/**", "/noticeFiles/**", "/profile/**", "/salary/**", "/sign/**");
     }
@@ -38,35 +43,29 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF 보호 비활성화
                 .csrf(csrf -> csrf.disable())
-                // JWT 인증 필터 추가
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
-                // 세션 관리 정책 설정: STATELESS로 설정하여 세션을 사용하지 않음
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 폼 로그인 및 HTTP 기본 인증 비활성화
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
-                // 사용자 정의 인증 필터 추가
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//        http
-//                // URL 별 접근 권한 설정
-//                .authorizeRequests()
-//                .requestMatchers("/approval/**").hasRole("ADMIN")
-//                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-//                .requestMatchers("/public/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and();
-        http
-                // 로그아웃 설정
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .logoutSuccessHandler(logoutSuccessHandler())
-                );
+                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .authorizeRequests(authorizeRequests ->
+//                        authorizeRequests.anyRequest().authenticated()
+//                )
+//                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(new CustomAccessDeniedHandler())
+//
+//                )
 
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID") // 필요한 경우 쿠키 삭제
+                                .logoutSuccessHandler(logoutSuccessHandler()) // 선택적
+
+                );
         return http.build();
     }
 
@@ -154,5 +153,12 @@ public class WebSecurityConfig {
     }
 
 
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            // 여기에 접근 거부 로직을 구현
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("권한없음");
+        };
+    }
 }
-

@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.organization.repository;
 
 import com.wisehr.wisehr.organization.entity.OrgDepartment;
+import com.wisehr.wisehr.organization.entity.OrgMemAndOrgDep;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,5 +14,6 @@ public interface OrgRepository extends JpaRepository<OrgDepartment, Integer> {
     List<OrgDepartment> findRefDepCode();
 
     List<OrgDepartment> findByDepDeleteStatus(String depDeleteStatus);
+
 
 }

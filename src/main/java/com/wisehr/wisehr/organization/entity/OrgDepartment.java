@@ -22,7 +22,7 @@ public class OrgDepartment {
     private int depCode;
     @Column(name = "dep_name", nullable = false)
     private String depName;
-    @Column(name = "ref_dep_code")
+    @Column(name = "ref_dep_code", nullable = true)
     private Integer refDepCode;
     @Column(name = "dep_birth_date", nullable = false)
     private String depBirthDate;

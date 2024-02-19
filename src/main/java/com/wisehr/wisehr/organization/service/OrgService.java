@@ -116,7 +116,17 @@ public class OrgService {
 
     try{
         OrgDepartment modifyOrgDep = orgRepository.findById(orgDepartmentDTO.getDepCode()).get();
-        modifyOrgDep = modifyOrgDep.depName(orgDepartmentDTO.getDepName()).build();
+//        modifyOrgDep = modifyOrgDep.depName(orgDepartmentDTO.getDepName()).build();
+        modifyOrgDep.setDepName(orgDepartmentDTO.getDepName());
+
+        //상위부서 코드가 null인 경우 null로 설정하고 그렇지 않은 경우 refDepCode 사용
+        if(orgDepartmentDTO.getRefDepCode() == null){
+            modifyOrgDep.setRefDepCode(null);
+        }else{
+            modifyOrgDep.setRefDepCode(orgDepartmentDTO.getRefDepCode());
+        }
+
+        orgRepository.save(modifyOrgDep);
 
         result = 1;
     } catch (Exception e){
@@ -274,7 +284,7 @@ public class OrgService {
         List<OrgMember> selectedMembers = orgMemberRepository.findAllById(selectedMemberCodes);
         selectedMembers.forEach(member -> {
             member.setOrgDepAndOrgMem(odam);
-            member.setMemRole("USER"); //중간관리자는 부서에 1명이어야 하는데, 수정하는 과정에서 여러명이 될 수 있으므로 일반으로 초기화
+//            member.setMemRole("USER"); //중간관리자는 부서에 1명이어야 하는데, 수정하는 과정에서 여러명이 될 수 있으므로 일반으로 초기화
             orgMemberRepository.save(member);
         });
 
@@ -285,50 +295,70 @@ public class OrgService {
         return "멤버 추가 완료";
     }
 
+//    /**
+//     * 부서에 중간관리자 지정 메소드
+//     * @param orgMemAndOrgDepDTO
+//     * @return
+//     */
+//
+//    @Transactional
+//    public Object updateRole(OrgMemAndOrgDepDTO orgMemAndOrgDepDTO) {
+//
+//        log.info("[OrgService] : updateRole ---------시작" );
+//
+//        //현재 부서의 중간관리자를 찾기
+//        List<OrgMemAndOrgDep> memberList = orgMemAndDepRepository.findByorgDepartmentDepCodeAndMemRole(orgMemAndOrgDepDTO.getDepCode(), "ADMIN");
+//
+//        log.info("[OrgService] memberList {}: ", memberList);
+//
+//        //현재(사용자가 선택한) 멤버 정보 조회
+//        OrgMemAndOrgDep selectedMember = orgMemAndDepRepository.findById(orgMemAndOrgDepDTO.getMemCode()).get();
+//
+//        log.info("[OrgService] selectedMember {}: ", selectedMember);
+//
+//        //선택한 멤버의 롤이 "중간관리자"인지 검사
+//        if("ADMIN".equals(selectedMember.getMemRole())){
+//            return "현재 해당 부서의 팀장입니다.";
+//        }
+//
+//        //기존 중간관리자를 일반사원으로 업데이트
+//        //(memberList 리스트를 forEach를 통해 선택한 멤버의 코드와 다른 경우 일반사원으로 셋)
+//        memberList.forEach(a -> {
+//            if(a.getMemCode() != selectedMember.getMemCode()){
+//                a.setMemRole("USER");
+//                orgMemAndDepRepository.save(a);
+//            }
+//        });
+//
+//        //선택한 멤버를 중간관리자로 업데이트
+//        selectedMember.setMemRole("ADMIN");
+//        orgMemAndDepRepository.save(selectedMember);
+//
+//        log.info("[OrgService] : updateRole ---------끝" );
+//
+//        return "팀장을 지정하였습니다.";
+//
+//
+//    }
+
     /**
-     * 부서에 중간관리자 지정 메소드
+     * 멤버 권한 설정
      * @param orgMemAndOrgDepDTO
      * @return
      */
-
     @Transactional
-    public Object updateRole(OrgMemAndOrgDepDTO orgMemAndOrgDepDTO) {
+    public Object updateMemberRole(OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
 
-        log.info("[OrgService] : updateRole ---------시작" );
+        log.info("[OrgService]: updateMemberRole 시작");
 
-        //현재 부서의 중간관리자를 찾기
-        List<OrgMemAndOrgDep> memberList = orgMemAndDepRepository.findByorgDepartmentDepCodeAndMemRole(orgMemAndOrgDepDTO.getDepCode(), "ADMIN");
+        OrgMemAndOrgDep updateMember = orgMemAndDepRepository.findById(orgMemAndOrgDepDTO.getMemCode()).get();
 
-        log.info("[OrgService] memberList {}: ", memberList);
+        updateMember.setMemRole(orgMemAndOrgDepDTO.getMemRole());
+        orgMemAndDepRepository.save(updateMember);
 
-        //현재(사용자가 선택한) 멤버 정보 조회
-        OrgMemAndOrgDep selectedMember = orgMemAndDepRepository.findById(orgMemAndOrgDepDTO.getMemCode()).get();
+        log.info("[OrgService]: updateMemberRole 종료");
 
-        log.info("[OrgService] selectedMember {}: ", selectedMember);
-
-        //선택한 멤버의 롤이 "중간관리자"인지 검사
-        if("ADMIN".equals(selectedMember.getMemRole())){
-            return "현재 해당 부서의 팀장입니다.";
-        }
-
-        //기존 중간관리자를 일반사원으로 업데이트
-        //(memberList 리스트를 forEach를 통해 선택한 멤버의 코드와 다른 경우 일반사원으로 셋)
-        memberList.forEach(a -> {
-            if(a.getMemCode() != selectedMember.getMemCode()){
-                a.setMemRole("USER");
-                orgMemAndDepRepository.save(a);
-            }
-        });
-
-        //선택한 멤버를 중간관리자로 업데이트
-        selectedMember.setMemRole("ADMIN");
-        orgMemAndDepRepository.save(selectedMember);
-
-        log.info("[OrgService] : updateRole ---------끝" );
-
-        return "팀장을 지정하였습니다.";
-
-
+        return "멤버 권한 업데이트 성공";
     }
 
 
@@ -366,5 +396,33 @@ public class OrgService {
     }
 
 
+    public List<OrgMemAndOrgDepDTO> searchMemberName(String search) {
+
+        log.info("[OrgService] : searchMemberName ---------시작" );
+        log.info("searchMemberName: {}", search);
+
+        List<OrgMemAndOrgDep> orgMemSearchValue = orgMemAndDepRepository.findByMemNameContaining(search);
+        List<OrgMemAndOrgDepDTO> orgSearchMemberList = orgMemSearchValue.stream()
+                        .map(a -> modelMapper.map(a, OrgMemAndOrgDepDTO.class))
+                                .collect(Collectors.toList());
+        log.info("searchMemberName: {}", orgMemSearchValue);
+        log.info("searchMemberName: {}", orgSearchMemberList);
+
+        log.info("[OrgService] : searchMemberName ---------끝" );
+
+        return orgSearchMemberList;
+    }
+
+//    public List<OrgMemAndOrgDepDTO> searchDepName(String search) {
+//        log.info("[OrgService] : searchDepName ---------시작" );
+//        log.info("searchDepName: {}", search);
+//
+//
+//
+//        log.info("[OrgService] : searchDepName ---------끝" );
+//
+//        return null;
+//
+//    }
 }
 
