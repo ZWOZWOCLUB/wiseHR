@@ -116,7 +116,17 @@ public class OrgService {
 
     try{
         OrgDepartment modifyOrgDep = orgRepository.findById(orgDepartmentDTO.getDepCode()).get();
-        modifyOrgDep = modifyOrgDep.depName(orgDepartmentDTO.getDepName()).build();
+//        modifyOrgDep = modifyOrgDep.depName(orgDepartmentDTO.getDepName()).build();
+        modifyOrgDep.setDepName(orgDepartmentDTO.getDepName());
+
+        //상위부서 코드가 null인 경우 null로 설정하고 그렇지 않은 경우 refDepCode 사용
+        if(orgDepartmentDTO.getRefDepCode() == null){
+            modifyOrgDep.setRefDepCode(null);
+        }else{
+            modifyOrgDep.setRefDepCode(orgDepartmentDTO.getRefDepCode());
+        }
+
+        orgRepository.save(modifyOrgDep);
 
         result = 1;
     } catch (Exception e){
@@ -366,5 +376,33 @@ public class OrgService {
     }
 
 
+    public List<OrgMemAndOrgDepDTO> searchMemberName(String search) {
+
+        log.info("[OrgService] : searchMemberName ---------시작" );
+        log.info("searchMemberName: {}", search);
+
+        List<OrgMemAndOrgDep> orgMemSearchValue = orgMemAndDepRepository.findByMemNameContaining(search);
+        List<OrgMemAndOrgDepDTO> orgSearchMemberList = orgMemSearchValue.stream()
+                        .map(a -> modelMapper.map(a, OrgMemAndOrgDepDTO.class))
+                                .collect(Collectors.toList());
+        log.info("searchMemberName: {}", orgMemSearchValue);
+        log.info("searchMemberName: {}", orgSearchMemberList);
+
+        log.info("[OrgService] : searchMemberName ---------끝" );
+
+        return orgSearchMemberList;
+    }
+
+//    public List<OrgMemAndOrgDepDTO> searchDepName(String search) {
+//        log.info("[OrgService] : searchDepName ---------시작" );
+//        log.info("searchDepName: {}", search);
+//
+//
+//
+//        log.info("[OrgService] : searchDepName ---------끝" );
+//
+//        return null;
+//
+//    }
 }
 
