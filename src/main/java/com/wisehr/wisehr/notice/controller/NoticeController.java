@@ -37,7 +37,7 @@ public class NoticeController {
     public ResponseEntity<ResponseDTO> insertNotice(
             @ModelAttribute NoticeDTO noticeDTO,
 //            List<MultipartFile> noticeFiles
-            @RequestParam("noticeFiles") List<MultipartFile> noticeFiles
+            MultipartFile noticeFiles
     ){
 
 //        System.out.println("noticeDTO = " + noticeDTO);
@@ -46,15 +46,11 @@ public class NoticeController {
 //        log.info("noticeFile ==========" + noticeFiles);
 
         System.out.println("noticeFile = " + noticeFiles);
-        if (noticeFiles != null) {
-            noticeFiles.forEach(file -> {
-                System.out.println("Received file: " + file.getOriginalFilename() + " with size " + file.getSize());
-            });
-        } else {
-            System.out.println("No files received.");
-        }
+                System.out.println("Received file: " + noticeFiles.getOriginalFilename() + " with size " + noticeFiles.getSize());
 
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO,noticeFiles)));
+            System.out.println("No files received.");
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO, noticeFiles)));
     }
 
 /*

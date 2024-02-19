@@ -23,6 +23,7 @@ public class NoticeDTO {
     private Date notCreateDate; //작성일
     private Date notModifyDate; //수정일
     private NotMemberDTO notMember; //작성자
+    private String memCode;
     private String notDeleteStatus; //삭제여부
     private String notAllArmCheck; //알람여부
     private List<MultipartFile> notAttachedFile; // 파일
