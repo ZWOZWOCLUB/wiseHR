@@ -59,6 +59,7 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
     @Tag(name = "스케줄 조회", description = "스케줄 날짜로 조회")
     @PostMapping("/searchDay")
     public ResponseEntity<ResponseDTO> searchValue(@RequestBody ScheduleSearchValueDTO valueDTO) {
+        System.out.println("valueDTO"+ valueDTO);
 
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchValue(valueDTO)));
 
@@ -182,5 +183,12 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
     public ResponseEntity<ResponseDTO> etcPatternSearch(){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.etcPatternSearch()));
     }
-}
+
+    @PostMapping("/notContain")
+    public ResponseEntity<ResponseDTO> notContain(@RequestBody ScheduleSearchValueDTO valueDTO) {
+        System.out.println("valueDTO"+ valueDTO);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
+
+    }}
 

@@ -28,11 +28,12 @@ public class ScheduleService {
     private final ScheduleInsertAllowanceRepository insertAllowanceRepository;
 
     private final ScheduleCountDepCodeRepository countDepCodeRepository;
+    private final ScheduleMemSchRepository memSchRepository;
 
 
 
 
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository) {
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository, ScheduleMemSchRepository memSchRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -45,6 +46,7 @@ public class ScheduleService {
         this.insertAllowanceRepository = insertAllowanceRepository;
         this.countDepCodeRepository = countDepCodeRepository;
 
+        this.memSchRepository = memSchRepository;
     }
 
 
@@ -431,5 +433,22 @@ public class ScheduleService {
             log.info("searchValue 끝~~~~~~~~~~");
 
             return list;
+    }
+
+    public List<ScheduleMemSchDTO> notContain(ScheduleSearchValueDTO valueDTO) {
+        log.info("notContain 시작~~~~~~~~~~");
+
+        String notContain = valueDTO.getNotContain();
+
+        List<ScheduleMemSch> allSelects = memSchRepository.findByYearMonthNotContain(notContain);
+
+        List<ScheduleMemSchDTO> list = allSelects.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleMemSchDTO.class))
+                .collect(Collectors.toList());
+        System.out.println("list = " + list);
+        log.info("notContain 끝~~~~~~~~~~");
+
+        return list;
+
     }
 }

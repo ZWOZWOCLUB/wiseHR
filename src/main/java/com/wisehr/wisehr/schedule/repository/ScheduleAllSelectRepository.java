@@ -45,4 +45,5 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
             "order by A.schEndDate DESC")
         List<ScheduleAllSelect> findByAll();
 
+
 }
