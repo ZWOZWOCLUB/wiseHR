@@ -109,18 +109,19 @@ public class AlarmAndMessageService {
     }
 
     @Transactional
-    public String insertMessenger(AAMSendMessengerDTO sendMessengerDTO) {
+    public Object insertMessenger(AAMSendMessengerDTO sendMessengerDTO) {
 
 
         System.out.println("sendMessengerDTO service = " + sendMessengerDTO);
         int result = 0; // 결과에 따른 값을 구분하기위한 용도의 변수
 
 
+        AAMSendMessenger insertProduct = null;
         try{
 
 
             // 저장을 위해서 일반 DTO객체를 Entity객체로 변경
-            AAMSendMessenger insertProduct = modelMapper.map(sendMessengerDTO, AAMSendMessenger.class);
+            insertProduct = modelMapper.map(sendMessengerDTO, AAMSendMessenger.class);
 
             System.out.println("insertProduct = " + insertProduct);
             sendMessengerRepository.save(insertProduct);
@@ -131,9 +132,10 @@ public class AlarmAndMessageService {
             throw new RuntimeException(e);
         }
 
+        System.out.println("insertProduct.getMsgCode() = " + insertProduct.getMsgCode());
 
         log.info("[ProductService] insertProduct End ===================");
-        return (result > 0)? "메신저 입력 성공": "메신저 입력 실패";
+        return (result > 0)? insertProduct.getMsgCode() : "메세지 입력 실패" ;
     }
 
     @Transactional
