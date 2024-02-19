@@ -16,5 +16,5 @@ public class ApprovalPerAlarmDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
     private Date perArmDateTime;
     private String perArmCheckStatus;
-    private ReceiveAramMember receiveAramMember;
+    private ReceiveAramMemberDTO receiveAramMember;
 }

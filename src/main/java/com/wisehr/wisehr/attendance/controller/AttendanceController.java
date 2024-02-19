@@ -36,4 +36,14 @@ public class AttendanceController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "퇴근 성공", attendanceService.endWork(att)));
     }
 
+    @GetMapping("/searchdate/{memCode}/date/{searchDate}")
+    public ResponseEntity<ResponseDTO> searchDate(@PathVariable String memCode,
+                                                  @PathVariable String searchDate){
+
+        log.info("date123 : " + searchDate);
+        log.info("memCode : " + memCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", attendanceService.searchDate(memCode, searchDate)));
+    }
+
 }

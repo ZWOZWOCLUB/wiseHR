@@ -6,19 +6,20 @@ import com.wisehr.wisehr.approval.entity.ApprovalMember;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
-@ToString(exclude = "approvalMembers")
+@Setter
 public class ApprovalPosAndMemDTO {
     private Long posCode;
     private String posName;
     private Long posSalary;
 
-    private List<ApprovalMember> approvalMembers;
+    private List<ApprovalMemberDTO> approvalMembers;
 
     public ApprovalPosAndMemDTO() {
     }

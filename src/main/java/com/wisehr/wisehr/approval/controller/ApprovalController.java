@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -36,8 +37,8 @@ public class ApprovalController {
     @GetMapping("/sendapproval/{memCode}")
     public ResponseEntity<ResponseDTO> recPayment(@PathVariable Long memCode){
         log.info("memCode : " + memCode);
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", approvalService.selectRecPayment(memCode)));
+        List<ApprovalCompleteDTO> approvalCompleteDTO = approvalService.selectRecPayment(memCode);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공",approvalCompleteDTO));
     }
 
     // 결재 조회
@@ -146,9 +147,22 @@ public class ApprovalController {
 
     //전결자 지정 로직
     @PutMapping(value = "/roleupdate")
-    public ResponseEntity<ResponseDTO> updateRole(@RequestBody ApproverProxyDTO proxy){
+    public ResponseEntity<ResponseDTO> updateRole(@RequestBody ApproverProxy2DTO proxy1){
 
-        log.info("proxy : " + proxy);
+        log.info("proxy : " + proxy1);
+        ApproverProxyDTO proxy = new ApproverProxyDTO();
+        ApprovalMemberDTO member1 = new ApprovalMemberDTO();
+        member1.setMemCode(Long.parseLong(proxy1.getRoleMember()));
+        ApprovalProxyMemberDTO member2 = new ApprovalProxyMemberDTO();
+        member2.setMemCode(Long.parseLong(proxy1.getProMember()));
+
+
+        proxy.setProEndDate(proxy1.getProEndDate());
+        proxy.setProStartDate(proxy1.getProStartDate());
+        proxy.setRoleMember(member1);
+        proxy.setProMember(member2);
+        proxy.setProMemRole(proxy1.getProMemRole());
+
 
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.updateRole(proxy)));
@@ -166,6 +180,7 @@ public class ApprovalController {
                 .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(requestBody)));
     }
 
+    // 전결자 찾아오는 과정
     @GetMapping(value = "/{proStartDate}/date/{proEndDate}/datte/{roleMemCode}")
     public ResponseEntity<ResponseDTO> dateSearch(@PathVariable String proStartDate ,
                                                   @PathVariable String proEndDate,

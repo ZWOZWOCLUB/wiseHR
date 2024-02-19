@@ -11,8 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-@ToString
-public class ReceiveAramMember {
+//@ToString(exclude = "approvalMembers" )
+public class ApprovalMember2 {
     @Id
     @Column(name = "mem_code", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,13 +37,12 @@ public class ReceiveAramMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "dep_code")
-    @JsonIgnore
-    private ApprovalDep department;
-    @ManyToOne
+//    @JsonIgnore
+    private ApprovalDepAndMem department;
+    @OneToOne
     @JoinColumn(name = "pos_code")
-    @JsonIgnore
-    private ApprovalPos position;
-
+//    @JsonIgnore
+    private ApprovalPosAndMem position;
 }
