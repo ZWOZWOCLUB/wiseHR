@@ -164,10 +164,20 @@ public class OrgController {
      * @param orgMemAndOrgDepDTO
      * @return
      */
-    @Tag(name = "부서의 관리자 지정", description = "부서의 관리자 지정")
+//    @Tag(name = "부서의 관리자 지정", description = "부서의 관리자 지정")
+//    @PutMapping("/updateRole/")
+//    public ResponseEntity<ResponseDTO> updateRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
+//    }
+
+    /**
+     * 멤버 권한 설정
+     * @param orgMemAndOrgDepDTO
+     * @return
+     */
     @PutMapping("/updateRole/")
-    public ResponseEntity<ResponseDTO> updateRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateRole(orgMemAndOrgDepDTO)));
+    public ResponseEntity<ResponseDTO> updateMemberRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateMemberRole(orgMemAndOrgDepDTO)));
     }
 
 
