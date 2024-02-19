@@ -178,5 +178,9 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.patternSearch()));
     }
 
+    @GetMapping("/etcPattern")
+    public ResponseEntity<ResponseDTO> etcPatternSearch(){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.etcPatternSearch()));
+    }
 }
 

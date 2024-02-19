@@ -387,9 +387,13 @@ public class ScheduleService {
         List<ScheduleAllSelect> allSelect = allSelectRepository.findByAll();
         log.info("allselect : " + allSelect);
 
+
         List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
                 .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
                 .collect(Collectors.toList());
+
+
+
         System.out.println("selectDTOList = " + selectDTOList);
 
 
@@ -413,5 +417,19 @@ public class ScheduleService {
 
         log.info("patternSearch 끝~~~~~~~");
         return selectDTOList;
+    }
+
+    public List<ScheduleEtcPatternDTO> etcPatternSearch() {
+            log.info("searchValue 시작~~~~~~~~~~");
+
+            List<ScheduleEtcPattern> etcPatternList = etcPatternRepository.findAll();
+
+            List<ScheduleEtcPatternDTO> list = etcPatternList.stream()
+                    .map(resultList -> modelMapper.map(resultList, ScheduleEtcPatternDTO.class))
+                    .collect(Collectors.toList());
+            System.out.println("list = " + list);
+            log.info("searchValue 끝~~~~~~~~~~");
+
+            return list;
     }
 }
