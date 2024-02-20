@@ -512,7 +512,6 @@ public class ApprovalService {
                             type = 2;
                         case "Night":
                             type = 3;
-
                     }
                     sep2.etcKind(String.valueOf(type));
                     sep2.memCode((es.getApproval().getApprovalMember().getMemCode()).intValue());

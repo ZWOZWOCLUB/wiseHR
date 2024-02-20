@@ -21,4 +21,5 @@ public interface ApprovalCompleteRepository extends JpaRepository<ApprovalComple
 
     List<ApprovalComplete> findByApprovalPayCode(String payCode);
 
+    List<ApprovalComplete> findByApprovalApprovalMemberMemCodeAndAppState(Long memCode, String 승인);
 }
