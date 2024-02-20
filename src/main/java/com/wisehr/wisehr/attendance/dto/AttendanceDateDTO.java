@@ -14,4 +14,5 @@ public class AttendanceDateDTO {
     private String endTime;
     private String memName;
     private String posName;
+    private String depName;
 }

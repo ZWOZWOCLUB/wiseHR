@@ -26,6 +26,8 @@ public class Attendance {
     private String attStatus;
     @Column(name = "att_work_date")
     private Date attWorkDate;
+    @Column(name = "att_value")
+    private Integer attValue;
     @OneToOne
     @JoinColumn(name = "mem_code")
     private AttendanceMember attendanceMember;

@@ -16,4 +16,7 @@ public class TodayInfoDTO {
     private int referencerNumber;
     private String startTime;
     private String endTime;
+    private int attValue;
+    private String attStartTime;
+    private String attEndTime;
 }
