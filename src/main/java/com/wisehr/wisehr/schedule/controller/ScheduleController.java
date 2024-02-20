@@ -59,6 +59,7 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
     @Tag(name = "스케줄 조회", description = "스케줄 날짜로 조회")
     @PostMapping("/searchDay")
     public ResponseEntity<ResponseDTO> searchValue(@RequestBody ScheduleSearchValueDTO valueDTO) {
+        System.out.println("valueDTO"+ valueDTO);
 
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.searchValue(valueDTO)));
 
@@ -110,7 +111,7 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      */
     @Tag(name = "스케줄 근무그룹 등록", description = "스케줄 근무그룹 등록")
     @PostMapping("/schedule")
-    public ResponseEntity<ResponseDTO> insertSchedule(@RequestBody ScheduleInsertDTO insertDTO){
+    public ResponseEntity<ResponseDTO> insertSchedule(@ModelAttribute ScheduleInsertDTO insertDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 등록 성공", scheduleService.insertSchedule(insertDTO)));
     }
 
@@ -120,9 +121,9 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      */
     @Tag(name = "스케줄 근무 그룹 수정", description = "스케줄 근무 그룹 수정")
     @PutMapping(value = "/schedule")
-    public ResponseEntity<ResponseDTO> updateSchedule(@RequestBody ScheduleInsertDTO insertDTO){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 수정 성공", scheduleService.updateSchedule(insertDTO)));
-    }
+//    public ResponseEntity<ResponseDTO> updateSchedule(@RequestBody ScheduleInsertDTO insertDTO){
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 수정 성공", scheduleService.updateSchedule(insertDTO)));
+//    }
 
 
     /**
@@ -182,5 +183,12 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
     public ResponseEntity<ResponseDTO> etcPatternSearch(){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.etcPatternSearch()));
     }
-}
+
+    @PostMapping("/notContain")
+    public ResponseEntity<ResponseDTO> notContain(@RequestBody ScheduleSearchValueDTO valueDTO) {
+        System.out.println("valueDTO"+ valueDTO);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
+
+    }}
 
