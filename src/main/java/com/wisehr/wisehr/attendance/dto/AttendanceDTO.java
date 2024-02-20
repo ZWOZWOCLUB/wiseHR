@@ -16,6 +16,7 @@ public class AttendanceDTO {
     private Time attEndTime;
     private String attStatus;
     private Date attWorkDate;
+    private Integer attValue;
     private AttendanceMemberDTO attendanceMember;
     private AttendanceScheduleDTO attendanceSchedule;
 

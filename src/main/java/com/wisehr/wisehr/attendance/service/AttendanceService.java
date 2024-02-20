@@ -19,6 +19,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -129,7 +131,9 @@ public class AttendanceService {
             att.setAttStartTime(att.getAttStartTime());
             att.setAttendanceSchedule(modelMapper.map(schSet, AttendanceScheduleDTO.class));
 
+
             log.info("att : " + att );
+            att.setAttValue(1);
             attendanceRepository.save(modelMapper.map(att, Attendance.class));
 
         } catch (Exception e) {
@@ -176,6 +180,8 @@ public class AttendanceService {
                 att.setAttStatus("조퇴");
                 log.info("퇴근 조퇴");
             }
+
+            att.setAttValue(2);
 
             attendanceRepository.save(modelMapper.map(att, Attendance.class));
             log.info("코딩 킹 갓 제너럴 ");
@@ -263,6 +269,7 @@ public class AttendanceService {
             addResult.setMemName(memberList.get(i).getMemberList().getMemName());
             addResult.setStartTime(String.valueOf(schSet.getWorkPattern().getWokStartTime()));
             addResult.setEndTime(String.valueOf(schSet.getWorkPattern().getWokEndTime()));
+            addResult.setDepName(memberList.get(i).getMemberList().getDepCode().getDepName());
             result.add(addResult);
             log.info("result " + i + " " + result);
         }
@@ -355,10 +362,31 @@ public class AttendanceService {
         ApprovalSchedule schSet = attendanceScheduleRepository.findBySchCode(needSchCode);
         log.info("wokCode : " + schSet);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Attendance value = null;
+        try {
+            value = attendanceRepository.findByAttendanceMemberMemCodeAndAttWorkDateAndAttendanceScheduleSchCode(Long.parseLong(memCode), dateFormat.parse(searchDate), schSet.getSchCode());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        log.info("value : " + value);
 
         today.setStartTime(String.valueOf(schSet.getWorkPattern().getWokStartTime()));
         today.setEndTime(String.valueOf(schSet.getWorkPattern().getWokEndTime()));
 
+        if (value != null){
+            if (value.getAttValue() != null){
+                today.setAttValue(value.getAttValue());
+            }
+            if (value.getAttStartTime() != null){
+                today.setAttStartTime(String.valueOf(value.getAttStartTime()));
+            }
+            if (value.getAttEndTime() != null){
+                today.setAttEndTime(String.valueOf(value.getAttEndTime()));
+            }
+        }
 
         log.info("머임?");
         log.info("today : " + today);
