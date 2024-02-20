@@ -19,8 +19,10 @@ public class DataFormat {
     private Long dataCode;
     @Column(name="data_name", nullable = false)
     private String dataName;
-    @Column(name="mem_code", nullable = false)
-    private Long memCode;
+
+    @OneToOne
+    @JoinColumn(name="mem_code", nullable = false)
+    private DataMember dataMember;
     @Column(name="regist_date", nullable = false)
     private Date registDate;
     @Column(name="data_size", nullable = false)

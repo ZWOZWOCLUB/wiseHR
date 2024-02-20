@@ -1,10 +1,12 @@
 ### 서식자료실 조회
 GET http://localhost:8001/dataFormat/allData
+Authorization: Bearer eyJkYXRlIjoxNzA4MzIyMTQ4NDI1LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkxODYxNDh9.PD5W9yqs9xtltO-zfrg1VcJTpxW6Ov0S-HpuapjqhMQ
 
 
 ### 서식자료실 자료 등록
 POST http://localhost:8001/dataFormat/data
 Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJkYXRlIjoxNzA4MzQyMjQwNzExLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkyMDYyNDB9.hcG1rbLRrhGz8fS9Dav1dfgId_LsPYjb08tuHcZxv24
 
 --WebAppBoundary
 Content-Disposition: form-data; name="dataFormatFile"; filename="pikachu.png"
