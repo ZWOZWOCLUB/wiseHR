@@ -2,23 +2,20 @@
 POST http://localhost:8001/schedule/schedule
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA4MzIzNDgyMDYwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkxODc0ODJ9.lZItdDIpWGU_WUjzFsKq4Fo6PDsCt9xX9oiK3iuqXDA
 
 {
-  "scheduleDTO": {
     "schType": "테스트",
     "schStartDate": "2024-01-01",
     "schEndDate": "2024-01-30",
     "schColor": "#ffffff",
     "schDeleteStatus": "N",
-    "wokCode": 16
-  },
-  "patternDayDTO": [{
-    "dayCode": 1,
-    "wokCode": 16
+    "wokCode": 16,
+  "dayCode": [{
+    "dayCode": 1
   },
     {
-      "dayCode": 2,
-      "wokCode": 16
+      "dayCode": 2
     }
   ]
 }
@@ -127,7 +124,7 @@ Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA4MzIzNDgyMDYwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkxODc0ODJ9.lZItdDIpWGU_WUjzFsKq4Fo6PDsCt9xX9oiK3iuqXDA
 
 {
-  "yearMonth": "2024-02"
+  "yearMonth": "2024-03"
 }
 
 ###조건으로 조회
@@ -137,7 +134,7 @@ Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA4MzIzNDgyMDYwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkxODc0ODJ9.lZItdDIpWGU_WUjzFsKq4Fo6PDsCt9xX9oiK3iuqXDA
 
 {
-  "notContain": "2024-02-07"
+  "yearMonth": "2024-02"
 }
 
 

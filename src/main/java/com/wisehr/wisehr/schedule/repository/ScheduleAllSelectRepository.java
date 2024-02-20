@@ -11,18 +11,14 @@ import java.util.List;
 public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSelect, String > {
     @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT A FROM ScheduleAllSelect A " +
-            "LEFT JOIN fetch ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
-            "LEFT JOIN fetch SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
-            "LEFT JOIN fetch ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
-            "LEFT JOIN fetch ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
-            "LEFT JOIN fetch ScheduleEtcPattern G on F.memCode = G.memCode " +
-            "WHERE (:yearMonth is null OR :yearMonth BETWEEN FUNCTION('DATE_FORMAT', A.schStartDate, '%Y-%m') AND FUNCTION('DATE_FORMAT', A.schEndDate, '%Y-%m')) AND A.schDeleteStatus = 'N'" +
-            "AND (:memCode = 0 OR E.allowanceID.memCode = :memCode) " +
-            "AND (:memName is null OR F.memName = :memName) " +
-            "AND (:depCode = 0 OR F.depCode.depCode = :depCode) " +
-            "AND (:depName is null OR F.depCode.depName LIKE %:depName%)" +
-            "order by A.schEndDate DESC ")
-    List<ScheduleAllSelect> findByYearMonth(int memCode, String memName, int depCode, String depName, String yearMonth);
+            "LEFT JOIN ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
+            "JOIN SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
+            "LEFT JOIN ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
+            "LEFT JOIN ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
+            "WHERE (:yearMonth BETWEEN DATE_FORMAT(A.schStartDate, '%Y-%m') AND DATE_FORMAT(A.schEndDate, '%Y-%m')) " +
+            "AND A.schDeleteStatus = 'N'")
+    List<ScheduleAllSelect> findByYearMonth(String yearMonth);
+
 
     @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT A FROM ScheduleAllSelect A " +

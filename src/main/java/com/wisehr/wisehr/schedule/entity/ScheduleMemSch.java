@@ -24,10 +24,10 @@ public class ScheduleMemSch {
     private String memStatus;
     @OneToOne
     @JoinColumn(name = "dep_code")
-    private SettingDepartment depCode;
+    private SettingDepartment deplist;
     @OneToOne
     @JoinColumn(name = "pos_code")
-    private SettingPosition posCode;
+    private SettingPosition poslist;
 
     @OneToMany
     @JoinColumn(name = "mem_code")
@@ -38,8 +38,8 @@ public class ScheduleMemSch {
         return "ScheduleMemSch{" +
                 "memName='" + memName + '\'' +
                 ", memStatus='" + memStatus + '\'' +
-                ", depCode=" + depCode +
-                ", posCode=" + posCode +
+                ", deplist=" + deplist +
+                ", poslist=" + poslist +
                 '}';
     }
 }

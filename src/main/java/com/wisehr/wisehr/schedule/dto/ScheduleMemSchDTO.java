@@ -23,8 +23,8 @@ public class ScheduleMemSchDTO {
     private String memEndDate;
     private String memStatus;
     private String memRole;
-    private SettingPositionDTO posCode;
-    private SettingDepartmentDTO depCode;
+    private SettingPositionDTO posList;
+    private SettingDepartmentDTO depList;
     private List<ScheduleAllowanceDTO> allowanceDTOList;
     private ScheduleDTO scheduleDTO;
 }
