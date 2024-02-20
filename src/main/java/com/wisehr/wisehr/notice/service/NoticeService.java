@@ -1,4 +1,5 @@
 package com.wisehr.wisehr.notice.service;
+
 import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.notice.dto.NotAttachedFileDTO;
 import com.wisehr.wisehr.notice.dto.NoticeDTO;
@@ -75,70 +76,77 @@ public class NoticeService {
         System.out.println("noticeDTO.getNotCode()" + insertNotice);
 
         log.info("공지등록 성공");
-        //알림
-        if (noticeDTO.getNotAllArmCheck().equals("Y")) {  // 맴버 전체에게 알림을 보냅니다.
-//            List<NotMember> notMemberList = notMemberRepository.findAll();
-            LocalDateTime now = LocalDateTime.now();
-            NotAllAlarm notAllAlarm = new NotAllAlarm();
-            notAllAlarm.setAllArmCode(7);
-            notAllAlarm.setAllArmDate(now);
-            notAllAlarm.setAllArmCheck("N");
-            notAllAlarm.setNotCode(insertNotice.getNotCode());
-            notAllAlarm.setMemCode(insertNotice.getNotMember());
-            notAllAlarmRepository.save(notAllAlarm);
 
 
-            log.info("notAllAlarmDTO ==== " + notAllAlarm);
-            log.info("알람전송 완료");
+        try {
+            if (noticeFiles != null && !noticeFiles.isEmpty() && noticeFiles.getSize() > 0) {
+                String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
 
+                //파일
+                // 파일 원본 이름
+                String originalFileName = noticeFiles.getOriginalFilename();
+                // 파일 확장자 추출
+                String extension = FilenameUtils.getExtension(originalFileName);
+                // 저장할 파일 이름 설정
+                String storedFileName = originalFileName.endsWith("." + extension) ?
+                        originalFileName : originalFileName + "." + extension;
+                if (!storedFileName.endsWith("." + extension)) {
+                    storedFileName += "." + extension;
+                }
 
-        }
-            String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
-            try {
+                log.info("=====noticeFile : " + storedFileName);
 
-                    //파일
-                    // 파일 원본 이름
-                    String originalFileName = noticeFiles.getOriginalFilename();
-                    // 파일 확장자 추출
-                    String extension = FilenameUtils.getExtension(originalFileName);
-                    // 저장할 파일 이름 설정
-                    String storedFileName = originalFileName.endsWith("." + extension) ?
-                            originalFileName : originalFileName + "." + extension;
+                //파일저장
+                String story = FileUploadUtils.saveFile(path, storedFileName, noticeFiles);
 
-//                    if (!originalFileName.toLowerCase().endsWith("." + extension.toLowerCase())) {
-//                        storedFileName = originalFileName + (StringUtils.hasText(extension) ? "." + extension : "");
-//                    }
+                //DTO
+                NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
+                noticeFileDTO.setNotAtcName(storedFileName);
+                noticeFileDTO.setNotAtcDeleteStatus("N");
+                noticeFileDTO.setNotAtcPath(path + "/" + storedFileName);
+                noticeFileDTO.setCode(insertNotice.getNotCode()); // 여기에 실제 notCode 설정
 
-                    log.info("=====noticeFile : " + storedFileName);
+                //전환
+                NotAttachedFile notFile = modelMapper.map(noticeFileDTO, NotAttachedFile.class);
+                notAttachedFileRepository.save(notFile);
+            } else {
 
-                    //파일저장
-                    String story = FileUploadUtils.saveFile(path, storedFileName, noticeFiles);
-
-                    //DTO
-                    NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
-                    noticeFileDTO.setNotAtcName(storedFileName);
-                    noticeFileDTO.setNotAtcDeleteStatus("N");
-                    noticeFileDTO.setNotAtcPath(path + "/" + storedFileName);
-                    noticeFileDTO.setCode(insertNotice.getNotCode()); // 여기에 실제 notCode 설정
-
-                    //전환
-                    NotAttachedFile notFile = modelMapper.map(noticeFileDTO, NotAttachedFile.class);
-                    notAttachedFileRepository.save(notFile);
-
-
+                log.info("첨부파일 없음", noticeFiles);
+                System.out.println("첨부파일 없음");
                 result = 1;
-            } catch (Exception e) {
-                log.info("LLLLLLLLLL{}", noticeDTO.getNotCode());
-                System.out.println("LLLLLLLLLLLL " + noticeDTO.getNotCode());
-                log.info("---insertNotice 오류---");
-                throw new RuntimeException(e);
+            }
+
+            //알림
+            if (noticeDTO.getNotAllArmCheck().equals("Y")) {  // 맴버 전체에게 알림을 보냅니다.
+//            List<NotMember> notMemberList = notMemberRepository.findAll();
+                LocalDateTime now = LocalDateTime.now();
+                NotAllAlarm notAllAlarm = new NotAllAlarm();
+                notAllAlarm.setAllArmCode(7);
+                notAllAlarm.setAllArmDate(now);
+                notAllAlarm.setAllArmCheck("N");
+                notAllAlarm.setNotCode(insertNotice.getNotCode());
+                notAllAlarm.setMemCode(insertNotice.getNotMember());
+                System.out.println(notAllAlarm.getMemCode());
+                notAllAlarmRepository.save(notAllAlarm);
+
+
+                log.info("notAllAlarmDTO ==== " + notAllAlarm);
+                log.info("알람전송 완료");
 
 
             }
-            return (result > 0) ? "공지등록 성공" : "공지등록 실패";
+
+        } catch (Exception e) {
+            log.info("LLLLLLLLLL{}", noticeDTO.getNotCode());
+            System.out.println("LLLLLLLLLLLL " + noticeDTO.getNotCode());
+            log.info("---insertNotice 오류---");
+            throw new RuntimeException(e);
+
+
         }
 
-
+        return (result > 0) ? "공지등록 성공" : "공지등록 실패";
+    }
 
 
     /***
@@ -150,8 +158,8 @@ public class NoticeService {
     @Transactional
     public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
         log.info(" ==============updateService Start ===========");
-        log.info("noticeDTO ========== "+noticeDTO);
-        log.info("noticeFile ====== "+ noticeFile);
+        log.info("noticeDTO ========== " + noticeDTO);
+        log.info("noticeFile ====== " + noticeFile);
 
 
         int result = 0;
@@ -166,7 +174,7 @@ public class NoticeService {
         noticeFileDTO.setNotAtcPath(path);
 //        noticeFileDTO.setNotice(noticeDTO);
 
-        log.info("noticeFile.getName====" +noticeFile.getName());
+        log.info("noticeFile.getName====" + noticeFile.getName());
         log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
         log.info("path========= : " + path);
         log.info("noticeDTO==========" + noticeDTO);
@@ -181,8 +189,8 @@ public class NoticeService {
             notice.setNotComment(noticeDTO.getNotComment());
 
             //첨부파일이 존재할 경우
-            if(!noticeFile.isEmpty()){
-                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(),noticeFile);
+            if (!noticeFile.isEmpty()) {
+                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(), noticeFile);
                 log.info("Saved File Name ; " + savedFileName);
 
 //                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
@@ -196,10 +204,10 @@ public class NoticeService {
 
 
             noticeRepository.save(notice);
-            log.info("notice ======= "+ notice);
+            log.info("notice ======= " + notice);
             log.info("noticeDTO==========" + noticeDTO);
 
-            log.info("noticeFile.getName====" +noticeFile.getName());
+            log.info("noticeFile.getName====" + noticeFile.getName());
             log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
 
             result = 1;
@@ -210,10 +218,8 @@ public class NoticeService {
         }
 
 
-
-
         log.info("updateNotice 끝");
-        return (result > 0)? "공지업뎃 성공" : "공지업뎃 실패";
+        return (result > 0) ? "공지업뎃 성공" : "공지업뎃 실패";
 
     }
 
@@ -290,12 +296,12 @@ public class NoticeService {
     public Page<NoticeResponseDTO> allNoticeSearchWithPaging(Criteria criteria) {
 
         log.info("allNoticeSearchWithPaging 서비스 시작");
-        int index = criteria.getPageNum() -1;
+        int index = criteria.getPageNum() - 1;
         int count = criteria.getAmount();
 
 //        Pageable paging = PageRequest.of(index, count);
 //        Page<Notice> result = noticeRepository.findAllWithCustomOrder(paging);
-        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC,"notCodeNumber"));
+        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC, "notCodeNumber"));
         Page<Notice> result = noticeRepository.findAll(paging);
 
 
@@ -305,7 +311,6 @@ public class NoticeService {
 
         return noticeList;
     }
-
 
 
 }

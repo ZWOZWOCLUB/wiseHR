@@ -39,13 +39,15 @@ public class NoticeController {
 //            List<MultipartFile> noticeFiles
             MultipartFile noticeFiles
     ){
+        if (noticeFiles == null || noticeFiles.isEmpty()) {
+            // 파일이 없는 경우의 처리 로직
+            log.info("첨부파일 없음");
 
-//        System.out.println("noticeDTO = " + noticeDTO);
-//        log.info("noticeDTO============"+noticeDTO);
-//        System.out.println("noticeFile = " + noticeFiles);
-//        log.info("noticeFile ==========" + noticeFiles);
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지등록 성공", noticeService.insertNotice(noticeDTO, noticeFiles)));
 
-        System.out.println("noticeFile = " + noticeFiles);
+        }
+
+        System.out.println("noticeFiles = " + noticeFiles);
                 System.out.println("Received file: " + noticeFiles.getOriginalFilename() + " with size " + noticeFiles.getSize());
 
             System.out.println("No files received.");

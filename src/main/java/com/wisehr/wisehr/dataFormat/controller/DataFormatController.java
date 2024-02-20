@@ -29,10 +29,15 @@ public class DataFormatController {
      * 서식자료 등록
      */
     @PostMapping("/data")
-    public ResponseEntity<ResponseDTO> insertDataFormat(MultipartFile dataFormatFile){
+    public ResponseEntity<ResponseDTO> insertDataFormat(
+            @ModelAttribute DataFormatDTO dataFormatDTO,
+            MultipartFile dataFormatFile
+    ){
+        System.out.println("dataFormatFile = " + dataFormatFile);
+        System.out.println("dataFormatFile ====== " + dataFormatFile.getOriginalFilename() + "withSize" + dataFormatFile.getSize());
 
-        log.info("dataFormatFile ========= " + dataFormatFile);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서식자료 등록성공", dataFormatService.insertDataFormat(dataFormatFile)));
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서식자료 등록성공", dataFormatService.insertDataFormat(dataFormatDTO,dataFormatFile)));
 
     }
 

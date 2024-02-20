@@ -13,7 +13,7 @@ import java.util.Date;
 public class DataFormatDTO {
     private Long dataCode;
     private String dataName;
-    private Long memCode;
+    private DataMemberDTO dataMember;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registDate;
     private Long dataSize;
