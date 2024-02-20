@@ -12,6 +12,9 @@ import lombok.*;
 public class AAMRecUpdate {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rec_msg_code")
+    private Integer recMsgCode;
     @Column(name = "msg_code")
     private Integer msgCode;
     @Column(name="mem_code")
@@ -40,8 +43,12 @@ public class AAMRecUpdate {
         this.recMsgCheckStatus = recMsgCheckStatus;
         return this;
     }
+    public AAMRecUpdate recMsgCode(int recMsgCode){
+        this.recMsgCode = recMsgCode;
+        return this;
+    }
 
     public AAMRecUpdate build(){
-        return new AAMRecUpdate(msgCode,memCode,recMsgDeleteStatus,recMsgCheckStatus);
+        return new AAMRecUpdate(recMsgCode,msgCode,memCode,recMsgDeleteStatus,recMsgCheckStatus);
     }
 }

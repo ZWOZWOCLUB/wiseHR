@@ -5,6 +5,8 @@ import jakarta.persistence.Convert;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.Arrays;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +21,5 @@ public class AAMSendMessengerDTO {
     private int memCode;
     private AAMMemberDTO aamMember;
     private String msgDeleteStatus;
+    private List<String> codes;
 }

@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -207,7 +208,7 @@ public class MyPageService {
         List<MPAnnualDTO> annualDTOS = new ArrayList<>();
         for (String exam : code){
             System.out.println("exam = " + exam);
-            MPAnnual myPageMember = myPageAnnualRepository.findByPayCodeAndVacStartDateLike(exam,"%2024%");
+            MPAnnual myPageMember = myPageAnnualRepository.findByPayCodeAndVacStartDateLike(exam,"%"+year+"%");
             MPAnnualDTO settingMemberDTO = modelMapper.map(myPageMember, MPAnnualDTO.class);
             annualDTOS.add(settingMemberDTO);
         }
@@ -455,5 +456,74 @@ public class MyPageService {
 
         return settingMemberDTO;
 
+    }
+
+    public Object attList(int memCode) {
+
+        // 현재 날짜를 가져옵니다.
+        LocalDate currentDate = LocalDate.now();
+
+        // 2024-01-01 형식으로 만듭니다.
+        LocalDate customDate = LocalDate.of(2024, 1, 1);
+
+        // 3달 전의 날짜를 계산합니다.
+        LocalDate threeMonthsAgo = currentDate.minusMonths(3).withDayOfMonth(1);
+
+        // 날짜를 원하는 형식으로 포맷팅합니다.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedCustomDate = customDate.format(formatter);
+        String formattedThreeMonthsAgo = threeMonthsAgo.format(formatter);
+
+        // 결과 출력
+        System.out.println("현재 날짜: " + currentDate);
+        System.out.println("2024-01-01 형식으로 만든 날짜: " + formattedCustomDate);
+        System.out.println("3달 전의 날짜: " + formattedThreeMonthsAgo);
+
+        int currentYear = currentDate.getYear();
+        int currentMonth = currentDate.getMonthValue();
+
+        // 현재 날짜에서 1달을 빼서 그 전 달의 날짜를 가져옵니다.
+        LocalDate previousMonthDate = currentDate.minusMonths(1);
+        int previousMonthYear = previousMonthDate.getYear();
+        int previousMonth = previousMonthDate.getMonthValue();
+
+        System.out.println("현재 년도: " + currentYear);
+        System.out.println("현재 월: " + currentMonth);
+        System.out.println("이전 년도: " + previousMonthYear);
+        System.out.println("이전 월: " + previousMonth);
+
+        Date startDate = java.sql.Date.valueOf("2024-01-01");
+        Date endDate = java.sql.Date.valueOf("2024-02-01");
+
+        Date sqlDate = Date.valueOf(currentDate);
+        Date sqlDate2 = Date.valueOf(formattedThreeMonthsAgo);
+
+        List<MPAttendance> attendance = attendanceRepository.findByMemCodeAndAttWorkDateBetween(memCode,sqlDate2,sqlDate);
+
+        List<MPAttendanceDTO> degreeDTO = attendance.stream()
+                .map(exam -> modelMapper.map(exam, MPAttendanceDTO.class))
+                .collect(Collectors.toList());
+
+        for(MPAttendanceDTO settingMemberDTO: degreeDTO){
+            Time start = settingMemberDTO.getAttStartTime();
+            Time end = settingMemberDTO.getAttEndTime();
+
+            // Time을 LocalTime으로 변환
+            LocalTime startLocalTime = start.toLocalTime();
+            LocalTime endLocalTime = end.toLocalTime();
+
+            // 두 LocalTime 객체 간의 차이 계산
+            long hoursDiff = ChronoUnit.HOURS.between(startLocalTime, endLocalTime);
+            long minutesDiff = ChronoUnit.MINUTES.between(startLocalTime, endLocalTime) % 60;
+            String totalWork = hoursDiff + " 시간 " + minutesDiff + " 분";
+
+            // 결과 출력
+            System.out.println("시간 차이: " + hoursDiff + " 시간 " + minutesDiff + " 분");
+            settingMemberDTO.setTotalWork(totalWork);
+        }
+
+
+
+        return degreeDTO;
     }
 }

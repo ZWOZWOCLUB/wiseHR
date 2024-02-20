@@ -8,7 +8,8 @@ import lombok.*;
 @Setter
 @ToString
 public class AAMRecMessengerDTO {
-    private String msgCode;
+    private Integer recMsgCode;
+    private int msgCode;
     private int memCode;
     private String recMsgDeleteStatus;
     private String recMsgCheckStatus;
