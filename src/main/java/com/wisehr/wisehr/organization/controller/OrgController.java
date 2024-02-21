@@ -12,6 +12,7 @@ import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class OrgController {
      * 부서 전체 목록 조회
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @Tag(name = "부서 전체 조회", description = "전체 부서와 그 상하위로 조회 됩니다.")
     @GetMapping("/list")
     public ResponseEntity<ResponseDTO> selectAllOrgList(){
@@ -43,6 +45,7 @@ public class OrgController {
      *  상위부서 목록 조회
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @Tag(name = "상위부서 목록 조회", description = "상위부서 목록 조회")
     @GetMapping("/repList")
     public ResponseEntity<ResponseDTO> selectRefOrgList(){
@@ -55,6 +58,7 @@ public class OrgController {
      * @param orgDepartmentDTO
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @Tag(name = "부서 생성", description = "부서 생성")
     @PostMapping("/insertOrgDep")
     public ResponseEntity<ResponseDTO> insertOrgDep(@RequestBody OrgDepartmentDTO orgDepartmentDTO){
@@ -69,6 +73,7 @@ public class OrgController {
      * @param orgDepartmentDTO
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @Tag(name = "부서명 수정", description = "부서명 수정")
     @PutMapping("/modifyOrgDep")
     public ResponseEntity<ResponseDTO> modifyOrgDep(@RequestBody OrgDepartmentDTO orgDepartmentDTO){
@@ -82,6 +87,7 @@ public class OrgController {
      * 부서별 멤버 전체 조회
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @Tag(name = "부서별 멤버 전체 조회", description = "부서별 멤버 전체 조회")
     @GetMapping("/AllMemOfDep")
     public ResponseEntity<ResponseDTO> AllMemOfDep(){
@@ -95,6 +101,7 @@ public class OrgController {
      * @param orgDepartmentAndOrgMemberDTO
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @Tag(name = "부서삭제", description = "부서삭제")
     @PutMapping("/deleteOrgDep")
     public ResponseEntity<ResponseDTO> deleteOrgDep(@RequestBody OrgDepartmentAndOrgMemberDTO orgDepartmentAndOrgMemberDTO){
@@ -110,6 +117,7 @@ public class OrgController {
      * @param depCode
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @Tag(name = "부서 개별 조회", description = "부서 개별 조회")
     @GetMapping("/list/{depCode}")
     public ResponseEntity<ResponseDTO> selectDepDetail(@PathVariable int depCode){
@@ -125,6 +133,7 @@ public class OrgController {
      * @param offset
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @Tag(name = "멤버 전체 조회", description = "멤버 전체 조회")
     @GetMapping("/memberList")
     public ResponseEntity<ResponseDTO> selectAllOrgMemberListWithPaging(
@@ -152,6 +161,7 @@ public class OrgController {
      * @param selectedMemberCodes 사용자가 추가하기로 선택한 멤버의 코드들
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @Tag(name = "부서에 멤버 추가", description = "부서에 멤버 추가")
     @PutMapping("/insertMember/{depCode}")
     public ResponseEntity<ResponseDTO> insertMember(@PathVariable int depCode, @RequestBody List<Integer> selectedMemberCodes){
@@ -175,6 +185,7 @@ public class OrgController {
      * @param orgMemAndOrgDepDTO
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @PutMapping("/updateRole/")
     public ResponseEntity<ResponseDTO> updateMemberRole(@RequestBody OrgMemAndOrgDepDTO orgMemAndOrgDepDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "memberRole 업데이트 성공", orgService.updateMemberRole(orgMemAndOrgDepDTO)));
@@ -185,6 +196,7 @@ public class OrgController {
      * 조직도 트리뷰 조회
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @Tag(name = "조직도 트리뷰 조회", description = "조직도 트리뷰 조회")
     @GetMapping("/treeView")
     public ResponseEntity<ResponseDTO> treeView(){
@@ -198,6 +210,7 @@ public class OrgController {
      * @param search
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
     @GetMapping("/nameSearch")
     public ResponseEntity<ResponseDTO> searchMemberName(
             @RequestParam(value = "n", defaultValue = "all")String search){
