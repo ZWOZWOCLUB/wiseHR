@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class AAMRecMessageDTO {
 
-    private String msgCode;
+    private int msgCode;
     private AAMSendMessengerDTO aamSendMessenger;
     private int memCode;
     private String recMsgDeleteStatus;

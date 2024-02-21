@@ -27,6 +27,8 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 POST http://localhost:8001/alarm/messenger
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+
 
 --WebAppBoundary
 Content-Disposition: form-data; name="msgContents"
@@ -44,10 +46,38 @@ Content-Disposition: form-data; name="msgDate"
 Content-Disposition: form-data; name="msgDeleteStatus"
 
 N
+--WebAppBoundary
+Content-Disposition: form-data; name="codes"
+
+
+0: " 240207009"
+1
+:
+" 240215004"
+
+### 받는사람 메신저 등록
+POST http://localhost:8001/alarm/recmessenger
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+
+
+--WebAppBoundary
+Content-Disposition: form-data; name="msgCode"
+
+19
+--WebAppBoundary
+Content-Disposition: form-data; name="memCode"
+
+4
+--WebAppBoundary
+Content-Disposition: form-data; name="codes"
+
+[1,2,3,4]
 
 
 ### 받은 메신저 확인 상태 업데이트
-PUT http://localhost:8001/alarm/recUpdateCheck/1
+PUT http://localhost:8001/alarm/recUpdateCheck/1/4
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
@@ -59,7 +89,7 @@ Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
 
 ### 받은 메신저 삭제 업데이트
-PUT http://localhost:8001/alarm/deleteRecMsg/2
+PUT http://localhost:8001/alarm/deleteRecMsg/2/3
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw

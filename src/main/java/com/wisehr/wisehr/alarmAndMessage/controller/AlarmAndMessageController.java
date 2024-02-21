@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.alarmAndMessage.controller;
 
 
+import com.wisehr.wisehr.alarmAndMessage.dto.AAMRecMessengerDTO;
 import com.wisehr.wisehr.alarmAndMessage.dto.AAMSendMessengerDTO;
 import com.wisehr.wisehr.alarmAndMessage.service.AlarmAndMessageService;
 import com.wisehr.wisehr.common.ResponseDTO;
@@ -8,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -50,10 +54,17 @@ public class AlarmAndMessageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "메신저 등록 성공" , alarmService.insertMessenger(sendMessengerDTO)));
     }
 
+//    받는 메신저 등록
+    @PostMapping("/recmessenger")
+    public ResponseEntity<ResponseDTO> insertRecMessenger(@ModelAttribute AAMRecMessengerDTO recMessengerDTO , @ModelAttribute List<Integer> codes){
+        System.out.println("sendMessengerDTO controller= " + recMessengerDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받는 메신저 등록 성공" , alarmService.insertRecMessenger(recMessengerDTO,codes)));
+    }
+
     //    받은 메신저 확인 상태 업데이트
-    @PutMapping("/recUpdateCheck/{msgCode}")
-    public ResponseEntity<ResponseDTO> recUpdateCheck(@PathVariable int msgCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메신저 확인 상태 업데이트 성공" , alarmService.recUpdateCheck(msgCode)));
+    @PutMapping("/recUpdateCheck/{msgCode}/{memCode}")
+    public ResponseEntity<ResponseDTO> recUpdateCheck(@PathVariable int msgCode,@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메신저 확인 상태 업데이트 성공" , alarmService.recUpdateCheck(msgCode,memCode)));
     }
 
 //    보낸 메세지 삭제하기 (recMessage, sendMessage 둘다 update)
@@ -63,9 +74,9 @@ public class AlarmAndMessageController {
     }
 
 //    받은 메세지 삭제하기 (recMessage에서만 update)
-    @PutMapping("/deleteRecMsg/{msgCode}")
-    public ResponseEntity<ResponseDTO> deleteRecMsg(@PathVariable int msgCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메세지 삭제하기 (recMessage에서만 update) 성공" , alarmService.deleteRecMsg(msgCode)));
+    @PutMapping("/deleteRecMsg/{msgCode}/{memCode}")
+    public ResponseEntity<ResponseDTO> deleteRecMsg(@PathVariable int msgCode,@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메세지 삭제하기 (recMessage에서만 update) 성공" , alarmService.deleteRecMsg(msgCode,memCode)));
     }
 
 //    개인 알람 확인 상태 업데이트

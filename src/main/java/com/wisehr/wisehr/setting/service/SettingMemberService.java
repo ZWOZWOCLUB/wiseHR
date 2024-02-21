@@ -93,7 +93,7 @@ public class SettingMemberService {
         String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
-        String path = IMAGE_DIR + "profile/" ;
+        String path = IMAGE_DIR + "/profile/" ;
 
         int result = 0;
         System.out.println(profile.getContentType());
@@ -167,7 +167,7 @@ public class SettingMemberService {
     public SettingMemberDTO updateMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("updateMember Start~~~~~~~~~~~~");
         log.info("settingMemberDTO : " + settingMemberDTO);
-        String path = IMAGE_DIR + "profile/";
+        String path = IMAGE_DIR + "/profile/";
 
         String replaceFileName = null;
         String kind = "프로필";
@@ -479,7 +479,7 @@ public class SettingMemberService {
         String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
-        String path = IMAGE_DIR + "degree/" ;
+        String path = IMAGE_DIR + "/degree/" ;
 
         int result = 0;
         System.out.println(degreeFile.getContentType());
@@ -526,7 +526,7 @@ public class SettingMemberService {
         String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
-        String path = IMAGE_DIR + "certificate/" ;
+        String path = IMAGE_DIR + "/certificate/" ;
 
         System.out.println(certificateFile.getContentType());
         System.out.println(certificateFile.getOriginalFilename());
@@ -572,7 +572,7 @@ public class SettingMemberService {
         String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
-        String path = IMAGE_DIR + "career/" ;
+        String path = IMAGE_DIR + "/career/" ;
 
         int result = 0;
         System.out.println(careerFile.getContentType());
@@ -620,7 +620,7 @@ public class SettingMemberService {
         String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
-        String path = IMAGE_DIR + "salary/" ;
+        String path = IMAGE_DIR + "/salary/" ;
 
         System.out.println(salaryFile.getContentType());
         System.out.println(salaryFile.getOriginalFilename());
@@ -661,7 +661,7 @@ public class SettingMemberService {
         String fileName = UUID.randomUUID().toString().replace("-", "");
         String replaceFileName = null;
 
-        String path = IMAGE_DIR + "etcDocumentFile/" ;
+        String path = IMAGE_DIR + "/etcDocumentFile/" ;
 
         System.out.println(etcFile.getContentType());
         System.out.println(etcFile.getOriginalFilename());
@@ -853,7 +853,7 @@ public class SettingMemberService {
         log.info("etcfileDTO : " + etcfileDTO);
         System.out.println("여기11111");
 
-        String path = IMAGE_DIR + "etcDocumentFile/";
+        String path = IMAGE_DIR + "/etcDocumentFile/";
         System.out.println("여기11133311");
 
         String replaceFileName = null;
@@ -932,7 +932,7 @@ public class SettingMemberService {
         log.info("salaryFileDTO : " + salaryFileDTO);
         log.info("salaryFile :" + salaryFile.toString() );
 
-        String path = IMAGE_DIR + "salary/";
+        String path = IMAGE_DIR + "/salary/";
 
         String replaceFileName = null;
 
@@ -973,7 +973,7 @@ public class SettingMemberService {
         log.info("updateCertificateFile Start~~~~~~~~~~~~");
         log.info("certificateFileDTO : " + certificateFileDTO);
 
-        String path = IMAGE_DIR + "certificate/";
+        String path = IMAGE_DIR + "/certificate/";
 
         String replaceFileName = null;
 
@@ -1009,7 +1009,7 @@ public class SettingMemberService {
         log.info("updateDocumentFile Start~~~~~~~~~~~~");
         log.info("degreeFileDTO : " + degreeFileDTO);
 
-        String path = IMAGE_DIR + "degree/";
+        String path = IMAGE_DIR + "/degree/";
 
         String replaceFileName = null;
 
@@ -1045,7 +1045,7 @@ public class SettingMemberService {
         log.info("updateDocumentFile Start~~~~~~~~~~~~");
         log.info("careerFileDTO : " + careerFileDTO);
 
-        String path = IMAGE_DIR + "career/";
+        String path = IMAGE_DIR + "/career/";
 
         String replaceFileName = null;
 

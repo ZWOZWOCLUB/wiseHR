@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+//@ToString
 public class ApprovalDepAndMemDTO {
 
     private int depCode;
@@ -19,6 +19,6 @@ public class ApprovalDepAndMemDTO {
     private String depBirthDate;
     private String depDeleteStatus;
 
-    private List<ApprovalMember> approvalMembers;
+    private List<ApprovalMemberDTO> approvalMembers;
 
 }

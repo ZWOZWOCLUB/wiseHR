@@ -22,7 +22,7 @@ public class CommentService {
         this.modelMapper = modelMapper;
     }
 
-    public String  insertComment(CommentDTO commentDTO) {
+    public CommentDTO  insertComment(CommentDTO commentDTO) {
         log.info("insertComment Start");
 
         int result =0;
@@ -33,12 +33,15 @@ public class CommentService {
             System.out.println("wwwwwwwww");
             Comment comment = commentRepository.save(insertComment);
         log.info(comment.toString());
+        CommentDTO saveCommentDTO = modelMapper.map(comment, CommentDTO.class);
 
-            result = 1;
+        return saveCommentDTO;
+//            result = 1;
         } catch (Exception e){
             log.info("===insertComment 오류===");
+            throw new RuntimeException("댓글등록실패");
         }
-        return (result>0)? "댓글등록성공": "댓글등록실패";
+//        return (result>0)? "댓글등록성공": "댓글등록실패";
     }
 
 

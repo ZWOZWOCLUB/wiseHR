@@ -36,9 +36,10 @@ public class NotMember {
     private String memStatus;
     @Column(name = "mem_role", nullable = false)
     private String memRole;
-    @Column(name = "dep_code", nullable = true)
+    @Column(name = "dep_code", nullable = false)
     private Long depCode;
+
     @OneToOne
-    @JoinColumn(name = "pos_code", nullable = true)
+    @JoinColumn(name = "pos_code", nullable = false)
     private ComPosition posCode;
 }

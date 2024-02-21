@@ -35,8 +35,11 @@ public class DataMember {
     private String memStatus;
     @Column(name = "mem_role", nullable = false)
     private String memRole;
+
     @Column(name = "dep_code", nullable = true)
     private Long depCode;
-    @Column(name = "pos_code", nullable = true)
-    private Long posCode;
+
+    @OneToOne
+    @JoinColumn(name = "pos_code", nullable = false)
+    private DataPosition posCode;
 }

@@ -2,6 +2,7 @@ package com.wisehr.wisehr.approval.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wisehr.wisehr.approval.entity.ApprovalPosAndMem;
 import lombok.*;
 
 import java.sql.Date;
@@ -27,4 +28,5 @@ public class ReceiveAramMemberDTO {
     private String memStatus;
     private String memRole;
     private ApprovalDepAndMemDTO depCode;
+    private ApprovalPosAndMemDTO position;
 }

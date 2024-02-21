@@ -127,5 +127,10 @@ public class MyPageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장만!! 조회 성공" , myPageService.selectSal(memCode)));
     }
 
+    @GetMapping("/attList/{memCode}")
+    public ResponseEntity<ResponseDTO> attList(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장만!! 조회 성공" , myPageService.attList(memCode)));
+    }
+
 
 }

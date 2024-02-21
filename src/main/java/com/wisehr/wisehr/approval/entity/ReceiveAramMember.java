@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.approval.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,4 +37,13 @@ public class ReceiveAramMember {
     private String memStatus;
     @Column(name = "mem_role")
     private String memRole;
+    @ManyToOne
+    @JoinColumn(name = "dep_code")
+    @JsonIgnore
+    private ApprovalDep department;
+    @ManyToOne
+    @JoinColumn(name = "pos_code")
+    @JsonIgnore
+    private ApprovalPos position;
+
 }
