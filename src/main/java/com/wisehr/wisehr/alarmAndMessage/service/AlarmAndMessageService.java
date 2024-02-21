@@ -187,17 +187,22 @@ public class AlarmAndMessageService {
     }
 
     @Transactional
-    public Object recUpdateCheck(int msgCode, int memCode) {
+    public Object recUpdateCheck(int memCode) {
 //        멤코드라 써있지만 msgCode로 조회할거임
         int result = 0;
+        int count = 0;
+        List<AAMRecUpdate> recUpdate1 = aamRecUpdateRepository.findByMemCode(memCode);
 
-//            update 할 엔티티 조회
-        AAMRecUpdate recUpdate = aamRecUpdateRepository.findByMsgCodeAndMemCode(msgCode, memCode);
+        for(AAMRecUpdate update : recUpdate1){
+            update = update.recMsgCheckStatus("Y").build();
+            count++;
+        }
+////            update 할 엔티티 조회
+//        AAMRecUpdate recUpdate = aamRecUpdateRepository.findByMsgCodeAndMemCode(msgCode, memCode);
+////            값 조회 후 update.build();
+//        recUpdate = recUpdate.recMsgCheckStatus("Y").build();
 
-//            값 조회 후 update.build();
-        recUpdate = recUpdate.recMsgCheckStatus("Y").build();
-
-        if(recUpdate.getRecMsgCheckStatus() == "Y"){
+        if(count == recUpdate1.size()){
             result = 1;
         }
         return (result > 0) ? "받은 메신저 확인 상태 업데이트 성공" : "받은 메신저 확인 상태 업데이트 실패";

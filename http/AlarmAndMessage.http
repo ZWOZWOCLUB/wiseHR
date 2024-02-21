@@ -17,11 +17,13 @@ Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
 
+
 ### 받은 메신저 조회
 GET http://localhost:8001/alarm/recMessenger/1
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+
 
 ### 메신저 등록
 POST http://localhost:8001/alarm/messenger
@@ -77,7 +79,7 @@ Content-Disposition: form-data; name="codes"
 
 
 ### 받은 메신저 확인 상태 업데이트
-PUT http://localhost:8001/alarm/recUpdateCheck/1/4
+PUT http://localhost:8001/alarm/recUpdateCheck/240130010
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw

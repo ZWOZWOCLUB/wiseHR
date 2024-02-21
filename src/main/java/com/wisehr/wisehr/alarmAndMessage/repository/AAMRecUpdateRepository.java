@@ -14,4 +14,6 @@ public interface AAMRecUpdateRepository extends JpaRepository<AAMRecUpdate, Inte
     List<AAMRecUpdate> findByMsgCode(int msgCode);
 
     AAMRecUpdate findByRecMsgCode(int recMsgCode);
+
+    List<AAMRecUpdate> findByMemCode(int memCode);
 }
