@@ -132,8 +132,8 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      * schedule_allowance에 insert
      */
     @Tag(name = "스케줄 근무 그룹에 인원 편성", description = "스케줄 근무 그룹에 인원 편성")
-        @PostMapping("/allowance")
-    public ResponseEntity<ResponseDTO> insertScheduleAllowance(@RequestBody ScheduleAllowanceDTO allowanceDTO) {
+    @PostMapping("/allowance")
+    public ResponseEntity<ResponseDTO> insertScheduleAllowance(@ModelAttribute ScheduleAllowanceDTO allowanceDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무 그룹에 사람 등록 성공", scheduleService.insertScheduleAllowance(allowanceDTO)));
     }
     /**

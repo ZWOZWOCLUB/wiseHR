@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
-@Embeddable
+//@Embeddable
 public class ScheduleInsertAllowanceID implements Serializable {
     private int memCode;
     private String schCode;

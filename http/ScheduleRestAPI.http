@@ -96,14 +96,16 @@ Accept: */*
   "etcKind": 10
 }
 
+
 ###근무 그룹에 사람 등록
 POST http://localhost:8001/schedule/allowance
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA4MzIzNDgyMDYwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkxODc0ODJ9.lZItdDIpWGU_WUjzFsKq4Fo6PDsCt9xX9oiK3iuqXDA
 
 {
-  "memCode": 240202006,
-  "schCode": "sch9"
+  "memCode": 1,
+  "schCode": "sch10"
 }
 
 ###근무 그룹에 사람 수정

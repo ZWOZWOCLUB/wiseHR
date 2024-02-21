@@ -13,8 +13,8 @@ import java.util.Objects;
 @Setter
 @ToString
 public class ScheduleInsertDTO {
-    private List<SchedulePatternDayDTO> patternDayDTO;
-    private ScheduleDTO scheduleDTO;
+//    private List<SchedulePatternDayDTO> patternDayDTO;
+//    private ScheduleDTO scheduleDTO;
     private int wokCode;
     private String schCode;
     private String schType;
@@ -25,5 +25,6 @@ public class ScheduleInsertDTO {
     private String schColor;
     private String schDeleteStatus;
     private List<String> dayCode;
+    private List<String> memCode;
 
 }
