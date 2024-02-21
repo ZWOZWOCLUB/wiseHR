@@ -25,5 +25,6 @@ public class ScheduleInsertDTO {
     private String schColor;
     private String schDeleteStatus;
     private List<String> dayCode;
+    private List<String> memCode;
 
 }

@@ -51,24 +51,37 @@ public class ScheduleService {
 
     public List<ScheduleAllSelectDTO> searchMonth(ScheduleSearchValueDTO value) {
         log.info("searchDate 서비스 시작~~~~~~~~~~~~");
-        int memCode = value.getMemCode();
-        String memName = value.getMemName();
-        int depCode = value.getDepCode();
-        String depName = value.getDepName();
+        log.info("searchDate 서비스 시작~~~~~~~~~~~~", value);
+        System.out.println("value = " + value);
+
+        if(!value.getMemberCode().isEmpty()) {
+
+
+                List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonthAndMemCode(value.getMemberCode(), value.getYearMonth());
+            List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                    .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
+                    .collect(Collectors.toList());
+            log.info("searchDate 서비스 끗~~~~~~~~~~~~");
+
+            return selectDTOList;
+
+        }else{
         String yearMonth = value.getYearMonth();
+        log.info("yearMonth : " + yearMonth);
 
 
         List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonth(yearMonth);
         log.info("allselect : " + allSelect);
-
         List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
                 .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
                 .collect(Collectors.toList());
         System.out.println("selectDTOList = " + selectDTOList);
-
         log.info("searchDate 서비스 끗~~~~~~~~~~~~");
+        System.out.println("selectDTOList = " + selectDTOList);
 
         return selectDTOList;
+    }
+
     }
 
     @Transactional
@@ -115,6 +128,30 @@ public class ScheduleService {
 
             List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
             log.info("insertPatternDayResult = " + insertPatternDayResult);
+
+            if(insertDTO.getMemCode().size() > 0) {
+
+
+                List<ScheduleAllowanceDTO> scheduleInsertAllowance = new ArrayList<>();
+                for (int i = 0; i < insertDTO.getMemCode().size(); i++) {
+                    int memCode = Integer.parseInt(insertDTO.getMemCode().get(i));
+                    ScheduleAllowanceDTO allowance = new ScheduleAllowanceDTO();
+                    allowance.setSchCode(insertScheduleResult.getSchCode());
+                    allowance.setMemCode(memCode);
+
+                    scheduleInsertAllowance.add(allowance);
+                }
+
+                List<ScheduleInsertAllowance> allowances = scheduleInsertAllowance.stream()
+                        .map(list -> modelMapper.map(list, ScheduleInsertAllowance.class))
+                        .collect(Collectors.toList());
+
+
+                    List<ScheduleInsertAllowance> insertResult = insertAllowanceRepository.saveAll(allowances);
+            }
+
+
+
 
             result++;
         } catch (Exception e) {
