@@ -62,9 +62,9 @@ public class AlarmAndMessageController {
     }
 
     //    받은 메신저 확인 상태 업데이트
-    @PutMapping("/recUpdateCheck/{msgCode}/{memCode}")
-    public ResponseEntity<ResponseDTO> recUpdateCheck(@PathVariable int msgCode,@PathVariable int memCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메신저 확인 상태 업데이트 성공" , alarmService.recUpdateCheck(msgCode,memCode)));
+    @PutMapping("/recUpdateCheck/{memCode}")
+    public ResponseEntity<ResponseDTO> recUpdateCheck(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "받은 메신저 확인 상태 업데이트 성공" , alarmService.recUpdateCheck(memCode)));
     }
 
 //    보낸 메세지 삭제하기 (recMessage, sendMessage 둘다 update)
