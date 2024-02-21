@@ -43,29 +43,44 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // CSRF 보호 비활성화
                 .csrf(csrf -> csrf.disable())
+                // JWT 인증 필터 추가
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 세션 관리 설정: 세션 만료 시간, 세션 고정 방지 등
+                .sessionManagement(sessionManagement -> sessionManagement
+                        // 세션 만료 시간 설정 (5분)
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .maximumSessions(1) // 한 사용자당 최대 세션 수
+                        .maxSessionsPreventsLogin(true) // 새 세션이 생성되는 경우 로그인 방지
+                        .expiredUrl("/login?expired") // 세션이 만료된 경우 리다이렉트할 URL
+
+                )
+                // 폼 로그인 및 HTTP 기본 인증 비활성화
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
+                // 사용자 정의 인증 필터 추가
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeRequests(authorizeRequests ->
-//                        authorizeRequests.anyRequest().authenticated()
-//                )
-//                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(new CustomAccessDeniedHandler())
-//
-//                )
-
+                // 로그아웃 설정
                 .logout(logout ->
                         logout
+                                // 로그아웃 URL 설정
                                 .logoutUrl("/logout")
+                                // 로그아웃 성공 후 이동할 URL 설정
                                 .logoutSuccessUrl("/login?logout")
+                                // HTTP 세션 무효화 여부 설정
                                 .invalidateHttpSession(true)
+                                // 삭제할 쿠키 설정
                                 .deleteCookies("JSESSIONID") // 필요한 경우 쿠키 삭제
+                                // 로그아웃 성공 핸들러 설정
                                 .logoutSuccessHandler(logoutSuccessHandler()) // 선택적
-
+                )
+                // 예외 처리 설정
+                .exceptionHandling(exceptionHandling ->
+                        // 권한이 없는 사용자에게 알림 보내기
+                        exceptionHandling.accessDeniedHandler(customAccessDeniedHandler())
                 );
+
         return http.build();
     }
 
