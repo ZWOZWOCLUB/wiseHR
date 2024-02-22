@@ -11,7 +11,11 @@ import com.wisehr.wisehr.attendance.dto.AttendanceScheduleDTO;
 import com.wisehr.wisehr.attendance.dto.TodayInfoDTO;
 import com.wisehr.wisehr.attendance.entity.Attendance;
 import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
+import com.wisehr.wisehr.schedule.dto.ScheduleAllSelectDTO;
+import com.wisehr.wisehr.schedule.dto.ScheduleSearchValueDTO;
+import com.wisehr.wisehr.schedule.entity.ScheduleAllSelect;
 import com.wisehr.wisehr.schedule.entity.ScheduleAllowance;
+import com.wisehr.wisehr.schedule.repository.ScheduleAllSelectRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleAllowanceRepository;
 import com.wisehr.wisehr.util.ApprovalUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -36,10 +41,11 @@ public class AttendanceService {
     private final ApprovalPatternDayRepository attendancePatternDayRepository;
     private final ApprovalCompleteRepository approvalCompleteRepository;
     private final ReferencerRepository referencerRepository;
+    private final ScheduleAllSelectRepository allSelectRepository;
     private final ModelMapper modelMapper;
     private final ApprovalUtils utils;
 
-    public AttendanceService(AttendanceRepository attendanceRepository, ApprovalScheduleRepository attendanceScheduleRepository, ScheduleAllowanceRepository attendanceScheduleAllowanceRepository, ApprovalWorkPatternRepository attendanceWorkPatternRepository, ApprovalPatternDayRepository attendancePatternDayRepository, ApprovalCompleteRepository approvalCompleteRepository, ReferencerRepository referencerRepository, ModelMapper modelMapper, ApprovalUtils utils) {
+    public AttendanceService(AttendanceRepository attendanceRepository, ApprovalScheduleRepository attendanceScheduleRepository, ScheduleAllowanceRepository attendanceScheduleAllowanceRepository, ApprovalWorkPatternRepository attendanceWorkPatternRepository, ApprovalPatternDayRepository attendancePatternDayRepository, ApprovalCompleteRepository approvalCompleteRepository, ReferencerRepository referencerRepository, ScheduleAllSelectRepository allSelectRepository, ModelMapper modelMapper, ApprovalUtils utils) {
         this.attendanceRepository = attendanceRepository;
         this.attendanceScheduleRepository = attendanceScheduleRepository;
         this.attendanceScheduleAllowanceRepository = attendanceScheduleAllowanceRepository;
@@ -47,6 +53,7 @@ public class AttendanceService {
         this.attendancePatternDayRepository = attendancePatternDayRepository;
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.referencerRepository = referencerRepository;
+        this.allSelectRepository = allSelectRepository;
         this.modelMapper = modelMapper;
         this.utils = utils;
     }
@@ -57,53 +64,104 @@ public class AttendanceService {
     public String startWork(AttendanceDTO att) {
 
         try {
-            List<ScheduleAllowance> getSchCode = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode((att.getAttendanceMember().getMemCode()).intValue());  // 가지고 있는 스케줄 코드를 가져옴 2개 이상일 수 있어서 List
+//            List<ScheduleAllowance> getSchCode = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode((att.getAttendanceMember().getMemCode()).intValue());  // 가지고 있는 스케줄 코드를 가져옴 2개 이상일 수 있어서 List
+//
+//            log.info("getSchCode : " + getSchCode);
+//
+//            List<ApprovalSchedule> getWokCode = new ArrayList<>();
+//            List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
+//
+//            for (int i = 0; i < getSchCode.size(); i++) {
+//                getWokCode.add(attendanceScheduleRepository.findBySchCode(getSchCode.get(i).getAllowanceID().getSchCode()));   // 찾아온 schCode를 통해서 wokCode를 찾기
+//                getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));   // wokCode를 통해서 일하는 요일을 가져오기
+//            }
+//
+//            log.info("getWokCode : " + getWokCode);
+//            log.info("getPatternDay : " + getPatternDay);
+//
+//            int[] day = new int[getPatternDay.size()];
+//
+//            for (int i = 0; i < getPatternDay.size(); i++) {
+//                day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
+//            }
+//
+//            int[] days = Arrays.stream(day).distinct().toArray();   // 배열의 값을 유니크한 값만 남기도록 (어차피 날짜가 중복되게 짜지 않을거니까 )
+//
+//            Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
+//
+//            for (int i = 0; i < getWokCode.size(); i++) {
+//                schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),days)); // 날짜 구하는 매서드에 값 넣어서 일하는 날짜 뽑아내기
+//            }
+//
+//            log.info("days : " + days);
+//            log.info("schWorkDayMap : " + schWorkDayMap);
+//            log.info("sch10 : " +schWorkDayMap.get("sch10"));
+//
+//            LocalDate workDate = att.getAttWorkDate().toLocalDate();
+//            String needSchCode = "";
+//
+//
+//            for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
+//                log.info("엔트리 값 : " + entry.getValue());
+//                log.info("날짜 값 : " + workDate);
+//                if (entry.getValue().contains(workDate)){
+//                    log.info("entry.getValue : " + entry.getValue());
+//                    log.info("여기 들어오냐?");
+//                    needSchCode = entry.getKey();
+//                }
+//            }
+//            log.info("needSchCode  : " + needSchCode);
+            List<ScheduleAllowance> scheduleList = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode((att.getAttendanceMember().getMemCode()).intValue());
 
-            log.info("getSchCode : " + getSchCode);
+            log.info("getSchCode : " + scheduleList);
 
             List<ApprovalSchedule> getWokCode = new ArrayList<>();
-            List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
 
-            for (int i = 0; i < getSchCode.size(); i++) {
-                getWokCode.add(attendanceScheduleRepository.findBySchCode(getSchCode.get(i).getAllowanceID().getSchCode()));   // 찾아온 schCode를 통해서 wokCode를 찾기
-                getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));   // wokCode를 통해서 일하는 요일을 가져오기
-            }
-
-            log.info("getWokCode : " + getWokCode);
-            log.info("getPatternDay : " + getPatternDay);
-
-            int[] day = new int[getPatternDay.size()];
-
-            for (int i = 0; i < getPatternDay.size(); i++) {
-                day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
-            }
-
-            int[] days = Arrays.stream(day).distinct().toArray();   // 배열의 값을 유니크한 값만 남기도록 (어차피 날짜가 중복되게 짜지 않을거니까 )
+            String needSchCode = null;
 
             Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
 
-            for (int i = 0; i < getWokCode.size(); i++) {
-                schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),days)); // 날짜 구하는 매서드에 값 넣어서 일하는 날짜 뽑아내기
-            }
-
-            log.info("days : " + days);
-            log.info("schWorkDayMap : " + schWorkDayMap);
-            log.info("sch10 : " +schWorkDayMap.get("sch10"));
-
             LocalDate workDate = att.getAttWorkDate().toLocalDate();
-            String needSchCode = "";
 
 
-            for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
-                log.info("엔트리 값 : " + entry.getValue());
-                log.info("날짜 값 : " + workDate);
-                if (entry.getValue().contains(workDate)){
-                    log.info("entry.getValue : " + entry.getValue());
-                    log.info("여기 들어오냐?");
-                    needSchCode = entry.getKey();
-                }
+
+
+            for (int i = 0; i < scheduleList.size(); i++) {
+                getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
             }
-            log.info("needSchCode  : " + needSchCode);
+
+            log.info("getWokCode : " + getWokCode);
+            log.info("length : " + getWokCode.size());
+
+
+
+
+            for (int i = 0; i < getWokCode.size(); i++) {
+                List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
+                getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
+                log.info("getPatternDay : " + getPatternDay);
+                log.info("getPatternDay length : " + getPatternDay.size());
+
+                int[] day = new int[getPatternDay.size()];
+
+                for (int j = 0; j < getPatternDay.size(); j++) {
+                    day[j] = (getPatternDay.get(j).getApprovalPatternDayPK().getDayCode()).intValue();
+                }
+
+                log.info("day now : " + day);
+                schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),day));
+
+                for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
+                    log.info("엔트리 값 : " + entry.getValue());
+                    log.info("날짜 값 : " + workDate);
+                    if (entry.getValue().contains(workDate)){
+                        log.info("entry.getValue : " + entry.getValue());
+                        log.info("여기 들어오냐?");
+                        needSchCode = entry.getKey();
+                    }
+                }
+
+            }
 
             ApprovalSchedule schSet = attendanceScheduleRepository.findBySchCode(needSchCode);
             log.info("wokCode : " + schSet);
@@ -204,48 +262,53 @@ public class AttendanceService {
         log.info("getSchCode : " + scheduleList);
 
         List<ApprovalSchedule> getWokCode = new ArrayList<>();
-        List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
 
-        for (int i = 0; i < scheduleList.size(); i++) {
-            getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
-            getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
-        }
-
-        log.info("getWokCode : " + getWokCode);
-        log.info("getPatternDay : " + getPatternDay);
-
-        int[] day = new int[getPatternDay.size()];
-
-        for (int i = 0; i < getPatternDay.size(); i++) {
-            day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
-        }
-
-        int[] days = Arrays.stream(day).distinct().toArray();
+        String needSchCode = null;
 
         Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
 
-        for (int i = 0; i < getWokCode.size(); i++) {
-            schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),days));
-        }
-
-        log.info("days : " + days);
-        log.info("schWorkDayMap : " + schWorkDayMap);
-
         LocalDate workDate = LocalDate.parse(searchDate);
-        String needSchCode = null;
-
-        log.info("workDate : " + workDate);
 
 
-        for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
-            log.info("엔트리 값 : " + entry.getValue());
-            log.info("날짜 값 : " + workDate);
-            if (entry.getValue().contains(workDate)){
-                log.info("entry.getValue : " + entry.getValue());
-                log.info("여기 들어오냐?");
-                needSchCode = entry.getKey();
-            }
+
+
+        for (int i = 0; i < scheduleList.size(); i++) {
+            getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
         }
+
+        log.info("getWokCode : " + getWokCode);
+        log.info("length : " + getWokCode.size());
+
+
+
+
+        for (int i = 0; i < getWokCode.size(); i++) {
+            List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
+            getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
+            log.info("getPatternDay : " + getPatternDay);
+            log.info("getPatternDay length : " + getPatternDay.size());
+
+            int[] day = new int[getPatternDay.size()];
+
+            for (int j = 0; j < getPatternDay.size(); j++) {
+                day[j] = (getPatternDay.get(j).getApprovalPatternDayPK().getDayCode()).intValue();
+            }
+
+            log.info("day now : " + day);
+            schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),day));
+
+            for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
+                log.info("엔트리 값 : " + entry.getValue());
+                log.info("날짜 값 : " + workDate);
+                if (entry.getValue().contains(workDate)){
+                    log.info("entry.getValue : " + entry.getValue());
+                    log.info("여기 들어오냐?");
+                    needSchCode = entry.getKey();
+                }
+            }
+
+        }
+
 
         if (needSchCode == null ){
             log.info("가라 ");
@@ -299,43 +362,6 @@ public class AttendanceService {
         log.info("reference : " + reference);
         log.info("reference count : " + reference.size());
 
-        List<ScheduleAllowance> scheduleList = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode(Integer.parseInt(memCode));
-
-        log.info("getSchCode : " + scheduleList);
-
-        List<ApprovalSchedule> getWokCode = new ArrayList<>();
-        List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
-
-        for (int i = 0; i < scheduleList.size(); i++) {
-            getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
-            getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
-        }
-
-        log.info("getWokCode : " + getWokCode);
-        log.info("getPatternDay : " + getPatternDay);
-
-        int[] day = new int[getPatternDay.size()];
-
-        for (int i = 0; i < getPatternDay.size(); i++) {
-            day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
-        }
-
-        int[] days = Arrays.stream(day).distinct().toArray();
-
-        Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
-
-        for (int i = 0; i < getWokCode.size(); i++) {
-            schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),days));
-        }
-
-        log.info("days : " + days);
-        log.info("schWorkDayMap : " + schWorkDayMap);
-
-        LocalDate workDate = LocalDate.parse(searchDate);
-        String needSchCode = null;
-
-        log.info("workDate : " + workDate);
-
         TodayInfoDTO today = new TodayInfoDTO();
 
         today.setCompleteNumber(complete.size());
@@ -344,19 +370,123 @@ public class AttendanceService {
         today.setReferencerNumber(reference.size());
 
 
-        for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
-            log.info("엔트리 값 : " + entry.getValue());
-            log.info("날짜 값 : " + workDate);
-            if (entry.getValue().contains(workDate)){
-                log.info("entry.getValue : " + entry.getValue());
-                log.info("여기 들어오냐?");
-                needSchCode = entry.getKey();
-            }
+
+//        List<ScheduleAllowance> scheduleList = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode(Integer.parseInt(memCode));
+//
+//        log.info("getSchCode : " + scheduleList);
+//
+//        List<ApprovalSchedule> getWokCode = new ArrayList<>();
+//        List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
+//
+//        for (int i = 0; i < scheduleList.size(); i++) {
+//            getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
+//            getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
+//        }
+//
+//        log.info("getWokCode : " + getWokCode);
+//        log.info("getPatternDay : " + getPatternDay);
+//
+//        int[] day = new int[getPatternDay.size()];
+//
+//        for (int i = 0; i < getPatternDay.size(); i++) {
+//            day[i] = (getPatternDay.get(i).getApprovalPatternDayPK().getDayCode()).intValue();
+//        }
+//
+//        int[] days = Arrays.stream(day).distinct().toArray();
+//
+//        Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
+//
+//        for (int i = 0; i < getWokCode.size(); i++) {
+//            schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),days));
+//        }
+//
+//        log.info("days : " + days);
+//        log.info("schWorkDayMap : " + schWorkDayMap);
+//
+//        LocalDate workDate = LocalDate.parse(searchDate);
+//        String needSchCode = null;
+//
+//        log.info("workDate : " + workDate);
+////
+//        TodayInfoDTO today = new TodayInfoDTO();
+//
+//        today.setCompleteNumber(complete.size());
+//        today.setNagativeNumber(nagative.size());
+//        today.setStayNumber(stay.size());
+//        today.setReferencerNumber(reference.size());
+
+//
+//        for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
+//            log.info("엔트리 값 : " + entry.getValue());
+//            log.info("날짜 값 : " + workDate);
+//            if (entry.getValue().contains(workDate)){
+//                log.info("entry.getValue : " + entry.getValue());
+//                log.info("여기 들어오냐?");
+//                needSchCode = entry.getKey();
+//            }
+//        }
+//
+//        if (needSchCode == null ){
+//            log.info("가라 ");
+//            return today;
+//        }
+
+        List<ScheduleAllowance> scheduleList = attendanceScheduleAllowanceRepository.findByAllowanceID_MemCode(Integer.parseInt(memCode));
+
+        log.info("getSchCode : " + scheduleList);
+
+        List<ApprovalSchedule> getWokCode = new ArrayList<>();
+
+        String needSchCode = null;
+
+        Map<String,List<LocalDate>> schWorkDayMap = new HashMap<>();
+
+        LocalDate workDate = LocalDate.parse(searchDate);
+
+
+
+
+        for (int i = 0; i < scheduleList.size(); i++) {
+            getWokCode.add(attendanceScheduleRepository.findBySchCode(scheduleList.get(i).getAllowanceID().getSchCode()));
         }
+
+        log.info("getWokCode : " + getWokCode);
+        log.info("length : " + getWokCode.size());
+
+
+
+
+        for (int i = 0; i < getWokCode.size(); i++) {
+            List<ApprovalPatternDay> getPatternDay = new ArrayList<>();
+            getPatternDay.addAll(attendancePatternDayRepository.findByApprovalPatternDayPK_WokCode(getWokCode.get(i).getWorkPattern().getWokCode()));
+            log.info("getPatternDay : " + getPatternDay);
+            log.info("getPatternDay length : " + getPatternDay.size());
+
+            int[] day = new int[getPatternDay.size()];
+
+            for (int j = 0; j < getPatternDay.size(); j++) {
+                day[j] = (getPatternDay.get(j).getApprovalPatternDayPK().getDayCode()).intValue();
+            }
+
+            log.info("day now : " + day);
+            schWorkDayMap.put(getWokCode.get(i).getSchCode(), utils.findDays(getWokCode.get(i).getSchStartDate(),getWokCode.get(i).getSchEndDate(),day));
+
+            for (Map.Entry<String, List<LocalDate>> entry : schWorkDayMap.entrySet()){
+                log.info("엔트리 값 : " + entry.getValue());
+                log.info("날짜 값 : " + workDate);
+                if (entry.getValue().contains(workDate)){
+                    log.info("entry.getValue : " + entry.getValue());
+                    log.info("여기 들어오냐?");
+                    needSchCode = entry.getKey();
+                }
+            }
+
+        }
+
 
         if (needSchCode == null ){
             log.info("가라 ");
-            return today;
+            return null;
         }
 
         ApprovalSchedule schSet = attendanceScheduleRepository.findBySchCode(needSchCode);
@@ -392,5 +522,21 @@ public class AttendanceService {
         log.info("today : " + today);
 
         return today;
+    }
+
+    public List<ScheduleAllSelectDTO> searchMonth(ScheduleSearchValueDTO value) {
+
+
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByYearMonth(value.getMemCode());
+
+        log.info("allSelect : " + allSelect);
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
+                .collect(Collectors.toList());
+
+        log.info("selectDTOLIST : " + selectDTOList);
+
+        return selectDTOList;
     }
 }

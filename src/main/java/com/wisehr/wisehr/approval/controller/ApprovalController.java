@@ -1,11 +1,15 @@
 package com.wisehr.wisehr.approval.controller;
 
 
+import com.wisehr.wisehr.common.Criteria;
+import com.wisehr.wisehr.common.PageDTO;
+import com.wisehr.wisehr.common.PagingResponseDTO;
 import com.wisehr.wisehr.common.ResponseDTO;
 import com.wisehr.wisehr.approval.dto.*;
 import com.wisehr.wisehr.approval.service.ApprovalService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,19 +34,41 @@ public class ApprovalController {
     // 받은 결재 조회
     @GetMapping("/receivedapproval/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
     @Tag(name = "받은 결재 조회", description = "받은 결재 조회")
-    public ResponseEntity<ResponseDTO> reqPayment(@PathVariable Long memCode){
+    public ResponseEntity<ResponseDTO> reqPayment(@PathVariable Long memCode,
+                                                  @RequestParam(name = "offset", defaultValue = "1") String offset){
+        log.info("offset : " + offset);
         log.info("memCodere : " + memCode);
 
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", approvalService.selectReqPayment(memCode)));
+        Criteria cri = new Criteria(Integer.valueOf(offset), 10);
+
+        PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
+
+        Page<ApprovalCompleteDTO> approvalList = approvalService.selectReqPayment(memCode, cri);
+
+        pagingResponseDTO.setData(approvalList);
+
+        pagingResponseDTO.setPageInfo(new PageDTO(cri, (int) approvalList.getTotalElements()));
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", pagingResponseDTO));
     }
 
     // 보낸 결재 조회
     @GetMapping("/sendapproval/{memCode}")
     @Tag(name = "보낸 결재 조회", description = "보낸 결재 조회")
-    public ResponseEntity<ResponseDTO> recPayment(@PathVariable Long memCode){
-        log.info("memCode : " + memCode);
+    public ResponseEntity<ResponseDTO> recPayment(@PathVariable Long memCode ,
+                                                  @RequestParam(name = "offset", defaultValue = "1") String offset){
+        Criteria cri = new Criteria(Integer.valueOf(offset), 10);
 
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", approvalService.selectRecPayment(memCode)));
+        PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
+
+        Page<ApprovalCompleteDTO> approvalList = approvalService.selectRecPayment(memCode , cri);
+
+        pagingResponseDTO.setData(approvalList);
+
+        pagingResponseDTO.setPageInfo(new PageDTO(cri, (int) approvalList.getTotalElements()));
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공", pagingResponseDTO));
+
     }
 
     // 결재 조회
