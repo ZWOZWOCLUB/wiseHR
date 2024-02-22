@@ -39,6 +39,8 @@ public class ScheduleController {
 @Tag(name = "스케줄 조회", description = "스케줄 전체 조회")
 @PostMapping("/searchMonth")
 public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueDTO value) {
+
+
     if(value.getYearMonth() == null){
     Date date = new Date();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
