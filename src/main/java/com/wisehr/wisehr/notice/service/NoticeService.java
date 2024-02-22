@@ -10,6 +10,7 @@ import com.wisehr.wisehr.notice.entity.Notice;
 import com.wisehr.wisehr.notice.entity.NoticeResponse;
 import com.wisehr.wisehr.notice.repository.*;
 import com.wisehr.wisehr.util.FileUploadUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -161,67 +162,110 @@ public class NoticeService {
         log.info("noticeDTO ========== " + noticeDTO);
         log.info("noticeFile ====== " + noticeFile);
 
-
         int result = 0;
 
-
-        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
-
-        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
-
-        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
-        noticeFileDTO.setNotAtcDeleteStatus("N");
-        noticeFileDTO.setNotAtcPath(path);
-//        noticeFileDTO.setNotice(noticeDTO);
-
-        log.info("noticeFile.getName====" + noticeFile.getName());
-        log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
-        log.info("path========= : " + path);
-        log.info("noticeDTO==========" + noticeDTO);
+        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); // 파일 이름이 공지사항 코드가 됨
 
         try {
-            /*update 할 notice 조회*/
-            Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
+            /* update할 notice 조회 */
+            Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).orElseThrow(() -> new EntityNotFoundException("공지사항을 찾을 수 없습니다."));
             log.info("notice ==== " + notice);
 
-            //공지내용 업데이트
+            // 공지 내용 업데이트
             notice.setNotName(noticeDTO.getNotName());
             notice.setNotComment(noticeDTO.getNotComment());
 
-            //첨부파일이 존재할 경우
-            if (!noticeFile.isEmpty()) {
-                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(), noticeFile);
-                log.info("Saved File Name ; " + savedFileName);
-
-//                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
+            // 첨부파일이 존재하고 비어있지 않을 경우
+            if (noticeFile != null && !noticeFile.isEmpty()) {
+                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getOriginalFilename(), noticeFile);
+                log.info("Saved File Name: " + savedFileName);
 
 
-//                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
-//                notAttachedFile.setNotAtcPath(path);
-//
-//                notAttachedFileRepository.save(notAttachedFile);
             }
 
-
             noticeRepository.save(notice);
-            log.info("notice ======= " + notice);
-            log.info("noticeDTO==========" + noticeDTO);
-
-            log.info("noticeFile.getName====" + noticeFile.getName());
-            log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+            log.info("Updated notice: " + notice);
 
             result = 1;
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("Error message", e);
-//            throw new RuntimeException(e);
+            log.error("File upload error", e);
+            // 필요한 경우 사용자 정의 예외로 변경하여 처리할 수 있음
+        } catch (EntityNotFoundException e) {
+            log.error("Notice not found", e);
+            // 적절한 예외 처리
         }
-
 
         log.info("updateNotice 끝");
         return (result > 0) ? "공지업뎃 성공" : "공지업뎃 실패";
-
     }
+//    @Transactional
+//    public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
+//        log.info(" ==============updateService Start ===========");
+//        log.info("noticeDTO ========== " + noticeDTO);
+//        log.info("noticeFile ====== " + noticeFile);
+//
+//
+//        int result = 0;
+//
+//
+//        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
+//
+//
+//        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
+////        String path = IMAGE_DIR + "noticeFiles/";
+//        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
+//        noticeFileDTO.setNotAtcDeleteStatus("N");
+//        noticeFileDTO.setNotAtcPath(path);
+////        noticeFileDTO.setNotice(noticeDTO);
+//
+//        log.info("noticeFile.getName====" + noticeFile.getName());
+//        log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+//        log.info("path========= : " + path);
+//        log.info("noticeDTO==========" + noticeDTO);
+//
+//        try {
+//            /*update 할 notice 조회*/
+//            Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
+//            log.info("notice ==== " + notice);
+//
+//            //공지내용 업데이트
+//            notice.setNotName(noticeDTO.getNotName());
+//            notice.setNotComment(noticeDTO.getNotComment());
+//
+//            //첨부파일이 존재할 경우
+//            if (noticeFile != null) {
+//                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(), noticeFile);
+//                log.info("Saved File Name ; " + savedFileName);
+//
+////                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
+////
+////
+////                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
+////                notAttachedFile.setNotAtcPath(path);
+////
+////                notAttachedFileRepository.save(notAttachedFile);
+//            }
+//
+//
+//            noticeRepository.save(notice);
+//            log.info("notice ======= " + notice);
+//            log.info("noticeDTO==========" + noticeDTO);
+//
+//            log.info("noticeFile.getName====" + noticeFile.getName());
+//            log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
+//
+//            result = 1;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            log.error("Error message", e);
+////            throw new RuntimeException(e);
+//        }
+//
+//
+//        log.info("updateNotice 끝");
+//        return (result > 0) ? "공지업뎃 성공" : "공지업뎃 실패";
+//
+//    }
 
 
     //공지 상세 조회
