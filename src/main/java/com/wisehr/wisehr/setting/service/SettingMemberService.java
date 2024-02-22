@@ -53,7 +53,7 @@ public class SettingMemberService {
     @Value("${image.image-dir}")
     private String IMAGE_DIR;
 
-    @Value("http://localhost:8001/")
+    @Value("${image.image-url}")
     private String IMAGE_URL;
 
 
@@ -167,6 +167,7 @@ public class SettingMemberService {
     public SettingMemberDTO updateMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("updateMember Start~~~~~~~~~~~~");
         log.info("settingMemberDTO : " + settingMemberDTO);
+        System.out.println("profile = " + profile);
         String path = IMAGE_DIR + "/profile/";
 
         String replaceFileName = null;
@@ -234,6 +235,36 @@ public class SettingMemberService {
                     return memberDTO;
                 }
             }else {
+                SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
+
+                String fileName = UUID.randomUUID().toString().replace("-", "");
+                String[] extend = profile.getOriginalFilename().split("\\.");
+
+                String realExtend = extend[1];
+
+
+                replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
+
+                fileDTO.setMemCode(settingMemberDTO.getMemCode());
+                fileDTO.setDocAtcExtends(realExtend);
+                fileDTO.setDocAtcConvertName(replaceFileName);
+                fileDTO.setDocAtcRegistDate(LocalDate.now().toString());
+                fileDTO.setDocAtcStorage(path);
+                fileDTO.setDocAtcDeleteStatus("N");
+                fileDTO.setDocAtcPath(path);
+                fileDTO.setDocAtcOriginName(profile.getOriginalFilename());
+                fileDTO.setDocAtcKind("프로필");
+                fileDTO.setMemCode(settingMemberDTO.getMemCode());
+
+                SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
+                settingDocumentFileRepository.save(insertFile);
+
+
+                SettingDocumentFileDTO resultFileDTO = modelMapper.map(insertFile, SettingDocumentFileDTO.class);
+
+                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                memberDTO.setProfileURL(url);
+                System.out.println("memberDTO = " + memberDTO);
                 return memberDTO;
             }
 
@@ -281,7 +312,7 @@ public class SettingMemberService {
     public List<SettingDepartmentDTO> searchDepName() {
         log.info("searchDepName 서비스 시작~~~~~~~~~~~~");
 
-        List<SettingDepartment> depList = settingDepartmentRepository.findAll();
+        List<SettingDepartment> depList = settingDepartmentRepository.findByDepDeleteStatus("N");
 
         List<SettingDepartmentDTO> depDTOList = depList.stream()
                 .map(dep -> modelMapper.map(dep, SettingDepartmentDTO.class))
