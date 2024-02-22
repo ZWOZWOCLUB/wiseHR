@@ -85,9 +85,11 @@ public class ScheduleService {
     }
 
     @Transactional
-    public String insertSchedule(ScheduleInsertDTO insertDTO) {
+    public List<ScheduleDTO> insertSchedule(ScheduleInsertDTO insertDTO) {
         log.info("insertSchedule Start~~~~~~~~~~~~");
         log.info((insertDTO.toString()));
+        try {
+
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         scheduleDTO.setWokCode(insertDTO.getWokCode());
         scheduleDTO.setSchColor(insertDTO.getSchColor());
@@ -101,36 +103,21 @@ public class ScheduleService {
             int dayCode = Integer.parseInt(insertDTO.getDayCode().get(i));
 
             SchedulePatternDayDTO patternDayDTO = new SchedulePatternDayDTO();
-            patternDayDTO.setDayCode(dayCode + 1);
+            patternDayDTO.setDayCode(dayCode +1);
             patternDayDTO.setWokCode(insertDTO.getWokCode());
 
-            patternDayDTOList.add(patternDayDTO);
+            System.out.println("dayCode = " + dayCode);
+            ScheduleInsertPatternDay patternDay = modelMapper.map(patternDayDTO, ScheduleInsertPatternDay.class);
+
+            ScheduleInsertPatternDay result = insertPatternDayRepository.save(patternDay);
+            System.out.println("patternDayresult = " + result);
 
         }
-            System.out.println("patternDayDTOList = " + patternDayDTOList);
-
-
-
-        int result = 0;
-        try {
-
-
             Schedule schedule = modelMapper.map(scheduleDTO, Schedule.class);
             Schedule insertScheduleResult = scheduleRepository.save(schedule);
             System.out.println("insertScheduleResult = " + insertScheduleResult);
-            result++;
-
-
-            List<ScheduleInsertPatternDay> patternDay = patternDayDTOList.stream()
-                    .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
-                    .collect(Collectors.toList());
-
-
-            List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
-            log.info("insertPatternDayResult = " + insertPatternDayResult);
 
             if(insertDTO.getMemCode().size() > 0) {
-
 
                 List<ScheduleAllowanceDTO> scheduleInsertAllowance = new ArrayList<>();
                 for (int i = 0; i < insertDTO.getMemCode().size(); i++) {
@@ -150,23 +137,25 @@ public class ScheduleService {
                     List<ScheduleInsertAllowance> insertResult = insertAllowanceRepository.saveAll(allowances);
             }
 
-
-
-
-            result++;
         } catch (Exception e) {
             log.info("일정 패턴 등록 오류");
             throw new RuntimeException(e);
         }
 
+        List<Schedule> result1 = scheduleRepository.findAll();
+
+        List<ScheduleDTO> result = result1.stream()
+                .map(list -> modelMapper.map(list, ScheduleDTO.class))
+                .collect(Collectors.toList());
 
         log.info("insertWorkPattern 끗~~~~~~~~~~~~");
-        return (result > 1) ? "등록 성공" : "등록 실패";
+        return result;
+
     }
 
 
     @Transactional
-    public String  insertWorkPattern(ScheduleWorkPatternDTO patternDTO) {
+    public List<ScheduleWorkPatternDTO>  insertWorkPattern(ScheduleWorkPatternDTO patternDTO) {
         log.info("insertWorkPattern Start~~~~~~~~~~~~");
         log.info(patternDTO.toString());
         int result = 0;
@@ -178,22 +167,22 @@ public class ScheduleService {
 
             ScheduleWorkPattern insertResult = workPatternRepository.save(insertWorkPattern);
             System.out.println("insertResult = " + insertResult);
-            List<ScheduleWorkPattern> findAll = workPatternRepository.findAll();
-            list = findAll.stream()
-                    .map(resultList -> modelMapper.map(resultList, ScheduleWorkPatternDTO.class))
-                    .collect(Collectors.toList());
-            result = 1;
+
 
         } catch (Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
+        List<ScheduleWorkPattern> findAll = workPatternRepository.findAll();
+        list = findAll.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleWorkPatternDTO.class))
+                .collect(Collectors.toList());
 
-        return (result > 0) ? "수정 성공" : "수정 실패";
+        return list;
     }
 
     @Transactional
-    public String updateWorkPattern(ScheduleWorkPatternDTO patternDTO) {
+    public List<ScheduleWorkPatternDTO> updateWorkPattern(ScheduleWorkPatternDTO patternDTO) {
         log.info("updateWorkPattern Start~~~~~~~~~~~~");
         log.info(patternDTO.toString());
 
@@ -221,62 +210,112 @@ public class ScheduleService {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
+        List<ScheduleWorkPattern> workPattern = workPatternRepository.findAll();
 
-        return (result > 0) ? "수정 성공" : "수정 실패";
+        List<ScheduleWorkPatternDTO> resultDTO = workPattern.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleWorkPatternDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
+
     }
 
-//    @Transactional
-//    public String updateSchedule(ScheduleInsertDTO insertDTO) {
-//        log.info("updateSchedule Start~~~~~~~~~~~~");
-//        log.info(insertDTO.toString());
-//        ScheduleDTO scheduleDTO = insertDTO.getScheduleDTO();
-//        List<SchedulePatternDayDTO> patternDayDTO = insertDTO.getPatternDayDTO();
-//
-//        int result = 0;
-//
-//        try {
-//            Schedule schedule = scheduleRepository.findById(scheduleDTO.getSchCode()).get();
-//            System.out.println("schedule = " + schedule);
-//
-//            schedule = schedule.schType(scheduleDTO.getSchType())
-//                    .schStartDate(scheduleDTO.getSchStartDate())
-//                    .schEndDate(scheduleDTO.getSchEndDate())
-//                    .schColor(scheduleDTO.getSchColor())
-//                    .schDeleteStatus(scheduleDTO.getSchDeleteStatus())
-//                    .wokCode(scheduleDTO.getWokCode())
-//                    .build();
-//
-//            for (int i = 0; i < patternDayDTO.size(); i++) {
-//                int dayCode = patternDayDTO.get(i).getDayCode();
-//                int wokCode = patternDayDTO.get(i).getWokCode();
-//
-//                ScheduleInsertPatternDay pattern = insertPatternDayRepository.findByDayCodeAndWokCode(dayCode, wokCode);
-//                System.out.println("pattern = " + pattern);
-//
-//                insertPatternDayRepository.delete(pattern);
-//                log.info("-----------------------------");
-//
-//                patternDayDTO.get(i).setDayCode(patternDayDTO.get(i).getChangeDayCode());
-//            }
-//
-//            List<ScheduleInsertPatternDay> patternDay = patternDayDTO.stream()
-//                    .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
-//                    .collect(Collectors.toList());
-//            System.out.println("patternDay = " + patternDay);
-//
-//            List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
-//            log.info("insertPatternDayResult = " + insertPatternDayResult);
-//
-//
-//            result = 1;
-//
-//        } catch (Exception e) {
-//            log.info("오류~~~~~~~");
-//            throw new RuntimeException(e);
-//        }
-//
-//        return (result > 0) ? "수정 성공" : "수정 실패";
-//    }
+    @Transactional
+    public List<ScheduleDTO> updateSchedule(ScheduleInsertDTO insertDTO) {
+        log.info("updateSchedule Start~~~~~~~~~~~~");
+        log.info(insertDTO.toString());
+        int result = 0;
+        try {
+
+            if(!insertDTO.getSchDeleteStatus().equals("Y")) {
+                Schedule schedule = scheduleRepository.findById(insertDTO.getSchCode()).get();
+                System.out.println("schedule = " + schedule);
+
+                schedule = schedule.schType(insertDTO.getSchType())
+                        .schStartDate(insertDTO.getSchStartDate())
+                        .schEndDate(insertDTO.getSchEndDate())
+                        .schColor(insertDTO.getSchColor())
+                        .schDeleteStatus(insertDTO.getSchDeleteStatus())
+                        .wokCode(insertDTO.getWokCode())
+                        .build();
+                List<SchedulePatternDayDTO> patternDayDTO = new ArrayList<>();
+
+                System.out.println("update schedule");
+                if (!insertDTO.getDayCode().isEmpty()) {
+                    for(int j = 0; j < insertDTO.getPrevDayCode().size(); j++){
+                        int prevDayCode = Integer.parseInt(insertDTO.getPrevDayCode().get(j));
+                        int prevWokCode = Integer.parseInt(insertDTO.getPrevWokCode().get(j));
+
+                        ScheduleInsertPatternDay pattern = insertPatternDayRepository.findByDayCodeAndWokCode(prevDayCode, prevWokCode);
+                        System.out.println("pattern = " + pattern);
+
+                        insertPatternDayRepository.delete(pattern);
+                        log.info("-----------------------------");
+                        System.out.println("delete pattern");
+                    }
+                    for (int i = 0; i < insertDTO.getDayCode().size(); i++) {
+
+                        SchedulePatternDayDTO schedulePatternDayDTO = new SchedulePatternDayDTO();
+
+                        schedulePatternDayDTO.setWokCode(insertDTO.getWokCode());
+                        schedulePatternDayDTO.setDayCode(Integer.parseInt(insertDTO.getDayCode().get(i)) + 1);
+
+                        patternDayDTO.add(schedulePatternDayDTO);
+                        System.out.println("add pattern");
+
+                    }
+                    System.out.println("patternDay -----------------------------patternDay");
+
+                    List<ScheduleInsertPatternDay> patternDay = patternDayDTO.stream()
+                            .map(pattern -> modelMapper.map(pattern, ScheduleInsertPatternDay.class))
+                            .collect(Collectors.toList());
+                    System.out.println("patternDay = " + patternDay);
+
+                    List<ScheduleInsertPatternDay> insertPatternDayResult = insertPatternDayRepository.saveAll(patternDay);
+                    log.info("insertPatternDayResult = " + insertPatternDayResult);
+
+
+
+                }
+                System.out.println("insertDTO.getMemCode().size() = " + insertDTO.getMemCode().size());
+
+                if (insertDTO.getMemCode().size() > 0) {
+                    List<ScheduleInsertAllowance> allowance = insertAllowanceRepository.findBySchCode(insertDTO.getSchCode());
+
+                    insertAllowanceRepository.deleteAll(allowance);
+                    System.out.println("deleteAll allowance");
+
+                    for (int i = 0; i < insertDTO.getMemCode().size(); i++) {
+                        int memCode = Integer.parseInt(insertDTO.getMemCode().get(i));
+                        String SchCode = insertDTO.getSchCode();
+                        ScheduleInsertAllowance allowance1 = new ScheduleInsertAllowance();
+                        allowance1.setSchCode(SchCode);
+                        allowance1.setMemCode(memCode);
+                        ScheduleInsertAllowance insertAllowance = insertAllowanceRepository.save(allowance1);
+                        System.out.println("save ScheduleInsertAllowance");
+
+                    }
+                }
+            }else {
+                Schedule schedule = scheduleRepository.findById(insertDTO.getSchCode()).get();
+
+                System.out.println("delete = " + schedule);
+                schedule = schedule.schDeleteStatus("Y")
+                        .build();
+            }
+            result = 1;
+        } catch (Exception e) {
+            log.info("오류~~~~~~~");
+            throw new RuntimeException(e);
+        }
+
+        List<Schedule> schedules = scheduleRepository.findAll();
+        List<ScheduleDTO> resultDTO = schedules.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
+    }
 
     @Transactional
     public String insertEtcPattern(ScheduleEtcPatternDTO etcPatternDTO) {
@@ -332,7 +371,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public String insertScheduleAllowance(ScheduleAllowanceDTO allowanceDTO) {
+    public List<ScheduleAllowanceDTO> insertScheduleAllowance(ScheduleAllowanceDTO allowanceDTO) {
         log.info("insertScheduleAllowance Start~~~~~~~~~~~~");
         log.info(allowanceDTO.toString());
 
@@ -351,11 +390,18 @@ public class ScheduleService {
             throw new RuntimeException(e);
         }
 
-        return (result > 0) ? "등록 성공" : "등록 실패";
+        List<ScheduleInsertAllowance> allowances = insertAllowanceRepository.findAll();
+
+        List<ScheduleAllowanceDTO> resultDTO = allowances.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleAllowanceDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
+
     }
 
     @Transactional
-    public String updateScheduleAllowance(ScheduleAllowanceDTO allowanceDTO) {
+    public List<ScheduleAllowanceDTO> updateScheduleAllowance(ScheduleAllowanceDTO allowanceDTO) {
         log.info("updateScheduleAllowance Start~~~~~~~~~~~~");
         log.info(allowanceDTO.toString());
 
@@ -383,7 +429,13 @@ public class ScheduleService {
             throw new RuntimeException(e);
         }
 
-        return (result > 0) ? "수정 성공" : "수정 실패";
+        List<ScheduleInsertAllowance> allowances = insertAllowanceRepository.findAll();
+
+        List<ScheduleAllowanceDTO> resultDTO = allowances.stream()
+                .map(resultList -> modelMapper.map(resultList, ScheduleAllowanceDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
     }
 
     public List<ScheduleAllSelectDTO> searchValue(ScheduleSearchValueDTO valueDTO) {

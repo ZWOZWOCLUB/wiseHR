@@ -146,10 +146,10 @@ Content-Type: application/json
 Accept: */*
 
 ###직원 검색어로 조회
-GET http://localhost:8001/setting/search?s=3
+GET http://localhost:8001/setting/search?s=노연지
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3NjQwMjU0MjM1LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWFpbC5jb20iLCJtZW1Db2RlIjoxLCJtZW1OYW1lIjoi7J2064-Z6529IiwibWVtUm9sZSI6IuydvOuwmOyCrOybkCIsImV4cCI6MTcwODUwNDI1NH0.XaVE5idkMwg9u8uMtoEpJFiLiscaJALxHimG7sjb4KI
+Authorization: Bearer eyJkYXRlIjoxNzA4NTkyMjEzMDQyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDk0NTYyMTN9.aIucSzgHFQj7I1gY3cWkigl-cbzbyE1cP1q3UlJp430
 
 ###직원등록 -부서 조회
 GET http://localhost:8001/setting/depSearch

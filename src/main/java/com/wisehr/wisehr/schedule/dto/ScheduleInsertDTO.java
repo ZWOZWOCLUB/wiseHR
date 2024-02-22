@@ -4,6 +4,7 @@ import com.wisehr.wisehr.common.DateToStringConverter;
 import jakarta.persistence.Convert;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,5 +27,7 @@ public class ScheduleInsertDTO {
     private String schDeleteStatus;
     private List<String> dayCode;
     private List<String> memCode;
+    private List<String> prevDayCode;
+    private List<String> prevWokCode;
 
 }
