@@ -121,9 +121,9 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      */
     @Tag(name = "스케줄 근무 그룹 수정", description = "스케줄 근무 그룹 수정")
     @PutMapping(value = "/schedule")
-//    public ResponseEntity<ResponseDTO> updateSchedule(@RequestBody ScheduleInsertDTO insertDTO){
-//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 수정 성공", scheduleService.updateSchedule(insertDTO)));
-//    }
+    public ResponseEntity<ResponseDTO> updateSchedule(@ModelAttribute ScheduleInsertDTO insertDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 수정 성공", scheduleService.updateSchedule(insertDTO)));
+    }
 
 
     /**
