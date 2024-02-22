@@ -21,8 +21,8 @@ public class AAMMessage {
     private Integer msgCode;
 
     @JoinColumn(name = "msg_code")
-    @OneToOne
-    private AAMRecMessenger aamRecMessenger;
+    @OneToMany
+    private List<AAMRecMessenger> aamRecMessenger;
     @Column(name = "msg_date")
     private String msgDate;
     @Column(name = "msg_contents")

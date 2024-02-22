@@ -151,8 +151,13 @@ public class MyPageService {
         // 두 LocalTime 객체 간의 차이 계산
         long hoursDiff = ChronoUnit.HOURS.between(startLocalTime, endLocalTime);
         long minutesDiff = ChronoUnit.MINUTES.between(startLocalTime, endLocalTime) % 60;
-        String totalWork = hoursDiff + " 시간 " + minutesDiff + " 분";
 
+        if(hoursDiff < 0 ||  minutesDiff < 0){
+            hoursDiff = 23 + hoursDiff;
+            minutesDiff = 59 + minutesDiff;
+        }
+
+        String totalWork = hoursDiff + " 시간 " + minutesDiff + " 분";
         // 결과 출력
         System.out.println("시간 차이: " + hoursDiff + " 시간 " + minutesDiff + " 분");
         settingMemberDTO.setTotalWork(totalWork);
