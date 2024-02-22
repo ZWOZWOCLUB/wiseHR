@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,7 +65,7 @@ public class NoticeService {
     public String insertNotice(NoticeDTO noticeDTO, MultipartFile noticeFiles) {
         log.info("---insertNotice Start---");
         log.info(noticeDTO.toString());
-        log.info("==========noticeFile : " + noticeFiles);
+        log.info("==========noticeFiles : " + noticeFiles);
         int result = 0;
 
         //공지
@@ -156,35 +157,51 @@ public class NoticeService {
      * @param noticeFile
      * @return
      */
+
     @Transactional
     public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
         log.info(" ==============updateService Start ===========");
-        log.info("noticeDTO ========== " + noticeDTO);
-        log.info("noticeFile ====== " + noticeFile);
+        log.info("noticeDTO +++=== " + noticeDTO);
+        log.info("noticeFiles ===+++ " + noticeFile);
 
         int result = 0;
 
-        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); // 파일 이름이 공지사항 코드가 됨
-
         try {
+
             /* update할 notice 조회 */
             Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).orElseThrow(() -> new EntityNotFoundException("공지사항을 찾을 수 없습니다."));
             log.info("notice ==== " + notice);
+
+            Optional<NotAttachedFile> attFile = notAttachedFileRepository.findById(notice.getNotAttachedFile().get(0).getNotAtcCode());
+
 
             // 공지 내용 업데이트
             notice.setNotName(noticeDTO.getNotName());
             notice.setNotComment(noticeDTO.getNotComment());
 
-            // 첨부파일이 존재하고 비어있지 않을 경우
+            // 첨부파일이 있을 때
             if (noticeFile != null && !noticeFile.isEmpty()) {
+                String path = IMAGE_DIR + "noticeFile/" + noticeDTO.getNotCode(); // 파일 이름이 공지사항 코드가 됨
                 String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getOriginalFilename(), noticeFile);
                 log.info("Saved File Name: " + savedFileName);
 
+                NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
+                noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
+                noticeFileDTO.setNotAtcDeleteStatus("N");
+                noticeFileDTO.setNotAtcPath(path);
+                noticeFileDTO.setCode(notice.getNotCode());
+                noticeFileDTO.setNotAtcCode(attFile.get().getNotAtcCode());
+
+                NotAttachedFile notFile = modelMapper.map(noticeFileDTO, NotAttachedFile.class);
+
+                log.info("노티스 파일 : " + notFile);
+
+                noticeRepository.save(notice);
+                notAttachedFileRepository.save(notFile);
 
             }
-
-            noticeRepository.save(notice);
             log.info("Updated notice: " + notice);
+            log.info("noticeFile = " + noticeFile);
 
             result = 1;
         } catch (IOException e) {
@@ -198,6 +215,7 @@ public class NoticeService {
         log.info("updateNotice 끝");
         return (result > 0) ? "공지업뎃 성공" : "공지업뎃 실패";
     }
+
 //    @Transactional
 //    public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
 //        log.info(" ==============updateService Start ===========");
@@ -211,8 +229,8 @@ public class NoticeService {
 //        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
 //
 //
-//        String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
-////        String path = IMAGE_DIR + "noticeFiles/";
+//        String path = IMAGE_DIR + "noticeFile/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
+////        String path = IMAGE_DIR + "noticeFile/";
 //        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
 //        noticeFileDTO.setNotAtcDeleteStatus("N");
 //        noticeFileDTO.setNotAtcPath(path);
