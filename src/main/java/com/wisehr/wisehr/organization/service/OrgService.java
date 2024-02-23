@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +48,9 @@ public class OrgService {
      */
     public List<OrgDepartmentDTO> selectAllOrgList(){
 
-        List<OrgDepartment> orgDepartment = orgRepository.findByDepDeleteStatus("N"); //전체 중 depDeleteStatus = "N" 만 조회
+        Sort sort = Sort.by(Sort.Order.asc("refDepCode"), Sort.Order.asc("depName"));
+
+        List<OrgDepartment> orgDepartment = orgRepository.findByDepDeleteStatus("N", sort); //전체 중 depDeleteStatus = "N" 만 조회
 
         List<OrgDepartmentDTO> orgDepartmentList = orgDepartment.stream()
                 .map(orgDep -> modelMapper.map(orgDep, OrgDepartmentDTO.class))
