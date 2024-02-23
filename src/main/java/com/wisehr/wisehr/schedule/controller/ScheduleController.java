@@ -39,6 +39,8 @@ public class ScheduleController {
 @Tag(name = "스케줄 조회", description = "스케줄 전체 조회")
 @PostMapping("/searchMonth")
 public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueDTO value) {
+
+
     if(value.getYearMonth() == null){
     Date date = new Date();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
@@ -121,9 +123,9 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      */
     @Tag(name = "스케줄 근무 그룹 수정", description = "스케줄 근무 그룹 수정")
     @PutMapping(value = "/schedule")
-//    public ResponseEntity<ResponseDTO> updateSchedule(@RequestBody ScheduleInsertDTO insertDTO){
-//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 수정 성공", scheduleService.updateSchedule(insertDTO)));
-//    }
+    public ResponseEntity<ResponseDTO> updateSchedule(@ModelAttribute ScheduleInsertDTO insertDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무그룹 수정 성공", scheduleService.updateSchedule(insertDTO)));
+    }
 
 
     /**
@@ -132,8 +134,8 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
      * schedule_allowance에 insert
      */
     @Tag(name = "스케줄 근무 그룹에 인원 편성", description = "스케줄 근무 그룹에 인원 편성")
-        @PostMapping("/allowance")
-    public ResponseEntity<ResponseDTO> insertScheduleAllowance(@RequestBody ScheduleAllowanceDTO allowanceDTO) {
+    @PostMapping("/allowance")
+    public ResponseEntity<ResponseDTO> insertScheduleAllowance(@ModelAttribute ScheduleAllowanceDTO allowanceDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "근무 그룹에 사람 등록 성공", scheduleService.insertScheduleAllowance(allowanceDTO)));
     }
     /**

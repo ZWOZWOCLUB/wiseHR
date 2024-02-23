@@ -1,7 +1,9 @@
 package com.wisehr.wisehr.schedule.repository;
 
 import com.wisehr.wisehr.schedule.entity.ScheduleAllSelect;
+import com.wisehr.wisehr.schedule.entity.ScheduleInsertAllowance;
 import com.wisehr.wisehr.schedule.entity.ScheduleMemSch;
+import com.wisehr.wisehr.schedule.entity.ScheduleMember;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,5 @@ public interface ScheduleMemSchRepository extends JpaRepository <ScheduleMemSch,
             "OR NOT (:notContain BETWEEN C.schStartDate AND C.schEndDate)" +
             "order by A.deplist.depCode")
     List<ScheduleMemSch> findByYearMonthNotContain(String notContain);
+
 }

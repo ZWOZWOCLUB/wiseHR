@@ -6,6 +6,7 @@ import com.wisehr.wisehr.approval.entity.*;
 import com.wisehr.wisehr.approval.repository.*;
 import com.wisehr.wisehr.attendance.entity.Attendance;
 import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
+import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.mypage.entity.MPHoldVacation;
 import com.wisehr.wisehr.mypage.repository.MPHoldVacationRepository;
 import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
@@ -16,6 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,13 +100,19 @@ public class ApprovalService {
 
 
     // 받은 결재 #결제 완료 및
-    public List<ApprovalCompleteDTO> selectReqPayment(Long memCode) {
+    public Page<ApprovalCompleteDTO> selectReqPayment(Long memCode, Criteria cri) {
         log.info("select 받은결재 memCode : " + memCode);
         log.info("memCode : " + memCode.getClass());
 
+        int index = cri.getPageNum() -1;
+        int count = cri.getAmount();
+
+        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Order.desc("ApprovalPayDate")));
 
 
-        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCodeOrderByAppStateAndApprovalPayDateDesc(memCode);
+
+        Page<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode, paging);
+
 
         log.info("paymentList : " + paymentList);
 
@@ -110,30 +121,27 @@ public class ApprovalService {
 //        log.info("받은 결재 완료 payment : " + payment);
 
         log.info("맞음? ");
-        List<ApprovalCompleteDTO> result = paymentList.stream()
-                .map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
-                .collect(Collectors.toList());
-        log.info("------------->" + result);
-        log.info("보낸 결재 완료 payment : " + result.get(0));
+        Page<ApprovalCompleteDTO> result = paymentList.map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
+
         return result;
-
-
-
     }
 
     //보낸결재
-    public List<ApprovalCompleteDTO> selectRecPayment(Long memCode) {
+    public Page<ApprovalCompleteDTO> selectRecPayment(Long memCode, Criteria cri) {
         log.info("reqPayment Service Start : " + memCode);
 
+        int index = cri.getPageNum() -1;
+        int count = cri.getAmount();
 
-        List<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalApprovalMemberMemCodeOrderByAppStateAndApprovalPayDateDesc(memCode);
+        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Order.desc("ApprovalPayDate")));
+
+
+        Page<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalApprovalMemberMemCode(memCode, paging);
 
 
         log.info("log paymentList : " + paymentList);
 
-        List<ApprovalCompleteDTO> payment = paymentList.stream()
-                .map(paymt -> modelMapper.map(paymt, ApprovalCompleteDTO.class))
-                .collect(Collectors.toList());
+        Page<ApprovalCompleteDTO> payment = paymentList.map(paymt -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
 
 
 

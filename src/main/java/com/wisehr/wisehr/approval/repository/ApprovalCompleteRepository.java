@@ -1,6 +1,8 @@
 package com.wisehr.wisehr.approval.repository;
 
 import com.wisehr.wisehr.approval.entity.ApprovalComplete;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +24,9 @@ public interface ApprovalCompleteRepository extends JpaRepository<ApprovalComple
     List<ApprovalComplete> findByApprovalPayCode(String payCode);
 
     List<ApprovalComplete> findByApprovalApprovalMemberMemCodeAndAppState(Long memCode, String 승인);
+
+    Page<ApprovalComplete> findByApprovalMemberMemCode(Long memCode, Pageable paging);
+
+    Page<ApprovalComplete> findByApprovalApprovalMemberMemCode(Long memCode, Pageable paging);
+
 }

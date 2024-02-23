@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@Builder
 public class ScheduleInsertAllowance {
     @Id
     @Column(name = "mem_code")

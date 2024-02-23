@@ -53,7 +53,7 @@ public class SettingMemberService {
     @Value("${image.image-dir}")
     private String IMAGE_DIR;
 
-    @Value("http://localhost:8001/")
+    @Value("${image.image-url}")
     private String IMAGE_URL;
 
 
@@ -167,6 +167,7 @@ public class SettingMemberService {
     public SettingMemberDTO updateMember(SettingMemberDTO settingMemberDTO, MultipartFile profile) {
         log.info("updateMember Start~~~~~~~~~~~~");
         log.info("settingMemberDTO : " + settingMemberDTO);
+        System.out.println("profile = " + profile);
         String path = IMAGE_DIR + "/profile/";
 
         String replaceFileName = null;
@@ -234,6 +235,36 @@ public class SettingMemberService {
                     return memberDTO;
                 }
             }else {
+                SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
+
+                String fileName = UUID.randomUUID().toString().replace("-", "");
+                String[] extend = profile.getOriginalFilename().split("\\.");
+
+                String realExtend = extend[1];
+
+
+                replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
+
+                fileDTO.setMemCode(settingMemberDTO.getMemCode());
+                fileDTO.setDocAtcExtends(realExtend);
+                fileDTO.setDocAtcConvertName(replaceFileName);
+                fileDTO.setDocAtcRegistDate(LocalDate.now().toString());
+                fileDTO.setDocAtcStorage(path);
+                fileDTO.setDocAtcDeleteStatus("N");
+                fileDTO.setDocAtcPath(path);
+                fileDTO.setDocAtcOriginName(profile.getOriginalFilename());
+                fileDTO.setDocAtcKind("프로필");
+                fileDTO.setMemCode(settingMemberDTO.getMemCode());
+
+                SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
+                settingDocumentFileRepository.save(insertFile);
+
+
+                SettingDocumentFileDTO resultFileDTO = modelMapper.map(insertFile, SettingDocumentFileDTO.class);
+
+                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                memberDTO.setProfileURL(url);
+                System.out.println("memberDTO = " + memberDTO);
                 return memberDTO;
             }
 
@@ -281,7 +312,7 @@ public class SettingMemberService {
     public List<SettingDepartmentDTO> searchDepName() {
         log.info("searchDepName 서비스 시작~~~~~~~~~~~~");
 
-        List<SettingDepartment> depList = settingDepartmentRepository.findAll();
+        List<SettingDepartment> depList = settingDepartmentRepository.findByDepDeleteStatus("N");
 
         List<SettingDepartmentDTO> depDTOList = depList.stream()
                 .map(dep -> modelMapper.map(dep, SettingDepartmentDTO.class))
@@ -361,7 +392,7 @@ public class SettingMemberService {
         SettingSalaryFileDTO salaryFileDTO = null;
         if (salary != null && salary.getSalaryFile() != null) {
             salaryFileDTO = modelMapper.map(salary.getSalaryFile(), SettingSalaryFileDTO.class);
-            salaryFileDTO.setSalAtcConvertName(IMAGE_URL + "salary/" + salaryFileDTO.getSalAtcConvertName());
+//            salaryFileDTO.setSalAtcConvertName("/salary/" + salaryFileDTO.getSalAtcConvertName());
             resourcesDTO.setSalaryFileDTO(salaryFileDTO);
         }
         List<SettingDocumentFileDTO> documentFileDTOList = documentFileDTO.stream()
@@ -699,12 +730,11 @@ public class SettingMemberService {
     }
 
     @Transactional
-    public String updateDegree(List<SettingDegreeDTO> degreeDTO) {
+    public List<SettingDegreeDTO> updateDegree(List<SettingDegreeDTO> degreeDTO) {
         log.info("updateDegree Start~~~~~~~~~~~~");
         log.info(degreeDTO.toString());
         List<SettingDegreeDTO> updateDegree = new ArrayList<>();
 
-        int result = 0;
 
         try{
             for (SettingDegreeDTO settingDegreeDTO : degreeDTO) {
@@ -722,23 +752,27 @@ public class SettingMemberService {
 
             }
 
-            result = 1;
 
         }catch(Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        List<SettingDegree> degreeList = settingDegreeRepository.findAll();
+        List<SettingDegreeDTO> resultDTO = degreeList.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingDegreeDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
+
     }
 
     @Transactional
-    public String updateCertificate(List<SettingCertificateDTO> certificateDTO) {
+    public List<SettingCertificateDTO> updateCertificate(List<SettingCertificateDTO> certificateDTO) {
         log.info("updateCertificate Start~~~~~~~~~~~~");
         log.info(certificateDTO.toString());
         List<SettingCertificateDTO> updateCertificate = new ArrayList<>();
 
-        int result = 0;
 
         try{
             for (SettingCertificateDTO certificateDTO1 : certificateDTO) {
@@ -756,20 +790,23 @@ public class SettingMemberService {
                 }
             }
 
-            result = 1;
 
         }catch(Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        List<SettingCertificate> degreeList = settingCertificateRepository.findAll();
+        List<SettingCertificateDTO> resultDTO = degreeList.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingCertificateDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
     }
 
     @Transactional
-    public String updateCareer(List<SettingCareerDTO> careerDTOList) {
+    public List<SettingCareerDTO> updateCareer(List<SettingCareerDTO> careerDTOList) {
         log.info("updateCareers Start~~~~~~~~~~~~");
-        int result = 0;
 
         List<SettingCareerDTO> updatedCareers = new ArrayList<>();
 
@@ -789,10 +826,14 @@ public class SettingMemberService {
                 }
 
             }
-            result = 1;
 
+            List<SettingCareer> degreeList = settingCareerRepository.findAll();
+            List<SettingCareerDTO> resultDTO = degreeList.stream()
+                    .map(resultList -> modelMapper.map(resultList, SettingCareerDTO.class))
+                    .collect(Collectors.toList());
 
-            return (result > 0)? "수정 성공": "수정 실패";
+            return resultDTO;
+
         } catch (Exception e) {
             log.error("오류 발생: ", e);
             throw new RuntimeException("수정 실패: 오류 발생");
@@ -801,11 +842,10 @@ public class SettingMemberService {
 
 
     @Transactional
-    public String insertSalary(SettingSalaryDTO salaryDTO) {
+    public SettingSalaryDTO insertSalary(SettingSalaryDTO salaryDTO) {
         log.info("insertSalary Start~~~~~~~~~~~~");
         log.info(salaryDTO.toString());
 
-        int result = 0;
 
         try{
             SettingSalary insertSalary = modelMapper.map(salaryDTO, SettingSalary.class);
@@ -813,18 +853,19 @@ public class SettingMemberService {
             SettingSalary insertResult = settingSalaryRepository.save(insertSalary);
             System.out.println("insertResult = " + insertResult);
 
-            result = 1;
 
         }catch(Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "등록 성공": "등록 실패";
+        SettingSalary salary = settingSalaryRepository.findByMemCode(salaryDTO.getMemCode());
+        SettingSalaryDTO resultDTO = modelMapper.map(salary, SettingSalaryDTO.class);
+        return resultDTO;
     }
 
     @Transactional
-    public String updateSalary(SettingSalaryDTO salaryDTO) {
+    public SettingSalaryDTO updateSalary(SettingSalaryDTO salaryDTO) {
         log.info("updateSalary Start~~~~~~~~~~~~");
         log.info(salaryDTO.toString());
 
@@ -843,12 +884,14 @@ public class SettingMemberService {
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        SettingSalary salary = settingSalaryRepository.findByMemCode(salaryDTO.getMemCode());
+        SettingSalaryDTO resultDTO = modelMapper.map(salary, SettingSalaryDTO.class);
+        return resultDTO;
     }
 
 
     @Transactional
-    public String updateDocumentFile(SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile) {
+    public SettingDocumentFileDTO updateDocumentFile(SettingDocumentFileDTO etcfileDTO, MultipartFile etcFile) {
         log.info("updateDocumentFile Start~~~~~~~~~~~~");
         log.info("etcfileDTO : " + etcfileDTO);
         System.out.println("여기11111");
@@ -859,7 +902,6 @@ public class SettingMemberService {
         String replaceFileName = null;
         System.out.println("여기114444111");
 
-        int result = 0;
         System.out.println("여기11111");
 
         try {
@@ -887,22 +929,21 @@ public class SettingMemberService {
                 file = file.docAtcKind(etcfileDTO.getDocAtcKind()).build();
             }
 
-            result = 1;
 
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
         }
-        return (result > 0) ? "그외 파일 업데이트 성공" : "그외 파일 업데이트 실패";
-    }
+        SettingDocumentFile file = settingDocumentFileRepository.findByDocAtcCode(etcfileDTO.getDocAtcCode());
+        SettingDocumentFileDTO resultDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
+        return resultDTO;    }
 
 
     @Transactional
-    public String updateVacation(MPHoldVacationDTO holdVacationDTO) {
+    public MPHoldVacationDTO updateVacation(MPHoldVacationDTO holdVacationDTO) {
         log.info("updateVacation Start~~~~~~~~~~~~");
         log.info("holdVacationDTO : " + holdVacationDTO);
 
-        int result = 0;
 
         try{
             MPHoldVacation vacation = vacationRepository.findByMemCode(holdVacationDTO.getMemCode());
@@ -916,18 +957,19 @@ public class SettingMemberService {
 
             vacation = vacation.vctCount(holdVacationDTO.getVctCount()).build();
 
-            result = 1;
 
         }catch(Exception e) {
             log.info("오류~~~~~~~");
             throw new RuntimeException(e);
         }
 
-        return (result > 0)? "수정 성공": "수정 실패";
+        MPHoldVacation vacation = vacationRepository.findByMemCode(holdVacationDTO.getMemCode());
+        MPHoldVacationDTO resultDTO = modelMapper.map(vacation, MPHoldVacationDTO.class);
+        return resultDTO;
     }
 
     @Transactional
-    public String updateSalaryFile(SettingSalaryFileDTO salaryFileDTO, MultipartFile salaryFile) {
+    public SettingSalaryFileDTO updateSalaryFile(SettingSalaryFileDTO salaryFileDTO, MultipartFile salaryFile) {
         log.info("updateSalaryFile Start~~~~~~~~~~~~");
         log.info("salaryFileDTO : " + salaryFileDTO);
         log.info("salaryFile :" + salaryFile.toString() );
@@ -935,9 +977,6 @@ public class SettingMemberService {
         String path = IMAGE_DIR + "/salary/";
 
         String replaceFileName = null;
-
-
-        int result = 0;
 
         try {
 
@@ -958,18 +997,17 @@ public class SettingMemberService {
                     .salAtcDeleteStatus("N")
                     .build();
 
-
-            result = 1;
-
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
         }
-        return (result > 0) ? "통장 파일 업데이트 성공" : "통장 파일 업데이트 실패";
+        SettingSalaryFile file = settingSalaryFileRepository.findById(salaryFileDTO.getSalAtcCode()).get();
+        SettingSalaryFileDTO resultDTO = modelMapper.map(file, SettingSalaryFileDTO.class);
+        return resultDTO;
     }
 
     @Transactional
-    public String updateCertificateFile(SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile) {
+    public SettingCertificateFileDTO updateCertificateFile(SettingCertificateFileDTO certificateFileDTO, MultipartFile certificateFile) {
         log.info("updateCertificateFile Start~~~~~~~~~~~~");
         log.info("certificateFileDTO : " + certificateFileDTO);
 
@@ -977,7 +1015,6 @@ public class SettingMemberService {
 
         String replaceFileName = null;
 
-        int result = 0;
 
         try {
 
@@ -995,17 +1032,18 @@ public class SettingMemberService {
                     .cerAtcName(certificateFile.getOriginalFilename())
                     .cerAtcPath(path).build();
 
-            result = 1;
 
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
         }
-        return (result > 0) ? "자격 파일 업데이트 성공" : "자격 파일 업데이트 실패";
+        SettingCertificateFile file = settingCertificateFileRepository.findById(certificateFileDTO.getCerAtcCode()).get();
+        SettingCertificateFileDTO resultDTO = modelMapper.map(file, SettingCertificateFileDTO.class);
+        return resultDTO;
     }
 
     @Transactional
-    public String updateDegreeFile(SettingDegreeFileDTO degreeFileDTO, MultipartFile degreeFile) {
+    public SettingDegreeFileDTO updateDegreeFile(SettingDegreeFileDTO degreeFileDTO, MultipartFile degreeFile) {
         log.info("updateDocumentFile Start~~~~~~~~~~~~");
         log.info("degreeFileDTO : " + degreeFileDTO);
 
@@ -1013,7 +1051,6 @@ public class SettingMemberService {
 
         String replaceFileName = null;
 
-        int result = 0;
 
         try {
 
@@ -1031,17 +1068,18 @@ public class SettingMemberService {
                     .degAtcName(degreeFile.getOriginalFilename())
                     .degAtcPath(path).build();
 
-            result = 1;
 
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
         }
-        return (result > 0) ? "학위 파일 업데이트 성공" : "학위 파일 업데이트 실패";
+        SettingDegreeFile file = settingDegreeFileRepository.findById(degreeFileDTO.getDegAtcCode()).get();
+        SettingDegreeFileDTO resultDTO = modelMapper.map(file, SettingDegreeFileDTO.class);
+        return resultDTO;
     }
 
     @Transactional
-    public String updateCareerFile(SettingCareerFileDTO careerFileDTO, MultipartFile careerFile) {
+    public SettingCareerFileDTO updateCareerFile(SettingCareerFileDTO careerFileDTO, MultipartFile careerFile) {
         log.info("updateDocumentFile Start~~~~~~~~~~~~");
         log.info("careerFileDTO : " + careerFileDTO);
 
@@ -1049,7 +1087,6 @@ public class SettingMemberService {
 
         String replaceFileName = null;
 
-        int result = 0;
 
         try {
 
@@ -1067,13 +1104,13 @@ public class SettingMemberService {
                     .crrAtcName(careerFile.getOriginalFilename())
                     .crrAtcPath(path).build();
 
-            result = 1;
-
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
         }
-        return (result > 0) ? "경력 파일 업데이트 성공" : "경력 파일 업데이트 실패";
+        SettingCareerFile file = settingCareerFileRepository.findById(careerFileDTO.getCrrAtcCode()).get();
+        SettingCareerFileDTO resultDTO = modelMapper.map(file, SettingCareerFileDTO.class);
+        return resultDTO;
     }
 
     public List<SettingMemDepAttSchDTO> AllMemberAttendance(SettingSearchValueDTO valueDTO) {
@@ -1111,7 +1148,7 @@ public class SettingMemberService {
     }
 
     @Transactional
-    public String deleteSalaryFile(SettingSalaryFileDTO salaryFileDTO) {
+    public List<SettingSalaryFileDTO> deleteSalaryFile(SettingSalaryFileDTO salaryFileDTO) {
         log.info("deleteSalaryFile Start~~~~~~~~~~~~");
         int result = 0;
         try {
@@ -1121,115 +1158,140 @@ public class SettingMemberService {
             throw new RuntimeException(e);
         }
         log.info("deleteSalaryFile 끝~~~~~~~~~~~~");
-        return (result > 0) ? "통장 파일 삭제 성공" : "통장 파일 삭제 실패";
+        List<SettingSalaryFile> fileDTOS = settingSalaryFileRepository.findAll();
+        List<SettingSalaryFileDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingSalaryFileDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
     }
     @Transactional
-    public String deleteDocumentFile(SettingDocumentFileDTO documentFileDTO) {
+    public List<SettingDocumentFileDTO> deleteDocumentFile(SettingDocumentFileDTO documentFileDTO) {
         log.info("deleteDocumentFile Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingDocumentFileRepository.deleteById(documentFileDTO.getDocAtcCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteDocumentFile 끝~~~~~~~~~~~~");
-        return (result > 0) ? "그외 파일 삭제 성공" : "통장 파일 삭제 실패";
+        List<SettingDocumentFile> fileDTOS = settingDocumentFileRepository.findAll();
+        List<SettingDocumentFileDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingDocumentFileDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
     }
     @Transactional
-    public String deleteDegreeFile(SettingDegreeFileDTO degreeFileDTO) {
+    public List<SettingDegreeFileDTO> deleteDegreeFile(SettingDegreeFileDTO degreeFileDTO) {
         log.info("deleteDegreeFile Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingDegreeFileRepository.deleteById(degreeFileDTO.getDegAtcCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteDegreeFile 끝~~~~~~~~~~~~");
-        return (result > 0) ? "학위 파일 삭제 성공" : "학위 파일 삭제 실패";
+        List<SettingDegreeFile> fileDTOS = settingDegreeFileRepository.findAll();
+        List<SettingDegreeFileDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingDegreeFileDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
     }
     @Transactional
-    public String deleteCertificateFile(SettingCertificateFileDTO certificateFileDTO) {
+    public List<SettingCertificateFileDTO> deleteCertificateFile(SettingCertificateFileDTO certificateFileDTO) {
         log.info("deleteCertificateFile Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingCertificateFileRepository.deleteById(certificateFileDTO.getCerAtcCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteCertificateFile 끝~~~~~~~~~~~~");
-        return (result > 0) ? "자격 파일 삭제 성공" : "자격 파일 삭제 실패";
+        List<SettingCertificateFile> fileDTOS = settingCertificateFileRepository.findAll();
+        List<SettingCertificateFileDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingCertificateFileDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;
     }
     @Transactional
-    public String deleteCareerFile(SettingCareerFileDTO careerFileDTO) {
+    public List<SettingCareerFileDTO> deleteCareerFile(SettingCareerFileDTO careerFileDTO) {
         log.info("deleteCareerFile Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingCareerFileRepository.deleteById(careerFileDTO.getCrrAtcCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteCareerFile 끝~~~~~~~~~~~~");
-        return (result > 0) ? "경력 파일 삭제 성공" : "경력 파일 삭제 실패";
-    }
+        List<SettingCareerFile> fileDTOS = settingCareerFileRepository.findAll();
+        List<SettingCareerFileDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingCareerFileDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;     }
 
     @Transactional
-    public String deleteCertificate(SettingCertificateDTO certificateDTO) {
+    public List<SettingCertificateDTO> deleteCertificate(SettingCertificateDTO certificateDTO) {
         log.info("deleteCertificate Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingCertificateRepository.deleteById(certificateDTO.getCerCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteCertificate 끝~~~~~~~~~~~~");
-        return (result > 0) ? "자격 정보 삭제 성공" : "자격 정보 삭제 실패";
-    }
+        List<SettingCertificate> fileDTOS = settingCertificateRepository.findAll();
+        List<SettingCertificateDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingCertificateDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;     }
 
     @Transactional
-    public String deleteCareer(SettingCareerDTO careerDTO) {
+    public List<SettingCareerDTO> deleteCareer(SettingCareerDTO careerDTO) {
         log.info("deleteCertificate Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingCareerRepository.deleteById(careerDTO.getCrrCode());
-            result = 1;
+
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteCertificate 끝~~~~~~~~~~~~");
-        return (result > 0) ? "경력 정보 삭제 성공" : "경력 정보 삭제 실패";
-    }
+        List<SettingCareer> fileDTOS = settingCareerRepository.findAll();
+        List<SettingCareerDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingCareerDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;     }
 
     @Transactional
-    public String deleteDegree(SettingDegreeDTO degreeDTO) {
+    public List<SettingDegreeDTO> deleteDegree(SettingDegreeDTO degreeDTO) {
         log.info("deleteCertificate Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingDegreeRepository.deleteById(degreeDTO.getDegCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteCertificate 끝~~~~~~~~~~~~");
-        return (result > 0) ? "학위 정보 삭제 성공" : "학위 정보 삭제 실패";
-    }
+        List<SettingDegree> fileDTOS = settingDegreeRepository.findAll();
+        List<SettingDegreeDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingDegreeDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;     }
 
     @Transactional
-    public String deleteSalary(SettingSalaryDTO salaryDTO) {
+    public List<SettingSalaryDTO> deleteSalary(SettingSalaryDTO salaryDTO) {
         log.info("deleteSalary Start~~~~~~~~~~~~");
-        int result = 0;
         try {
             settingSalaryRepository.deleteById(salaryDTO.getSalCode());
-            result = 1;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
         log.info("deleteSalary 끝~~~~~~~~~~~~");
-        return (result > 0) ? "학위 정보 삭제 성공" : "학위 정보 삭제 실패";
-    }
+        List<SettingSalary> fileDTOS = settingSalaryRepository.findAll();
+        List<SettingSalaryDTO> resultDTO = fileDTOS.stream()
+                .map(resultList -> modelMapper.map(resultList, SettingSalaryDTO.class))
+                .collect(Collectors.toList());
+
+        return resultDTO;     }
 
 }

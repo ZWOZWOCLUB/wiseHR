@@ -61,6 +61,14 @@ public class NoticeController {
     @PutMapping("/updateNotice")
     public ResponseEntity<ResponseDTO> updateNotice(
             @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
+        log.info("첨부파일 : " + noticeFile);
+        log.info("노티스 디티오 : " + noticeDTO);
+
+        if (noticeFile == null || noticeFile.isEmpty()) {
+            log.info("첨부파일 없음");
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지수정성공", noticeService.updateNotice(noticeDTO, noticeFile)));
+
+        }
         log.info("공지사항수정시작");
         log.info("NoticeDTO ====== " + noticeDTO);
 

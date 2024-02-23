@@ -4,6 +4,7 @@ import com.wisehr.wisehr.attendance.dto.Attendance2DTO;
 import com.wisehr.wisehr.attendance.dto.AttendanceDTO;
 import com.wisehr.wisehr.attendance.service.AttendanceService;
 import com.wisehr.wisehr.common.ResponseDTO;
+import com.wisehr.wisehr.schedule.dto.ScheduleSearchValueDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping("attendance")
@@ -74,6 +76,30 @@ public class AttendanceController {
         log.info("사원 정보 : " + memCode);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "당일 정보 조회 성공 " , attendanceService.todayInfo(searchDate,memCode)));
+    }
+
+    @PostMapping("{memCode}/schedule/{searchDate}")
+    public ResponseEntity<ResponseDTO> searchMonth(@PathVariable String memCode,
+                                                   @PathVariable String searchDate) {
+
+        ScheduleSearchValueDTO value = new ScheduleSearchValueDTO();
+        value.setMemCode(Integer.parseInt(memCode));
+        value.setYearMonth(searchDate);
+
+        log.info("memCode 123 : " + memCode);
+        log.info("searchDate123 : " + searchDate);
+
+        if(value.getYearMonth() == null){
+            java.util.Date date = new java.util.Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+            System.out.println("simpleDateFormat = " + simpleDateFormat);
+            String now = simpleDateFormat.format(date);
+            value.setYearMonth(now);
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 스케줄 조회 성공", attendanceService.searchMonth(value)));
+
+        }   else {
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 스케줄 조회 성공", attendanceService.searchMonth(value)));
+        }
     }
 
 }

@@ -19,6 +19,16 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
             "AND A.schDeleteStatus = 'N'")
     List<ScheduleAllSelect> findByYearMonth(String yearMonth);
 
+    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
+    @Query("SELECT A FROM ScheduleAllSelect A " +
+            "LEFT JOIN ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
+            "JOIN SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
+            "LEFT JOIN ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
+            "LEFT JOIN ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
+            "WHERE (:memCode = 0 OR E.allowanceID.memCode = :memCode)" +
+            "AND A.schDeleteStatus = 'N'")
+    List<ScheduleAllSelect> findByYearMonth(int memCode);
+
 
     @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT A FROM ScheduleAllSelect A " +
@@ -42,4 +52,14 @@ public interface ScheduleAllSelectRepository extends JpaRepository<ScheduleAllSe
         List<ScheduleAllSelect> findByAll();
 
 
+    @EntityGraph(attributePaths = {"patternList"}, type = EntityGraph.EntityGraphType.FETCH)
+    @Query("SELECT A FROM ScheduleAllSelect A " +
+            "LEFT JOIN ScheduleWorkPattern B ON A.wokCode = B.wokCode " +
+            "JOIN SchedulePatternDay C ON A.wokCode = C.patternDayID.wokCode " +
+            "LEFT JOIN ScheduleAllowance E ON A.schCode = E.allowanceID.schCode " +
+            "LEFT JOIN ScheduleMember F ON E.allowanceID.memCode = F.memCode " +
+            "WHERE (:yearMonth BETWEEN DATE_FORMAT(A.schStartDate, '%Y-%m') AND DATE_FORMAT(A.schEndDate, '%Y-%m')) " +
+            "AND (F.memCode IN (:memCode)) " +
+            "AND A.schDeleteStatus = 'N'")
+    List<ScheduleAllSelect> findByYearMonthAndMemCode(List<String >memCode, String yearMonth);
 }

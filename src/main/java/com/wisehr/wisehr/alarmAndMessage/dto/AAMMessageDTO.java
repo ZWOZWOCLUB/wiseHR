@@ -6,6 +6,7 @@ import jakarta.persistence.Convert;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,7 @@ import java.sql.Date;
 public class AAMMessageDTO {
 
     private int msgCode;
-    private AAMRecMessengerDTO aamRecMessenger;
+    private List<AAMRecMessengerDTO> aamRecMessenger;
     @Convert(converter= DateToStringConverter.class)
     private String msgDate;
     private String msgContents;
