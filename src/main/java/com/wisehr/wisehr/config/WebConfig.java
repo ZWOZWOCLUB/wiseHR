@@ -27,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler(ADD_RESOURCE_HANDLER)
                 .addResourceLocations(ADD_RESOURCE_LOCATION);
         registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+
     }
     @Bean
     public FilterRegistrationBean<HeaderFilter> getFilterRegistrationBean() {

@@ -392,7 +392,7 @@ public class SettingMemberService {
         SettingSalaryFileDTO salaryFileDTO = null;
         if (salary != null && salary.getSalaryFile() != null) {
             salaryFileDTO = modelMapper.map(salary.getSalaryFile(), SettingSalaryFileDTO.class);
-            salaryFileDTO.setSalAtcConvertName(IMAGE_URL + "salary/" + salaryFileDTO.getSalAtcConvertName());
+//            salaryFileDTO.setSalAtcConvertName("/salary/" + salaryFileDTO.getSalAtcConvertName());
             resourcesDTO.setSalaryFileDTO(salaryFileDTO);
         }
         List<SettingDocumentFileDTO> documentFileDTOList = documentFileDTO.stream()
