@@ -63,5 +63,15 @@ public class DataFormatController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자료전체조회성공", pagingResponseDTO));
     }
 
+    //자료삭제
+    @PutMapping("/deleteData")
+    public ResponseEntity<ResponseDTO> deleteData(@RequestBody DataFormatDTO dataCode){
+
+        log.info("dataFormat디티오", dataCode);
+        System.out.println("dataFormatDTO = " + dataCode);
+
+         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "첨부파일 삭제 성공", dataFormatService.updateDataFormat(dataCode)));
+    }
+
 
 }
