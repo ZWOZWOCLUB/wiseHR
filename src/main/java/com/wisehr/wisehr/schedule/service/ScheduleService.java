@@ -298,10 +298,20 @@ public class ScheduleService {
                 }
             }else {
                 Schedule schedule = scheduleRepository.findById(insertDTO.getSchCode()).get();
+                System.out.println("삭제");
 
                 System.out.println("delete = " + schedule);
                 schedule = schedule.schDeleteStatus("Y")
                         .build();
+                System.out.println("삭제2");
+
+                List<ScheduleInsertPatternDay> patternDay = insertPatternDayRepository.findByWokCode(schedule.getWokCode());
+                System.out.println("삭제3");
+                for(int i =0; i < patternDay.size(); i++) {
+                    insertPatternDayRepository.deleteByWokCode(patternDay.get(i).getWokCode());
+                    System.out.println("삭43");
+                }
+
             }
             result = 1;
         } catch (Exception e) {

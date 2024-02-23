@@ -26,6 +26,7 @@ public interface SettingMemDepAttSchRepository extends JpaRepository<SettingMemD
             "join SettingAllowance C on A.memCode = C.allowanceID.memCode " +
             "join SettingSchedule D on B.schCode = D.schCode " +
             "where B.attWorkDate like %:yearMonth%  AND D.schDeleteStatus = 'n'" +
-            "group by A.memCode, A.memName, A.depCode, B.attCode, B.attStartTime, B.attEndTime, B.attStatus, B.attWorkDate, B.schCode, D.schType, D.schColor ")
+            "group by A.memCode, A.memName, A.depCode, B.attCode, B.attStartTime, B.attEndTime, B.attStatus, B.attWorkDate, B.schCode, D.schType, D.schColor " +
+    "order by E.depCode")
     List<Object[]> findByYearMonth(String yearMonth);
 }
