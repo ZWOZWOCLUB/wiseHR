@@ -13,3 +13,14 @@ Content-Disposition: form-data; name="dataFormatFile"; filename="pikachu.png"
 
 < pikachu.png
 --WebAppBoundary
+
+
+### 서식자료실 파일 삭제
+PUT http://localhost:8001/dataFormat/deleteData
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJkYXRlIjoxNzA4Njc4ODc4NDc3LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDk1NDI4Nzh9.2u7s961_JjqrjS5RknDFJkqaYbvXoktvPCRcr6l2lrA
+
+--WebAppBoundary
+Content-Disposition: form-data; name="dataCode"
+
+29
