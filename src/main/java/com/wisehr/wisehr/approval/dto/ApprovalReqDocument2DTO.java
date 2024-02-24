@@ -16,5 +16,5 @@ public class ApprovalReqDocument2DTO {
     private String reqUse;
     private ApprovalDTO approval;
     private ApprovalMemberDTO cMember;
-    private List<ReferencerDTO> rMember;
+    private List<String> rMember;
 }

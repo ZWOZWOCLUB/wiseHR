@@ -20,5 +20,5 @@ public class EditCommute2DTO {
     private String ediTime;
     private ApprovalDTO approval;
     private ApprovalMemberDTO cMember;
-    private List<ReferencerDTO> rMember;
+    private List<String> rMember;
 }

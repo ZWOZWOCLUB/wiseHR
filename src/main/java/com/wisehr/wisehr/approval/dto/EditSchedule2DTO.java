@@ -22,5 +22,5 @@ public class EditSchedule2DTO {
     private String eshOffStartDate; //
     private String eshOffEndDate;   //
     private ApprovalMemberDTO cMember;
-    private List<ReferencerDTO> rMember;
+    private List<String> rMember;
 }
