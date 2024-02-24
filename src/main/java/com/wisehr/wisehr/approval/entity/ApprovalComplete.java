@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,4 +40,8 @@ public class ApprovalComplete {
     @JoinColumn(name = "per_arm_code")
     @JsonIgnore
     private ApprovalPerAlarm perArm;
+    @OneToMany
+    @JoinColumn(name = "app_code")
+    @JsonIgnore
+    private List<Referencer> refMember;
 }

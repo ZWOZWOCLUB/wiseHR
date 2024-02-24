@@ -51,15 +51,12 @@ public class ApprovalService {
     private final ApprovalMemberRepository approvalMemberRepository;
     private final ApproverProxyRepository approverProxyRepository;
     private final ScheduleEtcPatternRepository scheduleEtcPatternRepository;
-    private final ScheduleWorkPatternRepository scheduleWorkPatternRepository;
     private final ApprovalScheduleRepository approvalScheduleRepository;
-    private final ApprovalPatternDayRepository approvalPatternDayRepository;
     private final AttendanceRepository attendanceRepository;
     private final ApprovalAttachmentRepository approvalAttachmentRepository;
     private final MPHoldVacationRepository holdVacationRepository;
     private final ApprovalMember2Repository approvalMember2Repository;
-    private final AppSchMemberRepository approvalScheduleMemberRepository;
-
+    private final ReferencerRepository referencerRepository;
     private final ModelMapper modelMapper;
     private final ApprovalUtils fileUtils;
 
@@ -72,7 +69,7 @@ public class ApprovalService {
     private String IMAGE_URL;
 
     @Autowired
-    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, ApprovalMember2Repository approvalMember2Repository, AppSchMemberRepository approvalScheduleMemberRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
+    public ApprovalService(ApprovalCompleteRepository approvalCompleteRepository, ApprovalRepository approvalRepository, ApprovalAnnualRepository approvalAnnualRepository, ApprovalPerArmRepository approvalPerArmRepository, ApprovalVHRepository approvalVHRepository, EditCommuteRepository editCommuteRepository, EditScheduleRepository editScheduleRepository, ApprovalRetiredRepository approvalRetiredRepository, ApprovalReqDocumentRepository approvalReqDocumentRepository, ApprovalMemberRepository approvalMemberRepository, ApproverProxyRepository approverProxyRepository, ScheduleEtcPatternRepository scheduleEtcPatternRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ApprovalScheduleRepository approvalScheduleRepository, ApprovalPatternDayRepository approvalPatternDayRepository, AttendanceRepository attendanceRepository, ApprovalAttachmentRepository approvalAttachmentRepository, MPHoldVacationRepository holdVacationRepository, ApprovalMember2Repository approvalMember2Repository, AppSchMemberRepository approvalScheduleMemberRepository, ReferencerRepository referencerRepository, ModelMapper modelMapper, ApprovalUtils fileUtils) {
         this.approvalCompleteRepository = approvalCompleteRepository;
         this.approvalRepository = approvalRepository;
         this.approvalAnnualRepository = approvalAnnualRepository;
@@ -85,18 +82,15 @@ public class ApprovalService {
         this.approvalMemberRepository = approvalMemberRepository;
         this.approverProxyRepository = approverProxyRepository;
         this.scheduleEtcPatternRepository = scheduleEtcPatternRepository;
-        this.scheduleWorkPatternRepository = scheduleWorkPatternRepository;
+        this.referencerRepository = referencerRepository;
         this.approvalScheduleRepository = approvalScheduleRepository;
-        this.approvalPatternDayRepository = approvalPatternDayRepository;
         this.attendanceRepository = attendanceRepository;
         this.approvalAttachmentRepository = approvalAttachmentRepository;
         this.holdVacationRepository = holdVacationRepository;
         this.approvalMember2Repository = approvalMember2Repository;
-        this.approvalScheduleMemberRepository = approvalScheduleMemberRepository;
         this.modelMapper = modelMapper;
         this.fileUtils = fileUtils;
     }
-
 
 
     // 받은 결재 #결제 완료 및
@@ -107,21 +101,26 @@ public class ApprovalService {
         int index = cri.getPageNum() -1;
         int count = cri.getAmount();
 
-        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Order.desc("ApprovalPayDate")));
+        Pageable paging = PageRequest.of(index, count);
+
+        Page<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode ,paging);
+
+        log.info("paymentList : " + paymentList.getContent());
+
+        List<Referencer> ref = referencerRepository.findByReferencerPK_MemCode(memCode);
+
+        List<ApprovalComplete> paymentList1 = new ArrayList<>();
+
+        for (int i = 0; i < ref.size(); i++) {
+            paymentList1.add(approvalCompleteRepository.findByAppCode(ref.get(i).getReferencerPK().getAppCode()));
+        }
 
 
-
-        Page<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode, paging);
-
-
-        log.info("paymentList : " + paymentList);
-
-//        List<ApprovalCompleteDTO> payment =;
-
-//        log.info("받은 결재 완료 payment : " + payment);
-
-        log.info("맞음? ");
         Page<ApprovalCompleteDTO> result = paymentList.map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
+
+        log.info("result : " + result.getContent());
+
+        log.info("result : " + result.getSize());
 
         return result;
     }
@@ -133,7 +132,7 @@ public class ApprovalService {
         int index = cri.getPageNum() -1;
         int count = cri.getAmount();
 
-        Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Order.desc("ApprovalPayDate")));
+        Pageable paging = PageRequest.of(index, count);
 
 
         Page<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalApprovalMemberMemCode(memCode, paging);
@@ -319,7 +318,21 @@ public class ApprovalService {
 
                 log.info("acc : " + acc);
 
-                approvalCompleteRepository.save(acc);
+                ApprovalComplete newApp = approvalCompleteRepository.save(acc);
+
+                for (int i = 0; i < annual.getRMember().size(); i++) {
+                    Referencer ref = new Referencer();
+                    ReferencerPK rpk = new ReferencerPK();
+                    ref.setReferencerPK(rpk);
+                    rpk.setAppCode(newApp.getAppCode());
+                    ref.getReferencerPK().setMemCode(Long.parseLong(annual.getRMember().get(i).trim()));
+                    log.info("ref" + ref);
+
+                    referencerRepository.save(ref);
+
+                }
+
+
 
                 log.info("결제완료 쪽 완성");
 
@@ -872,14 +885,33 @@ public class ApprovalService {
         return (result > 0 ) ? "성공" : "실패";
     }
 
-    public List<ApprovalDTO> selectApproval(String payCode) {
+    public AppRefDTO selectApproval(String payCode) {
 
         List<Approval> approvalList = approvalRepository.findByPayCode(payCode);
 
 
         log.info("approval : " + approvalList);
+        log.info("여기? 맞음 ? ");
 
-        return approvalList.stream().map(approval -> modelMapper.map(approval, ApprovalDTO.class)).collect(Collectors.toList());
+        List<ApprovalDTO> approval = approvalList.stream().map(app -> modelMapper.map(app, ApprovalDTO.class)).collect(Collectors.toList());
+        List<ApprovalComplete> complete = approvalCompleteRepository.findByApprovalPayCode(payCode);
+        List<ApprovalMemberDTO> members = new ArrayList<>();
+
+        log.info("complete : "  + complete);
+
+        for (int i = 0; i < complete.get(0).getRefMember().size(); i++) {
+            ApprovalMemberDTO member = new ApprovalMemberDTO();
+            ApprovalMember name = approvalMemberRepository.findByMemCode(complete.get(0).getRefMember().get(i).getReferencerPK().getMemCode());
+            member = modelMapper.map(name,ApprovalMemberDTO.class);
+            members.add(member);
+        }
+        AppRefDTO result = new AppRefDTO();
+        result.setApprovalComplete(approval.get(0));
+        result.setRefMember(members);
+
+        log.info("result : " + result);
+
+        return result;
     }
 
     public List<ApprovalCompleteDTO> selectApprovalComplete(String payCode) {
@@ -955,5 +987,36 @@ public class ApprovalService {
         log.info("department : " + filterMember.get(0).getDepartment());
 
         return filterMember.stream().map(a -> modelMapper.map(a, ApprovalMember2DTO.class)).collect(Collectors.toList());
+    }
+
+    public ApprovalMemberDTO depMember(String memCode) {
+
+        ApprovalMember member = approvalMemberRepository.findByMemCode(Long.parseLong(memCode));
+
+        log.info("member : " + member);
+
+        log.info("member dep : " + member.getDepartment());
+
+        if (member.getDepartment() == null ){
+            List<ApprovalMember> result = approvalMemberRepository.findByPositionPosCode(1L);
+
+            log.info("result : " + result);
+
+            return modelMapper.map(result.get(0), ApprovalMemberDTO.class);
+        }
+
+        List<ApprovalMember> memberList = approvalMemberRepository.findByDepartmentDepCodeAndMemRole(member.getDepartment().getDepCode(),"ADMIN");
+
+        log.info("memberList : " + memberList);
+
+
+
+        if (memberList.get(0) != null){
+            ApprovalMember result = memberList.get(0);
+
+            return modelMapper.map(result, ApprovalMemberDTO.class);
+        }
+
+        return null;
     }
 }

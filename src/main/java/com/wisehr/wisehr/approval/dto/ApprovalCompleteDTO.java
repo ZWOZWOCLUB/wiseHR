@@ -1,9 +1,9 @@
 package com.wisehr.wisehr.approval.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +18,5 @@ public class ApprovalCompleteDTO {
     private ApprovalDTO approval;
     private ApprovalMemberDTO approvalMember;
     private ApprovalPerAlarmDTO perArm;
+    private List<ReferencerDTO> refMember;
 }

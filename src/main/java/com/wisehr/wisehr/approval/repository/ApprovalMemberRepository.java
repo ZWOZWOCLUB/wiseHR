@@ -14,4 +14,10 @@ public interface ApprovalMemberRepository extends JpaRepository<ApprovalMember, 
 
     List<ApprovalMember> findByMemBirthLike(String s);
 
+    List<ApprovalMember> findByDepartmentDepCodeAndMemCodeAndMemRole(Long depCode, long l, String admin);
+
+    List<ApprovalMember> findByPositionPosCode(Long i);
+
+    List<ApprovalMember> findByDepartmentDepCodeAndMemRole(Long depCode, String admin);
+
 }

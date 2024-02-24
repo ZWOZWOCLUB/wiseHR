@@ -116,6 +116,7 @@ public class ApprovalController {
         log.info("=== approvalFile : " + approvalFile );
         log.info("-==== approvalAnnual : " + annual);
 
+
         return ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "연차 등록 성공", approvalService.submitAnnual(annual, approvalFile)));
     }
@@ -240,6 +241,14 @@ public class ApprovalController {
 
         return  ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "검색완료", approvalService.searchDate(date)));
+    }
+
+    @GetMapping(value="/depmember/{memCode}")
+    public ResponseEntity<ResponseDTO> depMember(@PathVariable String memCode){
+
+
+        return  ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "검색완료", approvalService.depMember(memCode)));
     }
 
 }

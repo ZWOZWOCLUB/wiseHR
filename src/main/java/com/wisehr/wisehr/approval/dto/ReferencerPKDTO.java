@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class ReferencerDTO {
-    private ReferencerPKDTO referencerPK;
+public class ReferencerPKDTO {
+    private Long memCode;
+    private String appCode;
 }
