@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,7 @@ public class SettingMemberService {
     private final MPHoldVacationRepository vacationRepository;
     private final SettingMemDepAttSchRepository settingMemDepAttSchRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     private final ModelMapper modelMapper;
@@ -57,7 +59,7 @@ public class SettingMemberService {
     private String IMAGE_URL;
 
 
-    public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingDegreeFileRepository settingDegreeFileRepository, SettingCareerRepository settingCareerRepository, SettingCareerFileRepository settingCareerFileRepository, SettingCertificateRepository settingCertificateRepository, SettingCertificateFileRepository settingCertificateFileRepository, SettingDocumentFileRepository settingDocumentFileRepository, SettingSalaryFileRepository settingSalaryFileRepository, SettingSalaryRepository settingSalaryRepository, MPHoldVacationRepository vacationRepository, SettingMemDepAttSchRepository settingMemDepAttSchRepository, ModelMapper modelMapper) {
+    public SettingMemberService(SettingMemberRepository settingMemberRepository, SettingMemDepPosRepository settingMemDepPosRepository, SettingDepartmentRepository settingDepartmentRepository, SettingPositionRepository settingPositionRepository, SettingDegreeRepository settingDegreeRepository, SettingDegreeFileRepository settingDegreeFileRepository, SettingCareerRepository settingCareerRepository, SettingCareerFileRepository settingCareerFileRepository, SettingCertificateRepository settingCertificateRepository, SettingCertificateFileRepository settingCertificateFileRepository, SettingDocumentFileRepository settingDocumentFileRepository, SettingSalaryFileRepository settingSalaryFileRepository, SettingSalaryRepository settingSalaryRepository, MPHoldVacationRepository vacationRepository, SettingMemDepAttSchRepository settingMemDepAttSchRepository, BCryptPasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.settingMemberRepository = settingMemberRepository;
         this.settingMemDepPosRepository = settingMemDepPosRepository;
         this.settingDepartmentRepository = settingDepartmentRepository;
@@ -73,6 +75,7 @@ public class SettingMemberService {
         this.settingSalaryRepository = settingSalaryRepository;
         this.vacationRepository = vacationRepository;
         this.settingMemDepAttSchRepository = settingMemDepAttSchRepository;
+        this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
 
@@ -175,99 +178,114 @@ public class SettingMemberService {
         int result = 0;
 
         try {
+
             SettingMember member = settingMemberRepository.findById(settingMemberDTO.getMemCode()).get();
             System.out.println("member = " + member);
+            if(!settingMemberDTO.getMemStatus().equals("Y")) {
 
+                if (settingMemberDTO.getMemPassword().equals("0000")) {
 
-                member = member.memName(settingMemberDTO.getMemName())
-                        .memPhone(settingMemberDTO.getMemPhone())
-                        .memEmail(settingMemberDTO.getMemEmail())
-                        .memAddress(settingMemberDTO.getMemAddress())
-                        .memBirth(settingMemberDTO.getMemBirth())
-                        .memHireDate(settingMemberDTO.getMemHireDate())
-                        .memEndDate(settingMemberDTO.getMemEndDate())
-                        .memStatus(settingMemberDTO.getMemStatus())
-                        .memRole(settingMemberDTO.getMemRole())
-                        .depCode(settingMemberDTO.getDepCode())
-                        .posCode(settingMemberDTO.getPosCode()).build();
+                    member = member.memPassword(passwordEncoder.encode(settingMemberDTO.getMemPassword())).build();
+                    SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
 
-                SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
-            SettingDocumentFile file = settingDocumentFileRepository.findByMemCodeAndDocAtcKind(settingMemberDTO.getMemCode(), kind);
-
-            if(file != null) {
-
-                if (profile != null) {
-                    System.out.println("file = " + file);
-
-                    String fileName = UUID.randomUUID().toString().replace("-", "");
-
-                    String[] extend = profile.getOriginalFilename().split("\\.");
-
-                    String realExtend = extend[1];
-
-                    replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
-
-                    file = file.memCode(member.getMemCode())
-                            .docAtcCode(file.getDocAtcCode())
-                            .docAtcExtends(realExtend)
-                            .docAtcConvertName(replaceFileName)
-                            .docAtcRegistDate(LocalDate.now().toString())
-                            .docAtcStorage(path)
-                            .docAtcOriginName(profile.getOriginalFilename())
-                            .docAtcKind("프로필")
-                            .docAtcPath(path).build();
-
-                    SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
-
-                    String url = "profile/" + resultFileDTO.getDocAtcConvertName();
-                    memberDTO.setProfileURL(url);
-                    System.out.println("memberDTO = " + memberDTO);
                     return memberDTO;
                 } else {
-                    String oriImage = file.getDocAtcConvertName();
-                    file = file.docAtcOriginName(oriImage).build();
 
-                    SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
+                    member = member.memName(settingMemberDTO.getMemName())
+                            .memPhone(settingMemberDTO.getMemPhone())
+                            .memEmail(settingMemberDTO.getMemEmail())
+                            .memAddress(settingMemberDTO.getMemAddress())
+                            .memBirth(settingMemberDTO.getMemBirth())
+                            .memHireDate(settingMemberDTO.getMemHireDate())
+                            .memEndDate(settingMemberDTO.getMemEndDate())
+                            .memStatus(settingMemberDTO.getMemStatus())
+                            .memRole(settingMemberDTO.getMemRole())
+                            .depCode(settingMemberDTO.getDepCode())
+                            .posCode(settingMemberDTO.getPosCode()).build();
 
-                    String url = "profile/" + resultFileDTO.getDocAtcConvertName();
-                    memberDTO.setProfileURL(url);
-                    System.out.println("memberDTO = " + memberDTO);
-                    return memberDTO;
+                    SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
+                    SettingDocumentFile file = settingDocumentFileRepository.findByMemCodeAndDocAtcKind(settingMemberDTO.getMemCode(), kind);
+
+                    if (file != null) {
+
+                        if (profile != null) {
+                            System.out.println("file = " + file);
+
+                            String fileName = UUID.randomUUID().toString().replace("-", "");
+
+                            String[] extend = profile.getOriginalFilename().split("\\.");
+
+                            String realExtend = extend[1];
+
+                            replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
+
+                            file = file.memCode(member.getMemCode())
+                                    .docAtcCode(file.getDocAtcCode())
+                                    .docAtcExtends(realExtend)
+                                    .docAtcConvertName(replaceFileName)
+                                    .docAtcRegistDate(LocalDate.now().toString())
+                                    .docAtcStorage(path)
+                                    .docAtcOriginName(profile.getOriginalFilename())
+                                    .docAtcKind("프로필")
+                                    .docAtcPath(path).build();
+
+                            SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
+
+                            String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                            memberDTO.setProfileURL(url);
+                            System.out.println("memberDTO = " + memberDTO);
+                            return memberDTO;
+                        } else {
+                            String oriImage = file.getDocAtcConvertName();
+                            file = file.docAtcOriginName(oriImage).build();
+
+                            SettingDocumentFileDTO resultFileDTO = modelMapper.map(file, SettingDocumentFileDTO.class);
+
+                            String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                            memberDTO.setProfileURL(url);
+                            System.out.println("memberDTO = " + memberDTO);
+                            return memberDTO;
+                        }
+                    } else {
+                        SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
+
+                        String fileName = UUID.randomUUID().toString().replace("-", "");
+                        String[] extend = profile.getOriginalFilename().split("\\.");
+
+                        String realExtend = extend[1];
+
+
+                        replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
+
+                        fileDTO.setMemCode(settingMemberDTO.getMemCode());
+                        fileDTO.setDocAtcExtends(realExtend);
+                        fileDTO.setDocAtcConvertName(replaceFileName);
+                        fileDTO.setDocAtcRegistDate(LocalDate.now().toString());
+                        fileDTO.setDocAtcStorage(path);
+                        fileDTO.setDocAtcDeleteStatus("N");
+                        fileDTO.setDocAtcPath(path);
+                        fileDTO.setDocAtcOriginName(profile.getOriginalFilename());
+                        fileDTO.setDocAtcKind("프로필");
+                        fileDTO.setMemCode(settingMemberDTO.getMemCode());
+
+                        SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
+                        settingDocumentFileRepository.save(insertFile);
+
+
+                        SettingDocumentFileDTO resultFileDTO = modelMapper.map(insertFile, SettingDocumentFileDTO.class);
+
+                        String url = "profile/" + resultFileDTO.getDocAtcConvertName();
+                        memberDTO.setProfileURL(url);
+                        System.out.println("memberDTO = " + memberDTO);
+                        return memberDTO;
+                    }
                 }
             }else {
-                SettingDocumentFileDTO fileDTO = new SettingDocumentFileDTO();
-
-                String fileName = UUID.randomUUID().toString().replace("-", "");
-                String[] extend = profile.getOriginalFilename().split("\\.");
-
-                String realExtend = extend[1];
-
-
-                replaceFileName = FileUploadUtils.saveFile(path, fileName, profile);
-
-                fileDTO.setMemCode(settingMemberDTO.getMemCode());
-                fileDTO.setDocAtcExtends(realExtend);
-                fileDTO.setDocAtcConvertName(replaceFileName);
-                fileDTO.setDocAtcRegistDate(LocalDate.now().toString());
-                fileDTO.setDocAtcStorage(path);
-                fileDTO.setDocAtcDeleteStatus("N");
-                fileDTO.setDocAtcPath(path);
-                fileDTO.setDocAtcOriginName(profile.getOriginalFilename());
-                fileDTO.setDocAtcKind("프로필");
-                fileDTO.setMemCode(settingMemberDTO.getMemCode());
-
-                SettingDocumentFile insertFile = modelMapper.map(fileDTO, SettingDocumentFile.class);
-                settingDocumentFileRepository.save(insertFile);
-
-
-                SettingDocumentFileDTO resultFileDTO = modelMapper.map(insertFile, SettingDocumentFileDTO.class);
-
-                String url = "profile/" + resultFileDTO.getDocAtcConvertName();
-                memberDTO.setProfileURL(url);
-                System.out.println("memberDTO = " + memberDTO);
+                member = member.memStatus(settingMemberDTO.getMemStatus()).build();
+                SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
                 return memberDTO;
-            }
 
+            }
         } catch (Exception e) {
             FileUploadUtils.deleteFile(path, replaceFileName);
             throw new RuntimeException(e);
@@ -297,8 +315,9 @@ public class SettingMemberService {
     public List<SettingMemDepPosDTO> searchMemberList(String search) {
         log.info("searchMemberList 서비스 시작~~~~~~~~~~~~");
         log.info("searchMemberList search : {}", search);
+        String memStatus = "N";
 
-        List<SettingMemDepPos> memberListWithSearchValue = settingMemDepPosRepository.findByMemNameContaining(search);
+        List<SettingMemDepPos> memberListWithSearchValue = settingMemDepPosRepository.findByMemNameContainingAndMemStatus(search, memStatus);
 
         List<SettingMemDepPosDTO> memberDTOList = memberListWithSearchValue.stream()
                 .map(member -> modelMapper.map(member, SettingMemDepPosDTO.class))

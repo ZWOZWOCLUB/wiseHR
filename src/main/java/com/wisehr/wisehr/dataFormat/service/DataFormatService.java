@@ -8,6 +8,7 @@ import com.wisehr.wisehr.dataFormat.entity.DataMember;
 import com.wisehr.wisehr.dataFormat.repository.DataFormatRepository;
 import com.wisehr.wisehr.dataFormat.repository.DataMemberRepository;
 import com.wisehr.wisehr.util.FileUploadUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -145,5 +146,30 @@ public class DataFormatService {
 
         System.out.println("dataList  "+dataList);
         return dataList;
+    }
+
+    public String updateDataFormat(DataFormatDTO dataFormatDTO) {
+        log.info("첨부파일 삭제 시작");
+        log.info("dataFormatDTO" + dataFormatDTO);
+
+        int result = 0;
+
+        try {
+        DataFormat dataFormat = dataFormatRepository.findById(dataFormatDTO.getDataCode()).get();
+
+        System.out.println("dataFormat : " + dataFormat);
+
+        dataFormat.setDataDeleteStatus("Y");
+
+        log.info("dataFormat : " + dataFormat);
+
+            dataFormatRepository.save(dataFormat);
+            result = 1;
+        } catch (Exception e){
+            log.info("에러.");
+        }
+        log.info("첨부파일 삭제 끝" + dataFormatDTO);
+
+        return (result> 0)? "파일삭제 성공" : "파일삭제 실패";
     }
 }

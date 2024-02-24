@@ -16,7 +16,7 @@ public interface ScheduleMemSchRepository extends JpaRepository <ScheduleMemSch,
             "LEFT JOIN Schedule C ON B.allowanceID.schCode = C.schCode " +
             "WHERE B.allowanceID.schCode IS NUll OR C.schDeleteStatus = 'Y'" +
             "AND A.memStatus= 'N'" +
-            "OR NOT (:notContain BETWEEN C.schStartDate AND C.schEndDate)" +
+            "AND NOT (:notContain BETWEEN C.schStartDate AND C.schEndDate)" +
             "order by A.deplist.depCode")
     List<ScheduleMemSch> findByYearMonthNotContain(String notContain);
 
