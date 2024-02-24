@@ -191,7 +191,23 @@ public class ApprovalService {
 
             log.info("acc : " + acc);
 
-            approvalCompleteRepository.save(acc);
+            ApprovalComplete newApp = approvalCompleteRepository.save(acc);
+
+            if(edit.getRMember() != null) {
+
+                for (int i = 0; i < edit.getRMember().size(); i++) {
+                    Referencer ref = new Referencer();
+                    ReferencerPK rpk = new ReferencerPK();
+                    ref.setReferencerPK(rpk);
+                    rpk.setAppCode(newApp.getAppCode());
+                    ref.getReferencerPK().setMemCode(Long.parseLong(edit.getRMember().get(i).trim()));
+                    log.info("ref" + ref);
+
+                    referencerRepository.save(ref);
+
+                }
+
+            }
 
             log.info("결제완료 쪽 완성");
 
@@ -251,7 +267,23 @@ public class ApprovalService {
 
             log.info("acc : " + acc);
 
-            approvalCompleteRepository.save(acc);
+            ApprovalComplete newApp = approvalCompleteRepository.save(acc);
+
+            if(retired.getRMember() != null) {
+
+                for (int i = 0; i < retired.getRMember().size(); i++) {
+                    Referencer ref = new Referencer();
+                    ReferencerPK rpk = new ReferencerPK();
+                    ref.setReferencerPK(rpk);
+                    rpk.setAppCode(newApp.getAppCode());
+                    ref.getReferencerPK().setMemCode(Long.parseLong(retired.getRMember().get(i).trim()));
+                    log.info("ref" + ref);
+
+                    referencerRepository.save(ref);
+
+                }
+
+            }
 
             log.info("결제완료 쪽 완성");
 
@@ -320,19 +352,21 @@ public class ApprovalService {
 
                 ApprovalComplete newApp = approvalCompleteRepository.save(acc);
 
-                for (int i = 0; i < annual.getRMember().size(); i++) {
-                    Referencer ref = new Referencer();
-                    ReferencerPK rpk = new ReferencerPK();
-                    ref.setReferencerPK(rpk);
-                    rpk.setAppCode(newApp.getAppCode());
-                    ref.getReferencerPK().setMemCode(Long.parseLong(annual.getRMember().get(i).trim()));
-                    log.info("ref" + ref);
+                if(annual.getRMember() != null) {
 
-                    referencerRepository.save(ref);
+                    for (int i = 0; i < annual.getRMember().size(); i++) {
+                        Referencer ref = new Referencer();
+                        ReferencerPK rpk = new ReferencerPK();
+                        ref.setReferencerPK(rpk);
+                        rpk.setAppCode(newApp.getAppCode());
+                        ref.getReferencerPK().setMemCode(Long.parseLong(annual.getRMember().get(i).trim()));
+                        log.info("ref" + ref);
+
+                        referencerRepository.save(ref);
+
+                    }
 
                 }
-
-
 
                 log.info("결제완료 쪽 완성");
 
@@ -734,7 +768,24 @@ public class ApprovalService {
 
             log.info("acc : " + acc);
 
-            approvalCompleteRepository.save(acc);
+
+            ApprovalComplete newApp = approvalCompleteRepository.save(acc);
+
+            if(schedule.getRMember() != null) {
+
+                for (int i = 0; i < schedule.getRMember().size(); i++) {
+                    Referencer ref = new Referencer();
+                    ReferencerPK rpk = new ReferencerPK();
+                    ref.setReferencerPK(rpk);
+                    rpk.setAppCode(newApp.getAppCode());
+                    ref.getReferencerPK().setMemCode(Long.parseLong(schedule.getRMember().get(i).trim()));
+                    log.info("ref" + ref);
+
+                    referencerRepository.save(ref);
+
+                }
+
+            }
 
             log.info("결제완료 쪽 완성");
 
@@ -793,7 +844,23 @@ public class ApprovalService {
 
             log.info("acc : " + acc);
 
-            approvalCompleteRepository.save(acc);
+            ApprovalComplete newApp = approvalCompleteRepository.save(acc);
+
+            if(reqDocument.getRMember() != null) {
+
+                for (int i = 0; i < reqDocument.getRMember().size(); i++) {
+                    Referencer ref = new Referencer();
+                    ReferencerPK rpk = new ReferencerPK();
+                    ref.setReferencerPK(rpk);
+                    rpk.setAppCode(newApp.getAppCode());
+                    ref.getReferencerPK().setMemCode(Long.parseLong(reqDocument.getRMember().get(i).trim()));
+                    log.info("ref" + ref);
+
+                    referencerRepository.save(ref);
+
+                }
+
+            }
 
             log.info("결제완료 쪽 완성");
 

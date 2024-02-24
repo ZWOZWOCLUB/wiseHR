@@ -19,5 +19,5 @@ public class ApprovalRetired2DTO {
     private String tirContents;
     private ApprovalDTO approval;
     private ApprovalMemberDTO cMember;
-    private List<ReferencerDTO> rMember;
+    private List<String> rMember;
 }
