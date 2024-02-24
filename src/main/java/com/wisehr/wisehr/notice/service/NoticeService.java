@@ -216,74 +216,6 @@ public class NoticeService {
         return (result > 0) ? "공지업뎃 성공" : "공지업뎃 실패";
     }
 
-//    @Transactional
-//    public String updateNotice(NoticeDTO noticeDTO, MultipartFile noticeFile) {
-//        log.info(" ==============updateService Start ===========");
-//        log.info("noticeDTO ========== " + noticeDTO);
-//        log.info("noticeFile ====== " + noticeFile);
-//
-//
-//        int result = 0;
-//
-//
-//        NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
-//
-//
-//        String path = IMAGE_DIR + "noticeFile/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
-////        String path = IMAGE_DIR + "noticeFile/";
-//        noticeFileDTO.setNotAtcName(noticeFile.getOriginalFilename());
-//        noticeFileDTO.setNotAtcDeleteStatus("N");
-//        noticeFileDTO.setNotAtcPath(path);
-////        noticeFileDTO.setNotice(noticeDTO);
-//
-//        log.info("noticeFile.getName====" + noticeFile.getName());
-//        log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
-//        log.info("path========= : " + path);
-//        log.info("noticeDTO==========" + noticeDTO);
-//
-//        try {
-//            /*update 할 notice 조회*/
-//            Notice notice = noticeRepository.findById(noticeDTO.getNotCode()).get();
-//            log.info("notice ==== " + notice);
-//
-//            //공지내용 업데이트
-//            notice.setNotName(noticeDTO.getNotName());
-//            notice.setNotComment(noticeDTO.getNotComment());
-//
-//            //첨부파일이 존재할 경우
-//            if (noticeFile != null) {
-//                String savedFileName = FileUploadUtils.saveFile(path, noticeFile.getName(), noticeFile);
-//                log.info("Saved File Name ; " + savedFileName);
-//
-////                NotAttachedFile notAttachedFile = notAttachedFileRepository.findByNotice(notice);
-////
-////
-////                notAttachedFile.setNotAtcName(noticeFile.getOriginalFilename());
-////                notAttachedFile.setNotAtcPath(path);
-////
-////                notAttachedFileRepository.save(notAttachedFile);
-//            }
-//
-//
-//            noticeRepository.save(notice);
-//            log.info("notice ======= " + notice);
-//            log.info("noticeDTO==========" + noticeDTO);
-//
-//            log.info("noticeFile.getName====" + noticeFile.getName());
-//            log.info("noticeOriginFile ===== " + noticeFile.getOriginalFilename());
-//
-//            result = 1;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            log.error("Error message", e);
-////            throw new RuntimeException(e);
-//        }
-//
-//
-//        log.info("updateNotice 끝");
-//        return (result > 0) ? "공지업뎃 성공" : "공지업뎃 실패";
-//
-//    }
 
 
     //공지 상세 조회
@@ -296,15 +228,8 @@ public class NoticeService {
                 .map(noticeResponse -> modelMapper.map(noticeResponse, NoticeResponseDTO.class))
                 .collect(Collectors.toList());
 
-//        List<NotAttachedFile> noticeWithSearchValue = notAttachedFileRepository.findByNotice_NotCode(search);
-//        List<NotAttachedFileDTO> notAttachedFileDTOList = noticeWithSearchValue.stream()
-//                .map(notAttachedFile -> modelMapper.map(notAttachedFile, NotAttachedFileDTO.class))
-//                .collect(Collectors.toList());
-
         log.info("searchNoticeList : " + searchNoticeList);
         System.out.println("SearchNoticeDTOList = " + SearchNoticeDTOList);
-//        log.info("titleSearchList 서비스 끝" + noticeWithSearchValue);
-//        System.out.println("noticeWithSearchValue = " + noticeWithSearchValue);
         return SearchNoticeDTOList;
     }
 
@@ -356,23 +281,42 @@ public class NoticeService {
     //공지전체조회
 
     public Page<NoticeResponseDTO> allNoticeSearchWithPaging(Criteria criteria) {
-
         log.info("allNoticeSearchWithPaging 서비스 시작");
         int index = criteria.getPageNum() - 1;
         int count = criteria.getAmount();
 
-//        Pageable paging = PageRequest.of(index, count);
-//        Page<Notice> result = noticeRepository.findAllWithCustomOrder(paging);
         Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC, "notCodeNumber"));
-        Page<Notice> result = noticeRepository.findAll(paging);
-
+        // deleteStatus가 "N"인 공지사항만 조회
+        Page<Notice> result = noticeRepository.findByNotDeleteStatus("N", paging);
 
         Page<NoticeResponseDTO> noticeList = result.map(notice -> modelMapper.map(notice, NoticeResponseDTO.class));
-        System.out.println("result = " + result);
         log.info("allNoticeSearchWithPaging 끝");
 
         return noticeList;
     }
 
+    @Transactional
+    public String deleteNotice(List<NoticeDTO> noticeDTOs) {
+        log.info("공지삭제 시작");
+        log.info("noticeDTO" + noticeDTOs);
 
+        int result = 0;
+
+        try {
+            for (NoticeDTO noticeDTO : noticeDTOs) {
+                Notice notice = noticeRepository.findById(noticeDTO.getNotCode())
+                        .orElseThrow(() -> new EntityNotFoundException("Notice not found with ID: " + noticeDTO.getNotCode()));
+                notice.setNotDeleteStatus("Y");
+                noticeRepository.save(notice);
+            }
+            result = 1;
+        } catch (Exception e){
+            log.error("공지삭제에러", e);
+            return "공지 삭제 실패: " + e.getMessage();
+        }
+        log.info("공지삭제 끝" + noticeDTOs);
+        return (result > 0)? "공지삭제성공":"공지삭제실패";
+
+
+    }
 }
