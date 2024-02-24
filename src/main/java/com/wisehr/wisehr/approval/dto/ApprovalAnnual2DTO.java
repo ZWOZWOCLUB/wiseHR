@@ -25,5 +25,5 @@ public class ApprovalAnnual2DTO {
     private String vacEndDate;
     private ApprovalDTO approval;
     private ApprovalMemberDTO cMember;
-    private List<ReferencerDTO> rMember;
+    private List<String> rMember;
 }
