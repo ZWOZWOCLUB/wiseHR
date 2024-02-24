@@ -182,7 +182,7 @@ public class ApprovalController {
         log.info("approval : " + approval);
 
         return ResponseEntity.ok()
-                .body(new ResponseDTO(HttpStatus.OK, "결재 완료", approvalService.completeApproval(approval)));
+                .body(new ResponseDTO(HttpStatus.OK, "결재 승인 완료", approvalService.completeApproval(approval)));
     }
 
 
