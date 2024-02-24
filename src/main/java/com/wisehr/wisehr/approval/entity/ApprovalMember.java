@@ -45,4 +45,25 @@ public class ApprovalMember {
     @JoinColumn(name = "pos_code")
     @JsonIgnore
     private ApprovalPos position;
+
+
+
+
+        public ApprovalMember MemCode(Long memCode) {
+            this.memCode = memCode;
+            return this;
+        }
+
+        public ApprovalMember MemRole(String memRole) {
+            this.memRole = memRole;
+            return this;
+        }
+
+        public ApprovalMember build() {
+            ApprovalMember approvalMember = new ApprovalMember();
+            approvalMember.setMemCode(memCode);
+            approvalMember.setMemRole(memRole);
+            return approvalMember;
+        }
+
 }

@@ -1,8 +1,17 @@
 package com.wisehr.wisehr.schedule.service;
 
+import com.wisehr.wisehr.organization.dto.OrgMemAndOrgDepDTO;
+import com.wisehr.wisehr.organization.dto.TreeDepDTO;
+import com.wisehr.wisehr.organization.dto.TreeMemDTO;
+import com.wisehr.wisehr.organization.entity.OrgMemAndOrgDep;
+import com.wisehr.wisehr.organization.repository.OrgMemAndDepRepository;
+import com.wisehr.wisehr.organization.repository.OrgTreeMemRepository;
+import com.wisehr.wisehr.organization.repository.OrgTreeRepository;
 import com.wisehr.wisehr.schedule.dto.*;
 import com.wisehr.wisehr.schedule.entity.*;
 import com.wisehr.wisehr.schedule.repository.*;
+import com.wisehr.wisehr.setting.dto.SettingMemberDTO;
+import com.wisehr.wisehr.setting.entity.SettingMember;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,10 +38,12 @@ public class ScheduleService {
     private final ScheduleCountDepCodeRepository countDepCodeRepository;
     private final ScheduleMemSchRepository memSchRepository;
 
+    private final OrgMemAndDepRepository orgMemAndDepRepository;
+    private final OrgTreeRepository orgTreeRepository;
+    private final OrgTreeMemRepository orgTreeMemRepository;
 
 
-
-    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository, ScheduleMemSchRepository memSchRepository) {
+    public ScheduleService(ModelMapper modelMapper, ScheduleAttendanceRepository scheduleAttendanceRepository, ScheduleWorkPatternRepository scheduleWorkPatternRepository, ScheduleRepository scheduleRepository, SchedulePatternDayRepository patternDayRepository, ScheduleEtcPatternRepository etcPatternRepository, ScheduleAllowanceRepository allowanceRepository, ScheduleAllSelectRepository allSelectRepository, ScheduleInsertPatternDayRepository insertPatternDayRepository, ScheduleInsertAllowanceRepository insertAllowanceRepository, ScheduleCountDepCodeRepository countDepCodeRepository, ScheduleMemSchRepository memSchRepository, OrgMemAndDepRepository orgMemAndDepRepository, OrgTreeRepository orgTreeRepository, OrgTreeMemRepository orgTreeMemRepository) {
         this.modelMapper = modelMapper;
         this.attendanceRepository = scheduleAttendanceRepository;
         this.workPatternRepository = scheduleWorkPatternRepository;
@@ -46,6 +57,9 @@ public class ScheduleService {
         this.countDepCodeRepository = countDepCodeRepository;
 
         this.memSchRepository = memSchRepository;
+        this.orgMemAndDepRepository = orgMemAndDepRepository;
+        this.orgTreeRepository = orgTreeRepository;
+        this.orgTreeMemRepository = orgTreeMemRepository;
     }
 
 
@@ -533,15 +547,17 @@ public class ScheduleService {
     }
 
     public List<ScheduleEtcPatternDTO> etcPatternSearch() {
-            log.info("searchValue 시작~~~~~~~~~~");
+            log.info("etcPatternSearch 시작~~~~~~~~~~");
 
             List<ScheduleEtcPattern> etcPatternList = etcPatternRepository.findAll();
-
+        System.out.println("etcPatternList = " + etcPatternList);
             List<ScheduleEtcPatternDTO> list = etcPatternList.stream()
                     .map(resultList -> modelMapper.map(resultList, ScheduleEtcPatternDTO.class))
                     .collect(Collectors.toList());
             System.out.println("list = " + list);
-            log.info("searchValue 끝~~~~~~~~~~");
+
+
+            log.info("etcPatternSearch 끝~~~~~~~~~~");
 
             return list;
     }
@@ -562,4 +578,42 @@ public class ScheduleService {
         return list;
 
     }
+
+    public TreeDepDTO showTreeView() {
+
+        //최상위부서 목록 조회
+        List<TreeDepDTO> topDep = orgTreeRepository.findTopDep();
+        System.out.println("topDep = " + topDep);
+        //최상위부서 목록이 비어있지 않은 경우
+        if(!topDep.isEmpty()){
+            TreeDepDTO rootDep = topDep.get(0); //리스트의 첫번째요소를 최상위 부서로 선택
+            rootDep = subDepAndMemberList(rootDep); //subDepAndMemberList 메서드로 하위, 멤버 트리 구조 구성
+            System.out.println("rootDep = " + rootDep);
+            return rootDep;
+        }
+        return null; //최상위부서가 없다면 null
+    }
+
+    private TreeDepDTO subDepAndMemberList(TreeDepDTO treeDepDTO) {
+
+        Integer depCode = treeDepDTO.getDepCode();
+        System.out.println("depCode = " + depCode);
+
+        List<TreeDepDTO> subDep = orgTreeRepository.findSubDep(treeDepDTO.getDepCode());
+        System.out.println("subDep = " + subDep);
+
+        subDep.forEach(this::subDepAndMemberList);
+        treeDepDTO.setChildren(subDep);
+
+//        List<TreeMemDTO> memberList = orgTreeMemRepository.findMembersByDepartment(treeDepDTO.getDepCode());
+        List<TreeMemDTO> memberList = orgTreeMemRepository.findMembersByDepartmentNotContainSchedule(treeDepDTO.getDepCode());
+
+        treeDepDTO.setMemberList(memberList);
+        System.out.println("memberList = " + memberList);
+
+        return treeDepDTO;
+    }
+
+
+
 }
