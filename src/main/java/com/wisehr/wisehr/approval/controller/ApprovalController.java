@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.approval.controller;
 
 
+import com.wisehr.wisehr.attendance.dto.Attendance2DTO;
 import com.wisehr.wisehr.common.Criteria;
 import com.wisehr.wisehr.common.PageDTO;
 import com.wisehr.wisehr.common.PagingResponseDTO;
@@ -214,13 +215,13 @@ public class ApprovalController {
 
     @PutMapping(value = "/rolerecovery")
     @Tag(name = "지정된 전결자 권한 복구", description = "지정된 전결자 권한 복구")
-    public ResponseEntity<ResponseDTO> recoveryRole(@RequestBody Map<String , Long> requestBody){
+    public ResponseEntity<ResponseDTO> recoveryRole(@RequestBody Attendance2DTO attendance2DTO){
 
-        log.info("requestBody : " + requestBody);
+        log.info("requestBody : " + attendance2DTO);
 
-        log.info("long : " + requestBody.get("memCode"));
+        log.info("long : " + attendance2DTO);
         return ResponseEntity.ok()
-                .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(requestBody)));
+                .body(new ResponseDTO(HttpStatus.OK, "전결자 지정 완료", approvalService.recoveryRole(attendance2DTO)));
     }
 
     // 전결자 찾아오는 과정
@@ -241,6 +242,16 @@ public class ApprovalController {
 
         return  ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "검색완료", approvalService.searchDate(date)));
+    }
+
+    /**
+     * 로그인한 직원의 코드로 proxy_approver 조회, pro_mem_code의 Roll을 수정
+     */
+    @PostMapping(value = "/findProxyApprover")
+    public ResponseEntity<ResponseDTO> findProxyApprover(@RequestBody Attendance2DTO attendance2DTO){
+
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(HttpStatus.OK, "조회 완료", approvalService.findProxyApprover(attendance2DTO)));
     }
 
     @GetMapping(value="/depmember/{memCode}")
