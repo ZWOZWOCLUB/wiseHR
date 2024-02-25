@@ -1,7 +1,11 @@
 package com.wisehr.wisehr.organization.entity;
 
+import com.wisehr.wisehr.schedule.entity.ScheduleAllowance;
+import com.wisehr.wisehr.schedule.entity.ScheduleInsertAllowance;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +19,7 @@ public class TreeMem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mem_code")
     private int memCode;
-    @Column(name = "mem_name",nullable = false)
+    @Column(name = "mem_name", nullable = false)
     private String memName;
     @Column(name = "mem_status")
     private String memStatus;
@@ -25,11 +29,13 @@ public class TreeMem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dep_code")
     private TreeDep treeDep;
-//    @OneToOne(fetch = FetchType.LAZY)
+    //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "pos_code")
 //    private TreePos treePos;
     @Column(name = "pos_code")
     private int treePos;
 
-
+    @OneToMany
+    @JoinColumn(name = "mem_code", insertable=false, updatable=false)
+    private List<ScheduleInsertAllowance> scheduleAllowance;
 }

@@ -1,7 +1,12 @@
 package com.wisehr.wisehr.schedule.entity;
 
+import com.wisehr.wisehr.setting.entity.SettingMemDepPos;
+import com.wisehr.wisehr.setting.entity.SettingMember;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 @Entity
 @Table(name = "etc_pattern")
 @AllArgsConstructor
@@ -19,9 +24,12 @@ public class ScheduleEtcPattern {
     @Column(name = "etc_kind")
     public String etcKind;
 
+    @OneToOne
+    @JoinColumn(name = "mem_code", insertable = false, updatable = false)
+    public SettingMemDepPos member;
+
     public ScheduleEtcPattern() {
     }
-
 
 
 
@@ -45,8 +53,17 @@ public class ScheduleEtcPattern {
         return this;
     }
 
-    public ScheduleEtcPattern build() {
-        return new ScheduleEtcPattern(etcCode, memCode, etcDate, etcKind);
+    public ScheduleEtcPattern member(SettingMemDepPos member) {
+        this.member = member;
+        return this;
     }
+
+
+
+    public ScheduleEtcPattern build() {
+        return new ScheduleEtcPattern(etcCode, memCode, etcDate, etcKind, member);
+    }
+
+
 
 }

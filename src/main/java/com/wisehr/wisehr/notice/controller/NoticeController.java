@@ -76,6 +76,16 @@ public class NoticeController {
 
     }
 
+    /*공지 삭제*/
+    @PutMapping("/deleteNotice")
+    public ResponseEntity<ResponseDTO> deleteNotice(
+            @RequestBody List<NoticeDTO> notCode){
+        log.info("noticeDTO" + notCode);
+        System.out.println("noticeDTOs" + notCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지삭제 성공", noticeService.deleteNotice(notCode)));
+    }
+
     /*
     * 공지 전체 조회, 페이징처리
     * */
