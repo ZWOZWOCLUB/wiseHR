@@ -102,4 +102,16 @@ public class AttendanceController {
         }
     }
 
+
+    @GetMapping("{memCode}/proxy/{date}")
+    public ResponseEntity<ResponseDTO> getProxy (@PathVariable String memCode,
+                                                 @PathVariable String date) {
+
+        log.info("memCode : " + memCode);
+        log.info("date : " + date) ;
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "전결자야?", attendanceService.getProxy(memCode, date)));
+    }
+
+
 }

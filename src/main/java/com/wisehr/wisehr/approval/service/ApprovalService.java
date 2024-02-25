@@ -465,6 +465,7 @@ public class ApprovalService {
                     log.info("연차 계산 시작 ");
 
                     if (holdVacation.getVctDeadline() > 0) {   //먼저 소멸예정 연차를 차감하기 위하여 0 이상일 경우로 설정
+                        log.info("1");
 
                         if (holdVacation.getVctDeadline() - days < 0) { // 사용한 연차 개수보다 소멸예정 연차가 적을 경우
                             int spendVacation = -(holdVacation.getVctDeadline() - days);      // 남은걸 양수로 만들고
@@ -487,6 +488,7 @@ public class ApprovalService {
                             log.info("holdVacation : ", holdVacation);
                             holdVacationRepository.save(holdVacation);
                         } else {
+                            log.info("2");
 
                             int spendVacation = holdVacation.getVctDeadline() - days;
                             log.info("spendVacation : " + spendVacation);
@@ -495,7 +497,9 @@ public class ApprovalService {
 
                                 acc.setAppState("반려");
 
+                                log.info("2");
                                 approvalCompleteRepository.save(acc);
+                                log.info("반려 온겨 ? ");
 
                                 return "연차가 부족합니다.";
                             }
