@@ -32,6 +32,14 @@ public interface ApprovalCompleteRepository extends JpaRepository<ApprovalComple
     @Query("SELECT ac FROM ApprovalComplete ac WHERE ac.approval.approvalMember.memCode = :memCode ORDER BY CASE WHEN ac.appState = '대기' THEN 0 ELSE 1 END, ac.approval.payDate DESC")
     Page<ApprovalComplete> findByApprovalApprovalMemberMemCode(Long memCode, Pageable paging);
 
-    ApprovalComplete findByAppCode(String appCode);
-
+@Query("SELECT a FROM ApprovalComplete a " +
+        "LEFT JOIN FETCH a.approval b " +
+        "LEFT JOIN FETCH a.approvalMember c " +
+        "WHERE b.approvalMember.memCode = :memCode " +
+        "  AND (:status IS NULL OR a.appState = :status) " +
+        "  AND (:start IS NULL OR b.payDate = :start) " +
+        "  AND (:name IS NULL OR b.payName LIKE CONCAT('%', :name, '%')) " +
+        "  AND (:type IS NULL OR b.payKind = :type )"+
+        "ORDER BY CASE WHEN a.appState = '대기' THEN 0 ELSE 1 END, b.payDate DESC")
+    Page<ApprovalComplete> findByApprovalMemberMemCode(Long memCode, String start, String name, String status, String type,Pageable paging);
 }

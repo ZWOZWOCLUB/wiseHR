@@ -95,6 +95,50 @@ public class ApprovalService {
     }
 
 
+    public Page<ApprovalCompleteDTO> searchApproval(ApprovalSearchDTO searchDTO, Criteria cri ) {
+
+        int index = cri.getPageNum() -1;
+        int count = cri.getAmount();
+
+        Long memCode = Long.parseLong(searchDTO.getMemCode());
+        String start = searchDTO.getApprovalStart();
+        String name = searchDTO.getApprovalName();
+        String status = searchDTO.getApprovalStatus();
+        String type = searchDTO.getApprovalType();
+
+        Pageable paging = PageRequest.of(index, count);
+
+        Page<ApprovalComplete> approvalList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode,start,name,status,type,paging);
+
+        Page<ApprovalCompleteDTO> result = approvalList.map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
+
+        log.info("result : " + result.getContent() );
+
+        return result;
+    }
+
+    public Page<ApprovalCompleteDTO> searchApprovalReq(ApprovalSearchDTO searchDTO, Criteria cri ) {
+
+        int index = cri.getPageNum() -1;
+        int count = cri.getAmount();
+
+        Long memCode = Long.parseLong(searchDTO.getMemCode());
+        String start = searchDTO.getApprovalStart();
+        String name = searchDTO.getApprovalName();
+        String status = searchDTO.getApprovalStatus();
+        String type = searchDTO.getApprovalType();
+
+        Pageable paging = PageRequest.of(index, count);
+
+        Page<ApprovalComplete> approvalList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode,start,name,status,type,paging);
+
+        Page<ApprovalCompleteDTO> result = approvalList.map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
+
+        log.info("result : " + result.getContent() );
+
+        return result;
+    }
+
     // 받은 결재 #결제 완료 및
     public Page<ApprovalCompleteDTO> selectReqPayment(Long memCode, Criteria cri) {
         log.info("select 받은결재 memCode : " + memCode);
@@ -105,18 +149,11 @@ public class ApprovalService {
 
         Pageable paging = PageRequest.of(index, count);
 
+        log.info("ㄴㄴㅇ");
+
         Page<ApprovalComplete> paymentList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode ,paging);
 
         log.info("paymentList : " + paymentList.getContent());
-
-        List<Referencer> ref = referencerRepository.findByReferencerPK_MemCode(memCode);
-
-        List<ApprovalComplete> paymentList1 = new ArrayList<>();
-
-        for (int i = 0; i < ref.size(); i++) {
-            paymentList1.add(approvalCompleteRepository.findByAppCode(ref.get(i).getReferencerPK().getAppCode()));
-        }
-
 
         Page<ApprovalCompleteDTO> result = paymentList.map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
 
@@ -1136,4 +1173,6 @@ public class ApprovalService {
         }
 
     }
+
+
 }

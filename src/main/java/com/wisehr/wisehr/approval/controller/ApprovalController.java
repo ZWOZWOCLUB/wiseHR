@@ -31,6 +31,79 @@ public class ApprovalController {
         this.approvalService = approvalService;
     }
 
+    @PostMapping(value = "/searchRec")
+    public ResponseEntity<ResponseDTO> searchApproval(@RequestBody ApprovalSearchDTO search,
+                                                      @RequestParam(name = "offset", defaultValue = "1") String offset){
+
+        log.info("searchDTO : " + search );
+        log.info("offset : " + offset);
+
+        Criteria cri = new Criteria(Integer.valueOf(offset), 10);
+
+
+        if (search.getApprovalType().equals("")){
+            search.setApprovalType(null);
+        }
+        if (search.getApprovalStart().equals("")){
+            search.setApprovalStart(null);
+        }
+        if (search.getApprovalStatus().equals("")){
+            search.setApprovalStatus(null);
+        }
+        if (search.getApprovalName().equals("")){
+            search.setApprovalName(null);
+        }
+
+        log.info("search?? : " + search);
+
+        PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
+
+        Page<ApprovalCompleteDTO> approvalList = approvalService.searchApproval(search, cri);
+
+        pagingResponseDTO.setData(approvalList);
+
+        pagingResponseDTO.setPageInfo(new PageDTO(cri, (int) approvalList.getTotalElements()));
+
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조건검색 성공", pagingResponseDTO));
+    }
+
+    @PostMapping(value = "/searchReq")
+    public ResponseEntity<ResponseDTO> searchApprovalReq(@RequestBody ApprovalSearchDTO search,
+                                                      @RequestParam(name = "offset", defaultValue = "1") String offset){
+
+        log.info("searchDTO : " + search );
+        log.info("offset : " + offset);
+
+        Criteria cri = new Criteria(Integer.valueOf(offset), 10);
+
+
+        if (search.getApprovalType().equals("")){
+            search.setApprovalType(null);
+        }
+        if (search.getApprovalStart().equals("")){
+            search.setApprovalStart(null);
+        }
+        if (search.getApprovalStatus().equals("")){
+            search.setApprovalStatus(null);
+        }
+        if (search.getApprovalName().equals("")){
+            search.setApprovalName(null);
+        }
+
+        log.info("search?? : " + search);
+
+        PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
+
+        Page<ApprovalCompleteDTO> approvalList = approvalService.searchApprovalReq(search, cri);
+
+        pagingResponseDTO.setData(approvalList);
+
+        pagingResponseDTO.setPageInfo(new PageDTO(cri, (int) approvalList.getTotalElements()));
+
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "req조건검색 성공", pagingResponseDTO));
+    }
 
     // 받은 결재 조회
     @GetMapping("/receivedapproval/{memCode}")      // payment페이지로 오면 바로 reqpayment로 오도록
@@ -43,6 +116,7 @@ public class ApprovalController {
         Criteria cri = new Criteria(Integer.valueOf(offset), 10);
 
         PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
+
 
         Page<ApprovalCompleteDTO> approvalList = approvalService.selectReqPayment(memCode, cri);
 
@@ -261,5 +335,7 @@ public class ApprovalController {
         return  ResponseEntity.ok()
                 .body(new ResponseDTO(HttpStatus.OK, "검색완료", approvalService.depMember(memCode)));
     }
+
+
 
 }
