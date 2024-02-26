@@ -35,7 +35,7 @@ public class ApprovalController {
     public ResponseEntity<ResponseDTO> searchApproval(@RequestBody ApprovalSearchDTO search,
                                                       @RequestParam(name = "offset", defaultValue = "1") String offset){
 
-        log.info("searchDTO : " + search );
+        log.info("searchDTOx : " + search );
         log.info("offset : " + offset);
 
         Criteria cri = new Criteria(Integer.valueOf(offset), 10);
@@ -72,11 +72,10 @@ public class ApprovalController {
     public ResponseEntity<ResponseDTO> searchApprovalReq(@RequestBody ApprovalSearchDTO search,
                                                       @RequestParam(name = "offset", defaultValue = "1") String offset){
 
-        log.info("searchDTO : " + search );
+        log.info("searchDTOz : " + search );
         log.info("offset : " + offset);
 
         Criteria cri = new Criteria(Integer.valueOf(offset), 10);
-
 
         if (search.getApprovalType().equals("")){
             search.setApprovalType(null);
@@ -90,6 +89,8 @@ public class ApprovalController {
         if (search.getApprovalName().equals("")){
             search.setApprovalName(null);
         }
+
+
 
         log.info("search?? : " + search);
 
