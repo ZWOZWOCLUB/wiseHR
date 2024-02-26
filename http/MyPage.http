@@ -1,7 +1,9 @@
 ### 회원 상세 조회
-GET http://localhost:8001/myPage/searchMem/4
+GET http://localhost:8001/myPage/searchMem/1
 Content-Type: application/json
 Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+
 
 ### 학위 상세 조회
 GET http://localhost:8001/myPage/searchDegree/1

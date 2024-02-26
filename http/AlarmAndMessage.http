@@ -19,10 +19,10 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 ### 받은 메신저 조회
-GET http://localhost:8001/alarm/recMessenger/1
+GET http://localhost:8001/alarm/recMessenger/3
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+Authorization: Bearer eyJkYXRlIjoxNzA4OTA3NzY5NzU2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiQURNSU4iLCJleHAiOjE3MDk3NzE3Njl9.OkjlGCEIdpeNuiyYIXvGKafBPkhx0djb70lhinKZOBA
 
 
 ### 메신저 등록
@@ -97,7 +97,7 @@ Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
 
 ### 개인 알람 확인 상태 업데이트
-PUT http://localhost:8001/alarm/perAlarmCheckUpdate/3
+PUT http://localhost:8001/alarm/perAlarmCheckUpdate/1
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw

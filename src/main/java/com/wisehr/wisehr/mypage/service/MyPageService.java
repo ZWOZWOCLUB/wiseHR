@@ -13,7 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+//import net.coobird.thumbnailator.Thumbnails;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
@@ -21,9 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +54,9 @@ public class MyPageService {
 
     @Value("${image.image-url}")
     private String IMAGE_URL;
+
+    @Value("C:/uploadSign/")
+    private String ROOT_LOCATION;
 
     public MyPageService(MPMyPageRepository myPageRepository, MPDegreeRepository degreeRepository, MPCertificateRepository certificateRepository, MPCareerRepository careerRepository, MPAttendanceRepository attendanceRepository,
                          MPDocumentFileRepository documentFileRepository, MPDocumentRepository documentRepository,
@@ -253,6 +256,7 @@ public class MyPageService {
         return (result > 0) ? "회원정보 업데이트 성공" : "회원정보 업데이트 실패";
     }
 
+//    서명 등록
     @Transactional
     public String insertSign(MPDocumentFileDTO productDTO, MultipartFile productImage) {
         log.info("[ProductService] insertProduct Start ===================");
@@ -265,9 +269,9 @@ public class MyPageService {
         System.out.println(productImage.getContentType());
         System.out.println(productImage.getOriginalFilename());
         System.out.println(productImage.getName());
-//        String[] extend = productImage.getOriginalFilename().split("\\.");
-//        System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
-//        String realExtend = extend[1];
+        String[] extend = productImage.getOriginalFilename().split("\\.");
+        System.out.println("Arrays.toString(extend) = " + Arrays.toString(extend));
+        String realExtend = extend[1];
         System.out.println(LocalDate.now().toString());
         try{
             replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR+"/sign/", imageName, productImage);
@@ -302,6 +306,117 @@ public class MyPageService {
             FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
             throw new RuntimeException(e);
         }
+
+//        String rootLocation = ROOT_LOCATION;
+//
+//        String fileUploadDirectory = rootLocation + "origin/sign";
+//        String thumbnailDirectory = rootLocation + "sign";
+//
+//        File directory = new File(fileUploadDirectory);
+//        File directory2 = new File(thumbnailDirectory);
+//
+//        /* 파일 저장경로가 존재하지 않는 경우 디렉토리를 생성한다. */
+//        if (!directory.exists() || !directory2.exists()) {
+//
+//            /* 폴더를 한 개만 생성할거면 mkdir, 상위 폴더도 존재하지 않으면 한 번에 생성하란 의미로 mkdirs를 이용한다. */
+//            log.info("[ThumbnailController] 폴더 생성 : " + directory.mkdirs());
+//            log.info("[ThumbnailController] 폴더 생성 : " + directory2.mkdirs());
+//        }
+//
+//        /* 업르도 파일 하나하나에 대한 정보를 담을 리스트 */
+//        List<Map<String, String>> fileList = new ArrayList<>();
+//
+//        List<MultipartFile> paramFileList = new ArrayList<>();
+//        paramFileList.add(productImage);
+//
+//        try {
+//            for (MultipartFile paramFile : paramFileList) {
+//                if (paramFile.getSize() > 0) {
+//                    String originFileName = paramFile.getOriginalFilename(); // origin 파일 이름을 가져온다.
+//                    String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 분리
+//                    String savedFileName = UUID.randomUUID().toString().replace("-", "") + ext; // 이름 변환
+//                    paramFile.transferTo(new File(fileUploadDirectory + "/" + savedFileName)); // 저장할 장소 + 변환한 이름으로 이름 변경
+//
+//                    /* DB에 업로드한 파일의 정보를 저장하는 비지니스 로직 수행 */
+//                    /* 필요한 정보를 Map에 담는다. */
+//                    Map<String, String> fileMap = new HashMap<>();
+//                    fileMap.put("originFileName", originFileName);
+//                    fileMap.put("savedFileName", savedFileName);
+//                    fileMap.put("savePath", thumbnailDirectory);
+//
+//                    /* 제목 사진과 나머지 사진을 구분하고 썸네일도 생성한다. */
+//                    int width = 0;
+//                    int height = 0;
+//
+//                    String fieldName = paramFile.getName();
+//
+//                    fileMap.put("fileType", "sign");
+//
+//                    /* 썸네일로 변환 할 사이즈를 지정한다. */
+//                    width = 300;
+//                    height = 150;
+//
+//                    /* 썸네일로 변환 후 저장한다. */
+////                    Thumbnails.of(fileUploadDirectory + "/" + savedFileName).size(width, height)
+////                            .toFile(thumbnailDirectory + "/businessLicense_" + savedFileName);
+////
+////                    /* 나중에 웹서버에서 접근 가능한 경로 형태로 썸네일의 저장 경로도 함께 저장한다. */
+////                    fileMap.put("thumbnailPath", "/businessLicense_" + savedFileName);
+////
+////                    fileList.add(fileMap);
+//                }
+//            }
+//
+//            log.info("[ThumbnailController] fileList =============================: " + fileList);
+//
+//            /* 서비스를 요청할 수 있도록 BoardDTO에 담는다. */
+//
+////            projectMakeDTO.setAttachmentList(new ArrayList<ProjectMakeFileDTO>());
+////            List<ProjectMakeFileDTO> list = projectMakeDTO.getAttachmentList();
+////            for (int i = 0; i < fileList.size(); i++) {
+////                Map<String, String> file = fileList.get(i);
+////
+////                ProjectMakeFileDTO tempFileInfo = new ProjectMakeFileDTO();
+////                tempFileInfo.setOriginFileName(file.get("originFileName"));
+////                tempFileInfo.setChangeFileName(file.get("thumbnailPath"));
+////                tempFileInfo.setFilePath(file.get("savePath"));
+////                tempFileInfo.setType(file.get("fileType"));
+////
+////                list.add(tempFileInfo);
+////            }
+////
+////            log.info("[ThumbnailController] projectMakeDTO : " + projectMakeDTO);
+////
+////            projectMakeService.registBusinessLicense(projectMakeDTO);
+////
+////            rttr.addFlashAttribute("message", "사진 게시판 등록에 성공하셨습니다.");
+//
+//        } catch (IllegalStateException | IOException e) {
+//            e.printStackTrace();
+//
+//            /* 어떤 종류의 Exception이 발생 하더라도실패 시 파일을 삭제해야 한다. */
+//            int cnt = 0;
+//            for (int i = 0; i < fileList.size(); i++) {
+//                Map<String, String> file = fileList.get(i);
+//
+//                File deleteFile = new File(fileUploadDirectory + "/" + file.get("savedFileName"));
+//                boolean isDeleted1 = deleteFile.delete();
+//
+//                File deleteThumbnail = new File(thumbnailDirectory + "/businessLicense_" + file.get("savedFileName"));
+//                boolean isDeleted2 = deleteThumbnail.delete();
+//
+//                if (isDeleted1 && isDeleted2) {
+//                    cnt++;
+//                }
+//            }
+//
+//            if (cnt == fileList.size()) {
+//                log.info("[ThumbnailController] 업로드에 실패한 모든 사진 삭제 완료!");
+//                e.printStackTrace();
+//            } else {
+//                e.printStackTrace();
+//            }
+//        }
 
 
         log.info("[ProductService] insertProduct End ===================");
