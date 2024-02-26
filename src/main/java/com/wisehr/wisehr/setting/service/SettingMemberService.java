@@ -205,7 +205,7 @@ public class SettingMemberService {
 
                     SettingMemberDTO memberDTO = modelMapper.map(member, SettingMemberDTO.class);
                     SettingDocumentFile file = settingDocumentFileRepository.findByMemCodeAndDocAtcKind(settingMemberDTO.getMemCode(), kind);
-
+                    System.out.println("file = " + file);
                     if (file != null) {
 
                         if (profile != null) {
