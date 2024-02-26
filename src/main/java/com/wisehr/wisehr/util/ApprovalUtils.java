@@ -59,6 +59,7 @@ public class ApprovalUtils {
 
             story = FileUploadUtils.saveFile(path, fileName, approvalFile);
 
+            att.setPayAtcOriginalName(approvalFile.getOriginalFilename());
             att.setPayAtcPath(path);
             att.setPayAtcName(fileName);
             att.setApproval(approval);
