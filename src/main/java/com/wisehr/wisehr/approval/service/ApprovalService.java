@@ -429,7 +429,7 @@ public class ApprovalService {
 
         int result = 0 ;
 
-        ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).get();
+        ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).orElseThrow(null);
 
         log.info("acE : " + ac);
 
@@ -755,8 +755,10 @@ public class ApprovalService {
 
 
 
+            log.info("어디서 나는거야 ");
 
             result = 1;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
