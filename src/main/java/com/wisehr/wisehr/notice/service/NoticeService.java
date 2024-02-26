@@ -74,7 +74,7 @@ public class NoticeService {
         System.out.println("여기");
 
 
-        noticeRepository.save(insertNotice);
+        Notice savedNotice = noticeRepository.save(insertNotice);
         System.out.println("noticeDTO.getNotCode()" + insertNotice);
 
         log.info("공지등록 성공");
@@ -82,31 +82,38 @@ public class NoticeService {
 
         try {
             if (noticeFiles != null && !noticeFiles.isEmpty() && noticeFiles.getSize() > 0) {
-                String path = IMAGE_DIR + "noticeFiles/" + noticeDTO.getNotCode(); //파일이름이 공지사항코드가 됨
-
-                //파일
+                NotAttachedFileDTO notAttachedFileDTO = new NotAttachedFileDTO();
                 // 파일 원본 이름
-                String originalFileName = noticeFiles.getOriginalFilename();
-                // 파일 확장자 추출
-                String extension = FilenameUtils.getExtension(originalFileName);
-                // 저장할 파일 이름 설정
-                String storedFileName = originalFileName.endsWith("." + extension) ?
-                        originalFileName : originalFileName + "." + extension;
-                if (!storedFileName.endsWith("." + extension)) {
-                    storedFileName += "." + extension;
-                }
+                String[] extend = noticeFiles.getOriginalFilename().split("\\.");
+                String realExtend = extend[0];
+                notAttachedFileDTO.setNotAtcName(noticeFiles.getOriginalFilename());
 
-                log.info("=====noticeFile : " + storedFileName);
+                String originalFileName = noticeFiles.getOriginalFilename();
+                log.info("Original File Name: " + originalFileName);
+
+                //파일경로
+                String path = IMAGE_DIR + "noticeFiles/" + savedNotice.getNotCode(); //파일이름이 공지사항코드가 됨
+
+
+                // 저장할 파일 이름 설정
+//                String storedFileName = originalFileName.endsWith("." + extension) ?
+//                        originalFileName : originalFileName + "." + extension;
+//                log.info("=====noticeFile : " + storedFileName);
+//
+//                if (!storedFileName.endsWith("." + extension)) {
+//                    storedFileName += "." + extension;
+//                }
 
                 //파일저장
-                String story = FileUploadUtils.saveFile(path, storedFileName, noticeFiles);
+                String story = FileUploadUtils.saveFile(path, realExtend, noticeFiles);
 
                 //DTO
                 NotAttachedFileDTO noticeFileDTO = new NotAttachedFileDTO();
-                noticeFileDTO.setNotAtcName(storedFileName);
+                noticeFileDTO.setNotAtcName(originalFileName);
                 noticeFileDTO.setNotAtcDeleteStatus("N");
-                noticeFileDTO.setNotAtcPath(path + "/" + storedFileName);
-                noticeFileDTO.setCode(insertNotice.getNotCode()); // 여기에 실제 notCode 설정
+                noticeFileDTO.setNotAtcPath(path + "/" + noticeFiles.getOriginalFilename());
+                noticeFileDTO.setCode(savedNotice.getNotCode()); // 여기에 실제 notCode 설정
+
 
                 //전환
                 NotAttachedFile notFile = modelMapper.map(noticeFileDTO, NotAttachedFile.class);
@@ -123,11 +130,11 @@ public class NoticeService {
 //            List<NotMember> notMemberList = notMemberRepository.findAll();
                 LocalDateTime now = LocalDateTime.now();
                 NotAllAlarm notAllAlarm = new NotAllAlarm();
-                notAllAlarm.setAllArmCode(7);
+//                notAllAlarm.setAllArmCode(7);
                 notAllAlarm.setAllArmDate(now);
-                notAllAlarm.setAllArmCheck("N");
+                notAllAlarm.setAllArmCheck("Y");
                 notAllAlarm.setNotCode(insertNotice.getNotCode());
-                notAllAlarm.setMemCode(insertNotice.getNotMember());
+                notAllAlarm.setMemCode(Integer.parseInt(noticeDTO.getMemCode()));
                 System.out.println(notAllAlarm.getMemCode());
                 notAllAlarmRepository.save(notAllAlarm);
 
@@ -223,7 +230,17 @@ public class NoticeService {
         log.info("titleSearchList시작");
         log.info("titleSearchList search : {}", search);
 
+        Notice notice = noticeRepository.findById(search)
+                .orElseThrow(() -> new RuntimeException("공지사항을 찾을 수 없습니다."));
+
+        notice.setNotView(notice.getNotView() + 1);
+        noticeRepository.save(notice);
+
+
         List<NoticeResponse> searchNoticeList = noticeResRepository.findByNotCode(search);
+
+
+
         List<NoticeResponseDTO> SearchNoticeDTOList = searchNoticeList.stream()
                 .map(noticeResponse -> modelMapper.map(noticeResponse, NoticeResponseDTO.class))
                 .collect(Collectors.toList());

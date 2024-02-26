@@ -3,22 +3,22 @@ POST http://localhost:8001/notice/notice
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: */*
 Access-Control-Allow-Origin: *
-Authorization: Bearer eyJkYXRlIjoxNzA4MzE2MTczODYwLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDkxODAxNzN9.Ld9CICFKG461WjtEi4uxhPE1xy82jLyo-2Ielypobkc
+Authorization: Bearer eyJkYXRlIjoxNzA4OTM5MDEyNDkzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDk4MDMwMTJ9.CB_SWOMlF0QF27Pwt4UQ3A-aDMtgQ4IhQMt7P0JWnMA
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notCode"
 
-not15
+not999
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notName"
 
-오늘은 날씨가 차갑습니다.
+오늘은 월요일입니다.
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notComment"
 
-감기에 유의해주세요.
+힘내세요.
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notView"
@@ -28,12 +28,12 @@ Content-Disposition: form-data; name="notView"
 --WebAppBoundary
 Content-Disposition: form-data; name="notCreateDate"
 
-2024-02-15
+2024-02-26
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notMember.memCode"
 
-240130010
+1
 
 --WebAppBoundary
 Content-Disposition: form-data; name="notDeleteStatus"

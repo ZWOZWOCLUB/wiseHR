@@ -28,8 +28,7 @@ public class NotAllAlarm {
     @Column(name = "not_code")
     private String notCode;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "mem_code")
-    private NotMember memCode;
+
+    @Column(name = "mem_code")
+    private int memCode;
 }
