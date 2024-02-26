@@ -398,6 +398,22 @@ public class OrgService {
         return treeDepDTO;
     }
 
+//    public Page<OrgMemAndOrgDepDTO> searchMemberNameWithPaging(String search, Criteria cri) {
+//
+//        int index = cri.getPageNum() - 1;
+//        int count = cri.getAmount();
+//
+//        Pageable paging = PageRequest.of(index, count);
+//
+//        Page<OrgMemAndOrgDep> result = (Page<OrgMemAndOrgDep>) orgMemAndDepRepository.findByMemNameContaining(paging, search);
+//
+//        //엔티티->DTO로 변환
+//        Page<OrgMemAndOrgDepDTO> memberList = result.map(a -> modelMapper.map(a, OrgMemAndOrgDepDTO.class));
+//
+//
+//        return memberList;
+//    }
+
 
     public List<OrgMemAndOrgDepDTO> searchMemberName(String search) {
 

@@ -222,4 +222,29 @@ public class OrgController {
 //            @RequestParam(value = "d", defaultValue = "all")String search){
 //        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서별 조회 성공", orgService.searchDepName(search)));
 //    }
+
+//    @PreAuthorize("hasAuthority('SUPERADMIN')")
+//    @GetMapping("/nameSearch")
+//    public ResponseEntity<ResponseDTO> searchMemberName(
+//            @RequestParam(value = "n", defaultValue = "all")String search){
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "이름별 조회 성공", orgService.searchMemberName(search)));
+//    }
+
+//    @PreAuthorize("hasAuthority('SUPERADMIN')")
+//    @GetMapping("/nameSearch")
+//    public ResponseEntity<ResponseDTO> searchMemberNameWithPaging(
+//            @RequestParam(value = "n, value", defaultValue = "all, 1")String search, String offset){
+//
+//        Criteria cri = new Criteria(Integer.valueOf(offset), 5); //pageNum, amount 값 저장. pageNum이 offset
+//
+//        PagingResponseDTO pagingResponseDTO = new PagingResponseDTO();
+//        Page<OrgMemAndOrgDepDTO> orgMemberList = orgService.searchMemberNameWithPaging(search, cri);
+//
+//        //offset 번호에 맞는 페이지에 보여줄 멤버정보
+//        pagingResponseDTO.setData(orgMemberList);
+//        //페이징 처리에 필요한 정보
+//        pagingResponseDTO.setPageInfo(new PageDTO(cri, (int) orgMemberList.getTotalElements()));
+//
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "검색된 이름별 조회 성공", pagingResponseDTO));
+//    }
 }
