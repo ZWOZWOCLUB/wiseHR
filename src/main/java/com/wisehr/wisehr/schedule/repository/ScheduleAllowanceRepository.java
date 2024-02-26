@@ -15,4 +15,5 @@ import java.util.Map;
 
         List<ScheduleAllowance> findByAllowanceID_SchCode(String needSchCode);
 
+
     }

@@ -10,4 +10,6 @@ public interface ScheduleInsertAllowanceRepository extends JpaRepository <Schedu
     ScheduleInsertAllowance findByMemCodeAndSchCode(int memCode, String schCode);
 
     List<ScheduleInsertAllowance> findBySchCode(String schCode);
+
+    void deleteBySchCodeAndMemCode(String schCode, int memCode);
 }
