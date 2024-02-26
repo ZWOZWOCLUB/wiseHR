@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,7 @@ public class DataFormatController {
     /***
      * 서식자료 등록
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @PostMapping("/data")
     public ResponseEntity<ResponseDTO> insertDataFormat(
             @ModelAttribute DataFormatDTO dataFormatDTO,
@@ -40,7 +42,7 @@ public class DataFormatController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서식자료 등록성공", dataFormatService.insertDataFormat(dataFormatDTO,dataFormatFile)));
 
     }
-
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/allData")
     public ResponseEntity<ResponseDTO> allDataSearchWithPaging(
             @RequestParam(name = "offset", defaultValue = "1")String offset){
@@ -63,6 +65,7 @@ public class DataFormatController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "자료전체조회성공", pagingResponseDTO));
     }
 
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     //자료삭제
     @PutMapping("/deleteData")
     public ResponseEntity<ResponseDTO> deleteData(@RequestBody DataFormatDTO dataCode){
