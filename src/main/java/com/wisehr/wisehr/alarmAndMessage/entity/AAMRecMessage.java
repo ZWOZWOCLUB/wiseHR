@@ -13,11 +13,16 @@ import lombok.*;
 public class AAMRecMessage {
 
     @Id
+    @Column(name = "rec_msg_code")
+    private int recMsgCode;
+
     @Column(name = "msg_code")
     private int msgCode;
+
     @OneToOne
-    @JoinColumn(name = "msg_code", referencedColumnName = "msg_code")
+    @JoinColumn(name = "msg_code",insertable=false, updatable=false)
     private AAMSendMessenger aamSendMessenger;
+
     @Column(name = "mem_code")
     private int memCode;
     @Column(name = "rec_msg_delete_status")

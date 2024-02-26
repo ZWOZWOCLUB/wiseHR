@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
 
-
+    implementation 'net.coobird:thumbnailator:0.4.8'
 
     // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
     implementation 'javax.persistence:javax.persistence-api:2.2'
