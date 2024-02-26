@@ -130,7 +130,7 @@ public class ApprovalService {
 
         Pageable paging = PageRequest.of(index, count);
 
-        Page<ApprovalComplete> approvalList = approvalCompleteRepository.findByApprovalMemberMemCode(memCode,start,name,status,type,paging);
+        Page<ApprovalComplete> approvalList = approvalCompleteRepository.findByApprovalApprovalMemberMemCodee(memCode,start,name,status,type,paging);
 
         Page<ApprovalCompleteDTO> result = approvalList.map(paymt  -> modelMapper.map(paymt, ApprovalCompleteDTO.class));
 
