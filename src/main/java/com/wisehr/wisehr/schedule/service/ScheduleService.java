@@ -99,7 +99,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public List<ScheduleDTO> insertSchedule(ScheduleInsertDTO insertDTO) {
+    public List<ScheduleAllSelectDTO> insertSchedule(ScheduleInsertDTO insertDTO) {
         log.info("insertSchedule Start~~~~~~~~~~~~");
         log.info((insertDTO.toString()));
         try {
@@ -156,14 +156,21 @@ public class ScheduleService {
             throw new RuntimeException(e);
         }
 
-        List<Schedule> result1 = scheduleRepository.findAll();
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByAll();
+        log.info("allselect : " + allSelect);
 
-        List<ScheduleDTO> result = result1.stream()
-                .map(list -> modelMapper.map(list, ScheduleDTO.class))
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
                 .collect(Collectors.toList());
 
+
+
+        System.out.println("selectDTOList = " + selectDTOList);
+
+
         log.info("insertWorkPattern 끗~~~~~~~~~~~~");
-        return result;
+        return selectDTOList;
 
     }
 
@@ -235,7 +242,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public List<ScheduleDTO> updateSchedule(ScheduleInsertDTO insertDTO) {
+    public List<ScheduleAllSelectDTO> updateSchedule(ScheduleInsertDTO insertDTO) {
         log.info("updateSchedule Start~~~~~~~~~~~~");
         log.info(insertDTO.toString());
         int result = 0;
@@ -326,6 +333,7 @@ public class ScheduleService {
                     System.out.println("삭43");
                 }
 
+
             }
             result = 1;
         } catch (Exception e) {
@@ -333,12 +341,19 @@ public class ScheduleService {
             throw new RuntimeException(e);
         }
 
-        List<Schedule> schedules = scheduleRepository.findAll();
-        List<ScheduleDTO> resultDTO = schedules.stream()
-                .map(resultList -> modelMapper.map(resultList, ScheduleDTO.class))
+        List<ScheduleAllSelect> allSelect = allSelectRepository.findByAll();
+        log.info("allselect : " + allSelect);
+
+
+        List<ScheduleAllSelectDTO> selectDTOList = allSelect.stream()
+                .map(list -> modelMapper.map(list, ScheduleAllSelectDTO.class))
                 .collect(Collectors.toList());
 
-        return resultDTO;
+
+
+        System.out.println("selectDTOList = " + selectDTOList);
+
+        return selectDTOList;
     }
 
     @Transactional
