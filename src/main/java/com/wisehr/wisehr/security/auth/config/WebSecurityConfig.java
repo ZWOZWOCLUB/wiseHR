@@ -34,7 +34,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**",
-                "/lib/**", "/career/**", "/certificate/**", "/dataFomats/**", "/degree/**", "/etcDocumentFile/**", "/memberFiles/**", "/noticeFiles/**", "/profile/**", "/salary/**", "/sign/**");
+                "/lib/**", "/career/**", "/certificate/**", "/dataFomats/**", "/degree/**", "/etcDocumentFile/**", "/memberFiles/**", "/noticeFiles/**", "/profile/**", "/salary/**", "/sign/**", "/memberFile/**");
     }
 
     /***

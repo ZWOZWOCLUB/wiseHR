@@ -111,3 +111,14 @@ Content-Disposition: form-data; name="noticeFile"; filename="test.png"
 
 < plus.png
 
+###공지사항 수정
+PUT http://localhost:8001/notice/deleteNotice
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA4NzQzNTAxNzEyLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6Impvc2luMzJAZ21haWwuY29tIiwibWVtQ29kZSI6MjQwMTMwMDEwLCJtZW1OYW1lIjoi7KOg7J247ISxIiwibWVtUm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOjE3MDk2MDc1MDF9.6QjuZm9tvg99iaUxaf9qovCmkkJXtBPn1iWQqb0nFco
+
+[
+  {
+  "notCode": "not22"
+  }
+]

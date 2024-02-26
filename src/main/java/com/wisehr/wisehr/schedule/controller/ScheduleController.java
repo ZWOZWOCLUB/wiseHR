@@ -1,6 +1,7 @@
 package com.wisehr.wisehr.schedule.controller;
 
 import com.wisehr.wisehr.common.ResponseDTO;
+import com.wisehr.wisehr.organization.dto.TreeDepDTO;
 import com.wisehr.wisehr.schedule.dto.*;
 import com.wisehr.wisehr.schedule.service.ScheduleService;
 import com.wisehr.wisehr.setting.dto.SettingCareerDTO;
@@ -192,5 +193,14 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.notContain(valueDTO)));
 
-    }}
+    }
+
+    @GetMapping("/treeView")
+    public ResponseEntity<ResponseDTO> treeView(){
+        TreeDepDTO tree = scheduleService.showTreeView();
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조직도 조회 성공", tree));
+    }
+
+
+}
 

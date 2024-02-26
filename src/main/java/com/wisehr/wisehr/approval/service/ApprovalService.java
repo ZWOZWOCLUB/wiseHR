@@ -4,6 +4,7 @@ package com.wisehr.wisehr.approval.service;
 import com.wisehr.wisehr.approval.dto.*;
 import com.wisehr.wisehr.approval.entity.*;
 import com.wisehr.wisehr.approval.repository.*;
+import com.wisehr.wisehr.attendance.dto.Attendance2DTO;
 import com.wisehr.wisehr.attendance.entity.Attendance;
 import com.wisehr.wisehr.attendance.repository.AttendanceRepository;
 import com.wisehr.wisehr.common.Criteria;
@@ -13,6 +14,7 @@ import com.wisehr.wisehr.schedule.entity.ScheduleEtcPattern;
 import com.wisehr.wisehr.schedule.repository.ScheduleEtcPatternRepository;
 import com.wisehr.wisehr.schedule.repository.ScheduleWorkPatternRepository;
 import com.wisehr.wisehr.util.ApprovalUtils;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -465,6 +467,7 @@ public class ApprovalService {
                     log.info("연차 계산 시작 ");
 
                     if (holdVacation.getVctDeadline() > 0) {   //먼저 소멸예정 연차를 차감하기 위하여 0 이상일 경우로 설정
+                        log.info("1");
 
                         if (holdVacation.getVctDeadline() - days < 0) { // 사용한 연차 개수보다 소멸예정 연차가 적을 경우
                             int spendVacation = -(holdVacation.getVctDeadline() - days);      // 남은걸 양수로 만들고
@@ -487,6 +490,7 @@ public class ApprovalService {
                             log.info("holdVacation : ", holdVacation);
                             holdVacationRepository.save(holdVacation);
                         } else {
+                            log.info("2");
 
                             int spendVacation = holdVacation.getVctDeadline() - days;
                             log.info("spendVacation : " + spendVacation);
@@ -495,7 +499,9 @@ public class ApprovalService {
 
                                 acc.setAppState("반려");
 
+                                log.info("2");
                                 approvalCompleteRepository.save(acc);
+                                log.info("반려 온겨 ? ");
 
                                 return "연차가 부족합니다.";
                             }
@@ -922,15 +928,20 @@ public class ApprovalService {
 
     // 전결자 해제 및 기존 권한으로 복귀
     @Transactional
-    public String recoveryRole(Map<String , Long> requestBody) {
+    public String recoveryRole(Attendance2DTO attendance2DTO) {
 
         log.info("전결자 복구 서비스 시작 ");
 
         int result = 0;
 
         try {
+            LocalDate workDate = LocalDate.parse(attendance2DTO.getAttWorkDate());
 
-            ApproverProxy aproxy = approverProxyRepository.findFirstByRoleMemberMemCodeOrderByProEndDateDesc(requestBody.get("memCode"));
+            Long memCode = attendance2DTO.getAttendanceMember().getMemCode();
+
+
+
+            ApproverProxy aproxy = approverProxyRepository.findByProEndDateAndRoleMemberMemCode(workDate, memCode);
 
             log.info("aproxy : " + aproxy);
 
@@ -1085,5 +1096,44 @@ public class ApprovalService {
         }
 
         return null;
+    }
+
+
+    @Transactional
+    public String findProxyApprover(Attendance2DTO attendance2DTO) {
+        System.out.println("attendance2DTO-------------------- = " + attendance2DTO);
+//        값 찾기 위해 workDate LoacalDate로 변환, 해당 날짜 찾을 수 없음
+        LocalDate workDate = LocalDate.parse(attendance2DTO.getAttWorkDate());
+//        pro_mem의 권한은 pro_end_date까지 되니까 오늘에서 하루 뺀 날짜로 설정함
+        LocalDate nextDay = workDate.minusDays(1);
+//        로그인한 사용자 memCode
+        Long memCode = attendance2DTO.getAttendanceMember().getMemCode();
+//        로그인한 사용자와 오늘 -1 일자가 일치한 proxy_approver 정보 조회
+        ApproverProxy list = approverProxyRepository.findByProEndDateAndRoleMemberMemCode(nextDay, memCode);
+
+        System.out.println("list-------------- = " + list);
+
+        int result = 0;
+//      일치하는게 없으면 null로 새로운 DTO 생성해서 return
+        if(list == null){
+            return "실패";
+
+        }else {
+//            일치하는게 있으면 각각의 조회한 값에서 memCode와 Roll 가져옴
+            Long proMemCode = list.getProMember().getMemCode();
+            Long roleMemCode = list.getRoleMember().getMemCode();
+            String memRoll = list.getProMemRole();
+
+//            proMemCode로 사용자 정보 가져옴
+            ApprovalMember apm = approvalMemberRepository.findByMemCode(list.getProMember().getMemCode());
+            System.out.println("apm = " + apm);
+//            Roll 수정
+            apm = apm.MemRole(memRoll).build();
+
+            return "성공" ;
+
+
+        }
+
     }
 }

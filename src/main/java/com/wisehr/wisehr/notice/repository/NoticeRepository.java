@@ -25,4 +25,8 @@ public interface NoticeRepository extends JpaRepository<Notice, String> {
     Page<Notice> findAllWithCustomOrder(Pageable pageable);
 
     List<NoticeResponse> findByNotCode(String search);
+
+    List<Notice> findByNotDeleteStatus(String notDeleteStatus);
+
+    Page<Notice> findByNotDeleteStatus(String n, Pageable paging);
 }

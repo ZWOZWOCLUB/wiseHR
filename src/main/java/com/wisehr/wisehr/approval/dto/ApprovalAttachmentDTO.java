@@ -12,6 +12,7 @@ public class ApprovalAttachmentDTO {
     private String payAtcName;
     private String payAtcDeleteStatus;
     private String payAtcPath;
+    private String payAtcOriginalName;
     private ApprovalDTO approval;
 
     @Override

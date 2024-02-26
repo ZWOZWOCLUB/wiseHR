@@ -136,10 +136,10 @@ public class DataFormatService {
         log.info("서식자료 전체조회 시작");
         int index = criteria.getPageNum() -1;
         int count = criteria.getAmount();
-
         Pageable paging = PageRequest.of(index, count, Sort.by(Sort.Direction.DESC, "dataCode"));
 
-        Page<DataFormat> result = dataFormatRepository.findAll(paging);
+        Page<DataFormat> result = dataFormatRepository.findByDataDeleteStatus("N", paging);
+
 
         Page<DataFormatDTO> dataList = result.map(dataFormat -> modelMapper.map(dataFormat, DataFormatDTO.class));
         System.out.println("result = " + result);

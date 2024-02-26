@@ -23,6 +23,8 @@ public class ApprovalAttachment {
     private String payAtcDeleteStatus;
     @Column(name = "pay_atc_path")
     private String payAtcPath;
+    @Column(name = "pay_atc_original_name")
+    private String payAtcOriginalName;
     @OneToOne
     @JoinColumn(name = "pay_code")
     private Approval approval;
