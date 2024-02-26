@@ -629,6 +629,41 @@ public class ScheduleService {
         return treeDepDTO;
     }
 
+    public TreeDepDTO UpdateTreeView(String schCode) {
+
+        //최상위부서 목록 조회
+        List<TreeDepDTO> topDep = orgTreeRepository.findTopDep();
+        System.out.println("topDep = " + topDep);
+        //최상위부서 목록이 비어있지 않은 경우
+        if(!topDep.isEmpty()){
+            TreeDepDTO rootDep = topDep.get(0); //리스트의 첫번째요소를 최상위 부서로 선택
+            rootDep = updateSubDepAndMemberList(rootDep, schCode); //subDepAndMemberList 메서드로 하위, 멤버 트리 구조 구성
+            System.out.println("rootDep = " + rootDep);
+            return rootDep;
+        }
+        return null; //최상위부서가 없다면 null
+    }
+
+    private TreeDepDTO updateSubDepAndMemberList(TreeDepDTO treeDepDTO, String schCode) {
+
+        Integer depCode = treeDepDTO.getDepCode();
+        System.out.println("depCode = " + depCode);
+
+        List<TreeDepDTO> subDep = orgTreeRepository.findSubDep(treeDepDTO.getDepCode());
+        System.out.println("subDep = " + subDep);
+
+        subDep.forEach(this::subDepAndMemberList);
+        treeDepDTO.setChildren(subDep);
+
+//        List<TreeMemDTO> memberList = orgTreeMemRepository.findMembersByDepartment(treeDepDTO.getDepCode());
+        List<TreeMemDTO> memberList = orgTreeMemRepository.findMembersByDepartmentNotContainScheduleUpdate(treeDepDTO.getDepCode(), schCode);
+
+        treeDepDTO.setMemberList(memberList);
+        System.out.println("memberList = " + memberList);
+
+        return treeDepDTO;
+    }
+
 
 
 }

@@ -201,6 +201,13 @@ public ResponseEntity<ResponseDTO> searchMonth(@RequestBody ScheduleSearchValueD
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조직도 조회 성공", tree));
     }
 
+    @GetMapping("/UpdateTreeView/{schCode}")
+    public ResponseEntity<ResponseDTO> UpdateTreeView(@PathVariable String schCode){
+        TreeDepDTO tree = scheduleService.UpdateTreeView(schCode);
+        System.out.println("schCode = " + schCode);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "업데이트 조직도 조회 성공", tree));
+    }
+
 
 }
 
