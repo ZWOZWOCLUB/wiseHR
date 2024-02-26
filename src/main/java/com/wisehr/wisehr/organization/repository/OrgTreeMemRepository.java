@@ -18,7 +18,11 @@ public interface OrgTreeMemRepository extends JpaRepository<TreeMem, Integer> {
             "from TreeMem m " +
             "join TreePos p on m.treePos = p.posCode " +
             "left join ScheduleInsertAllowance C on m.memCode = C.memCode " +
-            "where m.treeDep.depCode = :depCode and m.memStatus = 'N'" +
-            "AND C.memCode is null ")
+            "left join Schedule S on C.schCode = S.schCode " +
+            "where m.treeDep.depCode = :depCode and m.memStatus = 'N' " +
+            "and (S.schDeleteStatus = 'Y' or C.memCode is null)")
     List<TreeMemDTO> findMembersByDepartmentNotContainSchedule(Integer depCode);
+
+
+
 }
