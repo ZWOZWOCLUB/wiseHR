@@ -242,7 +242,7 @@ public class MyPageService {
 
         /* update를 위한 엔티티 값 수정 */
 
-        product = product.memBirth(productDTO.getMemBirth())
+        product = product
                 .memEmail(productDTO.getMemEmail())
                 .memPhone(productDTO.getMemPhone())
                 .memAddress(productDTO.getMemAddress()).build();
@@ -619,12 +619,16 @@ public class MyPageService {
         Date sqlDate2 = Date.valueOf(formattedThreeMonthsAgo);
 
         List<MPAttendance> attendance = attendanceRepository.findByMemCodeAndAttWorkDateBetween(memCode,sqlDate2,sqlDate);
+        System.out.println("attendance = " + attendance);
 
         List<MPAttendanceDTO> degreeDTO = attendance.stream()
                 .map(exam -> modelMapper.map(exam, MPAttendanceDTO.class))
                 .collect(Collectors.toList());
+        System.out.println("degreeDTO = " + degreeDTO);
 
         for(MPAttendanceDTO settingMemberDTO: degreeDTO){
+            if(settingMemberDTO.getAttStartTime() != null && settingMemberDTO.getAttEndTime() != null){
+
             Time start = settingMemberDTO.getAttStartTime();
             Time end = settingMemberDTO.getAttEndTime();
 
@@ -640,6 +644,7 @@ public class MyPageService {
             // 결과 출력
             System.out.println("시간 차이: " + hoursDiff + " 시간 " + minutesDiff + " 분");
             settingMemberDTO.setTotalWork(totalWork);
+        }
         }
 
 
