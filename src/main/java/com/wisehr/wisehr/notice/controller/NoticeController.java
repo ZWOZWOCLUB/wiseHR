@@ -34,7 +34,7 @@ public class NoticeController {
     /*
     * 공지 등록
     * */
-
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @PostMapping("/notice")
     public ResponseEntity<ResponseDTO> insertNotice(
             @ModelAttribute NoticeDTO noticeDTO,
@@ -60,6 +60,7 @@ public class NoticeController {
 /*
 * 공지 수정
 * */
+@PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @PutMapping("/updateNotice")
     public ResponseEntity<ResponseDTO> updateNotice(
             @ModelAttribute NoticeDTO noticeDTO, MultipartFile noticeFile){
@@ -77,7 +78,7 @@ public class NoticeController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지수정성공", noticeService.updateNotice(noticeDTO, noticeFile)));
 
     }
-
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     /*공지 삭제*/
     @PutMapping("/deleteNotice")
     public ResponseEntity<ResponseDTO> deleteNotice(
@@ -91,7 +92,7 @@ public class NoticeController {
     /*
     * 공지 전체 조회, 페이징처리
     * */
-
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/allNoticeSearch")
     public ResponseEntity<ResponseDTO> allNoticeSearchWithPaging(
             @RequestParam(name = "offset", defaultValue = "1")String offset){
@@ -118,6 +119,8 @@ public class NoticeController {
      * @param search notCode
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
+
     @GetMapping("/detail")
     public ResponseEntity<ResponseDTO> noticeDetail(
             @RequestParam(value = "nc", defaultValue = "not")String search){
@@ -130,6 +133,8 @@ public class NoticeController {
      * @param search
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
+
     @GetMapping("/titleSearch")
     public ResponseEntity<ResponseDTO> searchTitleList(
             @RequestParam(value = "t", defaultValue = "all")String search){
@@ -141,6 +146,8 @@ public class NoticeController {
      * @param search 내용
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
+
     @GetMapping("/commentSearch")
     public ResponseEntity<ResponseDTO> searchCommentList(
             @RequestParam(value = "c", defaultValue = "all")String search){
@@ -152,6 +159,8 @@ public class NoticeController {
      * @param search 작성자
      * @return
      */
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
+
     @GetMapping("/memberNameSearch")
     public ResponseEntity<ResponseDTO> searchMemberNameList(
             @RequestParam(value = "m",defaultValue = "all")String search){
