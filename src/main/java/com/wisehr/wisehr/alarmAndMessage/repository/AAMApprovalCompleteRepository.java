@@ -9,4 +9,10 @@ import java.util.List;
 public interface AAMApprovalCompleteRepository extends JpaRepository<AAMApprovalComplete, String> {
 
     AAMApprovalComplete findByPerArmCode(int perArmCode);
+
+    List<AAMApprovalComplete> findByMemCode(int memCode);
+
+    AAMApprovalComplete findByAppCode(String appCode);
+
+    List<AAMApprovalComplete> findTop30ByMemCodeOrderByAppCodeDesc(int memCode);
 }

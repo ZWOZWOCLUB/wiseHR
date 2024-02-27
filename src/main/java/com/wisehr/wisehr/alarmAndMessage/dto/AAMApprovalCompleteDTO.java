@@ -17,4 +17,5 @@ public class AAMApprovalCompleteDTO {
     private String payCode;
     private int perArmCode;
     private String perArmCheckStatus;
+    private String payKind;
 }

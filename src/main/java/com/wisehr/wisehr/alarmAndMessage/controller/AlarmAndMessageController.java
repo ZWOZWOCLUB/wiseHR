@@ -91,4 +91,17 @@ public class AlarmAndMessageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "개인 알람 확인 상태 업데이트 성공" , alarmService.allAlarmCheckUpdate(allArmCode)));
     }
 
+
+//    참조된 결재 확인
+    @GetMapping("/referencer/{memCode}")
+    public ResponseEntity<ResponseDTO> selectReference(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "참조된 결재 확인 성공" , alarmService.selectReference(memCode)));
+    }
+
+//    결재자인 결재 확인
+    @GetMapping("/approval/{memCode}")
+    public ResponseEntity<ResponseDTO> selectApproval(@PathVariable int memCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "결재자인 결재 확인 성공" , alarmService.selectApproval(memCode)));
+    }
+
 }

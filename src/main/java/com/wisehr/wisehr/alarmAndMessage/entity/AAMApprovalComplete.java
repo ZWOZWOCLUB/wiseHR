@@ -29,6 +29,6 @@ public class AAMApprovalComplete {
     @Column(name = "pay_code")
     private String payCode;
     @Column(name = "per_arm_code")
-    private int perArmCode;
+    private Integer perArmCode;
 
 }
