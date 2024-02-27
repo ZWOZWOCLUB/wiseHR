@@ -22,6 +22,7 @@ public class CommentService {
         this.modelMapper = modelMapper;
     }
 
+    //댓글등록
     public CommentDTO  insertComment(CommentDTO commentDTO) {
         log.info("insertComment Start");
 
@@ -59,16 +60,59 @@ public class CommentService {
         return commentDTOList;
     }
 
+    //댓글조회
+//    public List<CommentDTO> searchNotCodeComment(String search) {
+//        log.info("searchNotCodeComment 시작");
+//        log.info("searchNotCodeComment : {}", search);
+//
+//        // 데이터베이스에서 검색어에 해당하는 댓글 조회
+//        List<Comment> notCodeSearchCommentValue = commentRepository.findByNotCodeNotCode(search);
+//
+//        // comDeleteState가 "Y"인 댓글만 필터링하여 DTO로 변환
+//        List<CommentDTO> commentDTOList = notCodeSearchCommentValue.stream()
+//                .filter(comment -> "Y".equals(comment.getComDeleteState())) // comDeleteState 값이 "Y"인 항목만 필터링
+//                .map(comment -> modelMapper.map(comment, CommentDTO.class)) // Comment 객체를 CommentDTO 객체로 매핑
+//                .collect(Collectors.toList());
+//
+//        log.info("searchNotCodeComment 서비스 끝" + notCodeSearchCommentValue);
+//        System.out.println("notCodeSearchCommentValue = " + notCodeSearchCommentValue);
+//        return commentDTOList;
+//    }
     public List<CommentDTO> searchNotCodeComment(String search) {
         log.info("searchNotCodeComment 시작");
         log.info("searchNotCodeComment : {}", search);
 
-        List<Comment> notCodeSearchCommentValue = commentRepository.findByNotCodeNotCode(search);
+        List<Comment> notCodeSearchCommentValue = commentRepository.findByNotCodeNotCodeAndComDeleteState(search,"N");
         List<CommentDTO> commentDTOList = notCodeSearchCommentValue.stream()
                 .map(comment -> modelMapper.map(comment, CommentDTO.class))
                 .collect(Collectors.toList());
         log.info("searchNotCodeComment 서비스 끝" + notCodeSearchCommentValue);
         System.out.println("notCodeSearchCommentValue = " + notCodeSearchCommentValue);
         return commentDTOList;
+    }
+
+    //댓글 삭제처리
+    public String commentDelete(String comCode) {
+
+        int result = 0 ;
+
+        Long code = Long.parseLong(comCode);
+
+        Comment deleteComment = commentRepository.findByComCode(code);
+
+        log.info("deleteComment info : " + deleteComment );
+        try {
+            deleteComment.setComDeleteState("Y");
+
+            commentRepository.save(deleteComment);
+            result = 1 ;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return (result > 0) ? "성공" : "실패";
+
+
     }
 }

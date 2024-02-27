@@ -48,6 +48,17 @@ public class CommentController {
     }
 
 
+    @PutMapping("commentDelete")
+    public ResponseEntity<ResponseDTO> commentDelete(@RequestBody String comCode){
+
+        log.info("comCode : "  + comCode);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK,"댓글 삭제 완료", commentService.commentDelete(comCode)));
+
+    }
+
+
+
 
 
 }
