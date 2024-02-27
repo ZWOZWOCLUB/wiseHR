@@ -429,7 +429,7 @@ public class ApprovalService {
 
         int result = 0 ;
 
-        ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).get();
+        ApprovalComplete ac = approvalCompleteRepository.findById(approval.getAppCode()).orElseThrow(null);
 
         log.info("acE : " + ac);
 
@@ -439,12 +439,9 @@ public class ApprovalService {
             LocalDateTime now = LocalDateTime.now();
 
             ApprovalPerAlarm apa = new ApprovalPerAlarm();
-            log.info("22");
             apa.setPerArmCheckStatus("N");
             apa.setPerArmDateTime(now);
-            log.info("33");
             apa.setReceiveAramMember(modelMapper.map(ac.getApproval().getApprovalMember(),ReceiveAramMember.class));
-            log.info("44");
 
             log.info("apa : " + apa);
 
@@ -453,8 +450,8 @@ public class ApprovalService {
             ApprovalComplete acc = modelMapper.map(approval, ApprovalComplete.class);
 
             log.info("acc : " + acc);
-
-            acc.setApproval(ac.getApproval());
+            acc.setRefMember(ac.getRefMember());
+            acc.setApproval(ac.getApproval());      // acc 세터 사용
             acc.setApprovalMember(ac.getApprovalMember());
             acc.setPerArm(apa);
 
@@ -514,7 +511,7 @@ public class ApprovalService {
 
                             if (spendVacation2 < 0) {   // 남은 연차가 부족할 경우
 
-                                acc.setAppState("반려");
+                                acc.setAppState("반려");      // acc 세터사용
 
                                 approvalCompleteRepository.save(acc); // 반려로 처리
 
@@ -755,8 +752,10 @@ public class ApprovalService {
 
 
 
+            log.info("어디서 나는거야 ");
 
             result = 1;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

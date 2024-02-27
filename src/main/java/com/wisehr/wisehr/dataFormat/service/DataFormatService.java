@@ -68,7 +68,11 @@ public class DataFormatService {
         //임의 작성자 가져오기
 //        dataFormatDTO.setDataMember(dataFormatDTO.getDataMember());
         //파일 이름가져오기
+        String[] extend = dataFormatFile.getOriginalFilename().split("\\.");
+        String realExtend = extend[0];
         dataFormatDTO.setDataName(dataFormatFile.getOriginalFilename());
+
+
         //파일 사이즈 가져오기
         dataFormatDTO.setDataSize(dataFormatFile.getSize());
         //삭제 상태
@@ -101,7 +105,7 @@ public class DataFormatService {
         log.info("dataFormatDTO========" + dataFormatDTO);
         int result = 0;
         try {
-            FileUploadUtils.saveFile(path, dataFormatFile.getOriginalFilename(), dataFormatFile);
+            FileUploadUtils.saveFile(path, realExtend, dataFormatFile);
 
             // DataFormat 객체 매핑 및 저장
             DataFormat insertDataFormat = modelMapper.map(dataFormatDTO, DataFormat.class);
@@ -109,7 +113,7 @@ public class DataFormatService {
             // 저장 후 dataCode를 기반으로 실제 파일 경로 설정
             String newPath = DATA_DIR + "dataFomats/" + insertDataFormat.getDataCode();
             insertDataFormat.setDataPath(newPath);
-            FileUploadUtils.saveFile(newPath, dataFormatFile.getOriginalFilename(), dataFormatFile);
+            FileUploadUtils.saveFile(newPath, realExtend, dataFormatFile);
 
             dataFormatRepository.save(insertDataFormat);
 
