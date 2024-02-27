@@ -38,7 +38,6 @@ public class NoticeController {
     @PostMapping("/notice")
     public ResponseEntity<ResponseDTO> insertNotice(
             @ModelAttribute NoticeDTO noticeDTO,
-//            List<MultipartFile> noticeFiles
             MultipartFile noticeFiles
     ){
         if (noticeFiles == null || noticeFiles.isEmpty()) {

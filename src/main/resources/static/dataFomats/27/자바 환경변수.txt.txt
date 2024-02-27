@@ -1,9 +1,0 @@
-jdk 17
-C:\Program Files\Java\jdk-17\bin
-
-jdk11
-C:\Program Files\Java\java-11-openjdk-11.0.15-1\bin
-
-//자바홈을 교체하며 봐야함.
-
-설정 -> 고급 시스템 설정 -> 아래칸 자바홈을 바꾸는것.
