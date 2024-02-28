@@ -6,6 +6,7 @@ import com.wisehr.wisehr.common.ResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -46,8 +47,8 @@ public class CommentController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "글코드로 댓글조회 성공", commentService.searchNotCodeComment(search)));
 
     }
-
-
+    //댓글 삭제
+    @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN')")
     @PutMapping("commentDelete")
     public ResponseEntity<ResponseDTO> commentDelete(@RequestBody String comCode){
 
