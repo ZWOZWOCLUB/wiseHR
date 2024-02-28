@@ -451,7 +451,7 @@ public class ApprovalService {
 
             log.info("acc : " + acc);
             acc.setRefMember(ac.getRefMember());
-            acc.setApproval(ac.getApproval());      // acc 세터 사용
+            acc.setApproval(ac.getApproval());
             acc.setApprovalMember(ac.getApprovalMember());
             acc.setPerArm(apa);
 
@@ -494,26 +494,22 @@ public class ApprovalService {
                 log.info("holdVacation == : " + holdVacation);
 
                 if (aa.getVacKind().contains("무급")){
-                    log.info("여기서는 연차 개수를 조정하지 않습니다. ");
+
 
                 }else {
 
-                    log.info("연차 계산 시작 ");
+                    if (holdVacation.getVctDeadline() > 0) {
 
-                    if (holdVacation.getVctDeadline() > 0) {   //먼저 소멸예정 연차를 차감하기 위하여 0 이상일 경우로 설정
-                        log.info("1");
 
-                        if (holdVacation.getVctDeadline() - days < 0) { // 사용한 연차 개수보다 소멸예정 연차가 적을 경우
-                            int spendVacation = -(holdVacation.getVctDeadline() - days);      // 남은걸 양수로 만들고
-                            int spendVacation2 = holdVacation.getVctCount() - spendVacation;  // 연차를 마저 빼주는 것
-                            log.info("spendVacation : " + spendVacation);
-                            log.info("spendVacation2 : " + spendVacation2);
+                        if (holdVacation.getVctDeadline() - days < 0) {
+                            int spendVacation = -(holdVacation.getVctDeadline() - days);
+                            int spendVacation2 = holdVacation.getVctCount() - spendVacation;
 
-                            if (spendVacation2 < 0) {   // 남은 연차가 부족할 경우
+                            if (spendVacation2 < 0) {
 
-                                acc.setAppState("반려");      // acc 세터사용
+                                acc.setAppState("반려");
 
-                                approvalCompleteRepository.save(acc); // 반려로 처리
+                                approvalCompleteRepository.save(acc);
 
                                 return "연차가 부족합니다.";
                             }
@@ -521,21 +517,16 @@ public class ApprovalService {
                             holdVacation.vctDeadline(0);
                             holdVacation.vctCount(spendVacation2);
                             holdVacation.vctAmountSpendVacation(holdVacation.getVctAmountSpendVacation() + days);
-                            log.info("holdVacation : ", holdVacation);
                             holdVacationRepository.save(holdVacation);
                         } else {
-                            log.info("2");
 
                             int spendVacation = holdVacation.getVctDeadline() - days;
-                            log.info("spendVacation : " + spendVacation);
 
-                            if (spendVacation < 0) {// 연차 부족 반려
+                            if (spendVacation < 0) {
 
                                 acc.setAppState("반려");
 
-                                log.info("2");
                                 approvalCompleteRepository.save(acc);
-                                log.info("반려 온겨 ? ");
 
                                 return "연차가 부족합니다.";
                             }
@@ -543,9 +534,6 @@ public class ApprovalService {
                             holdVacation.vctDeadline(spendVacation);
                             holdVacation.vctAmountSpendVacation(holdVacation.getVctAmountSpendVacation() + days);
                             holdVacationRepository.save(holdVacation);
-                            log.info("holdVacation : ", holdVacation);
-                            log.info("연차 소유 누적 까지 성공 ");
-
                         }
                     }
                 }
@@ -554,12 +542,12 @@ public class ApprovalService {
 
                 approvalVHRepository.save(av);  // 연차이력 저장
 
-                log.info("연차이력까지 성공");
 
             } else if (acc.getApproval().getPayKind().contains("스케줄") && acc.getAppState().equals("승인")) {
 
                 // 상신한 결재의 종류가 스케줄이면서 승인이면 들어옴
 
+                try {
                 EditSchedule es = editScheduleRepository.findByApprovalPayCode(acc.getApproval().getPayCode());
 
                 // 상신한 결재의 결재번호를 통해서 결재 값 가져옴
@@ -651,6 +639,9 @@ public class ApprovalService {
                         scheduleEtcPatternRepository.save(sep2);
 
                     }
+                }
+                } catch (Exception e){
+                    return "일정이 없습니다.";
                 }
             }else if (acc.getApproval().getPayKind().contains("퇴직") && acc.getAppState().equals("승인")) {
 
@@ -1119,7 +1110,7 @@ public class ApprovalService {
             return modelMapper.map(result.get(0), ApprovalMemberDTO.class);
         }
 
-        List<ApprovalMember> memberList = approvalMemberRepository.findByDepartmentDepCodeAndMemRole(member.getDepartment().getDepCode(),"ADMIN");
+        List<ApprovalMember> memberList = approvalMemberRepository.findByDepartmentDepCodeAndMemRole(member.getDepartment().getDepCode(),"SUPERADMIN");
 
         log.info("memberList : " + memberList);
 
