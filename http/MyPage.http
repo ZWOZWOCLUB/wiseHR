@@ -50,10 +50,10 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 ### 연차 사용 이력 조회
-GET http://localhost:8001/myPage/annualHistory/3/2023
+GET http://localhost:8001/myPage/annualHistory/3/2024
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+Authorization: Bearer eyJkYXRlIjoxNzA5MDE1MjY1NzE5LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImRvbmdyb2NrQGdtYWlsLmNvbSIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiU1VQRVJBRE1JTiIsImV4cCI6MTcwOTg3OTI2NX0.YbIzEIIXhi_Dm2VtYuWwLS03sFfB1Cglai-fg_WH8io
 
 
 ### 회원 정보 수정

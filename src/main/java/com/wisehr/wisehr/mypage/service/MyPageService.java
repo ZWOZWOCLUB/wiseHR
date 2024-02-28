@@ -482,36 +482,36 @@ public class MyPageService {
 
 
     @Transactional
-    public String updatePass(MPPassDTO productDTO) {
+    public String updatePass(MPPassDTO mpPassDTO) {
 
 //        1. 기존 비밀번호가 맞는지 확인
-        MPMyPageMember product = myPageRepository.findById(productDTO.getMemCode()).get();
+        MPMyPageMember myPageMember = myPageRepository.findById(mpPassDTO.getMemCode()).get();
 
-        if(!passwordEncoder.matches(productDTO.getOriginMemPassword(), product.getMemPassword())){ // 둘이 비교
-            throw new BadCredentialsException(productDTO.getOriginMemPassword() + "는 비밀번호가 아닙니다.");
+        if(!passwordEncoder.matches(mpPassDTO.getOriginMemPassword(), myPageMember.getMemPassword())){ // 둘이 비교
+            throw new BadCredentialsException(mpPassDTO.getOriginMemPassword() + "는 비밀번호가 아닙니다.");
         }
 
         log.info("[ProductService] updateProduct Start ===================================");
-        log.info("[ProductService] productDTO : " + productDTO);
+        log.info("[ProductService] productDTO : " + mpPassDTO);
 
         String replaceFileName = null;
         int result = 0;
 
-        System.out.println("product = " + product);
+        System.out.println("product = " + myPageMember);
 
 //        변경할 비밀번호가 확실한지 비교 확인
-        System.out.println("productDTO = " + productDTO.getNewMemPassword1());
-        System.out.println("productDTO = " + productDTO.getNewMemPassword2());
+        System.out.println("productDTO = " + mpPassDTO.getNewMemPassword1());
+        System.out.println("productDTO = " + mpPassDTO.getNewMemPassword2());
 
-        if(!productDTO.getNewMemPassword1().equals(productDTO.getNewMemPassword2())){
-            throw new PasswordNotEqualException(productDTO.getOriginMemPassword() + " 변경될 비밀번호가 동일하지 않습니다.");
+        if(!mpPassDTO.getNewMemPassword1().equals(mpPassDTO.getNewMemPassword2())){
+            throw new PasswordNotEqualException(mpPassDTO.getOriginMemPassword() + " 변경될 비밀번호가 동일하지 않습니다.");
         }
 
         /* update를 위한 엔티티 값 수정 */
 
-        product = product.memPassword(passwordEncoder.encode(productDTO.getNewMemPassword1())).build();
+        myPageMember = myPageMember.memPassword(passwordEncoder.encode(mpPassDTO.getNewMemPassword1())).build();
 
-        System.out.println("product = " + product);
+        System.out.println("product = " + myPageMember);
 
         result = 1;
 
