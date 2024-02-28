@@ -216,14 +216,22 @@ public class MyPageService {
         List<MPAnnualDTO> annualDTOS = new ArrayList<>();
         for (String exam : code){
             System.out.println("exam = " + exam);
-            MPAnnual myPageMember = myPageAnnualRepository.findByPayCodeAndVacStartDateLike(exam,"%"+year+"%");
+//            MPAnnual myPageMember = myPageAnnualRepository.findByPayCodeAndVacStartDateLike(exam,"%"+year+"%");
+            MPAnnual myPageMember = myPageAnnualRepository.findByPayCode(exam);
             MPAnnualDTO settingMemberDTO = modelMapper.map(myPageMember, MPAnnualDTO.class);
             annualDTOS.add(settingMemberDTO);
         }
 
-        System.out.println("annualDTOS = " + annualDTOS);
+        List<MPAnnualDTO> annualDTOS2 = new ArrayList<>();
+        for(MPAnnualDTO exam : annualDTOS){
+            if(exam.getVacStartDate().contains(year)){
+                annualDTOS2.add(exam);
+            }
+        }
 
-        return annualDTOS;
+        System.out.println("annualDTOS = " + annualDTOS2);
+
+        return annualDTOS2;
     }
 
     @Transactional
