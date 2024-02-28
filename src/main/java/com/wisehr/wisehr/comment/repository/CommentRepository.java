@@ -11,4 +11,8 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 //    List<Comment> findByNotice_notCode(String search);
 
     List<Comment> findByNotCodeNotCode(String search);
+
+    Comment findByComCode(Long comCode);
+
+    List<Comment> findByNotCodeNotCodeAndComDeleteState(String search, String N);
 }

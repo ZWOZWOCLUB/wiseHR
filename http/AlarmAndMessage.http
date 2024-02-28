@@ -1,9 +1,8 @@
 ### 개인 알람 조회
-GET http://localhost:8001/alarm/perAlarm/1
+GET http://localhost:8001/alarm/perAlarm/3
 Content-Type: application/json
 Accept: */*
-Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
-
+Authorization: Bearer eyJkYXRlIjoxNzA5MDAzOTg0NDU4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImhvQGdtYWlsLmNvbSIsIm1lbUNvZGUiOjIsIm1lbU5hbWUiOiLsnKDsmIjsp4AiLCJtZW1Sb2xlIjoiQURNSU4iLCJleHAiOjE3MDk4Njc5ODR9.y233VfgduG3xm4nyRFeJv8pRdY4EXAdQIFBxkaGWcDw
 
 ### 전체 알람 조회
 GET http://localhost:8001/alarm/allAlarm/1
@@ -19,7 +18,7 @@ Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSF
 
 
 ### 받은 메신저 조회
-GET http://localhost:8001/alarm/recMessenger/3
+GET http://localhost:8001/alarm/recMessenger/240130010
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA4OTA3NzY5NzU2LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiQURNSU4iLCJleHAiOjE3MDk3NzE3Njl9.OkjlGCEIdpeNuiyYIXvGKafBPkhx0djb70lhinKZOBA
@@ -108,3 +107,15 @@ PUT http://localhost:8001/alarm/allAlarmCheckUpdate/1
 Content-Type: application/json
 Accept: */*
 Authorization: Bearer eyJkYXRlIjoxNzA3OTU4Mzg3NjYzLCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6InN1anVuZ0BnbWEyaWwuY29tMjIzMyIsIm1lbUNvZGUiOjEsIm1lbU5hbWUiOiLsnbTrj5nrnb0iLCJtZW1Sb2xlIjoiVVNFUiIsImV4cCI6MTcwODgyMjM4N30.LYTW0FPEGOgL548WUFmPngCNUveNNXACs9O2l2BHuSw
+
+### 참조자 서류 확인
+GET http://localhost:8001/alarm/referencer/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA5MDAzOTg0NDU4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImhvQGdtYWlsLmNvbSIsIm1lbUNvZGUiOjIsIm1lbU5hbWUiOiLsnKDsmIjsp4AiLCJtZW1Sb2xlIjoiQURNSU4iLCJleHAiOjE3MDk4Njc5ODR9.y233VfgduG3xm4nyRFeJv8pRdY4EXAdQIFBxkaGWcDw
+
+### 참조자 서류 확인
+GET http://localhost:8001/alarm/approval/1
+Content-Type: application/json
+Accept: */*
+Authorization: Bearer eyJkYXRlIjoxNzA5MDAzOTg0NDU4LCJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJtZW1FbWFpbCI6ImhvQGdtYWlsLmNvbSIsIm1lbUNvZGUiOjIsIm1lbU5hbWUiOiLsnKDsmIjsp4AiLCJtZW1Sb2xlIjoiQURNSU4iLCJleHAiOjE3MDk4Njc5ODR9.y233VfgduG3xm4nyRFeJv8pRdY4EXAdQIFBxkaGWcDw

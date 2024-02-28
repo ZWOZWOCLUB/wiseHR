@@ -42,6 +42,8 @@ public class DataFormatController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "서식자료 등록성공", dataFormatService.insertDataFormat(dataFormatDTO,dataFormatFile)));
 
     }
+
+    //조회
     @PreAuthorize("hasAuthority('SUPERADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/allData")
     public ResponseEntity<ResponseDTO> allDataSearchWithPaging(

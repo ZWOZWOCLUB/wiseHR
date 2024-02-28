@@ -25,8 +25,10 @@ public class AlarmAndMessageService {
     private final AAMRecMessageRepository aamRecMessageRepository;
     private final AAMRecUpdateRepository aamRecUpdateRepository;
     private final AAMSendUpdateRepository aamSendUpdateRepository;
+    private final AAMReferencerRepository aamReferencerRepository;
+    private final AAMApprovalRepository aamApprovalRepository;
     private final ModelMapper modelMapper;
-    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, AAMApprovalCompleteRepository aamApprovalCompleteRepository, AAMMessageRepository aamMessageRepository, AAMRecMessageRepository aamRecMessageRepository, AAMRecUpdateRepository aamRecUpdateRepository, AAMSendUpdateRepository aamSendUpdateRepository, ModelMapper modelMapper) {
+    public AlarmAndMessageService(AAMAllAlarmRepository allAlarmRepository, AAMPerAlarmRepository perAlarmRepository, AAMSendMessengerRepository sendMessengerRepository, AAMRecMessengerRepository recMessengerRepository, AAMApprovalCompleteRepository aamApprovalCompleteRepository, AAMMessageRepository aamMessageRepository, AAMRecMessageRepository aamRecMessageRepository, AAMRecUpdateRepository aamRecUpdateRepository, AAMSendUpdateRepository aamSendUpdateRepository, AAMReferencerRepository aamReferencerRepository, AAMApprovalRepository aamApprovalRepository, ModelMapper modelMapper) {
         this.allAlarmRepository = allAlarmRepository;
         this.perAlarmRepository = perAlarmRepository;
         this.sendMessengerRepository = sendMessengerRepository;
@@ -36,6 +38,8 @@ public class AlarmAndMessageService {
         this.aamRecMessageRepository = aamRecMessageRepository;
         this.aamRecUpdateRepository = aamRecUpdateRepository;
         this.aamSendUpdateRepository = aamSendUpdateRepository;
+        this.aamReferencerRepository = aamReferencerRepository;
+        this.aamApprovalRepository = aamApprovalRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -56,14 +60,22 @@ public class AlarmAndMessageService {
         for(AAMPerAlarmDTO code : degreeDTO){
             System.out.println("code.getPerArmCode() = " + code.getPerArmCode());
             AAMApprovalComplete myPageMember = aamApprovalCompleteRepository.findByPerArmCode(code.getPerArmCode());
-            AAMApprovalCompleteDTO settingMemberDTO = modelMapper.map(myPageMember, AAMApprovalCompleteDTO.class);
 
-            settingMemberDTO.setPerArmCheckStatus(code.getPerArmCheckStatus());
+            if(myPageMember != null){
+                AAMApprovalCompleteDTO settingMemberDTO = modelMapper.map(myPageMember, AAMApprovalCompleteDTO.class);
 
-            aamApprovalCompleteDTOS.add(settingMemberDTO);
-            System.out.println("settingMemberDTO = " + settingMemberDTO);
+                settingMemberDTO.setPerArmCheckStatus(code.getPerArmCheckStatus());
+                aamApprovalCompleteDTOS.add(settingMemberDTO);
+            }
+
+
         }
         System.out.println("aamApprovalCompleteDTOS = " + aamApprovalCompleteDTOS);
+
+        for(int i = 0 ; i<aamApprovalCompleteDTOS.size() ; i++){
+            AAMApproval allAlarm = aamApprovalRepository.findByPayCode(aamApprovalCompleteDTOS.get(i).getPayCode());
+            aamApprovalCompleteDTOS.get(i).setPayKind(allAlarm.getPayKind());
+        }
 
         return aamApprovalCompleteDTOS;
 
@@ -316,5 +328,55 @@ public class AlarmAndMessageService {
 
         log.info("[ProductService] insertProduct End ===================");
         return (result > 0)? "받는 메세지 입력 성공" : "메세지 입력 실패" ;
+    }
+
+    public Object selectReference(int memCode) {
+        int count =0;
+
+        List<AAMReferencer> perAlarm = aamReferencerRepository.findTop30ByMemCodeOrderByAppCodeDesc(memCode);
+        System.out.println("perAlarm = " + perAlarm);
+
+        List<AAMReferencerDTO> degreeDTO = perAlarm.stream()
+                .map(exam -> modelMapper.map(exam, AAMReferencerDTO.class))
+                .collect(Collectors.toList());
+        System.out.println("degreeDTO = " + degreeDTO);
+
+        for(int i = 0 ; i<degreeDTO.size() ; i++){
+
+            AAMApprovalComplete allAlarm = aamApprovalCompleteRepository.findByAppCode(degreeDTO.get(i).getAppCode());
+            System.out.println("degreeDTO getAppCode = " + degreeDTO.get(i).getAppCode());
+
+            degreeDTO.get(i).setPayCode(allAlarm.getPayCode());
+            System.out.println("allAlarm.getPayCode() = " + allAlarm.getPayCode());
+
+            count ++;
+        }
+
+        for(int i = 0 ; i<degreeDTO.size() ; i++){
+
+            AAMApproval allAlarm = aamApprovalRepository.findByPayCode(degreeDTO.get(i).getPayCode());
+            System.out.println("degreeDTO getAppCode = " + degreeDTO.get(i).getAppCode());
+
+            degreeDTO.get(i).setPayKind(allAlarm.getPayKind());
+            System.out.println("allAlarm.getPayCode() = " + allAlarm.getPayCode());
+        }
+
+        return degreeDTO;
+
+    }
+
+    public Object selectApproval(int memCode) {
+        List<AAMApprovalComplete> perAlarm = aamApprovalCompleteRepository.findTop30ByMemCodeOrderByAppCodeDesc(memCode);
+
+        List<AAMApprovalCompleteDTO> degreeDTO = perAlarm.stream()
+                .map(exam -> modelMapper.map(exam, AAMApprovalCompleteDTO.class))
+                .collect(Collectors.toList());
+
+        for(int i = 0 ; i<degreeDTO.size() ; i++){
+            AAMApproval allAlarm = aamApprovalRepository.findByPayCode(degreeDTO.get(i).getPayCode());
+            degreeDTO.get(i).setPayKind(allAlarm.getPayKind());
+        }
+
+        return degreeDTO;
     }
 }
