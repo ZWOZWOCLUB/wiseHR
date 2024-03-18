@@ -11,6 +11,6 @@ CREATE EVENT IF NOT EXISTS UpdateNewMonthVacationLessthen1year
         SET C.vct_count = C.vct_count + 1
     WHERE A.mem_status = 'N'
         AND YEAR(A.mem_hire_date) = YEAR(CURDATE())
-        AND C.att_status <> '결근'
+        AND B.att_status <> '결근'
         AND B.att_work_date BETWEEN DATE_FORMAT(CURDATE(), '%Y-01-01') AND DATE_FORMAT(CURDATE(), '%Y-12-31');
 SELECT * FROM INFORMATION_SCHEMA.EVENTS WHERE EVENT_NAME = 'UpdateNewMonthVacationLessthen1year';

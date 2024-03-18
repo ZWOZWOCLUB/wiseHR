@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface SettingMemDepPosRepository extends JpaRepository <SettingMemDepPos, Integer> {
-    List<SettingMemDepPos> findByMemNameContainingAndMemStatus(String search, String memStatus);
+    List<SettingMemDepPos> findByMemNameContaining(String search);
 
 
 }

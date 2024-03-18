@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
+
 @Entity
 @Table(name = "certificate")
 @AllArgsConstructor
@@ -30,9 +32,9 @@ public class SettingCertificate {
     private String cerInstitution;
     @Column(name = "mem_code")
     private int memCode;
-    @OneToOne(mappedBy = "certificate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "cer_code", insertable = false, updatable = false)
-    private SettingCertificateFile certificateFile;
+    private List<SettingCertificateFile> certificateFile;
     @Override
     public String toString() {
         return "SettingCertificate{" +
@@ -43,6 +45,7 @@ public class SettingCertificate {
                 ", cerEndDate='" + cerEndDate + '\'' +
                 ", cerDescription='" + cerDescription + '\'' +
                 ", cerInstitution='" + cerInstitution + '\'' +
+                ", certificateFile='" + certificateFile + '\'' +
                 '}';
     }
 

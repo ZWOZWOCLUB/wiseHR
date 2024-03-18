@@ -10,5 +10,4 @@ CREATE EVENT IF NOT EXISTS UpdateAndDeleteScheduleEndDate
     WHERE sch_end_date = CURDATE() - INTERVAL 1 DAY;
     DELETE FROM pattern_day A
     WHERE A.wok_code IN (SELECT B.sch_code, B.wok_code FROM schedule B WHERE sch_end_date = CURDATE() - INTERVAL 1 DAY);
-    END;
 SELECT * FROM INFORMATION_SCHEMA.EVENTS WHERE EVENT_NAME = 'UpdateAndDeleteScheduleEndDate';

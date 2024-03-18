@@ -13,11 +13,24 @@ import java.util.List;
 @Setter
 @ToString
 public class SettingMemDepAttSchDTO {
+//    private int memCode;
+//    private String memName;
+//    private int depCode;
+//    private ScheduleAttendance attendances = new ScheduleAttendance();
+//    private SettingDepartment department = new SettingDepartment();
+//    private ScheduleAllowanceDTO allowanceDTO = new ScheduleAllowanceDTO();
+//    private ScheduleDTO scheduleDTO = new ScheduleDTO();
+
     private int memCode;
     private String memName;
     private int depCode;
-    private ScheduleAttendance attendances = new ScheduleAttendance();
-    private SettingDepartment department = new SettingDepartment();
-    private ScheduleAllowanceDTO allowanceDTO = new ScheduleAllowanceDTO();
-    private ScheduleDTO scheduleDTO = new ScheduleDTO();
+    private int attCode;
+    private String attStartTime;
+    private String attEndTime;
+    private String attStatus;
+    private String attWorkDate;
+    private String schCode;
+    private String schType;
+    private String schColor;
+    private String depName;
 }

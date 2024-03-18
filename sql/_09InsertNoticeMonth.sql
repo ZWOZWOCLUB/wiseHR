@@ -11,5 +11,4 @@ CREATE EVENT IF NOT EXISTS InsertNoticeMonth
         '3월 31일 전년도 연차가 소멸될 예정입니다. 가급적 빠른 시일 내에 사용 권장드립니다.',
         NOW(),
         'N');
-    END;
 SELECT * FROM INFORMATION_SCHEMA.EVENTS WHERE EVENT_NAME = 'InsertNoticeMonth';

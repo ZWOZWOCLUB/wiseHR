@@ -2,6 +2,8 @@ package com.wisehr.wisehr.setting.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,5 +18,7 @@ public class SettingCareerDTO {
     private String crrState;
     private String crrDescription;
     private int memCode;
+    private List<SettingCareerFileDTO> careerFile;
+
 
 }

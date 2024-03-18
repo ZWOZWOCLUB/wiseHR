@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
+
 @Entity
 @Table(name = "career")
 @AllArgsConstructor
@@ -31,9 +33,9 @@ public class SettingCareer {
     private String crrDescription;
     @Column(name = "mem_code")
     private int memCode;
-    @OneToOne(mappedBy = "career", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "crr_code", insertable = false, updatable = false)
-    private SettingCareerFile careerFile;
+    @OneToMany
+    @JoinColumn(name = "crr_code")
+    private List<SettingCareerFile> careerFile;
 
     public SettingCareer() {
     }

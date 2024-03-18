@@ -445,4 +445,5 @@ public class SettingMemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "통장 정보 삭제 성공", settingMemberService.deleteSalary(salaryDTO)));
     }
 
+
 }

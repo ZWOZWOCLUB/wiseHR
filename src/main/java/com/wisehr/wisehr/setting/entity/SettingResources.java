@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "member")
 public class SettingResources {
     @Id
@@ -23,14 +24,11 @@ public class SettingResources {
     @OneToMany
     @JoinColumn(name = "mem_code")
     private List<SettingDegree> degreeDTO;
+    @OneToMany
+    @JoinColumn(name = "mem_code")
+    private List<SettingDocumentFile> documentFiles;
+    @OneToMany
+    @JoinColumn(name = "mem_code")
+    private List<SettingSalary> salary;
 
-    @Override
-    public String toString() {
-        return "SettingResources{" +
-                "memCode=" + memCode +
-                ", careerDTO=" + careerDTO +
-                ", certificateDTO=" + certificateDTO +
-                ", degreeDTO=" + degreeDTO +
-                '}';
-    }
 }

@@ -27,12 +27,7 @@ public class SettingCertificateFile {
     private String cerAtcExtends;
     @Column(name = "cer_code")
     private String cerCode;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cer_code", insertable = false, updatable = false)
-    private SettingCertificate certificate;
 
-    public SettingCertificateFile(int cerAtcCode, String cerAtcName, String cerAtcRegistDate, String cerAtcDeleteStatus, String cerAtcPath, String cerAtcConvertName, String cerAtcExtends, String cerCode) {
-    }
 
     public SettingCertificateFile() {
     }

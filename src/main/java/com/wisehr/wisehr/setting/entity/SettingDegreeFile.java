@@ -27,7 +27,7 @@ public class SettingDegreeFile {
     private String degAtcConvertName;
     @Column(name = "deg_code")
     private String degCode;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "deg_code", insertable = false, updatable = false)
     private SettingDegree degree;
 

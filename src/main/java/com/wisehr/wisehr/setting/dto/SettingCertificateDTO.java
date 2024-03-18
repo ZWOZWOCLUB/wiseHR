@@ -2,6 +2,8 @@ package com.wisehr.wisehr.setting.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,5 +19,6 @@ public class SettingCertificateDTO {
     private String cerDescription;
     private String cerInstitution;
     private int memCode;
+    private List<SettingCertificateFileDTO> certificateFile;
 
 }

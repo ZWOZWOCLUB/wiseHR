@@ -4,13 +4,17 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
 
 @Entity
 @Table(name = "salary")
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class SettingSalary {
     @Id
     @GeneratedValue(generator = "eegenerator")
@@ -25,23 +29,15 @@ public class SettingSalary {
     private String salBankName;
     @Column(name = "mem_code")
     private int memCode;
-    @OneToOne(mappedBy = "settingSalary", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "sal_code", insertable = false, updatable = false)
-    private SettingSalaryFile salaryFile;
+    private List<SettingSalaryFile> salaryFile;
+
 
     public SettingSalary() {
 
     }
 
-    @Override
-    public String toString() {
-        return "SettingSalary{" +
-                "salCode='" + salCode + '\'' +
-                ", salNumber='" + salNumber + '\'' +
-                ", salBankName='" + salBankName + '\'' +
-                ", salaryFile=" + salaryFile +
-                '}';
-    }
 
     public SettingSalary(String salCode, String salNumber, String salBankName, int memCode) {
     }

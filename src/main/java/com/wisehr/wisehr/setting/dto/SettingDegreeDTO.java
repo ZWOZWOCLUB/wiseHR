@@ -2,6 +2,8 @@ package com.wisehr.wisehr.setting.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,4 +18,5 @@ public class SettingDegreeDTO {
     private String degState;
     private String degAdmissions;
     private int memCode;
+    private List<SettingDegreeFileDTO> degreeFile;
 }

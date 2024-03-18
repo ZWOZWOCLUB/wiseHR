@@ -2,6 +2,8 @@ package com.wisehr.wisehr.setting.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -12,4 +14,5 @@ public class SettingSalaryDTO {
     private String salNumber;
     private String salBankName;
     private int memCode;
+    private List<SettingSalaryFileDTO> salaryFile;
 }
