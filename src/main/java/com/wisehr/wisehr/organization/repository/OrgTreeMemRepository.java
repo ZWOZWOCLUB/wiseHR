@@ -21,6 +21,7 @@ public interface OrgTreeMemRepository extends JpaRepository<TreeMem, Integer> {
             "left join Schedule S on C.schCode = S.schCode " +
             "where m.treeDep.depCode = :depCode and m.memStatus = 'N' " +
             "and (S.schDeleteStatus = 'Y' or C.memCode is null)" +
+            "GROUP BY m.memCode " +
     "order by m.memCode ")
     List<TreeMemDTO> findMembersByDepartmentNotContainSchedule(Integer depCode);
 
@@ -31,6 +32,7 @@ public interface OrgTreeMemRepository extends JpaRepository<TreeMem, Integer> {
             "left join Schedule S on C.schCode = S.schCode " +
             "where m.treeDep.depCode = :depCode and m.memStatus = 'N' " +
             "AND ((S.schDeleteStatus = 'Y' or C.memCode is null) or C.schCode = :schCode) " +
+            "GROUP BY m.memCode " +
             "order by m.memCode ")
     List<TreeMemDTO> findMembersByDepartmentNotContainScheduleUpdate(Integer depCode, String schCode);
 }
